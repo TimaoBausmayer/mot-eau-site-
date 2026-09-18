@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -137,6 +138,7 @@ tbody tr:hover{background:var(--surface);}
 .tag{display:inline-block; font-size:0.72rem; padding:4px 9px; border:1px solid var(--line); color:var(--grey);}
 .tag.comp{border-color:var(--orange); color:var(--orange);}
 .row-actions{display:flex; gap:6px;}
+.icon-btn.active-toggle{background:var(--orange); border-color:var(--orange); color:var(--black);}
 .icon-btn{background:none; border:1px solid var(--line); color:var(--grey); width:26px; height:26px; cursor:pointer; font-size:0.75rem;}
 .icon-btn:hover{border-color:var(--orange); color:var(--orange); box-shadow:0 0 10px rgba(255,90,31,0.5);}
 .icon-btn.danger:hover{border-color:#ff4747; color:#ff4747;}
@@ -268,6 +270,8 @@ body.edit-mode .sponsor-card:hover .sponsor-edit, body.edit-mode .sponsor-card.e
 
 /* documents de competition + classement general */
 .comp-card{background:var(--surface); border:1px solid var(--line); padding:22px 24px; margin-bottom:24px;}
+.comp-card.comp-hidden{opacity:0.55; border-style:dashed;}
+.hidden-badge{font-size:0.68rem; color:var(--orange); border:1px solid var(--orange); border-radius:20px; padding:3px 10px; margin-left:10px; text-transform:uppercase; letter-spacing:0.03em;}
 .results-block{margin-bottom:28px;}
 .results-block-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;}
 .general-ranking-row{display:grid; grid-template-columns:40px 1fr 1fr 100px 1fr; gap:10px; align-items:center; padding:10px 14px; background:var(--surface); border:1px solid var(--line); border-top:none; font-size:0.88rem;}
@@ -1051,6 +1055,9 @@ body.edit-mode .view-only{display:none;}
     <div class="dash-grid" id="dashStatsGrid"></div>
     <h3 class="subhead" style="margin-top:0;">Ventes boutique — articles les plus commandés</h3>
     <div id="dashTopProducts" style="margin-bottom:40px;"></div>
+    <h3 class="subhead">💰 Stock restant & bénéfices potentiels</h3>
+    <p class="hint-text">Basé sur les quantités que tu as renseignées sur chaque produit (section Boutique).</p>
+    <div id="dashStockRecap" style="margin-bottom:40px;"></div>
     <h3 class="subhead">Compétitions les plus demandées</h3>
     <div id="dashTopCompetitions"></div>
   </div>
@@ -1312,7 +1319,7 @@ const DEFAULTS = {
   products: [
     { id:"p1", name:"T-shirt Mot'eau", price:29, desc:"Coton bio, sérigraphie noir & orange.", images:[], link:"", stock:"stock_en",
       colors:[{name:"Noir", hex:"#0a0a09"},{name:"Orange", hex:"#ff5a1f"}], sizes:["S","M","L","XL"] },
-    { id:"p2", name:"Casquette Mot'eau", price:22, desc:"Broderie logo, taille réglable.", images:[], link:"", stock:"stock_en", colors:[], sizes:[] },
+    { id:"p2", name:"Casquette Mot'eau", price:20, desc:"Broderie logo, taille réglable.", images:[], link:"", stock:"stock_en", qty:15, colors:[], sizes:[] },
     { id:"p3", name:"Sweat à capuche Mot'eau", price:49, desc:"Molleton épais, capuche doublée.", images:[], link:"", stock:"stock_en",
       colors:[{name:"Noir", hex:"#0a0a09"},{name:"Orange", hex:"#ff5a1f"}], sizes:["S","M","L","XL"] },
     { id:"p4", name:"Pack stickers (x5)", price:8, desc:"Résistants à l'eau, logo Mot'eau.", images:[], link:"", stock:"stock_en", colors:[], sizes:[] },
@@ -1411,38 +1418,40 @@ let cart = {};
 let favorites = []; // ids produits favoris, personnel au visiteur
 
 /* ============================================================
-   STOCKAGE PERSISTANT (window.storage — partagé, visible par tous)
+   STOCKAGE PERSISTANT — Firebase Realtime Database
+   (partagé, visible par tous les visiteurs, où que le site soit hébergé)
    ============================================================ */
-const STORAGE_OK = !!(window.storage);
-document.getElementById('storageWarning').textContent = STORAGE_OK
-  ? ""
-  : "Sauvegarde en ligne indisponible dans ce contexte : les modifications resteront visibles uniquement pendant cette session. Ouvrez le site depuis Claude pour une sauvegarde persistante et partagée.";
+const FIREBASE_DB_URL = "https://mot-eau-default-rtdb.europe-west1.firebasedatabase.app";
+const STORAGE_OK = true;
+document.getElementById('storageWarning').textContent = "";
 
 async function saveSection(key){
-  if(!STORAGE_OK) return;
-  try{ await window.storage.set('moteau:'+key, JSON.stringify(STATE[key]), true); }
-  catch(err){ console.error(err); showToast("Erreur d'enregistrement"); }
+  try{
+    await fetch(`${FIREBASE_DB_URL}/moteau/${encodeURIComponent(key)}.json`, {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(STATE[key])
+    });
+  }catch(err){ console.error(err); showToast("Erreur d'enregistrement — vérifie ta connexion internet."); }
 }
 async function loadSection(key){
-  if(!STORAGE_OK) return;
   try{
-    const res = await window.storage.get('moteau:'+key, true);
-    if(res && res.value) STATE[key] = JSON.parse(res.value);
-  }catch(err){ /* clé absente : on garde les valeurs par défaut */ }
+    const res = await fetch(`${FIREBASE_DB_URL}/moteau/${encodeURIComponent(key)}.json`);
+    const data = await res.json();
+    if(data !== null && data !== undefined) STATE[key] = data;
+  }catch(err){ /* clé absente ou hors-ligne : on garde les valeurs par défaut */ }
 }
 async function loadAll(){
   await Promise.all(Object.keys(DEFAULTS).map(loadSection));
 }
-async function saveFavorites(){
-  if(!STORAGE_OK) return;
-  try{ await window.storage.set('moteau:favorites', JSON.stringify(favorites), false); }
+function saveFavorites(){
+  try{ localStorage.setItem('moteau_favorites', JSON.stringify(favorites)); }
   catch(err){ console.error(err); }
 }
-async function loadFavorites(){
-  if(!STORAGE_OK) return;
+function loadFavorites(){
   try{
-    const res = await window.storage.get('moteau:favorites', false);
-    if(res && res.value) favorites = JSON.parse(res.value);
+    const raw = localStorage.getItem('moteau_favorites');
+    if(raw) favorites = JSON.parse(raw);
   }catch(err){ /* pas encore de favoris pour ce visiteur */ }
 }
 
@@ -1607,16 +1616,13 @@ function applyTranslations(){
 async function toggleLanguage(){
   currentLang = currentLang === 'fr' ? 'en' : 'fr';
   applyTranslations();
-  if(STORAGE_OK){
-    try{ await window.storage.set('moteau:lang', currentLang, false); }catch(err){}
-  }
+  try{ localStorage.setItem('moteau_lang', currentLang); }catch(err){}
 }
 document.getElementById('langToggleBtn').addEventListener('click', toggleLanguage);
-async function loadLangPreference(){
-  if(!STORAGE_OK) return;
+function loadLangPreference(){
   try{
-    const res = await window.storage.get('moteau:lang', false);
-    if(res && res.value) currentLang = res.value;
+    const val = localStorage.getItem('moteau_lang');
+    if(val) currentLang = val;
   }catch(err){ /* pas de préférence enregistrée */ }
 }
 
@@ -2277,21 +2283,25 @@ function renderCompetitions(){
   const wrap = document.getElementById('competitionsWrap');
   if(!wrap) return;
   const comps = STATE.competitions || [];
-  wrap.innerHTML = comps.length ? comps.map((comp, ci) => `
-    <div class="comp-card" data-comp="${ci}">
+  wrap.innerHTML = comps.length ? comps.filter(c => !c.hidden || EDIT_MODE).map((comp) => {
+    const ci = comps.indexOf(comp);
+    return `
+    <div class="comp-card ${comp.hidden ? 'comp-hidden' : ''}" data-comp="${ci}">
       <div class="comp-card-head">
         <div>
           <span data-editable data-field="name" data-comp="${ci}" class="comp-title-input">${comp.name}</span>
           <span style="color:var(--grey); font-size:0.8rem; margin-left:10px;" data-editable data-field="date" data-comp="${ci}">${comp.date||''}</span>
+          ${comp.hidden ? '<span class="hidden-badge edit-only inline">🙈 Masquée aux visiteurs</span>' : ''}
         </div>
         <div class="row-actions edit-only inline">
           ${comp.doc ? `<a class="small-btn" href="${comp.doc.dataUrl}" download="${comp.doc.filename}">📄 ${comp.doc.filename}</a>` : ''}
           <button class="small-btn" data-action="upload-doc" data-comp="${ci}">${comp.doc ? 'Remplacer doc.' : '+ Document'}</button>
+          <button class="small-btn" data-action="toggle-comp-visible" data-comp="${ci}">${comp.hidden ? '👁️ Afficher' : '🙈 Masquer'}</button>
           <button class="icon-btn danger" data-action="del-comp" data-comp="${ci}">✕ Supprimer</button>
         </div>
       </div>
       <div class="table-wrap"><table><thead><tr>
-        <th>Pilote</th><th>Résultat</th><th>Manches</th><th>Meilleur temps</th><th>Distance</th><th>Temps cumulé final</th><th class="edit-only inline" title="Priorité dans le classement général">📌</th><th class="edit-only inline" title="Forcer dans les records du monde">🏆</th><th class="edit-only inline">Actions</th>
+        <th>Pilote</th><th>Résultat</th><th>Manches</th><th>Record perso</th><th>Temps cumulé final</th><th class="edit-only inline">Actions</th>
       </tr></thead><tbody>
         ${(comp.pilots||[]).map((p, pi) => `
           <tr data-comp="${ci}" data-pilot="${pi}">
@@ -2306,8 +2316,11 @@ function renderCompetitions(){
               ${(p.manchesTimes||[]).length || (p.manches ?? 0)}
               <button class="icon-btn edit-only inline" data-action="edit-manches" data-comp="${ci}" data-pilot="${pi}" title="Détail des manches" style="margin-left:6px;">✏️</button>
             </td>
-            <td data-editable data-field="bestTime">${p.bestTime||''}</td>
-            <td data-editable data-field="bestDistance">${p.bestDistance||''}</td>
+            <td>
+              <span data-editable data-field="bestTime">${p.bestTime||''}</span>
+              <span style="color:var(--grey);"> / </span>
+              <span data-editable data-field="bestDistance">${p.bestDistance||''}</span>
+            </td>
             <td>
               ${(() => {
                 const cm = computeCumulativeFromManches(p);
@@ -2316,15 +2329,18 @@ function renderCompetitions(){
                   : `<span data-editable data-field="cumulativeTime">${p.cumulativeTime||''}</span>`;
               })()}
             </td>
-            <td class="edit-only inline pin-cell"><input type="checkbox" data-action="toggle-pin" data-comp="${ci}" data-pilot="${pi}" ${p.pinned?'checked':''} title="Épingler en tête du classement général"></td>
-            <td class="edit-only inline record-cell"><input type="checkbox" data-action="toggle-record" data-comp="${ci}" data-pilot="${pi}" ${p.forcedRecord?'checked':''} title="Forcer ce pilote dans le top 3 des records"></td>
-            <td class="edit-only inline"><button class="icon-btn danger" data-action="del-pilot" data-comp="${ci}" data-pilot="${pi}">✕</button></td>
+            <td class="edit-only inline"><div class="row-actions">
+              <button class="icon-btn ${p.pinned?'active-toggle':''}" data-action="toggle-pin" data-comp="${ci}" data-pilot="${pi}" title="Épingler en tête du classement général">📌</button>
+              <button class="icon-btn ${p.forcedRecord?'active-toggle':''}" data-action="toggle-record" data-comp="${ci}" data-pilot="${pi}" title="Forcer dans le top 3 des records du monde">🏆</button>
+              <button class="icon-btn danger" data-action="del-pilot" data-comp="${ci}" data-pilot="${pi}" title="Supprimer ce pilote">✕</button>
+            </div></td>
           </tr>
-        `).join('') || `<tr><td colspan="9" style="color:var(--grey);">Aucun pilote pour cette compétition.</td></tr>`}
+        `).join('') || `<tr><td colspan="6" style="color:var(--grey);">Aucun pilote pour cette compétition.</td></tr>`}
       </tbody></table></div>
       <button class="add-row-btn edit-only block" data-action="add-pilot" data-comp="${ci}">+ Ajouter un pilote à cette compétition</button>
     </div>
-  `).join('') : `<p style="color:var(--grey);">Aucune compétition enregistrée. Clique sur "+ Ajouter une compétition" pour commencer.</p>`;
+  `;
+  }).join('') : `<p style="color:var(--grey);">Aucune compétition enregistrée. Clique sur "+ Ajouter une compétition" pour commencer.</p>`;
   applyEditMode();
   renderCompetitionOptions();
   renderWorldRecords();
@@ -2336,8 +2352,9 @@ document.getElementById('addCompetitionBtn')?.addEventListener('click', () => {
   if(!name || !name.trim()) return;
   const date = prompt("Date de la compétition ? (ex: 2026-06-15)", "") || "";
   STATE.competitions = STATE.competitions || [];
-  STATE.competitions.push({ id:'comp_'+Date.now(), name:name.trim(), date:date.trim(), doc:null, pilots:[] });
+  STATE.competitions.push({ id:'comp_'+Date.now(), name:name.trim(), date:date.trim(), doc:null, pilots:[], hidden:true });
   saveSection('competitions'); renderCompetitions();
+  showToast("Compétition créée — masquée aux visiteurs pour l'instant, clique sur \"👁️ Afficher\" quand elle sera prête.");
 });
 
 document.getElementById('competitionsWrap')?.addEventListener('click', e => {
@@ -2347,6 +2364,11 @@ document.getElementById('competitionsWrap')?.addEventListener('click', e => {
   if(btn.dataset.action === 'del-comp'){
     if(!confirm(`Supprimer la compétition "${comp.name}" et tous ses résultats ?`)) return;
     STATE.competitions.splice(ci,1);
+    saveSection('competitions'); renderCompetitions();
+    return;
+  }
+  if(btn.dataset.action === 'toggle-comp-visible'){
+    comp.hidden = !comp.hidden;
     saveSection('competitions'); renderCompetitions();
     return;
   }
@@ -2368,6 +2390,18 @@ document.getElementById('competitionsWrap')?.addEventListener('click', e => {
     openManchesEditor(ci, parseInt(btn.dataset.pilot));
     return;
   }
+  if(btn.dataset.action === 'toggle-pin'){
+    const pi = parseInt(btn.dataset.pilot);
+    comp.pilots[pi].pinned = !comp.pilots[pi].pinned;
+    saveSection('competitions'); renderCompetitions();
+    return;
+  }
+  if(btn.dataset.action === 'toggle-record'){
+    const pi = parseInt(btn.dataset.pilot);
+    comp.pilots[pi].forcedRecord = !comp.pilots[pi].forcedRecord;
+    saveSection('competitions'); renderCompetitions();
+    return;
+  }
   if(btn.dataset.action === 'upload-doc'){
     pickFile('.pdf,.jpg,.jpeg,.png,.doc,.docx', file => {
       comp.doc = file;
@@ -2377,30 +2411,11 @@ document.getElementById('competitionsWrap')?.addEventListener('click', e => {
   }
 });
 document.getElementById('competitionsWrap')?.addEventListener('change', e => {
-  const sel = e.target.closest('.result-select');
-  const pinCb = e.target.closest('[data-action="toggle-pin"]');
-  const recCb = e.target.closest('[data-action="toggle-record"]');
-  if(sel){
-    const ci = parseInt(sel.dataset.comp), pi = parseInt(sel.dataset.pilot);
-    if(!STATE.competitions[ci] || !STATE.competitions[ci].pilots[pi]) return;
-    STATE.competitions[ci].pilots[pi].result = sel.value;
-    saveSection('competitions'); renderCompetitions();
-    return;
-  }
-  if(pinCb){
-    const ci = parseInt(pinCb.dataset.comp), pi = parseInt(pinCb.dataset.pilot);
-    if(!STATE.competitions[ci] || !STATE.competitions[ci].pilots[pi]) return;
-    STATE.competitions[ci].pilots[pi].pinned = pinCb.checked;
-    saveSection('competitions'); renderCompetitions();
-    return;
-  }
-  if(recCb){
-    const ci = parseInt(recCb.dataset.comp), pi = parseInt(recCb.dataset.pilot);
-    if(!STATE.competitions[ci] || !STATE.competitions[ci].pilots[pi]) return;
-    STATE.competitions[ci].pilots[pi].forcedRecord = recCb.checked;
-    saveSection('competitions'); renderCompetitions();
-    return;
-  }
+  const sel = e.target.closest('.result-select'); if(!sel) return;
+  const ci = parseInt(sel.dataset.comp), pi = parseInt(sel.dataset.pilot);
+  if(!STATE.competitions[ci] || !STATE.competitions[ci].pilots[pi]) return;
+  STATE.competitions[ci].pilots[pi].result = sel.value;
+  saveSection('competitions'); renderCompetitions();
 });
 document.getElementById('competitionsWrap')?.addEventListener('focusout', e => {
   const el = e.target.closest('[data-editable]'); if(!el) return;
@@ -2889,10 +2904,29 @@ function renderDashboard(){
     });
   });
   renderDashBars('dashTopProducts', productCounts);
+  renderDashStockRecap();
 
   const compCounts = {};
   STATE.registrations.forEach(r => { compCounts[r.competition] = (compCounts[r.competition]||0) + 1; });
   renderDashBars('dashTopCompetitions', compCounts);
+}
+function renderDashStockRecap(){
+  const tracked = STATE.products.filter(p => typeof p.qty === 'number');
+  const el = document.getElementById('dashStockRecap');
+  if(!tracked.length){
+    el.innerHTML = '<p style="color:var(--grey); font-size:0.85rem;">Aucun produit avec une quantité limitée pour l\'instant. Renseigne un stock restant sur un produit (section Boutique) pour le voir apparaître ici.</p>';
+    return;
+  }
+  const total = tracked.reduce((s,p) => s + (p.qty * (p.price||0)), 0);
+  el.innerHTML = `
+    <div class="table-wrap"><table><thead><tr><th>Produit</th><th>Quantité restante</th><th>Prix</th><th>Valeur restante</th></tr></thead><tbody>
+      ${tracked.map(p => `<tr><td>${p.name}</td><td>${p.qty}</td><td>${p.price} €</td><td>${(p.qty*(p.price||0)).toFixed(0)} €</td></tr>`).join('')}
+    </tbody></table></div>
+    <div class="dash-card" style="margin-top:16px; max-width:280px;">
+      <div class="dash-num">${total.toFixed(0)} €</div>
+      <div class="dash-lbl">Valeur totale du stock restant (si tout est vendu)</div>
+    </div>
+  `;
 }
 function renderDashBars(containerId, counts){
   const entries = Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0,8);
@@ -3444,6 +3478,11 @@ function renderProducts(){
             ${Object.entries(STOCK_STATUSES).map(([k,v])=>`<option value="${k}" ${stock===k?'selected':''}>${v.label}</option>`).join('')}
           </select>
         </div>
+        <div class="edit-only link-field block stock-select">
+          <label>Quantité restante (laisser vide = illimité)</label>
+          <input type="number" min="0" data-field="qty" value="${p.qty ?? ''}" placeholder="ex: 15">
+        </div>
+        ${(!EDIT_MODE && typeof p.qty === 'number' && p.qty > 0) ? `<p style="color:var(--orange); font-size:0.78rem; margin-top:6px;">Plus que ${p.qty} en stock !</p>` : ''}
         <div class="edit-only link-field block">
           <label>Lien de paiement (Stripe / PayPal)</label>
           <input type="text" data-field="link" value="${p.link||''}" placeholder="https://buy.stripe.com/...">
@@ -3567,6 +3606,11 @@ document.getElementById('productGrid').addEventListener('change', e => {
     STATE.products[idx].stock = e.target.value;
     saveSection('products'); renderProducts(); return;
   }
+  if(e.target.dataset.field === 'qty'){
+    const val = e.target.value.trim();
+    STATE.products[idx].qty = val === '' ? null : Math.max(0, parseInt(val)||0);
+    saveSection('products'); renderProducts(); return;
+  }
   if(e.target.dataset.action === 'color-hex'){
     const ci = parseInt(e.target.dataset.ci);
     STATE.products[idx].colors[ci].hex = e.target.value;
@@ -3584,7 +3628,7 @@ document.getElementById('productGrid').addEventListener('change', e => {
   }
 });
 document.getElementById('addProductBtn').addEventListener('click', () => {
-  STATE.products.push({id:'p'+Date.now(), name:"Nouveau produit", price:0, desc:"Description du produit.", images:[], link:"", colors:[], sizes:[], stock:"stock_en"});
+  STATE.products.push({id:'p'+Date.now(), name:"Nouveau produit", price:0, desc:"Description du produit.", images:[], link:"", colors:[], sizes:[], stock:"stock_en", qty:null});
   saveSection('products'); renderProducts();
 });
 document.getElementById('favToggleBtn').addEventListener('click', function(){
@@ -3907,6 +3951,15 @@ document.getElementById('cartCheckoutBtn').addEventListener('click', async () =>
     const variant = [line.color, line.size].filter(Boolean).join('/');
     return `${p.name}${variant?' ('+variant+')':''} x${line.qty}`;
   }).join(', ');
+  await loadSection('products');
+  keys.forEach(key => {
+    const line = cart[key]; const p = STATE.products[line.idx];
+    if(p && typeof p.qty === 'number'){
+      p.qty = Math.max(0, p.qty - line.qty);
+      if(p.qty === 0) p.stock = 'stock_rupture';
+    }
+  });
+  await saveSection('products'); renderProducts();
   const finalTotal = +Math.max(0, total * (1 - combinedPct/100) - (appliedGiftCard ? appliedGiftCard.remaining : 0)).toFixed(2);
   const mode = getCartMode();
 
