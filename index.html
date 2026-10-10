@@ -1453,7 +1453,12 @@ const DEFAULTS = {
   ],
   ruleDocs: [],
   history: { title: "Notre histoire", text: "", image: null },
-  tutorials: [],
+  tutorials: [
+    { title:"Le règlement", text:"Les quotas minimaux, la règle d'or, chaque étape jusqu'à la grande finale : tout le règlement Mot'eau expliqué étape par étape.", video:"videos/tuto-regles.mp4", poster:"videos/tuto-regles.jpg" },
+    { title:"Le planning", text:"Les types de séances, la fiche d'une séance, la liste des inscrits, l'inscription en un clic, le calendrier et les notifications.", video:"videos/tuto-planning.mp4", poster:"videos/tuto-planning.jpg" },
+    { title:"La boutique", text:"Choisir sa couleur et sa taille, voir le stock, gérer son panier, utiliser un code promo et payer.", video:"videos/tuto-boutique.mp4", poster:"videos/tuto-boutique.jpg" },
+    { title:"Les classements", text:"Le temps cumulé, les retraits, la ligne de qualification et les records du monde : comment se calcule ta place.", video:"videos/tuto-classements.mp4", poster:"videos/tuto-classements.jpg" }
+  ],
   gallery: [
     { type:"photo", tag:"Entraînement", image:null },
     { type:"video", tag:"Highlights", image:null },
@@ -3822,12 +3827,12 @@ function getYoutubeId(url){
   const m = String(url||'').match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
   return m ? m[1] : null;
 }
-function tutoVideoHtml(url){
+function tutoVideoHtml(url, poster){
   const u = String(url||'').trim();
   if(!u) return `<div class="tuto-novideo">${EDIT_MODE ? 'Ajoute le lien de la vidéo ci-dessous' : 'Vidéo bientôt disponible'}</div>`;
   const yt = getYoutubeId(u);
   if(yt) return `<iframe src="https://www.youtube-nocookie.com/embed/${yt}" title="Vidéo du tutoriel" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
-  if(/^https?:\/\/\S+\.(mp4|webm|ogg|mov)(\?\S*)?$/i.test(u)) return `<video src="${escSearch(u)}" controls preload="metadata"></video>`;
+  if(/^(https?:\/\/\S+|[\w\/.-]+)\.(mp4|webm|ogg|mov)(\?\S*)?$/i.test(u)) return `<video src="${escSearch(u)}" ${poster ? `poster="${escSearch(poster)}"` : ''} controls preload="none" playsinline></video>`;
   if(/^https?:\/\//i.test(u)) return `<div class="tuto-novideo"><a href="${escSearch(u)}" target="_blank" rel="noopener" style="color:var(--orange);">▶ Voir la vidéo</a></div>`;
   return `<div class="tuto-novideo">Lien vidéo invalide</div>`;
 }
@@ -3841,7 +3846,7 @@ function renderTutorials(){
   }
   grid.innerHTML = tutos.map((t, idx) => `
     <div class="tuto-card" data-idx="${idx}">
-      <div class="tuto-video">${tutoVideoHtml(t.video)}</div>
+      <div class="tuto-video">${tutoVideoHtml(t.video, t.poster)}</div>
       <div class="tuto-body">
         <h3>${escSearch(t.title||'')}</h3>
         <p>${escSearch(t.text||'')}</p>
@@ -3864,6 +3869,7 @@ document.getElementById('tutoGrid').addEventListener('change', e => {
   const field = e.target.dataset.field; if(!field) return;
   const idx = parseInt(e.target.closest('.tuto-card').dataset.idx);
   STATE.tutorials[idx][field] = e.target.value.trim();
+  if(field === 'video') delete STATE.tutorials[idx].poster; // l'aperçu appartenait à l'ancienne vidéo
   saveSection('tutorials'); renderTutorials();
 });
 document.getElementById('tutoGrid').addEventListener('click', e => {
