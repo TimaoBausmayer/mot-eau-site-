@@ -598,6 +598,7 @@ body.edit-mode .view-only{display:none;}
   <span>🔧 Mode édition activé — cliquez sur un texte pour le modifier, sur une image pour la changer.</span>
   <button id="openCodeBtn">💻 Espace code</button>
   <button id="exitEditBtn">Quitter le mode édition</button>
+  <button id="adminLogoutBtn">Se déconnecter</button>
 </div>
 
 <div id="codeEditorOverlay" class="code-editor-overlay">
@@ -616,8 +617,7 @@ body.edit-mode .view-only{display:none;}
       <textarea id="customHTMLInput" class="code-editor-textarea" style="display:none;" spellcheck="false" placeholder="&lt;!-- Bloc HTML/JS libre, injecté en bas de la section Accueil --&gt;"></textarea>
       <div id="accessPanel" style="display:none; padding:6px 4px;">
         <p style="color:var(--grey); font-size:0.85rem; margin-bottom:16px;">Change ici les codes d'accès du site. Elles sont enregistrées et remplacent immédiatement les anciens.</p>
-        <label style="display:block; font-size:0.82rem; color:var(--cream); margin-bottom:6px;">Mot de passe — Mode édition (admin)</label>
-        <input type="text" id="editPasswordInput" class="code-editor-textarea" style="height:auto; min-height:0; padding:10px 12px; margin-bottom:18px;">
+        <p style="color:var(--grey); font-size:0.82rem; margin-bottom:16px;">🔒 <b>Mode édition</b> : il est protégé par votre compte administrateur (e-mail + mot de passe). Pour changer ce mot de passe : Firebase → Authentication → Users.</p>
         <label style="display:block; font-size:0.82rem; color:var(--cream); margin-bottom:6px;">Mot de passe — Espace Club (adhérents)</label>
         <input type="text" id="clubPasswordInput" class="code-editor-textarea" style="height:auto; min-height:0; padding:10px 12px; margin-bottom:18px;">
         <button id="savePasswordsBtn" class="btn btn-solid" style="width:100%;">Enregistrer les codes d'accès</button>
@@ -1344,8 +1344,9 @@ body.edit-mode .view-only{display:none;}
 <div class="pw-modal-overlay" id="pwOverlay">
   <div class="pw-modal">
     <h3>Mode édition</h3>
-    <p>Entrez le mot de passe administrateur pour modifier le site.</p>
-    <input type="password" id="pwInput" placeholder="Mot de passe">
+    <p>Connectez-vous avec votre compte administrateur pour modifier le site.</p>
+    <input type="email" id="pwEmail" placeholder="Adresse e-mail" autocomplete="username" style="margin-bottom:10px;">
+    <input type="password" id="pwInput" placeholder="Mot de passe" autocomplete="current-password">
     <div class="pw-actions">
       <button class="btn btn-solid" id="pwConfirm" style="flex:1;">Déverrouiller</button>
       <button class="btn btn-ghost" id="pwCancel" style="flex:1;">Annuler</button>
@@ -1383,7 +1384,6 @@ body.edit-mode .view-only{display:none;}
    sécurité (le fichier est lisible par tout le monde), juste
    une barrière simple contre les modifications accidentelles.
    ============================================================ */
-const EDIT_PASSWORD_DEFAULT = "moteau2026"; // valeur de secours si aucun mot de passe personnalisé n'est enregistré
 const CLUB_PASSWORD_DEFAULT = "moteaufamille"; // valeur de secours si aucun mot de passe personnalisé n'est enregistré
 
 /* ============================================================
@@ -1394,7 +1394,10 @@ const DEFAULT_WAIVER_TEXT = "Je reconnais que la pratique de Mot'eau comporte de
 const DEFAULTS = {
   adminCustomCSS: "",
   adminCustomHTML: "",
-  passwords: { edit: "moteau2026", club: "moteaufamille" },
+  passwords: { club: "" },
+  clubCodeHash: "",
+  memberNames: [],   // publié automatiquement : prénoms/noms des adhérents à jour (pour l'espace club)
+  equipmentOut: [],  // publié automatiquement : nombre d'équipements prêtés, sans données personnelles
   hero: {
     eyebrow: "Un nouveau sport nautique",
     titleMain: "Prends de la vitesse.",
@@ -1522,21 +1525,169 @@ const FIREBASE_DB_URL = "https://mot-eau-default-rtdb.europe-west1.firebasedatab
 const STORAGE_OK = true;
 document.getElementById('storageWarning').textContent = "";
 
+/* ============================================================
+   CONNEXION ADMINISTRATEUR — Firebase Authentication
+   Seul le compte ADMIN_EMAIL peut modifier le site : les règles de la base
+   (fichier database.rules.json) refusent toute autre modification.
+   ============================================================ */
+const FIREBASE_API_KEY = "AIzaSyDMdz5I1kGdB5QbSQi4PCVvgIr9SXQ6jvc";
+const ADMIN_EMAIL = "timaobausmayer04@gmail.com";
+let ADMIN_AUTH = null; // { idToken, refreshToken, expiresAt, email }
+
+function storeAdminRefreshToken(token){
+  try{ token ? localStorage.setItem('moteau_admin_rt', token) : localStorage.removeItem('moteau_admin_rt'); }catch(err){}
+}
+function setAdminAuth(idToken, refreshToken, expiresInSec, email){
+  ADMIN_AUTH = { idToken, refreshToken, email: String(email||'').toLowerCase(), expiresAt: Date.now() + (parseInt(expiresInSec)||3600)*1000 };
+  storeAdminRefreshToken(refreshToken);
+}
+function isAdmin(){ return !!ADMIN_AUTH && ADMIN_AUTH.email === ADMIN_EMAIL.toLowerCase(); }
+async function adminSignIn(email, password){
+  const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ email, password, returnSecureToken:true })
+  });
+  const data = await res.json();
+  if(!res.ok) throw new Error((data.error && data.error.message) || 'LOGIN_FAILED');
+  setAdminAuth(data.idToken, data.refreshToken, data.expiresIn, data.email);
+}
+async function adminRefresh(refreshToken){
+  const res = await fetch(`https://securetoken.googleapis.com/v1/token?key=${FIREBASE_API_KEY}`, {
+    method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body: `grant_type=refresh_token&refresh_token=${encodeURIComponent(refreshToken)}`
+  });
+  const data = await res.json();
+  if(!res.ok) throw new Error('REFRESH_FAILED');
+  // l'email n'est pas renvoyé ici : on le relit dans le jeton
+  const payload = JSON.parse(atob(data.id_token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
+  setAdminAuth(data.id_token, data.refresh_token, data.expires_in, payload.email);
+}
+/* À la première connexion admin : on range les anciennes données au nouvel endroit sécurisé */
+async function migrateToSecureStorage(){
+  try{
+    if(!STATE.giftCards.length){
+      const old = toArray(await dbRequest('giftCards', 'GET'));
+      if(old.length){ STATE.giftCards = old; await saveSection('giftCards'); }
+    }
+    if(!STATE.clubCodeHash){
+      STATE.clubCodeHash = await sha256Hex((STATE.passwords && STATE.passwords.club) || CLUB_PASSWORD_DEFAULT);
+      await saveSection('clubCodeHash');
+    }
+    if(STATE.passwords && STATE.passwords.edit){ delete STATE.passwords.edit; await saveSection('passwords'); }
+  }catch(err){ console.error(err); }
+}
+async function restoreAdminSession(){
+  let rt = null;
+  try{ rt = localStorage.getItem('moteau_admin_rt'); }catch(err){}
+  if(!rt) return;
+  try{ await adminRefresh(rt); }
+  catch(err){ ADMIN_AUTH = null; storeAdminRefreshToken(null); }
+}
+function adminSignOut(){
+  ADMIN_AUTH = null; storeAdminRefreshToken(null);
+  location.reload();
+}
+async function authQuery(){
+  if(!ADMIN_AUTH) return '';
+  if(Date.now() > ADMIN_AUTH.expiresAt - 60000){
+    try{ await adminRefresh(ADMIN_AUTH.refreshToken); }
+    catch(err){ ADMIN_AUTH = null; storeAdminRefreshToken(null); return ''; }
+  }
+  return `?auth=${encodeURIComponent(ADMIN_AUTH.idToken)}`;
+}
+function dbUrl(path){ return `${FIREBASE_DB_URL}/moteau/${path}.json`; }
+async function dbRequest(path, method, body){
+  const res = await fetch(dbUrl(path) + await authQuery(), {
+    method, headers:{'Content-Type':'application/json'},
+    body: body === undefined ? undefined : JSON.stringify(body)
+  });
+  if(!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+/* Les listes remplies par les visiteurs (inscriptions, commandes, avis...) sont
+   enregistrées élément par élément (les visiteurs peuvent seulement AJOUTER).
+   Firebase les renvoie alors comme un objet : on les remet en liste. */
+const NEWEST_FIRST_KEYS = ['reviews','clubMessages','clubPosts'];
+function toArray(data, newestFirst){
+  if(Array.isArray(data)) return data.filter(x => x !== null && x !== undefined);
+  if(!data || typeof data !== 'object') return [];
+  const keys = Object.keys(data);
+  const numeric = keys.filter(k => /^\d+$/.test(k)).sort((a,b) => a-b).map(k => data[k]);
+  const pushed = keys.filter(k => !/^\d+$/.test(k)).sort().map(k => data[k]);
+  return (newestFirst ? [...pushed.reverse(), ...numeric] : [...numeric, ...pushed]).filter(x => x !== null && x !== undefined);
+}
+/* Cartes cadeaux : rangées par code (giftCardsByCode/CODE) pour qu'un visiteur
+   puisse vérifier SON code sans pouvoir lister ceux des autres. */
+function giftCardsToObject(list){
+  const obj = {};
+  (list||[]).forEach(g => { if(g && g.code) obj[g.code] = g; });
+  return obj;
+}
+async function sha256Hex(text){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
+}
+const normEmail = e => String(e||'').trim().toLowerCase();
+
 async function saveSection(key){
   try{
-    await fetch(`${FIREBASE_DB_URL}/moteau/${encodeURIComponent(key)}.json`, {
-      method: 'PUT',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(STATE[key])
-    });
-  }catch(err){ console.error(err); showToast("Erreur d'enregistrement — vérifie ta connexion internet."); }
+    if(key === 'giftCards'){
+      await dbRequest('giftCardsByCode', 'PUT', giftCardsToObject(STATE.giftCards));
+    } else {
+      await dbRequest(encodeURIComponent(key), 'PUT', STATE[key]);
+    }
+    if(key === 'memberships' && isAdmin()){
+      // liste publique (anonyme) des adhérents à jour : seulement l'empreinte de l'email
+      const hashes = {};
+      for(const m of STATE.memberships){ if(m && m.paid && m.email) hashes[await sha256Hex(normEmail(m.email))] = true; }
+      await dbRequest('memberHashes', 'PUT', hashes);
+      STATE.memberNames = STATE.memberships.filter(m => m && m.paid && m.name).map(m => m.name);
+      await dbRequest('memberNames', 'PUT', STATE.memberNames);
+    }
+    if(key === 'equipmentLoans' && isAdmin()){
+      const out = {};
+      STATE.equipmentLoans.forEach(l => { if(l && l.status === 'prete') out[l.equipmentName] = (out[l.equipmentName]||0) + 1; });
+      STATE.equipmentOut = Object.entries(out).map(([name, count]) => ({ name, count }));
+      await dbRequest('equipmentOut', 'PUT', STATE.equipmentOut);
+    }
+  }catch(err){
+    console.error(err);
+    showToast(isAdmin() ? "Erreur d'enregistrement — vérifie ta connexion internet." : "Modification refusée : connectez-vous en mode édition.");
+  }
 }
 async function loadSection(key){
   try{
-    const res = await fetch(`${FIREBASE_DB_URL}/moteau/${encodeURIComponent(key)}.json`);
-    const data = await res.json();
-    if(data !== null && data !== undefined) STATE[key] = data;
-  }catch(err){ /* clé absente ou hors-ligne : on garde les valeurs par défaut */ }
+    let data = await dbRequest(key === 'giftCards' ? 'giftCardsByCode' : encodeURIComponent(key), 'GET');
+    if(data === null || data === undefined) return;
+    if(key === 'giftCards') data = Object.values(data);
+    else if(Array.isArray(DEFAULTS[key])) data = toArray(data, NEWEST_FIRST_KEYS.includes(key));
+    if(key === 'planning') data.forEach(row => { if(row) row.participants = toArray(row.participants); });
+    STATE[key] = data;
+  }catch(err){ /* clé absente, accès réservé à l'admin ou hors-ligne : on garde les valeurs actuelles */ }
+}
+/* Ajout d'un élément par un visiteur (création seule, jamais de modification) */
+async function addItem(key, item){
+  try{
+    await dbRequest(encodeURIComponent(key), 'POST', item);
+    if(!Array.isArray(STATE[key])) STATE[key] = [];
+    NEWEST_FIRST_KEYS.includes(key) ? STATE[key].unshift(item) : STATE[key].push(item);
+    return true;
+  }catch(err){
+    console.error(err);
+    showToast("Erreur d'envoi — vérifie ta connexion internet et réessaie.");
+    return false;
+  }
+}
+async function patchPath(path, fields){
+  try{ await dbRequest(path, 'PATCH', fields); return true; }
+  catch(err){ console.error(err); return false; }
+}
+async function fetchGiftCard(code){
+  code = String(code||'').trim().toUpperCase();
+  if(!code) return null;
+  try{ return await dbRequest(`giftCardsByCode/${encodeURIComponent(code)}`, 'GET'); }
+  catch(err){ return null; }
 }
 async function loadAll(){
   await Promise.all(Object.keys(DEFAULTS).map(loadSection));
@@ -1826,23 +1977,32 @@ function startAnnounceCycle(){
 window.addEventListener('resize', updateStickyOffsets);
 document.getElementById('editFab').addEventListener('click', () => {
   if(EDIT_MODE){ EDIT_MODE = false; applyEditMode(); return; }
+  if(isAdmin()){ EDIT_MODE = true; applyEditMode(); showToast("Mode édition activé"); return; }
   document.getElementById('pwOverlay').classList.add('show');
   document.getElementById('pwInput').value = '';
-  document.getElementById('pwInput').focus();
+  document.getElementById('pwEmail').focus();
 });
+document.getElementById('adminLogoutBtn').addEventListener('click', adminSignOut);
 document.getElementById('exitEditBtn').addEventListener('click', () => { EDIT_MODE = false; applyEditMode(); });
 document.getElementById('pwCancel').addEventListener('click', () => document.getElementById('pwOverlay').classList.remove('show'));
 document.getElementById('pwConfirm').addEventListener('click', tryUnlock);
 document.getElementById('pwInput').addEventListener('keydown', e => { if(e.key === 'Enter') tryUnlock(); });
-function tryUnlock(){
-  const val = document.getElementById('pwInput').value;
-  if(val === (STATE.passwords.edit || EDIT_PASSWORD_DEFAULT)){
-    EDIT_MODE = true; applyEditMode();
-    document.getElementById('pwOverlay').classList.remove('show');
-    showToast("Mode édition activé");
-  } else {
-    showToast("Mot de passe incorrect");
-  }
+document.getElementById('pwEmail').addEventListener('keydown', e => { if(e.key === 'Enter') document.getElementById('pwInput').focus(); });
+async function tryUnlock(){
+  const email = normEmail(document.getElementById('pwEmail').value);
+  const password = document.getElementById('pwInput').value;
+  if(!email || !password){ showToast("Entrez votre e-mail et votre mot de passe."); return; }
+  if(email !== ADMIN_EMAIL.toLowerCase()){ showToast("Ce compte n'a pas accès au mode édition."); return; }
+  const btn = document.getElementById('pwConfirm');
+  btn.disabled = true;
+  try{
+    await adminSignIn(email, password);
+    // on recharge la page connecté, pour récupérer aussi les données réservées à l'admin
+    try{ sessionStorage.setItem('moteau_enter_edit', '1'); }catch(err){}
+    location.reload();
+  }catch(err){
+    showToast(/TOO_MANY_ATTEMPTS/.test(err.message) ? "Trop d'essais — réessayez dans quelques minutes." : "E-mail ou mot de passe incorrect");
+  }finally{ btn.disabled = false; }
 }
 
 /* generic editable field blur handler (hero + contact use direct ids) */
@@ -2109,8 +2269,10 @@ document.getElementById('signupConfirm').addEventListener('click', async () => {
   const max = parseInt(row.maxParticipants) || 0;
   row.participants = row.participants || [];
   if(max && row.participants.length >= max){ showToast("Désolé, cette session est complète."); document.getElementById('signupOverlay').classList.remove('show'); renderPlanning(); return; }
-  row.participants.push({ name, email, date: new Date().toLocaleDateString('fr-FR') });
-  await saveSection('planning');
+  const participant = { name, email, date: new Date().toLocaleDateString('fr-FR') };
+  try{ await dbRequest(`planning/${signupRowIdx}/participants`, 'POST', participant); }
+  catch(err){ showToast("Erreur d'envoi — vérifie ta connexion internet et réessaie."); return; }
+  row.participants.push(participant);
   document.getElementById('signupOverlay').classList.remove('show');
   showToast("Inscription confirmée !");
   renderPlanning();
@@ -2757,9 +2919,7 @@ document.getElementById('notifSubmitBtn').addEventListener('click', async () => 
   if(!name || (!wantEmail && !wantSms)){ showToast("Indiquez votre nom et choisissez au moins un mode de notification."); return; }
   if(wantEmail && !email){ showToast("Renseignez votre email pour être notifié par email."); return; }
   if(wantSms && !phone){ showToast("Renseignez votre téléphone pour être notifié par SMS."); return; }
-  await loadSection('notifications');
-  STATE.notifications.push({ name, email, phone, wantEmail, wantSms, date: new Date().toLocaleDateString('fr-FR') });
-  await saveSection('notifications');
+  if(!await addItem('notifications', { name, email, phone, wantEmail, wantSms, date: new Date().toLocaleDateString('fr-FR') })) return;
   document.getElementById('notifName').value = '';
   document.getElementById('notifEmail').value = '';
   document.getElementById('notifPhone').value = '';
@@ -2824,13 +2984,11 @@ document.getElementById('waiverSubmitBtn').addEventListener('click', async () =>
     showToast("Merci de cocher la case d'acceptation pour signer en ligne.");
     return;
   }
-  await loadSection('waivers');
-  STATE.waivers.push({
+  if(!await addItem('waivers', {
     signerName, email, isMinor, minorName: isMinor ? minorName : '',
     method: mode, signed: mode === 'en_ligne',
     date: new Date().toLocaleDateString('fr-FR')
-  });
-  await saveSection('waivers');
+  })) return;
   document.getElementById('waiverSignerName').value = '';
   document.getElementById('waiverEmail').value = '';
   document.getElementById('waiverMinorName').value = '';
@@ -2891,9 +3049,7 @@ document.getElementById('reviewSubmitBtn').addEventListener('click', async () =>
   const category = document.getElementById('reviewCategory').value;
   const comment = document.getElementById('reviewComment').value.trim();
   if(!name || !comment || reviewSelectedStars === 0){ showToast("Merci de renseigner votre nom, une note et un commentaire."); return; }
-  await loadSection('reviews');
-  STATE.reviews.unshift({ name, category, rating: reviewSelectedStars, comment, date: new Date().toLocaleDateString('fr-FR') });
-  await saveSection('reviews');
+  if(!await addItem('reviews', { name, category, rating: reviewSelectedStars, comment, date: new Date().toLocaleDateString('fr-FR') })) return;
   document.getElementById('reviewName').value = '';
   document.getElementById('reviewComment').value = '';
   reviewSelectedStars = 0;
@@ -2944,9 +3100,10 @@ document.getElementById('reviewsList').addEventListener('click', e => {
 
 /* ---------- espace club (protégé par mot de passe partagé) ---------- */
 let CLUB_UNLOCKED = false;
-document.getElementById('clubUnlockBtn').addEventListener('click', () => {
+document.getElementById('clubUnlockBtn').addEventListener('click', async () => {
   const val = document.getElementById('clubPassInput').value;
-  if(val === (STATE.passwords.club || CLUB_PASSWORD_DEFAULT) || EDIT_MODE){
+  const ok = STATE.clubCodeHash ? (await sha256Hex(val.trim())) === STATE.clubCodeHash : val === CLUB_PASSWORD_DEFAULT;
+  if(ok || EDIT_MODE){
     CLUB_UNLOCKED = true;
     document.getElementById('clubLockBox').style.display = 'none';
     document.getElementById('clubContent').style.display = 'block';
@@ -2989,8 +3146,9 @@ document.getElementById('clubPostsList').addEventListener('click', e => {
 });
 function renderClubRoster(){
   const el = document.getElementById('clubRoster');
-  el.innerHTML = STATE.memberships.length
-    ? `<div class="roster-grid">${STATE.memberships.map(m => `<span class="roster-chip">${m.name}</span>`).join('')}</div>`
+  const names = isAdmin() ? STATE.memberships.map(m => m.name) : (STATE.memberNames || []);
+  el.innerHTML = names.length
+    ? `<div class="roster-grid">${names.map(n => `<span class="roster-chip">${escSearch(n||'')}</span>`).join('')}</div>`
     : '<p style="color:var(--grey);">Aucun adhérent enregistré pour le moment.</p>';
 }
 async function renderClubMessages(){
@@ -3008,9 +3166,7 @@ document.getElementById('clubMsgSubmitBtn').addEventListener('click', async () =
   const name = document.getElementById('clubMsgName').value.trim();
   const message = document.getElementById('clubMsgText').value.trim();
   if(!name || !message){ showToast("Merci de renseigner votre nom et un message."); return; }
-  await loadSection('clubMessages');
-  STATE.clubMessages.unshift({ name, message, date: new Date().toLocaleDateString('fr-FR') + ' ' + new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) });
-  await saveSection('clubMessages');
+  if(!await addItem('clubMessages', { name, message, date: new Date().toLocaleDateString('fr-FR') + ' ' + new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) })) return;
   document.getElementById('clubMsgName').value = '';
   document.getElementById('clubMsgText').value = '';
   showToast("Message publié !");
@@ -3100,7 +3256,9 @@ function renderDashBars(containerId, counts){
 function equipAvailable(name){
   const eq = STATE.equipment.find(e => e.name === name);
   if(!eq) return 0;
-  const outCount = STATE.equipmentLoans.filter(l => l.equipmentName === name && l.status === 'prete').length;
+  const outCount = isAdmin()
+    ? STATE.equipmentLoans.filter(l => l.equipmentName === name && l.status === 'prete').length
+    : ((STATE.equipmentOut||[]).find(o => o.name === name) || {}).count || 0;
   return Math.max(0, eq.totalQty - outCount);
 }
 function renderEquipment(){
@@ -3151,9 +3309,9 @@ let appliedGiftLoan = null;
 document.getElementById('loanGiftApplyBtn').addEventListener('click', async () => {
   const code = document.getElementById('loanGiftInput').value.trim().toUpperCase();
   if(!code){ showToast("Entrez un code de carte cadeau."); return; }
-  await loadSection('giftCards');
-  const card = STATE.giftCards.find(g => g.code === code);
-  if(!card || card.remaining <= 0){ showToast("Code invalide ou carte déjà utilisée."); return; }
+  const card = await fetchGiftCard(code);
+  if(!card || card.pending){ showToast(card ? "Cette carte cadeau n'est pas encore activée (paiement en cours de vérification)." : "Code invalide ou carte déjà utilisée."); return; }
+  if(card.remaining <= 0){ showToast("Code invalide ou carte déjà utilisée."); return; }
   appliedGiftLoan = card;
   document.getElementById('loanGiftLabel').textContent = `Carte ${card.code} appliquée (jusqu'à ${card.remaining} €).`;
   showToast("Carte cadeau appliquée !");
@@ -3172,9 +3330,7 @@ document.getElementById('loanSubmitBtn').addEventListener('click', async () => {
     if(r){ giftUsed = r.used; giftCode = appliedGiftLoan.code; }
     appliedGiftLoan = null; document.getElementById('loanGiftLabel').textContent = ''; document.getElementById('loanGiftInput').value = '';
   }
-  await loadSection('equipmentLoans');
-  STATE.equipmentLoans.push({ name, email, equipmentName, wantedDate, price: eq?eq.price:0, giftCardCode: giftCode, giftUsed, status:'demande', method:mode, paid: mode==='en_ligne', date: new Date().toLocaleDateString('fr-FR') });
-  await saveSection('equipmentLoans');
+  if(!await addItem('equipmentLoans', { name, email, equipmentName, wantedDate, price: eq?eq.price:0, giftCardCode: giftCode, giftUsed, status:'demande', method:mode, paid:false, date: new Date().toLocaleDateString('fr-FR') })) return;
   document.getElementById('loanName').value = '';
   document.getElementById('loanEmail').value = '';
   document.getElementById('loanDate').value = '';
@@ -3258,9 +3414,9 @@ let appliedGiftMem = null;
 document.getElementById('memGiftApplyBtn').addEventListener('click', async () => {
   const code = document.getElementById('memGiftInput').value.trim().toUpperCase();
   if(!code){ showToast("Entrez un code de carte cadeau."); return; }
-  await loadSection('giftCards');
-  const card = STATE.giftCards.find(g => g.code === code);
-  if(!card || card.remaining <= 0){ showToast("Code invalide ou carte déjà utilisée."); return; }
+  const card = await fetchGiftCard(code);
+  if(!card || card.pending){ showToast(card ? "Cette carte cadeau n'est pas encore activée (paiement en cours de vérification)." : "Code invalide ou carte déjà utilisée."); return; }
+  if(card.remaining <= 0){ showToast("Code invalide ou carte déjà utilisée."); return; }
   appliedGiftMem = card;
   document.getElementById('memGiftLabel').textContent = `Carte ${card.code} appliquée (jusqu'à ${card.remaining} €).`;
   showToast("Carte cadeau appliquée !");
@@ -3280,9 +3436,7 @@ async function submitMembership(){
     if(r){ giftUsed = r.used; giftCode = appliedGiftMem.code; }
     appliedGiftMem = null; document.getElementById('memGiftLabel').textContent = ''; document.getElementById('memGiftInput').value = '';
   }
-  await loadSection('memberships');
-  STATE.memberships.push({ name, email, phone, referrer, giftCardCode: giftCode, giftUsed, method: mode, paid: mode==='en_ligne', date: new Date().toLocaleDateString('fr-FR') });
-  await saveSection('memberships');
+  if(!await addItem('memberships', { name, email, phone, referrer, giftCardCode: giftCode, giftUsed, method: mode, paid:false, date: new Date().toLocaleDateString('fr-FR') })) return;
   document.getElementById('memName').value = '';
   document.getElementById('memEmail').value = '';
   document.getElementById('memPhone').value = '';
@@ -3308,9 +3462,9 @@ let appliedGiftReg = null;
 document.getElementById('regGiftApplyBtn').addEventListener('click', async () => {
   const code = document.getElementById('regGiftInput').value.trim().toUpperCase();
   if(!code){ showToast("Entrez un code de carte cadeau."); return; }
-  await loadSection('giftCards');
-  const card = STATE.giftCards.find(g => g.code === code);
-  if(!card || card.remaining <= 0){ showToast("Code invalide ou carte déjà utilisée."); return; }
+  const card = await fetchGiftCard(code);
+  if(!card || card.pending){ showToast(card ? "Cette carte cadeau n'est pas encore activée (paiement en cours de vérification)." : "Code invalide ou carte déjà utilisée."); return; }
+  if(card.remaining <= 0){ showToast("Code invalide ou carte déjà utilisée."); return; }
   appliedGiftReg = card;
   document.getElementById('regGiftLabel').textContent = `Carte ${card.code} appliquée (jusqu'à ${card.remaining} €).`;
   showToast("Carte cadeau appliquée !");
@@ -3330,9 +3484,7 @@ async function submitRegistration(){
     if(r){ giftUsed = r.used; giftCode = appliedGiftReg.code; }
     appliedGiftReg = null; document.getElementById('regGiftLabel').textContent = ''; document.getElementById('regGiftInput').value = '';
   }
-  await loadSection('registrations');
-  STATE.registrations.push({ name, email, phone, competition, method: mode, paid: mode==='en_ligne', memberClaim: isMember, giftCardCode: giftCode, giftUsed, date: new Date().toLocaleDateString('fr-FR') });
-  await saveSection('registrations');
+  if(!await addItem('registrations', { name, email, phone, competition, method: mode, paid:false, memberClaim: isMember, giftCardCode: giftCode, giftUsed, date: new Date().toLocaleDateString('fr-FR') })) return;
   document.getElementById('regName').value = '';
   document.getElementById('regEmail').value = '';
   document.getElementById('regPhone').value = '';
@@ -3348,9 +3500,7 @@ async function recordDonation(label, amount, mode){
   const name = document.getElementById('donName').value.trim();
   const email = document.getElementById('donEmail').value.trim();
   if(!name || !email){ showToast("Merci de renseigner votre nom et votre email avant de faire un don."); return false; }
-  await loadSection('donationRecords');
-  STATE.donationRecords.push({ name, email, phone:'', label, amount, method: mode, paid: mode==='en_ligne', date: new Date().toLocaleDateString('fr-FR') });
-  await saveSection('donationRecords');
+  if(!await addItem('donationRecords', { name, email, phone:'', label, amount, method: mode, paid:false, date: new Date().toLocaleDateString('fr-FR') })) return false;
   renderSubmissions();
   return true;
 }
@@ -4214,10 +4364,8 @@ document.getElementById('giftCardTiers').addEventListener('click', async e => {
     const email = document.getElementById('giftBuyerEmail').value.trim();
     if(!name || !email){ showToast("Renseignez votre nom et votre email avant d'acheter."); return; }
     const code = genGiftCode();
-    await loadSection('giftCards');
-    STATE.giftCards.push({ code, amount: tier.amount, remaining: tier.amount, buyerName:name, buyerEmail:email, redeemed:false, date: new Date().toLocaleDateString('fr-FR') });
-    await saveSection('giftCards');
-    alert(`Merci ${name} ! Voici le code de votre carte cadeau de ${tier.amount} € :\n\n${code}\n\nNotez-le bien, il sera nécessaire pour l'utiliser en boutique.`);
+    if(!await createPendingGiftCard({ code, amount: tier.amount, buyerName:name, buyerEmail:email })) return;
+    alert(`Merci ${name} ! Voici le code de votre carte cadeau de ${tier.amount} € :\n\n${code}\n\nNotez-le bien. Elle sera utilisable dès que le club aura vérifié votre paiement.`);
     goToPayment(tier.link, `Carte cadeau ${tier.amount}€`);
     renderGiftCardsIssued();
     return;
@@ -4250,15 +4398,33 @@ document.getElementById('addGiftTierBtn').addEventListener('click', () => {
   STATE.giftCardOptions.push({ amount: 20, link: "" });
   saveSection('giftCardOptions'); renderGiftCardTiers();
 });
+/* Une carte achetée par un visiteur est créée « en attente » : elle ne vaut rien
+   tant que l'admin n'a pas vérifié le paiement et cliqué sur « Activer ». */
+async function createPendingGiftCard({ code, amount, buyerName, buyerEmail }){
+  const card = { code, amount, remaining: amount, buyerName, buyerEmail, redeemed:false, pending:true, date: new Date().toLocaleDateString('fr-FR') };
+  try{ await dbRequest(`giftCardsByCode/${encodeURIComponent(code)}`, 'PUT', card); }
+  catch(err){ showToast("Erreur d'envoi — vérifie ta connexion internet et réessaie."); return false; }
+  STATE.giftCards.push(card);
+  return true;
+}
 function renderGiftCardsIssued(){
   const body = document.getElementById('giftCardsIssuedBody');
-  body.innerHTML = STATE.giftCards.length ? STATE.giftCards.map(g => `
+  body.innerHTML = STATE.giftCards.length ? STATE.giftCards.map((g, i) => `
     <tr>
       <td>${g.code}</td><td>${g.amount} €</td><td>${g.remaining} €</td><td>${g.buyerName} (${g.buyerEmail})</td>
-      <td><span class="pay-badge ${g.redeemed?'pending':'paid'}">${g.redeemed?'Utilisée':'Active'}</span></td>
+      <td>${g.pending
+        ? `<span class="pay-badge pending">Paiement à vérifier</span> <button class="mark-paid-btn" data-giftactivate="${i}">Activer</button>`
+        : `<span class="pay-badge ${g.redeemed?'pending':'paid'}">${g.redeemed?'Utilisée':'Active'}</span>`}</td>
     </tr>
   `).join('') : `<tr><td colspan="5" style="color:var(--grey);">Aucune carte cadeau émise.</td></tr>`;
 }
+document.getElementById('giftCardsIssuedBody').addEventListener('click', e => {
+  const btn = e.target.closest('[data-giftactivate]'); if(!btn || !isAdmin()) return;
+  const g = STATE.giftCards[parseInt(btn.dataset.giftactivate)]; if(!g) return;
+  if(!confirm(`Activer la carte ${g.code} (${g.amount} €) ?\nFaites-le seulement si vous avez bien reçu le paiement.`)) return;
+  delete g.pending;
+  saveSection('giftCards'); renderGiftCardsIssued();
+});
 document.getElementById('giftCustomLinkInput').addEventListener('change', function(){
   STATE.giftCardCustomLink = this.value.trim(); saveSection('giftCardCustomLink');
 });
@@ -4269,10 +4435,8 @@ document.getElementById('giftCustomBuyBtn').addEventListener('click', async () =
   if(!name || !email){ showToast("Renseignez votre nom et votre email avant d'acheter."); return; }
   if(!amount || amount <= 0){ showToast("Indiquez un montant valide."); return; }
   const code = genGiftCode();
-  await loadSection('giftCards');
-  STATE.giftCards.push({ code, amount, remaining: amount, buyerName:name, buyerEmail:email, redeemed:false, date: new Date().toLocaleDateString('fr-FR') });
-  await saveSection('giftCards');
-  alert(`Merci ${name} ! Voici le code de votre carte cadeau de ${amount} € :\n\n${code}\n\nNotez-le bien, il sera nécessaire pour l'utiliser sur le site.`);
+  if(!await createPendingGiftCard({ code, amount, buyerName:name, buyerEmail:email })) return;
+  alert(`Merci ${name} ! Voici le code de votre carte cadeau de ${amount} € :\n\n${code}\n\nNotez-le bien. Elle sera utilisable dès que le club aura vérifié votre paiement.`);
   goToPayment(STATE.giftCardCustomLink, `Carte cadeau ${amount}€`);
   document.getElementById('giftCustomAmount').value = '';
   renderGiftCardsIssued();
@@ -4280,14 +4444,13 @@ document.getElementById('giftCustomBuyBtn').addEventListener('click', async () =
 
 /* ---------- rédemption générique d'une carte cadeau (boutique, adhésion, inscription, équipement) ---------- */
 async function redeemGiftCardAmount(code, maxAmount){
-  await loadSection('giftCards');
-  const card = STATE.giftCards.find(g => g.code === code.trim().toUpperCase());
-  if(!card || card.remaining <= 0) return null;
+  const card = await fetchGiftCard(code);
+  if(!card || card.pending || card.remaining <= 0) return null;
   const used = +Math.min(card.remaining, maxAmount).toFixed(2);
   card.remaining = +(card.remaining - used).toFixed(2);
-  if(card.remaining <= 0) card.redeemed = true;
-  await saveSection('giftCards');
-  renderGiftCardsIssued();
+  const fields = { remaining: card.remaining };
+  if(card.remaining <= 0){ card.redeemed = true; fields.redeemed = true; }
+  if(!await patchPath(`giftCardsByCode/${encodeURIComponent(card.code)}`, fields)) return null;
   return { used, card };
 }
 
@@ -4308,9 +4471,9 @@ function renderGiftBox(){
 document.getElementById('giftApplyBtn').addEventListener('click', async () => {
   const code = document.getElementById('giftCodeInput').value.trim().toUpperCase();
   if(!code){ showToast("Entrez un code de carte cadeau."); return; }
-  await loadSection('giftCards');
-  const card = STATE.giftCards.find(g => g.code === code);
+  const card = await fetchGiftCard(code);
   if(!card){ showToast("Ce code de carte cadeau n'existe pas."); return; }
+  if(card.pending){ showToast("Cette carte cadeau n'est pas encore activée (paiement en cours de vérification)."); return; }
   if(card.remaining <= 0){ showToast("Cette carte cadeau a déjà été entièrement utilisée."); return; }
   appliedGiftCard = card;
   document.getElementById('giftCodeInput').value = '';
@@ -4400,8 +4563,9 @@ function renderCart(){
 }
 async function isVerifiedMember(email){
   if(!email) return false;
-  await loadSection('memberships');
-  return STATE.memberships.some(m => (m.email||'').trim().toLowerCase() === email.trim().toLowerCase());
+  if(isAdmin()){ await loadSection('memberships'); return STATE.memberships.some(m => m.paid && normEmail(m.email) === normEmail(email)); }
+  try{ return (await dbRequest(`memberHashes/${await sha256Hex(normEmail(email))}`, 'GET')) === true; }
+  catch(err){ return false; }
 }
 document.getElementById('cartMemberCheck').addEventListener('change', async function(){
   if(this.checked){
@@ -4444,38 +4608,32 @@ document.getElementById('cartCheckoutBtn').addEventListener('click', async () =>
     return `${p.name}${variant?' ('+variant+')':''} x${line.qty}`;
   }).join(', ');
   await loadSection('products');
-  keys.forEach(key => {
+  for(const key of keys){
     const line = cart[key]; const p = STATE.products[line.idx];
-    if(p && typeof p.qty === 'number'){
+    if(p && typeof p.qty === 'number' && line.qty > 0){
       p.qty = Math.max(0, p.qty - line.qty);
-      if(p.qty === 0) p.stock = 'stock_rupture';
+      const fields = { qty: p.qty };
+      if(p.qty === 0){ p.stock = 'stock_rupture'; fields.stock = 'stock_rupture'; }
+      await patchPath(`products/${line.idx}`, fields);
     }
-  });
-  await saveSection('products'); renderProducts();
+  }
+  renderProducts();
   const finalTotal = +Math.max(0, total * (1 - combinedPct/100) - (appliedGiftCard ? appliedGiftCard.remaining : 0)).toFixed(2);
   const mode = getCartMode();
 
-  await loadSection('orders');
-  STATE.orders.push({ name, email, itemsSummary, total: finalTotal, memberClaim: isMember, promoCode: appliedPromo ? appliedPromo.code : null, giftCardCode: appliedGiftCard ? appliedGiftCard.code : null, hasPreorder, method: mode, paid: mode==='en_ligne', date: new Date().toLocaleDateString('fr-FR') });
-  await saveSection('orders');
+  if(!await addItem('orders', { name, email, itemsSummary, total: finalTotal, memberClaim: isMember, promoCode: appliedPromo ? appliedPromo.code : null, giftCardCode: appliedGiftCard ? appliedGiftCard.code : null, hasPreorder, method: mode, paid:false, date: new Date().toLocaleDateString('fr-FR') })) return;
   renderSubmissions();
 
   if(appliedGiftCard){
-    await loadSection('giftCards');
-    const g = STATE.giftCards.find(gc => gc.code === appliedGiftCard.code);
-    if(g){
-      const used = Math.min(g.remaining, total * (1 - combinedPct/100));
-      g.remaining = +(g.remaining - used).toFixed(2);
-      if(g.remaining <= 0) g.redeemed = true;
-      await saveSection('giftCards'); renderGiftCardsIssued();
-    }
+    await redeemGiftCardAmount(appliedGiftCard.code, total * (1 - combinedPct/100));
     appliedGiftCard = null; renderGiftBox();
   }
 
   if(appliedPromo){
     await loadSection('promoCodes');
-    const p = STATE.promoCodes.find(pc => pc.code === appliedPromo.code);
-    if(p){ p.usedCount = (p.usedCount||0) + 1; await saveSection('promoCodes'); renderPromoCodes(); }
+    const pi = STATE.promoCodes.findIndex(pc => pc.code === appliedPromo.code);
+    const p = STATE.promoCodes[pi];
+    if(p){ p.usedCount = (p.usedCount||0) + 1; await patchPath(`promoCodes/${pi}`, { usedCount: p.usedCount }); renderPromoCodes(); }
     appliedPromo = null; renderPromoBox();
   }
 
@@ -4655,9 +4813,8 @@ function migrateOldData(){
   if(!Array.isArray(STATE.announcements)) STATE.announcements = [];
   if(!Array.isArray(STATE.ruleDocs)) STATE.ruleDocs = [];
   if(!STATE.history || typeof STATE.history !== 'object') STATE.history = { title:'Notre histoire', text:'', image:null };
-  if(!STATE.passwords || typeof STATE.passwords !== 'object') STATE.passwords = { edit: EDIT_PASSWORD_DEFAULT, club: CLUB_PASSWORD_DEFAULT };
-  if(!STATE.passwords.edit) STATE.passwords.edit = EDIT_PASSWORD_DEFAULT;
-  if(!STATE.passwords.club) STATE.passwords.club = CLUB_PASSWORD_DEFAULT;
+  if(!STATE.passwords || typeof STATE.passwords !== 'object') STATE.passwords = { club: '' };
+  delete STATE.passwords.edit; // l'ancien mot de passe admin n'est plus utilisé (connexion Firebase)
   if(!Array.isArray(STATE.planningTypes) || STATE.planningTypes.length === 0){
     STATE.planningTypes = [{id:"entrainement",label:"Entraînement",color:"#e8c93a"},{id:"essai",label:"Essai matériel",color:"#ff5c5c"},{id:"competition",label:"Compétition",color:"#4ea8de"}];
   }
@@ -4691,12 +4848,13 @@ function migrateOldData(){
   if(STATE.waiverText === undefined) STATE.waiverText = DEFAULT_WAIVER_TEXT;
 }
 async function init(){
+  await restoreAdminSession();
   await loadAll();
   await loadFavorites();
   await loadLangPreference();
   migrateOldData();
   STATE.visitCount = (STATE.visitCount || 0) + 1;
-  saveSection('visitCount');
+  if(!isAdmin()) saveSection('visitCount'); // les visites de l'admin ne comptent pas
   renderHero();
   renderContact();
   renderBranding();
@@ -4729,6 +4887,10 @@ async function init(){
   renderSponsors();
   renderCart();
   renderAdminCustomCode();
+  if(isAdmin()) await migrateToSecureStorage();
+  let enterEdit = false;
+  try{ enterEdit = sessionStorage.getItem('moteau_enter_edit') === '1'; sessionStorage.removeItem('moteau_enter_edit'); }catch(err){}
+  if(enterEdit && isAdmin()){ EDIT_MODE = true; showToast("Connecté — mode édition activé"); }
   applyEditMode();
   startAnnounceCycle();
 }
@@ -4764,7 +4926,6 @@ const codeEditorStatus = document.getElementById('codeEditorStatus');
 document.getElementById('openCodeBtn')?.addEventListener('click', () => {
   customCSSInput.value = STATE.adminCustomCSS || '';
   customHTMLInput.value = STATE.adminCustomHTML || '';
-  document.getElementById('editPasswordInput').value = STATE.passwords.edit || '';
   document.getElementById('clubPasswordInput').value = STATE.passwords.club || '';
   codeEditorStatus.textContent = '';
   codeEditorOverlay.classList.add('open');
@@ -4786,11 +4947,11 @@ document.querySelectorAll('.code-tab-btn').forEach(btn => {
   });
 });
 document.getElementById('savePasswordsBtn')?.addEventListener('click', async () => {
-  const newEdit = document.getElementById('editPasswordInput').value.trim();
-  const newClub = document.getElementById('clubPasswordInput').value.trim();
-  STATE.passwords.edit = newEdit || EDIT_PASSWORD_DEFAULT;
-  STATE.passwords.club = newClub || CLUB_PASSWORD_DEFAULT;
+  const newClub = document.getElementById('clubPasswordInput').value.trim() || CLUB_PASSWORD_DEFAULT;
+  STATE.passwords = { club: newClub };
+  STATE.clubCodeHash = await sha256Hex(newClub);
   await saveSection('passwords');
+  await saveSection('clubCodeHash');
   codeEditorStatus.textContent = 'Codes d\'accès enregistrés ✓';
   showToast('Codes d\'accès mis à jour');
 });

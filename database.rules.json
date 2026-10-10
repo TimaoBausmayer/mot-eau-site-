@@ -1,0 +1,208 @@
+{
+  "rules": {
+    "moteau": {
+      ".read": "auth != null && auth.token.email == 'timaobausmayer04@gmail.com'",
+      ".write": "auth != null && auth.token.email == 'timaobausmayer04@gmail.com'",
+      "adminCustomCSS": {
+        ".read": true
+      },
+      "adminCustomHTML": {
+        ".read": true
+      },
+      "passwords": {},
+      "clubCodeHash": {
+        ".read": true
+      },
+      "memberNames": {
+        ".read": true
+      },
+      "equipmentOut": {
+        ".read": true
+      },
+      "hero": {
+        ".read": true
+      },
+      "contact": {
+        ".read": true
+      },
+      "branding": {
+        ".read": true
+      },
+      "sponsors": {
+        ".read": true
+      },
+      "products": {
+        ".read": true,
+        "$i": {
+          "qty": {
+            ".write": "data.exists() && newData.isNumber() && newData.val() >= 0 && newData.val() < data.val()"
+          },
+          "stock": {
+            ".write": "newData.val() == 'stock_rupture'"
+          }
+        }
+      },
+      "planning": {
+        ".read": true,
+        "$row": {
+          "participants": {
+            "$p": {
+              ".write": "!data.exists() && newData.exists()",
+              ".validate": "newData.hasChildren(['name','email'])"
+            }
+          }
+        }
+      },
+      "planningTypes": {
+        ".read": true
+      },
+      "resultsDisplay": {
+        ".read": true
+      },
+      "competitions": {
+        ".read": true
+      },
+      "rules": {
+        ".read": true
+      },
+      "ruleDocs": {
+        ".read": true
+      },
+      "history": {
+        ".read": true
+      },
+      "tutorials": {
+        ".read": true
+      },
+      "gallery": {
+        ".read": true
+      },
+      "donations": {
+        ".read": true
+      },
+      "freeDonationLink": {
+        ".read": true
+      },
+      "membership": {
+        ".read": true
+      },
+      "memberships": {
+        "$id": {
+          ".write": "!data.exists() && newData.exists()",
+          ".validate": "newData.hasChildren()"
+        }
+      },
+      "registrations": {
+        "$id": {
+          ".write": "!data.exists() && newData.exists()",
+          ".validate": "newData.hasChildren()"
+        }
+      },
+      "competitionFee": {
+        ".read": true
+      },
+      "membershipDiscount": {
+        ".read": true
+      },
+      "referralGifts": {
+        ".read": true
+      },
+      "referralRewards": {},
+      "notifications": {
+        "$id": {
+          ".write": "!data.exists() && newData.exists()",
+          ".validate": "newData.hasChildren()"
+        }
+      },
+      "waiverText": {
+        ".read": true
+      },
+      "waivers": {
+        "$id": {
+          ".write": "!data.exists() && newData.exists()",
+          ".validate": "newData.hasChildren()"
+        }
+      },
+      "reviews": {
+        ".read": true,
+        "$id": {
+          ".write": "!data.exists() && newData.exists()",
+          ".validate": "newData.hasChildren()"
+        }
+      },
+      "visitCount": {
+        ".read": true,
+        ".write": "newData.isNumber() && newData.val() == (data.exists() ? data.val() : 0) + 1"
+      },
+      "clubMessages": {
+        ".read": true,
+        "$id": {
+          ".write": "!data.exists() && newData.exists()",
+          ".validate": "newData.hasChildren()"
+        }
+      },
+      "clubPosts": {
+        ".read": true
+      },
+      "giftCards": {},
+      "giftCardOptions": {
+        ".read": true
+      },
+      "giftCardCustomLink": {
+        ".read": true
+      },
+      "equipment": {
+        ".read": true
+      },
+      "equipmentLoans": {
+        "$id": {
+          ".write": "!data.exists() && newData.exists()",
+          ".validate": "newData.hasChildren()"
+        }
+      },
+      "liveInsta": {
+        ".read": true
+      },
+      "donationRecords": {
+        "$id": {
+          ".write": "!data.exists() && newData.exists()",
+          ".validate": "newData.hasChildren()"
+        }
+      },
+      "orders": {
+        "$id": {
+          ".write": "!data.exists() && newData.exists()",
+          ".validate": "newData.hasChildren()"
+        }
+      },
+      "promoCodes": {
+        ".read": true,
+        "$i": {
+          "usedCount": {
+            ".write": "newData.isNumber() && newData.val() == (data.exists() ? data.val() : 0) + 1"
+          }
+        }
+      },
+      "announcements": {
+        ".read": true
+      },
+      "memberHashes": {
+        "$h": {
+          ".read": true
+        }
+      },
+      "giftCardsByCode": {
+        "$code": {
+          ".read": true,
+          ".write": "!data.exists() && newData.child('pending').val() == true && newData.child('code').val() == $code && newData.child('remaining').val() == newData.child('amount').val()",
+          "remaining": {
+            ".write": "data.exists() && data.parent().child('pending').val() != true && newData.isNumber() && newData.val() >= 0 && newData.val() < data.val()"
+          },
+          "redeemed": {
+            ".write": "data.parent().child('pending').val() != true && newData.val() == true"
+          }
+        }
+      }
+    }
+  }
+}
