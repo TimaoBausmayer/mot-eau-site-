@@ -299,6 +299,27 @@ body.edit-mode .history-text:empty::before{content:attr(data-placeholder); color
 .general-ranking-row{display:grid; grid-template-columns:40px 1fr 1fr 100px 1fr; gap:10px; align-items:center; padding:10px 14px; background:var(--surface); border:1px solid var(--line); border-top:none; font-size:0.88rem;}
 .general-ranking-row.head{background:var(--black); color:var(--grey); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; border-top:1px solid var(--line);}
 .general-ranking-row.pinned{border-left:3px solid var(--orange);}
+/* recherche d'un pilote */
+.pilot-search{border:1px solid var(--line); background:var(--surface); padding:18px 20px; margin-bottom:28px;}
+.pilot-search input{width:100%; background:var(--black); border:1px solid var(--line); color:var(--cream); padding:11px 12px; font-family:inherit; font-size:0.95rem;}
+.pilot-search input:focus{border-color:var(--orange); outline:none;}
+.pilot-result{display:flex; gap:16px; align-items:center; flex-wrap:wrap; border-top:1px solid var(--line); padding:12px 0;}
+.pilot-result:first-child{border-top:none;}
+.pilot-result .pr-rank{font-size:1.6rem; font-weight:700; color:var(--orange); min-width:70px;}
+.pilot-result .pr-rank small{display:block; font-size:0.7rem; font-weight:400; color:var(--grey);}
+.pilot-result .pr-name{font-weight:600;}
+.pilot-result .pr-meta{color:var(--grey); font-size:0.82rem; margin-top:3px;}
+/* tutoriels */
+.tuto-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:20px;}
+.tuto-card{border:1px solid var(--line); background:var(--surface); display:flex; flex-direction:column;}
+.tuto-video{position:relative; width:100%; aspect-ratio:16/9; background:var(--black);}
+.tuto-video iframe, .tuto-video video{position:absolute; inset:0; width:100%; height:100%; border:0;}
+.tuto-video .tuto-novideo{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--grey); font-size:0.85rem; padding:10px; text-align:center;}
+.tuto-body{padding:16px 18px;}
+.tuto-body h3{font-size:1.05rem; margin-bottom:8px;}
+.tuto-body p{font-size:0.9rem; color:var(--cream); white-space:pre-wrap;}
+.tuto-edit{display:flex; flex-direction:column; gap:8px; padding:0 18px 16px;}
+.tuto-edit input, .tuto-edit textarea{width:100%; background:var(--black); border:1px solid var(--line); color:var(--cream); padding:9px 10px; font-family:inherit; font-size:0.85rem; resize:vertical;}
 .pin-cell, .record-cell{text-align:center;}
 .pin-cell input, .record-cell input{width:16px; height:16px; cursor:pointer; accent-color:var(--orange);}
 #printExportArea{display:none;}
@@ -640,6 +661,7 @@ body.edit-mode .view-only{display:none;}
         </div>
       </div>
       <a href="#galerie">Photos / Vidéos</a>
+      <a href="#tutoriels">Tutoriels</a>
       <a href="#dashboard" class="edit-only inline">Tableau de bord</a>
       <a href="#dons" class="nav-cta">Faire un don</a>
     </nav>
@@ -763,6 +785,12 @@ body.edit-mode .view-only{display:none;}
 <section id="resultats">
   <div class="wrap">
     <div class="sec-head"><h2 class="display">Résultats & Compétitions</h2><p class="sub">Ajoute une compétition, renseigne le résultat de chaque pilote (étape atteinte, record perso) — le classement se calcule tout seul.</p></div>
+
+    <div class="pilot-search" id="pilotSearchBlock">
+      <label for="pilotSearchInput" class="hint-text" style="display:block; margin:0 0 8px;">🔎 Chercher un pilote et voir sa place au classement</label>
+      <input type="search" id="pilotSearchInput" placeholder="Tape le nom d'un pilote…" autocomplete="off">
+      <div id="pilotSearchResults" style="margin-top:10px;"></div>
+    </div>
 
     <div id="recordsBlock" class="results-block">
       <div class="results-block-head edit-only inline">
@@ -1129,6 +1157,15 @@ body.edit-mode .view-only{display:none;}
   </div>
 </section>
 
+<section id="tutoriels">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="display">Tutoriels</h2><p class="sub">Apprends les bases et progresse en vidéo.</p></div>
+    <p class="hint-text edit-only block">Pour chaque tutoriel : un titre, des explications et le lien de la vidéo (YouTube ou lien direct vers un fichier vidéo).</p>
+    <div class="tuto-grid" id="tutoGrid"></div>
+    <button class="add-row-btn edit-only block" id="addTutoBtn" style="margin-top:22px;">+ Ajouter un tutoriel</button>
+  </div>
+</section>
+
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" id="lightboxClose">×</button>
   <a class="lightbox-dl-btn" id="lightboxDownload" download>Télécharger</a>
@@ -1250,6 +1287,7 @@ body.edit-mode .view-only{display:none;}
           <li><a href="#resultats">Résultats</a></li>
           <li><a href="#regles">Règles</a></li>
           <li><a href="#galerie">Photos / Vidéos</a></li>
+          <li><a href="#tutoriels">Tutoriels</a></li>
         </ul>
       </div>
       <div>
@@ -1415,6 +1453,7 @@ const DEFAULTS = {
   ],
   ruleDocs: [],
   history: { title: "Notre histoire", text: "", image: null },
+  tutorials: [],
   gallery: [
     { type:"photo", tag:"Entraînement", image:null },
     { type:"video", tag:"Highlights", image:null },
@@ -1592,7 +1631,7 @@ let currentLang = 'fr';
 const TRANSLATE_MAP = {
   "Accueil":"Home","Boutique":"Shop","Planning":"Schedule","Équipement":"Equipment","Résultats":"Results",
   "Règles":"Rules","Adhésion":"Membership","Attestation":"Waiver","Avis":"Reviews","Espace Club":"Club Area",
-  "Tableau de bord":"Dashboard","Photos / Vidéos":"Photos / Videos","Faire un don":"Donate","Sponsors":"Sponsors",
+  "Tableau de bord":"Dashboard","Photos / Vidéos":"Photos / Videos","Tutoriels":"Tutorials","Faire un don":"Donate","Sponsors":"Sponsors",
   "Dons":"Donations","Adhésion & Compétitions":"Membership & Competitions",
   "Attestation de responsabilité":"Liability Waiver","Comment ça marche":"How It Works",
   "Codes promo":"Promo Codes","Cartes cadeaux":"Gift Cards","Prêt d'équipement":"Equipment Loans",
@@ -1689,6 +1728,8 @@ function applyEditMode(){
   if(typeof renderDashboard === 'function') renderDashboard();
   if(typeof renderWorldRecords === 'function') renderWorldRecords();
   if(typeof renderGeneralRanking === 'function') renderGeneralRanking();
+  if(typeof renderPilotSearch === 'function') renderPilotSearch();
+  if(typeof renderTutorials === 'function') renderTutorials();
   if(typeof CLUB_UNLOCKED !== 'undefined' && CLUB_UNLOCKED && typeof renderClubMessages === 'function'){
     renderClubMessages(); renderClubPosts(); renderClubRoster();
   }
@@ -2332,6 +2373,59 @@ document.getElementById('toggleRecordsBtn')?.addEventListener('click', () => {
   STATE.resultsDisplay.showRecords = !STATE.resultsDisplay.showRecords;
   saveSection('resultsDisplay'); renderWorldRecords();
 });
+
+/* ============================================================
+   RECHERCHE D'UN PILOTE — place au classement général
+   (même calcul que le classement général, toutes années confondues)
+   ============================================================ */
+function rankingSortFn(a,b){
+  const pa = RESULT_PRIORITY[a.pilot.result] ?? 9, pb = RESULT_PRIORITY[b.pilot.result] ?? 9;
+  if(pa !== pb) return pa - pb;
+  return getPilotCumulativeSeconds(a.pilot) - getPilotCumulativeSeconds(b.pilot);
+}
+function getFullRanking(){
+  const entries = [];
+  (STATE.competitions||[]).forEach(comp => {
+    if(comp.hidden && !EDIT_MODE) return;
+    (comp.pilots||[]).forEach(p => entries.push({ pilot:p, comp }));
+  });
+  const pinned = entries.filter(e => e.pilot.pinned).sort(rankingSortFn);
+  const rest = entries.filter(e => !e.pilot.pinned).sort(rankingSortFn);
+  return [...pinned, ...rest];
+}
+function renderPilotSearch(){
+  const block = document.getElementById('pilotSearchBlock');
+  const box = document.getElementById('pilotSearchResults');
+  if(!block || !box) return;
+  const visible = STATE.resultsDisplay.showGeneralRanking || EDIT_MODE;
+  block.style.display = visible ? '' : 'none';
+  if(!visible) return;
+  const words = normSearch(document.getElementById('pilotSearchInput').value).split(/\s+/).filter(Boolean);
+  if(!words.length){ box.innerHTML = ''; return; }
+  const ranking = getFullRanking();
+  const found = [];
+  ranking.forEach((e, i) => {
+    if(!words.every(w => normSearch(e.pilot.name).includes(w))) return;
+    const compPilots = (e.comp.pilots||[]).map(p => ({ pilot:p, comp:e.comp })).sort(rankingSortFn);
+    const compPos = compPilots.findIndex(x => x.pilot === e.pilot) + 1;
+    found.push({ e, generalRank: i+1, compPos, compTotal: compPilots.length });
+  });
+  if(!found.length){
+    box.innerHTML = `<p class="hint-text" style="margin:0;">Aucun pilote trouvé pour « ${escSearch(document.getElementById('pilotSearchInput').value)} ».</p>`;
+    return;
+  }
+  box.innerHTML = found.slice(0, 20).map(f => `
+    <div class="pilot-result">
+      <div class="pr-rank">${f.generalRank}<sup>${f.generalRank===1?'er':'e'}</sup><small>sur ${ranking.length} au général</small></div>
+      <div>
+        <div class="pr-name">${escSearch(f.e.pilot.name||'')}</div>
+        <div class="pr-meta">${escSearch(f.e.comp.name||'')}${f.e.comp.date ? ' ('+escSearch(f.e.comp.date)+')' : ''} — ${f.compPos}${f.compPos===1?'er':'e'} sur ${f.compTotal}</div>
+        <div class="pr-meta">${escSearch(STAGE_RESULT_LABELS[f.e.pilot.result]||f.e.pilot.result||'')} · Temps cumulé : ${formatSecondsToTime(getPilotCumulativeSeconds(f.e.pilot))}</div>
+      </div>
+    </div>
+  `).join('');
+}
+document.getElementById('pilotSearchInput')?.addEventListener('input', renderPilotSearch);
 
 function renderCompetitions(){
   const wrap = document.getElementById('competitionsWrap');
@@ -3517,6 +3611,7 @@ const SEARCH_SECTIONS = [
   { name:"Avis", anchor:"#avis", kw:"avis témoignages commentaires" },
   { name:"Sponsors", anchor:"#sponsors", kw:"sponsors partenaires" },
   { name:"Photos / Vidéos", anchor:"#galerie", kw:"photos vidéos galerie" },
+  { name:"Tutoriels", anchor:"#tutoriels", kw:"tutoriels tuto vidéos apprendre conseils débutant" },
   { name:"Notre histoire", anchor:"#histoire", kw:"histoire club origine création", historyOnly:true },
   { name:"Faire un don", anchor:"#dons", kw:"don soutenir financer" }
 ];
@@ -3553,6 +3648,7 @@ function buildSearchIndex(){
   (STATE.products||[]).forEach(p => idx.push({ kind:'Produit', title:p.name||'', text:`${p.desc||''} ${p.price!=null?p.price+' €':''}`, anchor:'#boutique' }));
   (STATE.planning||[]).forEach(s => idx.push({ kind:'Séance', title:s.name || s.date || '', text:`${s.date||''} ${s.time||''} ${s.place||''} ${s.type||''}`, anchor:'#planning' }));
   (STATE.equipment||[]).forEach(e => idx.push({ kind:'Équipement', title:e.name||'', text:'', anchor:'#equipement' }));
+  (STATE.tutorials||[]).forEach(t => idx.push({ kind:'Tutoriel', title:t.title||'', text:t.text||'', anchor:'#tutoriels' }));
   if(historyVisible && (htmlToPlain(hist.text))) idx.push({ kind:'Histoire', title:hist.title||'Notre histoire', text:htmlToPlain(hist.text), anchor:'#histoire' });
   return idx;
 }
@@ -3718,6 +3814,77 @@ function openLightbox(src){
 }
 document.getElementById('lightboxClose').addEventListener('click', () => lightbox.classList.remove('show'));
 lightbox.addEventListener('click', e => { if(e.target === lightbox) lightbox.classList.remove('show'); });
+
+/* ============================================================
+   TUTORIELS (titre, explications, vidéo YouTube ou fichier vidéo)
+   ============================================================ */
+function getYoutubeId(url){
+  const m = String(url||'').match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+function tutoVideoHtml(url){
+  const u = String(url||'').trim();
+  if(!u) return `<div class="tuto-novideo">${EDIT_MODE ? 'Ajoute le lien de la vidéo ci-dessous' : 'Vidéo bientôt disponible'}</div>`;
+  const yt = getYoutubeId(u);
+  if(yt) return `<iframe src="https://www.youtube-nocookie.com/embed/${yt}" title="Vidéo du tutoriel" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+  if(/^https?:\/\/\S+\.(mp4|webm|ogg|mov)(\?\S*)?$/i.test(u)) return `<video src="${escSearch(u)}" controls preload="metadata"></video>`;
+  if(/^https?:\/\//i.test(u)) return `<div class="tuto-novideo"><a href="${escSearch(u)}" target="_blank" rel="noopener" style="color:var(--orange);">▶ Voir la vidéo</a></div>`;
+  return `<div class="tuto-novideo">Lien vidéo invalide</div>`;
+}
+function renderTutorials(){
+  const grid = document.getElementById('tutoGrid');
+  if(!grid) return;
+  const tutos = STATE.tutorials || [];
+  if(!tutos.length){
+    grid.innerHTML = `<p style="color:var(--grey);">${EDIT_MODE ? 'Aucun tutoriel pour le moment — clique sur « + Ajouter un tutoriel ».' : 'Les tutoriels arrivent bientôt !'}</p>`;
+    return;
+  }
+  grid.innerHTML = tutos.map((t, idx) => `
+    <div class="tuto-card" data-idx="${idx}">
+      <div class="tuto-video">${tutoVideoHtml(t.video)}</div>
+      <div class="tuto-body">
+        <h3>${escSearch(t.title||'')}</h3>
+        <p>${escSearch(t.text||'')}</p>
+      </div>
+      ${EDIT_MODE ? `
+      <div class="tuto-edit">
+        <input type="text" data-field="title" placeholder="Titre du tutoriel" value="${escSearch(t.title||'')}">
+        <textarea data-field="text" rows="4" placeholder="Explications…">${escSearch(t.text||'')}</textarea>
+        <input type="text" data-field="video" placeholder="Lien de la vidéo (ex : https://youtu.be/...)" value="${escSearch(t.video||'')}">
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="small-btn" data-action="up" ${idx===0?'disabled':''}>↑</button>
+          <button class="small-btn" data-action="down" ${idx===tutos.length-1?'disabled':''}>↓</button>
+          <button class="small-btn danger" data-action="del">✕ Supprimer</button>
+        </div>
+      </div>` : ''}
+    </div>
+  `).join('');
+}
+document.getElementById('tutoGrid').addEventListener('change', e => {
+  const field = e.target.dataset.field; if(!field) return;
+  const idx = parseInt(e.target.closest('.tuto-card').dataset.idx);
+  STATE.tutorials[idx][field] = e.target.value.trim();
+  saveSection('tutorials'); renderTutorials();
+});
+document.getElementById('tutoGrid').addEventListener('click', e => {
+  const btn = e.target.closest('[data-action]'); if(!btn) return;
+  const idx = parseInt(btn.closest('.tuto-card').dataset.idx);
+  const list = STATE.tutorials;
+  if(btn.dataset.action === 'del'){
+    if(!confirm('Supprimer ce tutoriel ?')) return;
+    list.splice(idx,1);
+  } else if(btn.dataset.action === 'up' && idx > 0){
+    [list[idx-1], list[idx]] = [list[idx], list[idx-1]];
+  } else if(btn.dataset.action === 'down' && idx < list.length-1){
+    [list[idx+1], list[idx]] = [list[idx], list[idx+1]];
+  } else return;
+  saveSection('tutorials'); renderTutorials();
+});
+document.getElementById('addTutoBtn').addEventListener('click', () => {
+  if(!Array.isArray(STATE.tutorials)) STATE.tutorials = [];
+  STATE.tutorials.push({ title:'Nouveau tutoriel', text:'', video:'' });
+  saveSection('tutorials'); renderTutorials();
+});
 
 /* ============================================================
    BOUTIQUE (images multiples par produit)
@@ -4545,6 +4712,7 @@ async function init(){
   renderRuleDocs();
   renderHistory();
   renderGallery();
+  renderTutorials();
   renderProducts();
   renderPromoCodes();
   renderPromoBox();
