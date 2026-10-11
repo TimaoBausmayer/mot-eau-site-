@@ -6,7 +6,7 @@
 window.SITE_CONFIG = {
 
   /* ---------- IDENTITÉ ---------- */
-  brand: "Ton Studio",              // nom affiché en haut à gauche
+  brand: "L&T Digitale",              // nom affiché en haut à gauche
   game: "ton jeu",                  // nom du jeu (ex: "GTA RP", "Roblox"…)
   accent: "#7c5cff",                // couleur principale du site
   accent2: "#00d4ff",               // couleur secondaire (dégradés)
