@@ -1756,6 +1756,7 @@ const DEFAULTS = {
   runs: [],
   pilotProfiles: {},
   productCosts: {},
+  i18nEn: {},
   expenses: [],
   loyaltyConfig: { enabled:true, perEuro:1, rewards:[] },
   pushState: { init:false, auto:true, sent:{} }, // réservé à l'admin : nouveautés déjà notifiées
@@ -2145,12 +2146,12 @@ function loadFavorites(){
   }catch(err){ /* pas encore de favoris pour ce visiteur */ }
 }
 
-function showToast(msg){
+let showToast = function showToastImpl(msg){
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(()=> t.classList.remove('show'), 1800);
-}
+};
 
 /* ============================================================
    OUTILS IMAGE
@@ -2271,52 +2272,601 @@ const TRANSLATE_MAP = {
   "Les meilleurs moments des entraînements et des essais.":"The best moments from training sessions and trials.",
   "Mot'eau démarre à partir d'une idée. Chaque don finance directement les équipements, les essais et les premières compétitions.":"Mot'eau is starting from an idea. Every donation directly funds equipment, trials and the first competitions."
 };
-const TRANSLATE_MAP_REVERSE = Object.fromEntries(Object.entries(TRANSLATE_MAP).map(([f,e]) => [e,f]));
+Object.assign(TRANSLATE_MAP, {
+"🌊 Le tout nouveau site Mot'eau est en ligne !": "🌊 The brand-new Mot'eau website is live!",
+"Actualités": "News",
+"Le Sport ▾": "The Sport ▾",
+"Les runs": "Runs",
+"Vote du public": "Public vote",
+"Club ▾": "Club ▾",
+"Notre histoire": "Our story",
+"Fidélité": "Loyalty",
+"Foire aux questions": "FAQ",
+"Médias ▾": "Media ▾",
+"🔴 LIVE": "🔴 LIVE",
+"Se connecter": "Log in",
+"Mon compte": "My account",
+"Un nouveau sport nautique": "A brand-new water sport",
+"Prends de la vitesse.": "Pick up speed.",
+"Décolle. Vole.": "Take off. Fly.",
+"Mot'eau, c'est une moto lancée sur une rampe de mise à l'eau, un décollage, et une seule question : jusqu'où peux-tu aller ? Vitesse, distance, temps — chaque run est mesuré et compté.": "Mot'eau is a motorbike launched down a boat ramp, a take-off, and one question: how far can you go? Speed, distance, time — every run is measured and counted.",
+"Rampe de mise à l'eau": "Boat ramp",
+"Critères de performance — vitesse, distance, temps": "Performance criteria — speed, distance, time",
+"Objectif — un Championnat du Monde Mot'eau": "Goal — a Mot'eau World Championship",
+"Possibilités freestyle à inventer": "Freestyle possibilities to invent",
+"Un principe simple, pensé pour devenir un vrai sport de compétition.": "A simple principle, designed to become a real competitive sport.",
+"Élan": "Run-up",
+"Le pilote arrive lancé, à pleine vitesse, sur la table de mise à l'eau.": "The rider arrives at full speed onto the launch ramp.",
+"Décollage": "Take-off",
+"La moto quitte la rampe : c'est le moment où vitesse et angle deviennent décisifs.": "The bike leaves the ramp: this is where speed and angle become decisive.",
+"Réception & chrono": "Landing & timing",
+"Le pilote entre dans l'eau. Distance parcourue, temps réalisé : chaque run est noté.": "The rider hits the water. Distance covered, time achieved: every run is scored.",
+"Entraînement": "Training",
+"Essai matériel": "Equipment trial",
+"Tout": "All",
+"🗓 Voir en calendrier": "🗓 View calendar",
+"Base nautique — Lac du Bourget": "Water sports base — Lac du Bourget",
+"Illimité": "Unlimited",
+"Championnat Régional Aix-les-Bains": "Aix-les-Bains Regional Championship",
+"Plan d'eau — Aix-les-Bains": "Water body — Aix-les-Bains",
+"Résultats & Compétitions": "Results & Competitions",
+"Ajoute une compétition, renseigne le résultat de chaque pilote (étape atteinte, record perso) — le classement se calcule tout seul.": "Add a competition and enter each rider's result (stage reached, personal best) — the ranking is calculated automatically.",
+"🔎 Chercher un pilote et voir sa place au classement": "🔎 Find a rider and see their ranking",
+"Tous les pilotes": "All riders",
+"🏆 Records du monde — vitesse (distance ÷ temps)": "🏆 World records — speed (distance ÷ time)",
+"🏆 Records du monde (par vitesse)": "🏆 World records (by speed)",
+"📊 Classement général (toutes compétitions)": "📊 Overall ranking (all competitions)",
+"Toutes les années": "All years",
+"Résultat": "Result",
+"Temps cumulé": "Cumulative time",
+"🏆 Champion": "🏆 Champion",
+"🥈 Finaliste": "🥈 Finalist",
+"Championnat de Printemps 2026": "Spring Championship 2026",
+"Manches": "Heats",
+"Record perso": "Personal best",
+"Temps cumulé final": "Final cumulative time",
+"Principe général & règle d'or des quotas": "General principle & golden quota rule",
+"Le Championnat du Monde 2026 se dispute avec": "The 2026 World Championship is contested with",
+"deux mot'eaux identiques": "two identical mot'eaux",
+"afin de garantir une équité sportive parfaite : chaque pilote effectue un nombre strictement égal de passages sur chaque machine.": "to guarantee perfect sporting fairness: every rider makes exactly the same number of runs on each machine.",
+"🏆 Règle d'or des quotas minimaux :": "🏆 Golden rule of minimum quotas:",
+"pour valider le calcul du temps cumulé à n'importe quelle étape N, il faut obligatoirement conserver au minimum :": "to validate the cumulative time at any stage N, you must keep at least:",
+"• Au moins 1 passage de l'Étape 1": "• At least 1 run from Stage 1",
+"• Au moins 2 passages de l'Étape 2": "• At least 2 runs from Stage 2",
+"• Au moins 3 passages de l'Étape 3": "• At least 3 runs from Stage 3",
+"• Au moins 4 passages de l'Étape 4": "• At least 4 runs from Stage 4",
+"• … et ainsi de suite (N passages de l'Étape N).": "• … and so on (N runs from Stage N).",
+"Tableau récapitulatif du championnat": "Championship summary table",
+"Étape 1 (Qualif.)": "Stage 1 (Qualifying)",
+"Étape 2": "Stage 2",
+"Étape 3": "Stage 3",
+"Étape 4 (¼ Finale)": "Stage 4 (Quarter-final)",
+"Étape 5 (½ Finale)": "Stage 5 (Semi-final)",
+"Étape 6 (Finale Ph.1)": "Stage 6 (Final Ph.1)",
+"— 20 pilotes → 6 passages (3/machine) → 2 pires retirés → 15 qualifiés": "— 20 riders → 6 runs (3/machine) → 2 worst removed → 15 qualified",
+"— 15 pilotes → 6 passages (3/machine) → 3 pires retirés → 10 qualifiés": "— 15 riders → 6 runs (3/machine) → 3 worst removed → 10 qualified",
+"— 10 pilotes → 6 passages (3/machine) → 3 pires retirés → 5 qualifiés": "— 10 riders → 6 runs (3/machine) → 3 worst removed → 5 qualified",
+"— 5 pilotes → 8 passages (4/machine) → 3 pires retirés → 3 qualifiés": "— 5 riders → 8 runs (4/machine) → 3 worst removed → 3 qualified",
+"— 3 pilotes → 10 passages (5/machine) → 5 pires retirés → 2 qualifiés": "— 3 riders → 10 runs (5/machine) → 5 worst removed → 2 qualified",
+"— 2 pilotes → 10 passages (5/machine) → 5 pires retirés → 2 qualifiés": "— 2 riders → 10 runs (5/machine) → 5 worst removed → 2 qualified",
+"Étape 1 — Qualifications (20 participants)": "Stage 1 — Qualifying (20 participants)",
+"Passages :": "Runs:",
+"6 descentes (3 sur la Mot'eau A, 3 sur la Mot'eau B).": "6 descents (3 on Mot'eau A, 3 on Mot'eau B).",
+"Retrait :": "Removal:",
+"2 pires temps supprimés (on conserve les 4 meilleurs).": "2 worst times removed (the 4 best are kept).",
+"Qualification :": "Qualification:",
+"les 15 pilotes au temps cumulé le plus rapide accèdent à l'Étape 2.": "the 15 riders with the fastest cumulative time go through to Stage 2.",
+"Étape 2 (15 participants)": "Stage 2 (15 participants)",
+"6 nouveaux passages (3 sur A, 3 sur B) — total cumulé : 12 passages.": "6 new runs (3 on A, 3 on B) — cumulative total: 12 runs.",
+"3 pires temps supprimés sur l'ensemble de l'épreuve.": "3 worst times removed across the whole event.",
+"Quota d'or :": "Golden quota:",
+"conservation obligatoire d'au moins 1 passage de l'É1 et 2 passages de l'É2.": "you must keep at least 1 run from S1 and 2 runs from S2.",
+"les 10 premiers accèdent à l'Étape 3.": "the top 10 go through to Stage 3.",
+"Étape 3 (10 participants)": "Stage 3 (10 participants)",
+"6 nouveaux passages (3 sur A, 3 sur B) — total cumulé : 18 passages.": "6 new runs (3 on A, 3 on B) — cumulative total: 18 runs.",
+"3 pires temps supprimés.": "3 worst times removed.",
+"conservation obligatoire d'au moins 1 passage de l'É1, 2 de l'É2 et 3 de l'É3.": "you must keep at least 1 run from S1, 2 from S2 and 3 from S3.",
+"les 5 premiers accèdent aux quarts de finale.": "the top 5 go through to the quarter-finals.",
+"Étape 4 — Quart de finale (5 participants)": "Stage 4 — Quarter-final (5 participants)",
+"8 nouveaux passages (4 sur A, 4 sur B) — total cumulé : 26 passages.": "8 new runs (4 on A, 4 on B) — cumulative total: 26 runs.",
+"conservation d'au moins 1 passage (É1), 2 (É2), 3 (É3) et 4 (É4).": "keep at least 1 run (S1), 2 (S2), 3 (S3) and 4 (S4).",
+"les 3 premiers accèdent à la demi-finale.": "the top 3 go through to the semi-final.",
+"Étape 5 — Demi-finale (3 participants)": "Stage 5 — Semi-final (3 participants)",
+"10 nouveaux passages (5 sur A, 5 sur B) — total cumulé : 36 passages.": "10 new runs (5 on A, 5 on B) — cumulative total: 36 runs.",
+"5 pires temps supprimés.": "5 worst times removed.",
+"conservation d'au moins 1 (É1), 2 (É2), 3 (É3), 4 (É4) et 5 (É5).": "keep at least 1 (S1), 2 (S2), 3 (S3), 4 (S4) and 5 (S5).",
+"les 2 premiers accèdent à la Grande Finale.": "the top 2 go through to the Grand Final.",
+"Grande Finale — Phase 1 : Classement préliminaire": "Grand Final — Phase 1: Preliminary ranking",
+"10 passages (5 par machine) — cumul total : 46 passages.": "10 runs (5 per machine) — overall total: 46 runs.",
+"5 pires temps supprimés, en respectant les quotas (1 de l'É1, 2 de l'É2, 3 de l'É3, 4 de l'É4, 5 de l'É5, 6 de l'É6).": "5 worst times removed, respecting the quotas (1 from S1, 2 from S2, 3 from S3, 4 from S4, 5 from S5, 6 from S6).",
+"Privilège :": "Privilege:",
+"le pilote classé 1ᵉʳ choisit sa mot'eau pour la manche suivante.": "the rider ranked 1st chooses their mot'eau for the next heat.",
+"Grande Finale — Phase 2 : Avant-dernière manche": "Grand Final — Phase 2: Penultimate heat",
+"2 passages par finaliste.": "2 runs per finalist.",
+"le plus mauvais des deux passages est automatiquement éliminé.": "the worse of the two runs is automatically discarded.",
+"le leader au classement général re-choisit sa machine pour la manche décisive.": "the overall leader chooses their machine again for the deciding heat.",
+"Grande Finale — Phase 3 : Ultime descente décisive": "Grand Final — Phase 3: Final deciding descent",
+"Format :": "Format:",
+"départ simultané des deux finalistes, côte-à-côte.": "simultaneous start for both finalists, side by side.",
+"Règle spéciale :": "Special rule:",
+"le temps de cette dernière descente": "the time of this last descent",
+"compte triple": "counts triple",
+"et": "and",
+"ne peut pas être supprimé": "cannot be discarded",
+"Victoire :": "Victory:",
+"le pilote qui réalise le plus petit temps cumulé global est sacré Champion du Monde 🏆.": "the rider with the lowest overall cumulative time is crowned World Champion 🏆.",
+"📄 Documents officiels (PDF)": "📄 Official documents (PDF)",
+"Le règlement complet, les fiches techniques... en PDF téléchargeable pour les visiteurs.": "The full rulebook, technical sheets... as downloadable PDFs for visitors.",
+"Aucun document ajouté pour l'instant.": "No document added yet.",
+"Quantité totale": "Total quantity",
+"Prix location": "Rental price",
+"Disponible": "Available",
+"Aucun équipement enregistré.": "No equipment registered.",
+"Date souhaitée": "Preferred date",
+"🎉 Les adhérents Mot'eau bénéficient de": "🎉 Mot'eau members get",
+"en boutique et sur les inscriptions aux compétitions.": "in the shop and on competition registrations.",
+"Devenir adhérent": "Become a member",
+"Rejoignez le club Mot'eau.": "Join the Mot'eau club.",
+"Parrainé par (nom ou email d'un adhérent, facultatif)": "Referred by (name or email of a member, optional)",
+"Inscription gratuite pour le moment.": "Free registration for now.",
+"Je suis déjà adhérent Mot'eau (vérifié par email)": "I'm already a Mot'eau member (verified by email)",
+"Pour ajouter des compétitions à cette liste, rendez-vous dans « Résultats → Compétitions & documents ».": "To add competitions to this list, go to “Results → Competitions & documents”.",
+"Sur votre téléphone, automatiquement :": "On your phone, automatically:",
+"nouvelle pièce en boutique, nouvelle compétition, nouvelle séance au planning, nouveau tutoriel…": "new shop item, new competition, new session on the schedule, new tutorial…",
+"🔔 Activer les notifications": "🔔 Enable notifications",
+"Les notifications sont bloquées pour ce site : autorisez-les dans les réglages du navigateur (icône 🔒 à côté de l'adresse).": "Notifications are blocked for this site: allow them in your browser settings (🔒 icon next to the address).",
+"Recevez un email ou un SMS à chaque nouveauté (nouvelle session au planning, compétition ajoutée...). Facultatif, désinscription possible à tout moment en nous contactant.": "Get an email or SMS for every update (new session on the schedule, competition added...). Optional; you can unsubscribe at any time by contacting us.",
+"Email (si notification par email)": "Email (for email notifications)",
+"Téléphone (si notification par SMS)": "Phone (for SMS notifications)",
+"Me notifier par email": "Notify me by email",
+"Me notifier par SMS": "Notify me by SMS",
+"Parrainez de nouveaux membres et gagnez des cadeaux ! Indiquez simplement le nom de votre parrain dans le formulaire d'adhésion.": "Refer new members and win gifts! Just enter your referrer's name in the membership form.",
+"Filleul": "Referral",
+"Filleuls": "Referrals",
+"Pack stickers Mot'eau": "Mot'eau sticker pack",
+"T-shirt Mot'eau offert": "Free Mot'eau T-shirt",
+"Cotisation annuelle offerte": "Free annual membership",
+"Programme fidélité": "Loyalty program",
+"Chaque euro dépensé au club vous rapporte 1 point à échanger contre des récompenses.": "Every euro spent at the club earns you 1 point to exchange for rewards.",
+"Connectez-vous pour suivre vos points.": "Log in to track your points.",
+"Vos achats et inscriptions faits avec votre compte rapportent des points automatiquement.": "Purchases and registrations made with your account earn points automatically.",
+"Se connecter / créer un compte": "Log in / create an account",
+"Le barème": "Reward scale",
+"Le club prépare ses récompenses : revenez bientôt !": "The club is preparing its rewards: come back soon!",
+"Je reconnais que la pratique de Mot'eau comporte des risques inhérents aux sports nautiques et de vitesse. Je certifie être en bonne condition physique pour pratiquer cette activité, disposer d'une assurance responsabilité civile, et dégage le club Mot'eau ainsi que ses encadrants de toute responsabilité en cas d'incident survenant dans le cadre normal de la pratique, hors faute avérée de l'encadrement. Je m'engage à respecter les consignes de sécurité communiquées par les encadrants (port du gilet et du casque obligatoires).": "I acknowledge that practising Mot'eau involves risks inherent to water and speed sports. I certify that I am in good physical condition to take part in this activity, that I hold third-party liability insurance, and I release the Mot'eau club and its supervisors from any liability in case of an incident occurring during normal practice, barring proven fault by the supervisors. I undertake to follow the safety instructions given by the supervisors (life jacket and helmet are mandatory).",
+"Nom du signataire": "Signatory's name",
+"Je signe en tant que parent/tuteur d'un mineur": "I am signing as the parent/guardian of a minor",
+"J'ai lu et j'accepte cette attestation. Taper mon nom ci-dessus vaut signature.": "I have read and accept this waiver. Typing my name above counts as my signature.",
+"Signature électronique simple (nom tapé + case cochée), suffisante pour un usage associatif courant mais non équivalente à une signature électronique qualifiée au sens juridique strict.": "Simple electronic signature (typed name + ticked box), sufficient for ordinary club use but not equivalent to a qualified electronic signature in the strict legal sense.",
+"Aucun avis pour le moment": "No reviews yet",
+"🔒 Pour garantir de": "🔒 To guarantee",
+"vrais avis": "genuine reviews",
+", il faut un compte pour en laisser un (un seul avis par personne).": ", you need an account to leave one (one review per person).",
+"Tous": "All",
+"Général": "General",
+"Aucun avis dans cette catégorie pour le moment.": "No reviews in this category yet.",
+"Une question sur Mot'eau ? Posez-la ici. Tout le monde peut répondre, le club aussi.": "A question about Mot'eau? Ask it here. Anyone can answer, the club too.",
+"🔒 Pour poser une question ou répondre, connectez-vous (c'est gratuit et rapide). Cela évite le spam et les faux messages.": "🔒 To ask or answer a question, please log in (it's free and quick). This prevents spam and fake messages.",
+"Aucune question pour le moment — soyez le premier à en poser une !": "No questions yet — be the first to ask one!",
+"🔒 Entrez le code adhérent pour accéder à l'espace club (mur de messages, infos réservées).": "🔒 Enter the member code to access the club area (message wall, members-only info).",
+"Photos & vidéos": "Photos & videos",
+"Photos": "Photos",
+"Vidéos": "Videos",
+"Highlights": "Highlights",
+"Essai rampe": "Ramp trial",
+"Freestyle": "Freestyle",
+"Réception": "Landing",
+"Apprends les bases et progresse en vidéo.": "Learn the basics and progress with video.",
+"Le règlement": "The rulebook",
+"Les quotas minimaux, la règle d'or, chaque étape jusqu'à la grande finale : tout le règlement Mot'eau expliqué étape par étape.": "The minimum quotas, the golden rule, every stage up to the grand final: the whole Mot'eau rulebook explained step by step.",
+"Le planning": "The schedule",
+"Les types de séances, la fiche d'une séance, la liste des inscrits, l'inscription en un clic, le calendrier et les notifications.": "Session types, the session sheet, the list of participants, one-click sign-up, the calendar and notifications.",
+"La boutique": "The shop",
+"Choisir sa couleur et sa taille, voir le stock, gérer son panier, utiliser un code promo et payer.": "Choose your colour and size, check stock, manage your cart, use a promo code and pay.",
+"Les classements": "The rankings",
+"Le temps cumulé, les retraits, la ligne de qualification et les records du monde : comment se calcule ta place.": "Cumulative time, removals, the qualification line and world records: how your ranking is calculated.",
+"♡ Voir mes favoris": "♡ View my favourites",
+"En stock": "In stock",
+"Coton bio, sérigraphie noir & orange.": "Organic cotton, black & orange screen print.",
+"Couleur — Noir": "Colour — Black",
+"Taille": "Size",
+"Casquette Mot'eau": "Mot'eau cap",
+"Broderie logo, taille réglable.": "Embroidered logo, adjustable size.",
+"Plus que 15 en stock !": "Only 15 left in stock!",
+"Sweat à capuche Mot'eau": "Mot'eau hoodie",
+"Molleton épais, capuche doublée.": "Thick fleece, lined hood.",
+"Pack stickers (x5)": "Sticker pack (x5)",
+"Résistants à l'eau, logo Mot'eau.": "Water-resistant, Mot'eau logo.",
+"Maillot technique Pilote": "Technical rider jersey",
+"Séchage rapide, coupe course.": "Quick-drying, race cut.",
+"Bonnet Mot'eau": "Mot'eau beanie",
+"Tricot serré, patch brodé.": "Tight knit, embroidered patch.",
+"Offrez une carte cadeau Mot'eau. Un code unique vous est fourni après achat, utilisable partout sur le site : boutique, adhésion, inscription compétition, prêt d'équipement.": "Give a Mot'eau gift card. You get a unique code after purchase, usable everywhere on the site: shop, membership, competition registration, equipment loans.",
+"Renseignez vos informations une fois, puis choisissez un montant ci-dessous, ou indiquez le montant de votre choix.": "Enter your details once, then choose an amount below, or enter an amount of your choice.",
+"Carte cadeau": "Gift card",
+"Utilisable partout sur le site.": "Usable everywhere on the site.",
+"Vous préférez choisir le montant ?": "Prefer to choose the amount?",
+"Acheter cette carte": "Buy this card",
+"Payer / remettre sur place": "Pay / hand over on site",
+"Renseignez vos informations une fois, puis choisissez un montant ci-dessous.": "Enter your details once, then choose an amount below.",
+"Supporter": "Supporter",
+"Un coup de pouce pour les essais.": "A helping hand for the trials.",
+"Partenaire": "Partner",
+"Contribue au matériel et aux rampes.": "Contributes to equipment and ramps.",
+"Le plus généreux": "Most generous",
+"Pilote d'honneur": "Honorary rider",
+"Soutient une saison complète.": "Supports a whole season.",
+"Vous préférez choisir votre montant ?": "Prefer to choose your amount?",
+"Espace réservé à venir — devenez le premier partenaire de Mot'eau.": "Space reserved — become Mot'eau's first partner.",
+"Les fondateurs": "The founders",
+"Fondateur · Gérant": "Founder · Manager",
+"Associé · Gérant": "Partner · Manager",
+"Membre fondateur": "Founding member",
+"L'équipe": "The team",
+"📸 Suivez l'aventure sur Instagram — @mot_eau": "📸 Follow the adventure on Instagram — @mot_eau",
+"Un nouveau sport nautique, construit à partir d'une idée simple, spectaculaire et accessible. Rejoignez l'aventure Mot'eau.": "A new water sport, built from a simple, spectacular and accessible idea. Join the Mot'eau adventure.",
+"NAVIGATION": "NAVIGATION",
+"CONTACT": "CONTACT",
+"📸 Instagram — @mot_eau": "📸 Instagram — @mot_eau",
+"© 2026 Mot'eau. Tous droits réservés. ·": "© 2026 Mot'eau. All rights reserved. ·",
+"🔔 Notifications": "🔔 Notifications",
+"🔒 Espace admin": "🔒 Admin area",
+"Lac du Bourget — Savoie": "Lac du Bourget — Savoie",
+"Votre panier est vide pour le moment.": "Your cart is empty for now.",
+"Je suis adhérent (-10%, vérifié par email)": "I'm a member (-10%, verified by email)",
+"En ligne : redirection vers un lien de paiement sécurisé. Sur place : votre commande est enregistrée, à régler au club.": "Online: redirect to a secure payment link. On-site: your order is saved, to be paid at the club.",
+"Retrouvez vos inscriptions, commandes et documents, et gagnez du temps : vos infos sont pré-remplies.": "Find your registrations, orders and documents, and save time: your details are pre-filled.",
+"J'ai un compte": "I have an account",
+"Créer un compte": "Create an account",
+"Mot de passe oublié ?": "Forgot your password?",
+"Prénom et nom": "First and last name",
+"Adresse e-mail": "Email address",
+"Mot de passe": "Password",
+"Mot de passe (6 caractères minimum)": "Password (6 characters minimum)",
+"Enregistrer mes infos": "Save my details",
+"Infos enregistrées": "Details saved",
+"Mes inscriptions, commandes et documents": "My registrations, orders and documents",
+"Se déconnecter": "Log out",
+"Rien pour le moment. Vos prochaines inscriptions et commandes apparaîtront ici.": "Nothing yet. Your future registrations and orders will appear here.",
+"Payé": "Paid",
+"Inscrit": "Registered",
+"Facture": "Invoice",
+"Document": "Document",
+"Chargement…": "Loading…",
+"Masquer": "Hide",
+"Message actif": "Message active",
+"Logo Mot'eau": "Mot'eau logo",
+"Instagram @mot_eau": "Instagram @mot_eau",
+"Instagram de Mot'eau": "Mot'eau on Instagram",
+"Rechercher": "Search",
+"Changer de langue": "Change language",
+"Ouvrir le panier": "Open cart",
+"Menu": "Menu",
+"Rechercher sur le site": "Search the site",
+"Recherche sur le site": "Site search",
+"Rechercher : une règle, un pilote, la casquette, le planning…": "Search: a rule, a rider, the cap, the schedule…",
+"Tape le nom d'un pilote…": "Type a rider's name…",
+"Détail des manches": "Heat details",
+"Temps (ex: 1:12.40)": "Time (e.g. 1:12.40)",
+"Chercher un pilote ou une compétition…": "Search for a rider or a competition…",
+"vous@exemple.fr": "you@example.com",
+"Code carte cadeau (facultatif)": "Gift card code (optional)",
+"ex : Sophie Marchand": "e.g. Sophie Marchand",
+"ex : 30": "e.g. 30",
+"ex : 15": "e.g. 15",
+"ex: 15": "e.g. 15",
+"Nom de l'enfant": "Child's name",
+"ex : Léa D.": "e.g. Léa D.",
+"Racontez votre expérience...": "Tell us about your experience...",
+"Rechercher une question…": "Search a question…",
+"Code adhérent": "Member code",
+"Détails...": "Details...",
+"Votre message...": "Your message...",
+"Ajouter aux favoris": "Add to favourites",
+"Noir": "Black",
+"Orange": "Orange",
+"Montant en €": "Amount in €",
+"Code promo": "Promo code",
+"Code carte cadeau": "Gift card code",
+"Question publiée !": "Question posted!",
+"Réponse publiée !": "Answer posted!",
+"Poser ma question": "Ask my question",
+"Votre question": "Your question",
+"Nom affiché": "Display name",
+"ex : Faut-il savoir nager pour participer ?": "e.g. Do I need to know how to swim to take part?",
+"Répondre": "Reply",
+"Répondre…": "Reply…",
+"Admin": "Admin",
+"📌 Épingler": "📌 Pin",
+"Désépingler": "Unpin",
+"Réponse": "Answer",
+"Votre réponse": "Your answer",
+"Envoyer la réponse": "Send answer",
+"Supprimer": "Delete",
+"Voter": "Vote",
+"Ton vote": "Your vote",
+"En cours": "Ongoing",
+"Terminé": "Closed",
+"Se connecter pour voter": "Log in to vote",
+"Merci pour ton vote !": "Thanks for your vote!",
+"Vote impossible : déjà voté, ou vote terminé.": "Vote failed: already voted, or voting is closed.",
+"Votez pour votre favori ! Un vote par personne.": "Vote for your favourite! One vote per person.",
+"Aucun vote pour le moment.": "No votes yet.",
+"Les plus beaux passages en vidéo.": "The best runs on video.",
+"Plus récents": "Most recent",
+"Plus rapides": "Fastest",
+"Aucun run pour le moment.": "No runs yet.",
+"Les dernières nouvelles du club.": "The latest club news.",
+"Aucune actualité pour le moment.": "No news yet.",
+"Voir toutes les actualités": "See all news",
+"Lire la suite": "Read more",
+"Réduire": "Show less",
+"📌 À la une": "📌 Featured",
+"S'inscrire": "Sign up",
+"jours": "days",
+"heures": "hours",
+"min": "min",
+"sec": "sec",
+"C'est en cours !": "It's happening now!",
+"🔴 C'est en cours !": "🔴 It's happening now!",
+"Aucune compétition à venir dans le planning.": "No upcoming competition on the schedule.",
+"Compétition": "Competition",
+"Compétitions": "Competitions",
+"Victoire": "Win",
+"Victoires": "Wins",
+"Finale": "Final",
+"Finales": "Finals",
+"Vitesse max (km/h)": "Top speed (km/h)",
+"Parcours": "Career",
+"Ses runs": "Their runs",
+"Pas encore de résultats enregistrés.": "No results recorded yet.",
+"Fermer": "Close",
+"Aucun pilote trouvé pour": "No rider found for",
+"Encore": "Another",
+"Échanger mes points": "Redeem my points",
+"Demande envoyée ! Le club vous la confirme bientôt.": "Request sent! The club will confirm it soon.",
+"Demande impossible — réessayez.": "Request failed — please try again.",
+"voir les récompenses": "see rewards",
+"point fidélité": "loyalty point",
+"points fidélité": "loyalty points",
+"Adhésion vérifiée !": "Membership verified!",
+"Ajoutez d'abord Mot'eau à l'écran d'accueil (voir l'explication).": "First add Mot'eau to your home screen (see the explanation).",
+"Aucune adhésion trouvée avec cet email — le tarif adhérent ne s'applique pas.": "No membership found with this email — the member rate does not apply.",
+"Bienvenue dans l'espace club !": "Welcome to the club area!",
+"Carte cadeau appliquée !": "Gift card applied!",
+"Ce code de carte cadeau n'existe pas.": "This gift card code does not exist.",
+"Ce code promo a atteint son nombre maximum d'utilisations.": "This promo code has reached its maximum number of uses.",
+"Ce code promo n'existe pas.": "This promo code does not exist.",
+"Cette carte cadeau a déjà été entièrement utilisée.": "This gift card has already been fully used.",
+"Cette carte cadeau n'est pas encore activée (paiement en cours de vérification).": "This gift card is not activated yet (payment being verified).",
+"Code incorrect.": "Incorrect code.",
+"Code invalide ou carte déjà utilisée.": "Invalid code or card already used.",
+"Commande enregistrée — à régler sur place. Merci !": "Order saved — to be paid on site. Thank you!",
+"Désolé, cette session est complète.": "Sorry, this session is full.",
+"Entrez un code de carte cadeau.": "Enter a gift card code.",
+"Entrez un code promo.": "Enter a promo code.",
+"Entrez votre e-mail et votre mot de passe.": "Enter your email and password.",
+"Erreur d'envoi — réessayez.": "Sending failed — please try again.",
+"Format de temps invalide (ex: 1:12.40)": "Invalid time format (e.g. 1:12.40)",
+"Impossible d'activer les notifications sur cet appareil.": "Unable to enable notifications on this device.",
+"Impossible d'envoyer — réessayez.": "Unable to send — please try again.",
+"Impossible de publier : vous avez peut-être déjà laissé un avis.": "Unable to post: you may have already left a review.",
+"Indiquez un montant valide.": "Enter a valid amount.",
+"Indiquez votre nom et choisissez au moins un mode de notification.": "Enter your name and choose at least one notification method.",
+"Inscription aux notifications enregistrée !": "Notification sign-up saved!",
+"Inscription confirmée !": "Registration confirmed!",
+"Merci ! Votre don sera remis sur place.": "Thank you! Your donation will be handed over on site.",
+"Merci d'indiquer le nom du mineur concerné.": "Please enter the name of the minor concerned.",
+"Merci d'indiquer un montant.": "Please enter an amount.",
+"Merci de cocher la case d'acceptation pour signer en ligne.": "Please tick the acceptance box to sign online.",
+"Merci de renseigner au moins votre nom et votre email.": "Please enter at least your name and email.",
+"Merci de renseigner le nom du signataire et un email.": "Please enter the signatory's name and an email.",
+"Merci de renseigner votre nom et un message.": "Please enter your name and a message.",
+"Merci de renseigner votre nom et votre email avant de faire un don.": "Please enter your name and email before donating.",
+"Merci de renseigner votre nom et votre email.": "Please enter your name and email.",
+"Merci de renseigner votre nom, une note et un commentaire.": "Please enter your name, a rating and a comment.",
+"Merci de renseigner votre nom, votre email et l'équipement souhaité.": "Please enter your name, email and the equipment you want.",
+"Merci de renseigner votre nom, votre email et la compétition.": "Please enter your name, email and the competition.",
+"Merci pour votre avis !": "Thank you for your review!",
+"Message publié !": "Message posted!",
+"Notifications refusées.": "Notifications denied.",
+"Renseignez d'abord votre email pour vérifier votre adhésion.": "Enter your email first to verify your membership.",
+"Renseignez un titre et un contenu.": "Enter a title and some content.",
+"Renseignez votre email pour être notifié par email.": "Enter your email to be notified by email.",
+"Renseignez votre nom et votre email avant d'acheter.": "Enter your name and email before buying.",
+"Renseignez votre téléphone pour être notifié par SMS.": "Enter your phone number to be notified by SMS.",
+"Si un compte existe, un e-mail pour changer le mot de passe a été envoyé.": "If an account exists, an email to reset the password has been sent.",
+"Tapez d'abord votre e-mail.": "Type your email first.",
+"Vote déjà enregistré ou erreur de connexion.": "Vote already recorded or connection error.",
+"Votre panier est vide.": "Your cart is empty.",
+"Compte créé, bienvenue !": "Account created, welcome!",
+"Connecté": "Logged in",
+"Erreur — réessayez.": "Error — please try again.",
+"Écrivez votre question et un nom à afficher.": "Write your question and a display name.",
+"Réponse enregistrée": "Answer saved",
+"🔔 Notifications activées !": "🔔 Notifications enabled!",
+"Trop d'essais — réessayez dans quelques minutes.": "Too many attempts — try again in a few minutes.",
+"E-mail ou mot de passe incorrect": "Incorrect email or password",
+"Attestation signée en ligne, merci !": "Waiver signed online, thank you!",
+"Enregistré — merci de venir signer le document papier sur place.": "Saved — please come and sign the paper document on site.",
+"Demande envoyée — redirection vers le paiement.": "Request sent — redirecting to payment.",
+"Demande de prêt envoyée, paiement sur place. Merci !": "Loan request sent, payment on site. Thank you!",
+"Demande envoyée, vous paierez sur place. Merci !": "Request sent, you will pay on site. Thank you!",
+"Inscription envoyée — redirection vers le paiement.": "Registration sent — redirecting to payment.",
+"Inscription envoyée, vous paierez sur place. Merci !": "Registration sent, you will pay on site. Thank you!",
+"Modification refusée : connectez-vous en mode édition.": "Change refused: log in in edit mode.",
+"Ce fichier dépasse 4,5 Mo. Merci d'utiliser un document plus léger (compressez le PDF si besoin).": "This file exceeds 4.5 MB. Please use a lighter document (compress the PDF if needed).",
+"Impossible de charger ce fichier.": "Unable to load this file.",
+"Impossible de charger cette image.": "Unable to load this image.",
+"Supprimer cette question ?": "Delete this question?",
+"Supprimer cette réponse ?": "Delete this answer?",
+"Supprimer l'avis": "Delete review"
+});
 
-function translateText(text, lang){
-  const t = text.trim();
-  if(t === '') return text;
-  if(lang === 'en' && TRANSLATE_MAP[t] !== undefined) return text.replace(t, TRANSLATE_MAP[t]);
-  if(lang === 'fr' && TRANSLATE_MAP_REVERSE[t] !== undefined) return text.replace(t, TRANSLATE_MAP_REVERSE[t]);
-  return text;
+Object.assign(TRANSLATE_MAP, {
+"✓ Avis vérifié": "✓ Verified review",
+"✓ Répondu par le club": "✓ Answered by the club",
+"pour répondre.": "to answer.",
+"Connectez-vous": "Log in",
+"Lire la vidéo": "Play video",
+"Cette personne a déjà participé, adhéré ou commandé avec son compte": "This person has already taken part, joined or ordered with their account",
+"Votre note": "Your rating",
+"Votre avis": "Your review",
+"Un seul avis par compte. Si vous avez déjà participé, adhéré ou commandé via votre compte, votre avis porte le badge « Avis vérifié ». Le club peut répondre, et retirer un avis qui ne respecte pas les règles de bonne conduite.": "One review per account. If you have already taken part, joined or ordered with your account, your review carries the “Verified review” badge. The club may reply, and remove a review that breaks the rules of good conduct.",
+"Vos points sont ajoutés quand le club confirme votre paiement (boutique, inscription, adhésion, prêt) fait avec votre compte.": "Your points are added when the club confirms a payment (shop, registration, membership, loan) made with your account.",
+"point fidélité ·": "loyalty point ·",
+"points fidélité ·": "loyalty points ·",
+"Modifier le site": "Edit the site",
+"Votre réponse…": "Your answer…",
+"Votre message...": "Your message...",
+"ex : Faut-il savoir nager pour participer ?": "e.g. Do I need to know how to swim to take part?",
+"Racontez votre expérience...": "Tell us about your experience...",
+"Aucun avis pour le moment": "No reviews yet",
+"1 réponse": "1 answer",
+"Répondre": "Reply"
+});
+
+/* ---- Moteur de traduction FR → EN ----
+   - dictionnaire intégré (TRANSLATE_MAP) + traductions saisies par l'admin (i18nEn, onglet « Anglais »)
+   - motifs pour les textes avec des chiffres, dates en français
+   - un observateur traduit aussi tout ce que le site affiche après coup ; le texte d'origine est mémorisé
+     pour revenir au français sans rien perdre. Les contenus des visiteurs (.ugc) ne sont jamais traduits. */
+const EN_DAYS = { lundi:'Monday', mardi:'Tuesday', mercredi:'Wednesday', jeudi:'Thursday', vendredi:'Friday', samedi:'Saturday', dimanche:'Sunday', lun:'Mon', mar:'Tue', mer:'Wed', jeu:'Thu', ven:'Fri', sam:'Sat', dim:'Sun' };
+const EN_MONTHS = { 'janv.':'Jan', 'févr.':'Feb', 'mars':'March', 'avr.':'Apr', 'mai':'May', 'juin':'June', 'juil.':'Jul', 'août':'Aug', 'sept.':'Sep', 'oct.':'Oct', 'nov.':'Nov', 'déc.':'Dec',
+  janvier:'January', 'février':'February', avril:'April', juillet:'July', septembre:'September', octobre:'October', novembre:'November', 'décembre':'December' };
+const plural = (n, w, pl) => n == 1 ? w : (pl || w + 's');
+const EN_PATTERNS = [
+  [/^(\d+) avis(?: · dont (\d+) vérifiés?)?$/, m => `${m[1]} review${plural(+m[1], '')}${m[2] ? ` · ${m[2]} verified` : ''}`],
+  [/^(\d+) réponses?$/, m => `${m[1]} answer${plural(+m[1], '')}`],
+  [/^(\d+) vote(s)?$/, m => `${m[1]} vote${plural(+m[1], '')}`],
+  [/^(\d+) vote(s)? · un vote par compte$/, m => `${m[1]} vote${plural(+m[1], '')} · one vote per account`],
+  [/^Encore (\d+) points?$/, m => `${m[1]} more point${plural(+m[1], '')} needed`],
+  [/^(\d+) pts$/, m => `${m[1]} pts`],
+  [/^(\d+) points? disponibles?(?: · (\d+) en cours d'échange)?$/, m => `${m[1]} point${plural(+m[1], '')} available${m[2] ? ` · ${m[2]} being redeemed` : ''}`],
+  [/^Chaque euro dépensé au club vous rapporte ([\d.,]+) points à échanger contre des récompenses\.$/, m => `Every euro spent at the club earns you ${m[1]} points to exchange for rewards.`],
+  [/^Plus que (\d+) en stock !$/, m => `Only ${m[1]} left in stock!`],
+  [/^Plus que (\d+) !$/, m => `Only ${m[1]} left!`],
+  [/^(\d+) \/ (\d+) inscrits?$/, m => `${m[1]} / ${m[2]} registered`],
+  [/^(\d+) inscrits?$/, m => `${m[1]} registered`],
+  [/^(\d+) places? restantes?$/, m => `${m[1]} spot${plural(+m[1], '')} left`],
+  [/^(\d+) pilotes?$/, m => `${m[1]} rider${plural(+m[1], '')}`],
+  [/^(\d+) compétitions?$/, m => `${m[1]} competition${plural(+m[1], '')}`],
+  [/^(\d+)\/(\d+) manches comptées$/, m => `${m[1]}/${m[2]} heats counted`],
+  [/^Éliminé — Étape (\d+)(?: \((.+)\))?$/, m => `Eliminated — Stage ${m[1]}${m[2] ? ` (${({ 'Quart':'Quarter', 'Demi':'Semi' })[m[2]] || m[2]})` : ''}`],
+  [/^(\d+) m en ([\d:.]+) — (.+)$/, m => `${m[1]} m in ${m[2]} — ${translateEn(m[3])}`],
+  [/^Merci (.+) ! Voici le code de votre carte cadeau de (\d+) € :\n\n([\s\S]+)\n\nNotez-le bien\. Elle sera utilisable dès que le club aura vérifié votre paiement\.$/, m => `Thank you ${m[1]}! Here is the code for your €${m[2]} gift card:\n\n${m[3]}\n\nPlease note it down. It will be usable as soon as the club has verified your payment.`],
+  [/^Échanger (\d+) points contre « (.+) » \?\nLe club validera votre demande et vous remettra la récompense\.$/, m => `Redeem ${m[1]} points for “${m[2]}”?\nThe club will validate your request and hand you the reward.`],
+  [/^Code (.+) appliqué !$/, m => `Code ${m[1]} applied!`],
+  [/^Carte (.+) appliquée !$/, m => `Card ${m[1]} applied!`],
+  [/^Aucun pilote trouvé pour « (.*) »\.$/, m => `No rider found for “${m[1]}”.`],
+  [/^(\d+) jours?$/, m => `${m[1]} day${plural(+m[1], '')}`],
+  [/^Réduction adhérent : (.+)$/, m => `Member discount: ${m[1]}`],
+  [/^Sur (\d+) au général$/, m => `of ${m[1]} overall`],
+  [/^sur (\d+) au général$/, m => `of ${m[1]} overall`]
+];
+function hashFr(t){ let h = 5381; for(let i = 0; i < t.length; i++) h = ((h << 5) + h + t.charCodeAt(i)) | 0; return (h >>> 0).toString(36); }
+const enOverrides = () => (STATE.i18nEn && !Array.isArray(STATE.i18nEn)) ? STATE.i18nEn : {};
+function translateDates(t){
+  if(!/\d/.test(t) || !new RegExp('\\b(' + Object.keys(EN_DAYS).join('|') + ')\\b', 'i').test(t) && !/(janv|févr|mars|avr|mai|juin|juil|août|sept|oct|nov|déc)/i.test(t)) return t;
+  let out = t.replace(/\b(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche|lun|mar|mer|jeu|ven|sam|dim)\b/gi, w => EN_DAYS[w.toLowerCase()] || w);
+  out = out.replace(/(\d)\s*(janvier|février|avril|juillet|septembre|octobre|novembre|décembre|janv\.|févr\.|avr\.|juil\.|sept\.|oct\.|nov\.|déc\.|mars|mai|juin|août)(?![a-zé])/gi, (m, d, mo) => d + ' ' + (EN_MONTHS[mo.toLowerCase()] || mo));
+  return out;
 }
+function translateEn(core){
+  const ov = enOverrides()[hashFr(core)];
+  if(ov && ov.en) return ov.en;
+  if(TRANSLATE_MAP[core] !== undefined) return TRANSLATE_MAP[core];
+  for(const [re, fn] of EN_PATTERNS){ const m = core.match(re); if(m) return fn(m); }
+  return translateDates(core);
+}
+function translateText(text, lang){
+  if(lang !== 'en' || typeof text !== 'string') return text;
+  const core = text.trim(); if(!core) return text;
+  const en = translateEn(core);
+  return en === core ? text : text.replace(core, () => en);
+}
+const I18N_NODES = new WeakMap(), I18N_ATTRS = new WeakMap(), I18N_ATTR_LIST = ['placeholder', 'title', 'aria-label', 'alt'];
+const i18nSkip = el => !el || !!el.closest('script,style,#adminPanel,.ugc,[data-noi18n],#promoCodeInput,#giftCodeInput,[contenteditable="true"]');
+function i18nNode(node){
+  const el = node.parentElement; if(i18nSkip(el) || el.tagName === 'TEXTAREA') return;
+  const cur = node.textContent, rec = I18N_NODES.get(node);
+  if(rec && rec.en === cur) return;
+  const out = translateText(cur, 'en');
+  if(out !== cur){ I18N_NODES.set(node, { fr: cur, en: out }); node.textContent = out; }
+  else if(rec) I18N_NODES.delete(node);
+}
+function i18nAttrsOf(el){
+  if(i18nSkip(el)) return;
+  let recs = I18N_ATTRS.get(el);
+  I18N_ATTR_LIST.forEach(a => {
+    const cur = el.getAttribute(a); if(!cur) return;
+    const rec = recs && recs[a]; if(rec && rec.en === cur) return;
+    const out = translateText(cur, 'en');
+    if(out !== cur){ recs = recs || {}; recs[a] = { fr: cur, en: out }; I18N_ATTRS.set(el, recs); el.setAttribute(a, out); }
+    else if(rec) delete recs[a];
+  });
+}
+function i18nWalk(root){
+  if(root.nodeType === 3){ i18nNode(root); return; }
+  if(root.nodeType !== 1) return;
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
+  let n; if(root.nodeType === 1) i18nAttrsOf(root);
+  while((n = w.nextNode())){ if(n.nodeType === 3) i18nNode(n); else i18nAttrsOf(n); }
+}
+function i18nRestore(){
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT); let n;
+  while((n = w.nextNode())){
+    if(n.nodeType === 3){ const rec = I18N_NODES.get(n); if(rec && n.textContent === rec.en) n.textContent = rec.fr; I18N_NODES.delete(n); }
+    else { const recs = I18N_ATTRS.get(n); if(recs) Object.entries(recs).forEach(([a, r]) => { if(n.getAttribute(a) === r.en) n.setAttribute(a, r.fr); }); I18N_ATTRS.delete(n); }
+  }
+}
+let i18nBusy = false;
+const i18nObserver = new MutationObserver(muts => {
+  if(currentLang !== 'en' || i18nBusy) return;
+  i18nBusy = true;
+  try{
+    muts.forEach(m => {
+      if(m.type === 'childList') m.addedNodes.forEach(nd => i18nWalk(nd));
+      else if(m.type === 'characterData') i18nNode(m.target);
+      else if(m.type === 'attributes') i18nAttrsOf(m.target);
+    });
+  } finally { i18nBusy = false; }
+});
 function applyTranslations(){
-  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
-    acceptNode(node){
-      const p = node.parentElement;
-      if(!p) return NodeFilter.FILTER_REJECT;
-      if(p.closest('script,style,#promoCodeInput,#giftCodeInput')) return NodeFilter.FILTER_REJECT;
-      return NodeFilter.FILTER_ACCEPT;
-    }
-  });
-  const nodes = [];
-  let n; while((n = walker.nextNode())) nodes.push(n);
-  nodes.forEach(node => { node.textContent = translateText(node.textContent, currentLang); });
-
-  document.querySelectorAll('[placeholder]').forEach(el => {
-    el.placeholder = translateText(el.placeholder, currentLang);
-  });
-  document.querySelectorAll('option').forEach(opt => {
-    if(TRANSLATE_MAP[opt.textContent.trim()] || TRANSLATE_MAP_REVERSE[opt.textContent.trim()]){
-      opt.textContent = translateText(opt.textContent, currentLang);
-    }
-  });
+  i18nObserver.disconnect();
+  if(currentLang === 'en') i18nWalk(document.body); else i18nRestore();
+  document.documentElement.lang = currentLang;
   document.getElementById('langToggleBtn').classList.toggle('is-en', currentLang === 'en');
+  if(currentLang === 'en') i18nObserver.observe(document.body, { subtree:true, childList:true, characterData:true, attributes:true, attributeFilter:I18N_ATTR_LIST });
+}
+/* Messages affichés par le site (bulles, alertes, confirmations) */
+{
+  const _toast = showToast; showToast = msg => _toast(translateText(String(msg), currentLang));
+  const _alert = window.alert.bind(window), _confirm = window.confirm.bind(window);
+  window.alert = msg => _alert(translateText(String(msg), currentLang));
+  window.confirm = msg => _confirm(translateText(String(msg), currentLang));
+}
+function refreshDynamicRenders(){
+  ['renderNews','renderCountdown','renderRuns','renderContests','renderLoyalty','renderFaq','renderPlanning','renderGeneralRanking','renderWorldRecords','renderPilotSearch'].forEach(fn => { try{ if(typeof window[fn] === 'function') window[fn](); }catch(err){} });
 }
 async function toggleLanguage(){
+  if(EDIT_MODE){ showToast("Quittez le mode édition pour changer de langue."); return; }
   currentLang = currentLang === 'fr' ? 'en' : 'fr';
-  applyTranslations();
   try{ localStorage.setItem('moteau_lang', currentLang); }catch(err){}
+  applyTranslations();
+  refreshDynamicRenders();
 }
 document.getElementById('langToggleBtn').addEventListener('click', toggleLanguage);
 function loadLangPreference(){
   try{
     const val = localStorage.getItem('moteau_lang');
-    if(val) currentLang = val;
+    if(val) currentLang = val === 'en' ? 'en' : 'fr';
   }catch(err){ /* pas de préférence enregistrée */ }
+  if(currentLang === 'en') applyTranslations();
 }
 
 function applyEditMode(){
+  if(EDIT_MODE && currentLang !== 'fr'){ currentLang = 'fr'; applyTranslations(); }
   document.body.classList.toggle('edit-mode', EDIT_MODE);
   document.querySelectorAll('[data-editable]').forEach(el => el.contentEditable = EDIT_MODE);
   updateStickyOffsets();
@@ -2338,7 +2888,7 @@ function applyEditMode(){
   if(typeof CLUB_UNLOCKED !== 'undefined' && CLUB_UNLOCKED && typeof renderClubMessages === 'function'){
     renderClubMessages(); renderClubPosts(); renderClubRoster();
   }
-  if(currentLang !== 'fr') applyTranslations();
+  if(currentLang === 'en') applyTranslations();
 }
 
 /* ============================================================
@@ -5630,6 +6180,7 @@ const ADMIN_TABS = [
   { id:'finance', label:'💰 Finances (privé)' },
   { id:'loyalty', label:'⭐ Fidélité' },
   { id:'votes', label:'🗳️ Votes' },
+  { id:'i18n', label:'🇬🇧 Anglais' },
   { id:'waivers', label:'Attestations' },
   { id:'push', label:'🔔 Notifications téléphone' },
   { id:'notifications', label:'Abonnés e-mail/SMS' }
@@ -5790,6 +6341,8 @@ function renderAdminPanel(){
         ${pollResultsHtml(p.id, concept)}</div>`;
     }).join('') : '<p style="color:var(--grey);">Aucun sondage pour le moment. En mode édition, dans la Boutique : mettez une pièce en « Pièce concept » ou cochez « Activer un sondage ».</p>')
       + '<button class="small-btn solid" data-agoto="boutique" style="margin-top:8px;">✏️ Gérer la boutique</button>';
+  } else if(adminTab === 'i18n'){
+    renderAdminI18n(body);
   } else if(adminTab === 'finance'){
     renderAdminFinance(body);
   } else if(adminTab === 'loyalty'){
@@ -6039,6 +6592,59 @@ function renderAdminFinance(body){
     }
     renderAdminPanel();
   });
+}
+
+/* ============================================================
+   ESPACE ADMIN — TRADUCTIONS ANGLAISES de vos propres textes
+   Le site repère les textes encore en français ; vous saisissez (ou faites proposer) la version anglaise.
+   ============================================================ */
+const FR_HINT = /[àâçéèêëîïôûùüÿœÉÈÀ]|\b(le|la|les|des|une|pour|votre|vos|avec|dans|sur|est|pas|aucun|aucune|et|ou|du|au|aux|un|ce|cette|nous|vous)\b/i;
+function untranslatedFrenchTexts(){
+  const found = new Map(), w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); let n;
+  while((n = w.nextNode())){
+    const el = n.parentElement; if(!el || el.closest('script,style,#adminPanel,.ugc,[data-noi18n],textarea,.edit-only') || (!el.getClientRects().length && !el.closest('nav,header'))) continue;
+    const rec = I18N_NODES.get(n), fr = (rec && n.textContent === rec.en ? rec.fr : n.textContent).trim();
+    if(fr.length < 4 || !/[A-Za-zÀ-ÿ]{3}/.test(fr) || !FR_HINT.test(fr)) continue;
+    if(translateEn(fr) !== fr && !enOverrides()[hashFr(fr)]) continue;
+    found.set(fr, true);
+  }
+  Object.keys(enOverrides()).forEach(h => { const o = enOverrides()[h]; if(o && o.fr) found.set(o.fr, true); });
+  return [...found.keys()];
+}
+function renderAdminI18n(body){
+  const list = untranslatedFrenchTexts(), e = escSearch, ov = enOverrides();
+  body.innerHTML = `<p class="hint-text">Tout le texte du site que vous avez écrit vous-même (actualités, planning, produits, noms de compétitions…) doit être traduit ici pour apparaître en anglais. Les textes que le site fournit déjà sont traduits automatiquement. Les messages des visiteurs (avis, questions) ne sont pas traduits.</p>
+    <p class="hint-text">Astuce : cliquez « Proposer une traduction » pour une suggestion automatique (relisez-la !), puis « Enregistrer ».</p>
+    <div class="news-actions" style="margin-bottom:12px;"><button class="small-btn" id="i18nSuggest">✨ Proposer une traduction (cases vides)</button><button class="small-btn solid" id="i18nSave">💾 Enregistrer les traductions</button><button class="small-btn" id="i18nRescan">🔄 Actualiser la liste</button></div>
+    ${list.length ? `<div class="table-wrap"><table class="admin-table"><thead><tr><th style="width:45%;">Français</th><th>Anglais</th></tr></thead><tbody>${list.map(fr => `<tr data-fr="${e(fr)}"><td style="white-space:pre-wrap;">${e(fr)}</td><td><textarea rows="${fr.length > 90 ? 3 : 1}" style="width:100%; background:var(--black); border:1px solid var(--line); color:var(--cream); padding:6px 8px; font-family:inherit; font-size:0.82rem;">${e((ov[hashFr(fr)] || {}).en || '')}</textarea></td></tr>`).join('')}</tbody></table></div>`
+      : '<p style="color:var(--grey);">Tout est traduit sur la page actuelle 🎉 (pensez à ouvrir le site sur les autres parties pour que leurs textes apparaissent ici).</p>'}`;
+  body.querySelector('#i18nRescan').onclick = () => renderAdminI18n(body);
+  body.querySelector('#i18nSuggest').onclick = async () => {
+    const rows = [...body.querySelectorAll('tr[data-fr]')].filter(r => !r.querySelector('textarea').value.trim());
+    if(!rows.length){ showToast('Rien à proposer.'); return; }
+    showToast('Traduction en cours…'); let ok = 0;
+    for(const r of rows.slice(0, 60)){
+      try{
+        const res = await fetch('https://api.mymemory.translated.net/get?langpair=fr|en&q=' + encodeURIComponent(r.dataset.fr.slice(0, 480)));
+        const j = await res.json(), t = j && j.responseData && j.responseData.translatedText;
+        if(t && !/MYMEMORY WARNING|INVALID/i.test(t)){ r.querySelector('textarea').value = t; ok++; }
+      }catch(err){ break; }
+    }
+    showToast(ok ? `${ok} traduction(s) proposée(s) — relisez puis enregistrez` : "Traduction automatique indisponible : saisissez-les à la main.");
+  };
+  body.querySelector('#i18nSave').onclick = async () => {
+    if(!STATE.i18nEn || Array.isArray(STATE.i18nEn)) STATE.i18nEn = {};
+    let n = 0;
+    try{
+      for(const r of body.querySelectorAll('tr[data-fr]')){
+        const fr = r.dataset.fr, en = r.querySelector('textarea').value.trim(), h = hashFr(fr), cur = STATE.i18nEn[h];
+        if(en && (!cur || cur.en !== en)){ await dbRequest(`i18nEn/${h}`, 'PUT', { fr, en }); STATE.i18nEn[h] = { fr, en }; n++; }
+        else if(!en && cur){ await dbRequest(`i18nEn/${h}`, 'DELETE'); delete STATE.i18nEn[h]; n++; }
+      }
+      showToast(n ? `${n} traduction(s) enregistrée(s)` : 'Rien à enregistrer');
+      if(currentLang === 'en'){ applyTranslations(); }
+    }catch(err){ showToast("Erreur d'enregistrement — réessayez."); }
+  };
 }
 
 function exportAdminCsv(){
