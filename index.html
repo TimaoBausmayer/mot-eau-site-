@@ -328,6 +328,8 @@ body.edit-mode .founder-photo{cursor:pointer;}
 .founder-role{color:var(--orange); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; margin:2px 0 8px;}
 .founder-bio{color:var(--cream); font-size:0.88rem; white-space:pre-wrap;}
 .founder-card input, .founder-card textarea{width:100%; background:var(--black); border:1px solid var(--line); color:var(--cream); padding:7px 8px; font-family:inherit; font-size:0.82rem; margin-top:6px; resize:vertical;}
+.history-video{max-width:860px; margin-bottom:30px; border:1px solid var(--line); background:var(--black);}
+.history-video video{display:block; width:100%; aspect-ratio:16/9;}
 .history-text{max-width:760px; font-size:1.06rem; line-height:1.85; min-height:1.6em;}
 .history-text p, .history-text div{margin-bottom:1.1em;}
 .history-text h3{font-family:'Anton',sans-serif; color:var(--orange); font-size:1.5rem; font-weight:400; margin:1.5em 0 0.5em;}
@@ -1417,6 +1419,7 @@ body.edit-mode .view-only{display:none;}
       <button type="button" class="small-btn" id="historyAddImgBtn">🖼️ Photo</button>
       <button type="button" class="small-btn" id="historyRemoveImgBtn">✕ Retirer la photo</button>
     </div>
+    <div class="history-video"><video src="videos/histoire-moteau.mp4" poster="videos/histoire-moteau.jpg" controls preload="none" playsinline></video></div>
     <div id="historyImageWrap" class="history-image"></div>
     <div id="historyText" class="history-text" data-editable data-placeholder="Écris ici l'histoire de Mot'eau : comment l'idée est née, les premiers essais, les rencontres, la suite…"></div>
     <div id="foundersBlock" style="margin-top:40px;">
@@ -4057,7 +4060,7 @@ function renderHistory(){
   const textEl = document.getElementById('historyText');
   const titleEl = document.getElementById('historyTitle');
   const imgWrap = document.getElementById('historyImageWrap');
-  const hasContent = !!htmlToPlain(h.text) || !!h.image || (Array.isArray(STATE.founders) && STATE.founders.length > 0);
+  const hasContent = true; // la vidéo « L'histoire de Mot'eau » est toujours là
   sec.style.display = (EDIT_MODE || hasContent) ? '' : 'none';
   const navLink = document.getElementById('navHistoryLink');
   if(navLink) navLink.style.display = (EDIT_MODE || hasContent) ? '' : 'none';
@@ -4151,7 +4154,7 @@ function highlightSearch(raw, words){
 function buildSearchIndex(){
   const idx = [];
   const hist = STATE.history || {};
-  const historyVisible = EDIT_MODE || !!htmlToPlain(hist.text) || !!hist.image || (Array.isArray(STATE.founders) && STATE.founders.length > 0);
+  const historyVisible = true;
   SEARCH_SECTIONS.forEach(s => { if(s.historyOnly && !historyVisible) return; idx.push({ kind:'Section', title:s.name, text:s.kw, anchor:s.anchor }); });
   (STATE.rules||[]).forEach((r,i) => idx.push({ kind:'Règle', title:r.title||'', text:plainFromHtml(r.content), anchor:'#regles', rule:i }));
   (STATE.ruleDocs||[]).forEach(d => idx.push({ kind:'Document', title:d.name||d.filename||'', text:'', anchor:'#regles' }));
