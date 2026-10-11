@@ -741,6 +741,12 @@ footer{padding:60px 0 34px;}
 ::selection{background:var(--orange); color:var(--black);}
 
 /* ================= MODE EDITION ================= */
+body.results-hidden #pilotSearchBlock, body.results-hidden #recordsBlock, body.results-hidden #rankingBlock, body.results-hidden #competitionsWrap{display:none !important;}
+#resultsHiddenMsg{display:none; border:1px dashed var(--line); padding:24px; text-align:center; color:var(--grey);}
+body.results-hidden #resultsHiddenMsg{display:block;}
+#previewBanner{display:none; position:fixed; left:50%; bottom:18px; transform:translateX(-50%); z-index:9999; background:var(--orange); color:#000; padding:10px 18px; font-weight:600; box-shadow:0 4px 20px rgba(0,0,0,0.5); align-items:center; gap:12px;}
+#previewBanner button{background:#000; color:#fff; border:0; padding:6px 12px; cursor:pointer; font-family:inherit;}
+body.preview-visitor #previewBanner{display:flex;}
 .edit-only{display:none;}
 body.edit-mode .edit-only{display:flex;}
 body.edit-mode .edit-only.block{display:block;}
@@ -1019,6 +1025,12 @@ body.edit-mode .view-only{display:none;}
 <section id="resultats">
   <div class="wrap">
     <div class="sec-head"><h2 class="display">Résultats & Compétitions</h2><p class="sub">Ajoute une compétition, renseigne le résultat de chaque pilote (étape atteinte, record perso) — le classement se calcule tout seul.</p></div>
+
+    <div class="edit-only inline" style="gap:8px; flex-wrap:wrap; margin-bottom:16px;">
+      <button class="small-btn" id="toggleHideAllResultsBtn"></button>
+      <button class="small-btn solid" id="previewVisitorBtn">👁️ Voir comme un visiteur</button>
+    </div>
+    <div id="resultsHiddenMsg">Les résultats seront publiés prochainement.</div>
 
     <div class="pilot-search" id="pilotSearchBlock">
       <label for="pilotSearchInput" class="hint-text" style="display:block; margin:0 0 8px;">🔎 Chercher un pilote et voir sa place au classement</label>
@@ -1656,6 +1668,7 @@ body.edit-mode .view-only{display:none;}
   </div>
 </div>
 
+<div id="previewBanner">👁️ Aperçu visiteur <button type="button" id="previewBackBtn">Revenir à l'édition</button></div>
 <button class="edit-fab" id="editFab" title="Modifier le site">✎</button>
 
 <div class="pw-modal-overlay" id="pwOverlay">
@@ -1807,7 +1820,7 @@ const DEFAULTS = {
     { id:"essai", label:"Essai matériel", color:"#ff5c5c" },
     { id:"competition", label:"Compétition", color:"#4ea8de" }
   ],
-  resultsDisplay: { showRecords: true, showGeneralRanking: true },
+  resultsDisplay: { showRecords: true, showGeneralRanking: true, hideAll: false },
   competitions: [
     { id:"comp_seed_1", name:"Championnat de Printemps 2026", date:"2026-04-12", doc:null, pilots:[
       { id:"cp1", name:"S. Marchand", result:"champion", manches:6, manchesTimes:[
@@ -2726,6 +2739,8 @@ Object.assign(TRANSLATE_MAP, {
 "Répondre": "Reply"
 });
 
+Object.assign(TRANSLATE_MAP, {"Les résultats seront publiés prochainement.":"Results will be published soon.","👁️ Aperçu visiteur":"👁️ Visitor preview","Revenir à l'édition":"Back to editing"});
+
 /* ---- Moteur de traduction FR → EN ----
    - dictionnaire intégré (TRANSLATE_MAP) + traductions saisies par l'admin (i18nEn, onglet « Anglais »)
    - motifs pour les textes avec des chiffres, dates en français
@@ -2866,6 +2881,8 @@ function loadLangPreference(){
 }
 
 function applyEditMode(){
+  if(EDIT_MODE) PREVIEW_VISITOR = false;
+  applyResultsHidden();
   if(EDIT_MODE && currentLang !== 'fr'){ currentLang = 'fr'; applyTranslations(); }
   document.body.classList.toggle('edit-mode', EDIT_MODE);
   document.querySelectorAll('[data-editable]').forEach(el => el.contentEditable = EDIT_MODE);
@@ -2974,6 +2991,26 @@ function startAnnounceCycle(){
   }, 5000);
 }
 window.addEventListener('resize', updateStickyOffsets);
+/* Masquer les résultats aux visiteurs + aperçu « comme un visiteur » */
+let PREVIEW_VISITOR = false;
+function applyResultsHidden(){
+  const hidden = !!(STATE.resultsDisplay && STATE.resultsDisplay.hideAll);
+  document.body.classList.toggle('results-hidden', hidden && !EDIT_MODE);
+  document.body.classList.toggle('preview-visitor', PREVIEW_VISITOR);
+  const b = document.getElementById('toggleHideAllResultsBtn');
+  if(b) b.textContent = hidden ? '👁️ Réafficher les résultats aux visiteurs' : '🙈 Masquer tous les résultats aux visiteurs';
+}
+document.getElementById('toggleHideAllResultsBtn').addEventListener('click', () => {
+  STATE.resultsDisplay.hideAll = !STATE.resultsDisplay.hideAll;
+  saveSection('resultsDisplay'); applyResultsHidden();
+  showToast(STATE.resultsDisplay.hideAll ? "Résultats masqués aux visiteurs (vous les voyez en mode édition)." : "Résultats visibles par tout le monde.");
+});
+document.getElementById('previewVisitorBtn').addEventListener('click', () => {
+  PREVIEW_VISITOR = true; EDIT_MODE = false; applyEditMode(); location.hash = '#resultats';
+});
+document.getElementById('previewBackBtn').addEventListener('click', () => {
+  PREVIEW_VISITOR = false; EDIT_MODE = true; applyEditMode();
+});
 document.getElementById('editFab').addEventListener('click', () => {
   if(EDIT_MODE){ EDIT_MODE = false; applyEditMode(); return; }
   if(isAdmin()){ EDIT_MODE = true; applyEditMode(); showToast("Mode édition activé"); return; }
@@ -7308,17 +7345,18 @@ function pilotStats(name){
 }
 function openPilot(name){
   const k = pilotKey(name), st = pilotStats(name), pr = pilotProfileOf(name), e = escSearch;
+  const hiddenRes = !!(STATE.resultsDisplay && STATE.resultsDisplay.hideAll) && !EDIT_MODE;
   const runs = (STATE.runs || []).filter(r => r && r.pilot && pilotKey(r.pilot) === k);
   const box = document.getElementById('pilotModal');
   box.innerHTML = `<div class="pilot-modal-head">${pilotAvatar(name)}<div><h3 style="margin:0;">${e(name)}</h3>${pr.number ? `<div style="color:var(--orange); font-family:'Anton',sans-serif;">N° ${e(pr.number)}</div>` : ''}</div></div>
     ${pr.bio ? `<p style="white-space:pre-wrap; color:var(--cream);">${e(pr.bio)}</p>` : ''}
-    <div class="pilot-stats">
+    ${hiddenRes ? '' : `<div class="pilot-stats">
       <div><b>${st.rows.length}</b>Compétition${st.rows.length > 1 ? 's' : ''}</div>
       <div><b>${st.titles}</b>Victoire${st.titles > 1 ? 's' : ''}</div>
       <div><b>${st.finals}</b>Finale${st.finals > 1 ? 's' : ''}</div>
       <div><b>${st.topSpeed ? st.topSpeed.toFixed(1).replace('.', ',') : '—'}</b>Vitesse max (km/h)</div>
-    </div>
-    ${st.rows.length ? `<h4 style="margin:10px 0 6px;">Parcours</h4>` + st.rows.map(r => `<div class="acc-rec"><div><b>${e(r.comp.name || '')}</b><small>${e(r.comp.date || '')}</small></div><div>${e(STAGE_RESULT_LABELS[r.p.result] || r.p.result || '')}${r.p.bestTime ? ` · ${e(r.p.bestTime)}` : ''}</div></div>`).join('') : '<p class="hint-text">Pas encore de résultats enregistrés.</p>'}
+    </div>`}
+    ${hiddenRes ? '' : st.rows.length ? `<h4 style="margin:10px 0 6px;">Parcours</h4>` + st.rows.map(r => `<div class="acc-rec"><div><b>${e(r.comp.name || '')}</b><small>${e(r.comp.date || '')}</small></div><div>${e(STAGE_RESULT_LABELS[r.p.result] || r.p.result || '')}${r.p.bestTime ? ` · ${e(r.p.bestTime)}` : ''}</div></div>`).join('') : '<p class="hint-text">Pas encore de résultats enregistrés.</p>'}
     ${runs.length ? `<h4 style="margin:14px 0 6px;">Ses runs</h4>` + runs.map(r => `<div class="tuto-video" style="aspect-ratio:16/9; margin-bottom:8px;">${lazyVideoHtml(r.video)}</div>`).join('') : ''}
     ${EDIT_MODE ? `<div class="contest-edit"><b style="font-size:0.85rem;">Fiche (admin)</b>
       <input type="text" id="pfNumber" maxlength="6" value="${e(pr.number || '')}" placeholder="Numéro de pilote">
@@ -7624,7 +7662,7 @@ async function init(){
   renderHistory();
   renderGallery();
   renderTutorials();
-  renderNews(); renderCountdown(); renderLoyalty(); renderRuns(); renderPilotDirectory();
+  renderNews(); renderCountdown(); renderLoyalty(); renderRuns(); renderPilotDirectory(); applyResultsHidden();
   await Promise.all([loadPolls(), loadVotes()]);
   renderContests();
   renderProducts();
