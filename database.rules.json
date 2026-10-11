@@ -202,6 +202,21 @@
             ".write": "data.parent().child('pending').val() != true && newData.val() == true"
           }
         }
+      },
+      "userRecords": {
+        "$uid": {
+          ".read": "auth != null && auth.uid == $uid",
+          "$ref": {
+            ".write": "auth != null && auth.uid == $uid && !data.exists() && newData.exists()",
+            ".validate": "newData.hasChildren(['ref','coll'])"
+          }
+        }
+      },
+      "userProfiles": {
+        "$uid": {
+          ".read": "auth != null && auth.uid == $uid",
+          ".write": "auth != null && auth.uid == $uid"
+        }
       }
     }
   }

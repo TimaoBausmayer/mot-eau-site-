@@ -235,9 +235,9 @@ tbody tr:hover{background:var(--surface);}
 
 /* logo */
 .logo-slot{display:flex; align-items:center; position:relative;}
-.logo-slot img{height:34px; max-width:150px; object-fit:contain;}
+.logo-slot img{height:26px; max-width:120px; object-fit:contain;}
 body.edit-mode .logo-slot{cursor:pointer; outline:1px dashed rgba(255,90,31,0.5); outline-offset:4px; padding:3px 6px;}
-.foot-logo-slot img{height:44px; max-width:180px; object-fit:contain;}
+.foot-logo-slot img{height:34px; max-width:140px; object-fit:contain;}
 body.edit-mode .foot-logo-slot{cursor:pointer; outline:1px dashed rgba(255,90,31,0.5); outline-offset:4px; padding:3px 6px; display:inline-flex;}
 
 /* sponsors */
@@ -323,6 +323,43 @@ body.edit-mode .history-text:empty::before{content:attr(data-placeholder); color
 .pin-cell, .record-cell{text-align:center;}
 .pin-cell input, .record-cell input{width:16px; height:16px; cursor:pointer; accent-color:var(--orange);}
 #printExportArea{display:none;}
+/* compte visiteur */
+.account-btn{white-space:nowrap; max-width:170px; overflow:hidden; text-overflow:ellipsis;}
+@media(max-width:860px){ .account-btn{padding:9px 10px; font-size:0.78rem; max-width:110px;} }
+body:not(.is-admin) .edit-fab{display:none;}
+.acc-tabs{display:flex; gap:6px; margin-bottom:16px;}
+.acc-tabs button{flex:1; background:none; border:1px solid var(--line); color:var(--grey); padding:9px; cursor:pointer; font-family:inherit;}
+.acc-tabs button.active{border-color:var(--orange); color:var(--orange);}
+.acc-link{background:none; border:0; color:var(--grey); text-decoration:underline; cursor:pointer; font-family:inherit; font-size:0.8rem; padding:0;}
+.acc-rec{border:1px solid var(--line); padding:12px 14px; margin-bottom:10px; display:flex; justify-content:space-between; gap:10px; align-items:center; flex-wrap:wrap;}
+.acc-rec b{display:block;}
+.acc-rec small{color:var(--grey);}
+/* espace admin */
+.admin-panel{position:fixed; inset:0; z-index:150; background:var(--black); display:none; flex-direction:column;}
+.admin-panel.show{display:flex;}
+.admin-top{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 22px; border-bottom:1px solid var(--line); flex-wrap:wrap;}
+.admin-top h2{font-family:'Anton',sans-serif; text-transform:uppercase; font-size:1.3rem;}
+.admin-top .admin-actions{display:flex; gap:8px; flex-wrap:wrap;}
+.admin-tabs{display:flex; gap:6px; padding:12px 22px; border-bottom:1px solid var(--line); overflow-x:auto;}
+.admin-tabs button{white-space:nowrap; background:none; border:1px solid var(--line); color:var(--grey); padding:8px 12px; font-size:0.8rem; cursor:pointer; font-family:inherit;}
+.admin-tabs button.active{border-color:var(--orange); color:var(--orange);}
+.admin-tabs .count{display:inline-block; margin-left:6px; font-size:0.7rem; background:var(--orange); color:var(--black); padding:0 6px;}
+.admin-body{flex:1; overflow:auto; padding:18px 22px 40px;}
+.admin-filters{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;}
+.admin-filters input, .admin-filters select{background:var(--surface); border:1px solid var(--line); color:var(--cream); padding:9px 10px; font-family:inherit; font-size:0.85rem;}
+.admin-filters input{flex:1; min-width:180px;}
+.admin-table{width:100%; border-collapse:collapse; font-size:0.84rem;}
+.admin-table th{background:var(--surface); color:var(--grey); font-size:0.7rem; text-transform:uppercase; letter-spacing:0.04em; text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); white-space:nowrap;}
+.admin-table td{padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top;}
+.admin-table td.num{text-align:right; white-space:nowrap;}
+.admin-table .ref{font-family:monospace; font-size:0.78rem; color:var(--grey); white-space:nowrap;}
+.admin-stats{display:grid; grid-template-columns:repeat(auto-fill, minmax(170px,1fr)); gap:12px; margin-bottom:24px;}
+.admin-stat{border:1px solid var(--line); background:var(--surface); padding:14px 16px;}
+.admin-stat .n{font-size:1.5rem; font-weight:700; color:var(--orange);}
+.admin-stat .l{font-size:0.78rem; color:var(--grey);}
+.admin-card{border:1px solid var(--line); background:var(--surface); padding:14px 16px; margin-bottom:12px;}
+.admin-card h4{margin-bottom:6px;}
+.admin-card .muted{color:var(--grey); font-size:0.8rem;}
 /* documents client : fiche d'inscription, bon de commande, facture */
 .doc-sheet-wrap{max-height:72vh; overflow:auto; background:#e9e5de; padding:14px; margin-bottom:14px;}
 .mdoc{background:#fff; color:#111; padding:28px 30px; font-family:'Space Grotesk', Arial, sans-serif; font-size:13px; line-height:1.45; max-width:720px; margin:0 auto;}
@@ -588,7 +625,7 @@ body.edit-mode .view-only{display:none;}
 .announce-edit-row .icon-btn:hover{border-color:var(--black);}
 .announce-add-btn{background:none; border:1px dashed rgba(10,10,9,0.5); color:var(--black); font-size:0.78rem; padding:6px 14px; cursor:pointer; font-family:inherit;}
 
-.pw-modal-overlay{position:fixed; inset:0; background:rgba(10,10,9,0.85); z-index:140; display:none; align-items:center; justify-content:center; padding:20px;}
+.pw-modal-overlay{position:fixed; inset:0; background:rgba(10,10,9,0.85); z-index:160; display:none; align-items:center; justify-content:center; padding:20px;}
 .pw-modal-overlay.show{display:flex;}
 .pw-modal{background:var(--surface); border:1px solid var(--orange); padding:34px 30px; width:min(360px,100%);}
 .pw-modal h3{font-family:'Anton',sans-serif; margin-bottom:10px; text-transform:uppercase;}
@@ -597,7 +634,7 @@ body.edit-mode .view-only{display:none;}
 .pw-modal input:focus{border-color:var(--orange); outline:none;}
 .pw-modal .pw-actions{display:flex; gap:10px;}
 
-.toast{position:fixed; bottom:90px; right:24px; background:var(--surface); border:1px solid var(--orange); color:var(--cream); padding:12px 18px; font-size:0.85rem; z-index:160; opacity:0; transform:translateY(8px); transition:all 0.25s ease;}
+.toast{position:fixed; bottom:90px; right:24px; background:var(--surface); border:1px solid var(--orange); color:var(--cream); padding:12px 18px; font-size:0.85rem; z-index:200; opacity:0; transform:translateY(8px); transition:all 0.25s ease;}
 .toast.show{opacity:1; transform:translateY(0);}
 .storage-warning{font-size:0.72rem; color:var(--grey); padding:8px 20px 0; text-align:center;}
 </style>
@@ -699,6 +736,7 @@ body.edit-mode .view-only{display:none;}
         <span class="lang-switch-opt">🇫🇷</span>
         <span class="lang-switch-opt">🇬🇧</span>
       </button>
+      <button class="cart-btn account-btn" id="accountBtn" type="button">Se connecter</button>
       <button class="cart-btn" id="cartOpenBtn" aria-label="Ouvrir le panier">Panier <span class="cart-count" id="cartCount">0</span></button>
       <button class="burger" id="burgerBtn" aria-label="Menu">☰</button>
     </div>
@@ -1330,7 +1368,7 @@ body.edit-mode .view-only{display:none;}
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© 2026 Mot'eau. Tous droits réservés.</span>
+      <span>© 2026 Mot'eau. Tous droits réservés. · <a href="#" id="adminLoginLink" style="color:var(--grey);">🔒 Espace admin</a></span>
       <span id="contactLocation" data-editable data-section="contact" data-field="location"></span>
     </div>
   </div>
@@ -1378,6 +1416,25 @@ body.edit-mode .view-only{display:none;}
       <button class="btn btn-ghost" id="pwCancel" style="flex:1;">Annuler</button>
     </div>
   </div>
+</div>
+
+<div class="pw-modal-overlay" id="accountOverlay">
+  <div class="pw-modal" style="width:min(520px,100%); max-height:90vh; overflow:auto;" id="accountModal"></div>
+</div>
+
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-top">
+    <h2>🔒 Espace admin</h2>
+    <div class="admin-actions">
+      <button class="small-btn solid" id="adminEditSiteBtn">✏️ Modifier le site</button>
+      <button class="small-btn" id="adminRefreshBtn">🔄 Actualiser</button>
+      <button class="small-btn" id="adminExportBtn">⬇️ Exporter (Excel)</button>
+      <button class="small-btn" id="adminLogoutBtn2">Se déconnecter</button>
+      <button class="small-btn" id="adminCloseBtn">✕ Fermer</button>
+    </div>
+  </div>
+  <div class="admin-tabs" id="adminTabs"></div>
+  <div class="admin-body" id="adminBody"></div>
 </div>
 
 <div class="pw-modal-overlay" id="docOverlay">
@@ -1570,24 +1627,51 @@ document.getElementById('storageWarning').textContent = "";
    ============================================================ */
 const FIREBASE_API_KEY = "AIzaSyDMdz5I1kGdB5QbSQi4PCVvgIr9SXQ6jvc";
 const ADMIN_EMAIL = "timaobausmayer04@gmail.com";
-let ADMIN_AUTH = null; // { idToken, refreshToken, expiresAt, email }
+let AUTH = null; // { idToken, refreshToken, expiresAt, email, uid } — admin OU visiteur connecté
 
 function storeAdminRefreshToken(token){
   try{ token ? localStorage.setItem('moteau_admin_rt', token) : localStorage.removeItem('moteau_admin_rt'); }catch(err){}
 }
-function setAdminAuth(idToken, refreshToken, expiresInSec, email){
-  ADMIN_AUTH = { idToken, refreshToken, email: String(email||'').toLowerCase(), expiresAt: Date.now() + (parseInt(expiresInSec)||3600)*1000 };
+function setAdminAuth(idToken, refreshToken, expiresInSec, email, uid){
+  AUTH = { idToken, refreshToken, uid, email: String(email||'').toLowerCase(), expiresAt: Date.now() + (parseInt(expiresInSec)||3600)*1000 };
   storeAdminRefreshToken(refreshToken);
 }
-function isAdmin(){ return !!ADMIN_AUTH && ADMIN_AUTH.email === ADMIN_EMAIL.toLowerCase(); }
-async function adminSignIn(email, password){
-  const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
-    method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ email, password, returnSecureToken:true })
+function isAdmin(){ return !!AUTH && AUTH.email === ADMIN_EMAIL.toLowerCase(); }
+function isLoggedIn(){ return !!AUTH && !!AUTH.uid; }
+const AUTH_ERRORS = {
+  EMAIL_EXISTS: "Un compte existe déjà avec cet e-mail — connectez-vous.",
+  INVALID_EMAIL: "Adresse e-mail invalide.",
+  WEAK_PASSWORD: "Mot de passe trop court (6 caractères minimum).",
+  OPERATION_NOT_ALLOWED: "La création de compte n'est pas encore activée sur le site.",
+  ADMIN_ONLY_OPERATION: "La création de compte n'est pas encore activée sur le site.",
+  TOO_MANY_ATTEMPTS_TRY_LATER: "Trop d'essais — réessayez dans quelques minutes.",
+  INVALID_LOGIN_CREDENTIALS: "E-mail ou mot de passe incorrect.",
+  INVALID_PASSWORD: "E-mail ou mot de passe incorrect.",
+  EMAIL_NOT_FOUND: "E-mail ou mot de passe incorrect.",
+  USER_DISABLED: "Ce compte a été désactivé."
+};
+function authErrorText(err){
+  const code = String(err && err.message || '').split(' ')[0].split(':')[0];
+  return AUTH_ERRORS[code] || "Une erreur est survenue — réessayez.";
+}
+async function identityCall(method, body){
+  const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:${method}?key=${FIREBASE_API_KEY}`, {
+    method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
   });
   const data = await res.json();
-  if(!res.ok) throw new Error((data.error && data.error.message) || 'LOGIN_FAILED');
-  setAdminAuth(data.idToken, data.refreshToken, data.expiresIn, data.email);
+  if(!res.ok) throw new Error((data.error && data.error.message) || 'AUTH_FAILED');
+  return data;
+}
+async function userSignUp(email, password){
+  const data = await identityCall('signUp', { email, password, returnSecureToken:true });
+  setAdminAuth(data.idToken, data.refreshToken, data.expiresIn, data.email, data.localId);
+}
+async function sendPasswordReset(email){
+  await identityCall('sendOobCode', { requestType:'PASSWORD_RESET', email });
+}
+async function adminSignIn(email, password){
+  const data = await identityCall('signInWithPassword', { email, password, returnSecureToken:true });
+  setAdminAuth(data.idToken, data.refreshToken, data.expiresIn, data.email, data.localId);
 }
 async function adminRefresh(refreshToken){
   const res = await fetch(`https://securetoken.googleapis.com/v1/token?key=${FIREBASE_API_KEY}`, {
@@ -1598,7 +1682,7 @@ async function adminRefresh(refreshToken){
   if(!res.ok) throw new Error('REFRESH_FAILED');
   // l'email n'est pas renvoyé ici : on le relit dans le jeton
   const payload = JSON.parse(atob(data.id_token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
-  setAdminAuth(data.id_token, data.refresh_token, data.expires_in, payload.email);
+  setAdminAuth(data.id_token, data.refresh_token, data.expires_in, payload.email, data.user_id || payload.user_id || payload.sub);
 }
 /* À la première connexion admin : on range les anciennes données au nouvel endroit sécurisé */
 async function migrateToSecureStorage(){
@@ -1619,19 +1703,19 @@ async function restoreAdminSession(){
   try{ rt = localStorage.getItem('moteau_admin_rt'); }catch(err){}
   if(!rt) return;
   try{ await adminRefresh(rt); }
-  catch(err){ ADMIN_AUTH = null; storeAdminRefreshToken(null); }
+  catch(err){ AUTH = null; storeAdminRefreshToken(null); }
 }
 function adminSignOut(){
-  ADMIN_AUTH = null; storeAdminRefreshToken(null);
+  AUTH = null; storeAdminRefreshToken(null);
   location.reload();
 }
 async function authQuery(){
-  if(!ADMIN_AUTH) return '';
-  if(Date.now() > ADMIN_AUTH.expiresAt - 60000){
-    try{ await adminRefresh(ADMIN_AUTH.refreshToken); }
-    catch(err){ ADMIN_AUTH = null; storeAdminRefreshToken(null); return ''; }
+  if(!AUTH) return '';
+  if(Date.now() > AUTH.expiresAt - 60000){
+    try{ await adminRefresh(AUTH.refreshToken); }
+    catch(err){ AUTH = null; storeAdminRefreshToken(null); return ''; }
   }
-  return `?auth=${encodeURIComponent(ADMIN_AUTH.idToken)}`;
+  return `?auth=${encodeURIComponent(AUTH.idToken)}`;
 }
 function dbUrl(path){ return `${FIREBASE_DB_URL}/moteau/${path}.json`; }
 async function dbRequest(path, method, body){
@@ -1707,7 +1791,13 @@ async function loadSection(key){
 /* Ajout d'un élément par un visiteur (création seule, jamais de modification) */
 async function addItem(key, item){
   try{
+    if(isLoggedIn() && !isAdmin()) item.uid = AUTH.uid;
     await dbRequest(encodeURIComponent(key), 'POST', item);
+    if(item.uid && item.ref){
+      // copie dans « Mon compte » du visiteur (lui seul peut la lire)
+      try{ await dbRequest(`userRecords/${AUTH.uid}/${item.ref}`, 'PUT', { ...item, coll:key }); }catch(err){ console.error(err); }
+    }
+    setTimeout(prefillForms, 60);
     if(!Array.isArray(STATE[key])) STATE[key] = [];
     NEWEST_FIRST_KEYS.includes(key) ? STATE[key].unshift(item) : STATE[key].push(item);
     return true;
@@ -1716,6 +1806,14 @@ async function addItem(key, item){
     showToast("Erreur d'envoi — vérifie ta connexion internet et réessaie.");
     return false;
   }
+}
+/* Marque payé / non payé (admin) et met à jour la copie dans le compte du client */
+function setPaid(arr, idx, paid){
+  const rec = STATE[arr][idx]; if(!rec) return;
+  rec.paid = paid;
+  rec.paidDate = paid ? new Date().toLocaleDateString('fr-FR') : null;
+  saveSection(arr);
+  if(rec.uid && rec.ref) patchPath(`userRecords/${rec.uid}/${rec.ref}`, { paid: rec.paid, paidDate: rec.paidDate });
 }
 async function patchPath(path, fields){
   try{ await dbRequest(path, 'PATCH', fields); return true; }
@@ -2308,8 +2406,13 @@ document.getElementById('signupConfirm').addEventListener('click', async () => {
   row.participants = row.participants || [];
   if(max && row.participants.length >= max){ showToast("Désolé, cette session est complète."); document.getElementById('signupOverlay').classList.remove('show'); renderPlanning(); return; }
   const participant = { name, email, date: new Date().toLocaleDateString('fr-FR') };
+  if(isLoggedIn() && !isAdmin()) participant.uid = AUTH.uid;
   try{ await dbRequest(`planning/${signupRowIdx}/participants`, 'POST', participant); }
   catch(err){ showToast("Erreur d'envoi — vérifie ta connexion internet et réessaie."); return; }
+  if(participant.uid){
+    const ref = genRef('SEA');
+    try{ await dbRequest(`userRecords/${AUTH.uid}/${ref}`, 'PUT', { ref, coll:'planning', name, email, date: participant.date, session: `${row.name || typeLabel(row.type)} — ${row.date}${row.time?' '+row.time:''}` }); }catch(err){}
+  }
   row.participants.push(participant);
   document.getElementById('signupOverlay').classList.remove('show');
   showToast("Inscription confirmée !");
@@ -3403,8 +3506,8 @@ document.getElementById('loansBody').addEventListener('click', e => {
   const payBtn = e.target.closest('[data-loanpay]');
   if(payBtn){
     const idx = parseInt(payBtn.dataset.loanpay);
-    STATE.equipmentLoans[idx].paid = !STATE.equipmentLoans[idx].paid;
-    saveSection('equipmentLoans'); renderLoans();
+    setPaid('equipmentLoans', idx, !STATE.equipmentLoans[idx].paid);
+    renderLoans();
     return;
   }
   const actBtn = e.target.closest('[data-loanaction]');
@@ -3614,9 +3717,8 @@ document.getElementById('submissionsBody').addEventListener('click', e => {
   const markBtn = e.target.closest('[data-mark]');
   if(markBtn){
     const arr = markBtn.dataset.mark, idx = parseInt(markBtn.dataset.markidx);
-    STATE[arr][idx].paid = !STATE[arr][idx].paid;
-    STATE[arr][idx].paidDate = STATE[arr][idx].paid ? new Date().toLocaleDateString('fr-FR') : null;
-    saveSection(arr); renderSubmissions();
+    setPaid(arr, idx, !STATE[arr][idx].paid);
+    renderSubmissions();
     return;
   }
   const delBtn = e.target.closest('[data-arr]');
@@ -4714,6 +4816,337 @@ document.getElementById('cartCheckoutBtn').addEventListener('click', async () =>
   renderCart();
 });
 /* ============================================================
+   COMPTES VISITEURS — « Se connecter » en haut à droite
+   Le visiteur retrouve ses inscriptions, commandes et documents.
+   ============================================================ */
+let USER_PROFILE = null;
+let accountTab = 'login';
+function renderAccountButton(){
+  const btn = document.getElementById('accountBtn');
+  if(isAdmin()) btn.textContent = '🔒 Admin';
+  else if(isLoggedIn()) btn.textContent = '👤 ' + ((USER_PROFILE && USER_PROFILE.name) ? USER_PROFILE.name.split(' ')[0] : 'Mon compte');
+  else btn.textContent = 'Se connecter';
+}
+async function loadUserProfile(){
+  try{ USER_PROFILE = await dbRequest(`userProfiles/${AUTH.uid}`, 'GET') || {}; }catch(err){ USER_PROFILE = {}; }
+  renderAccountButton(); prefillForms();
+}
+const PREFILL_FIELDS = [
+  ['regName','name'],['regEmail','email'],['regPhone','phone'],['memName','name'],['memEmail','email'],['memPhone','phone'],
+  ['cartName','name'],['cartEmail','email'],['loanName','name'],['loanEmail','email'],['signupName','name'],['signupEmail','email'],
+  ['waiverSignerName','name'],['waiverEmail','email'],['notifName','name'],['notifEmail','email'],['notifPhone','phone'],
+  ['reviewName','name'],['giftBuyerName','name'],['giftBuyerEmail','email'],['donName','name'],['donEmail','email'],['clubMsgName','name']
+];
+function prefillForms(){
+  if(!isLoggedIn() || isAdmin()) return;
+  const data = { name:(USER_PROFILE&&USER_PROFILE.name)||'', phone:(USER_PROFILE&&USER_PROFILE.phone)||'', email:AUTH.email };
+  PREFILL_FIELDS.forEach(([id, f]) => { const el = document.getElementById(id); if(el && !el.value && data[f]) el.value = data[f]; });
+}
+const COLL_LABELS = { registrations:'Inscription compétition', memberships:'Adhésion', orders:'Commande boutique', equipmentLoans:'Prêt d\'équipement', donationRecords:'Don', planning:'Séance' };
+function openAccount(){
+  if(isAdmin()){ openAdminPanel(); return; }
+  renderAccountModal();
+  document.getElementById('accountOverlay').classList.add('show');
+}
+function closeAccount(){ document.getElementById('accountOverlay').classList.remove('show'); }
+async function renderAccountModal(){
+  const box = document.getElementById('accountModal');
+  if(!isLoggedIn()){
+    const signup = accountTab === 'signup';
+    box.innerHTML = `
+      <h3>${signup ? 'Créer un compte' : 'Se connecter'}</h3>
+      <p>Retrouvez vos inscriptions, commandes et documents, et gagnez du temps : vos infos sont pré-remplies.</p>
+      <div class="acc-tabs"><button data-acctab="login" class="${signup?'':'active'}">J'ai un compte</button><button data-acctab="signup" class="${signup?'active':''}">Créer un compte</button></div>
+      ${signup ? '<input type="text" id="accName" placeholder="Prénom et nom" autocomplete="name">' : ''}
+      <input type="email" id="accEmail" placeholder="Adresse e-mail" autocomplete="username">
+      <input type="password" id="accPassword" placeholder="Mot de passe${signup?' (6 caractères minimum)':''}" autocomplete="${signup?'new-password':'current-password'}">
+      <div class="pw-actions"><button class="btn btn-solid" id="accSubmit" style="flex:1;">${signup ? 'Créer mon compte' : 'Se connecter'}</button><button class="btn btn-ghost" id="accCancel" style="flex:1;">Fermer</button></div>
+      ${signup ? '' : '<p style="margin:14px 0 0;"><button class="acc-link" id="accForgot">Mot de passe oublié ?</button></p>'}`;
+    return;
+  }
+  box.innerHTML = `
+    <h3>Mon compte</h3>
+    <p>${escSearch(AUTH.email)}</p>
+    <div class="form-field"><label>Prénom et nom</label><input type="text" id="accProfName" value="${escSearch((USER_PROFILE&&USER_PROFILE.name)||'')}"></div>
+    <div class="form-field"><label>Téléphone</label><input type="text" id="accProfPhone" value="${escSearch((USER_PROFILE&&USER_PROFILE.phone)||'')}"></div>
+    <button class="small-btn solid" id="accSaveProfile" style="margin-bottom:20px;">Enregistrer mes infos</button>
+    <h4 style="margin-bottom:10px;">Mes inscriptions, commandes et documents</h4>
+    <div id="accRecords"><p style="color:var(--grey);">Chargement…</p></div>
+    <div class="pw-actions" style="margin-top:16px;"><button class="btn btn-ghost" id="accLogout" style="flex:1;">Se déconnecter</button><button class="btn btn-solid" id="accCancel" style="flex:1;">Fermer</button></div>`;
+  let recs = [];
+  try{ recs = Object.values(await dbRequest(`userRecords/${AUTH.uid}`, 'GET') || {}); }catch(err){}
+  recs.sort((a,b) => String(b.ref).localeCompare(String(a.ref)));
+  window._accRecs = recs;
+  document.getElementById('accRecords').innerHTML = recs.length ? recs.map((r, i) => {
+    const status = r.coll === 'planning' ? '<span class="pay-badge paid">Inscrit</span>'
+      : r.paid ? '<span class="pay-badge paid">Payé</span>'
+      : `<span class="pay-badge pending">${r.method === 'sur_place' ? 'À payer sur place' : 'Paiement en vérification'}</span>`;
+    const detail = r.coll === 'registrations' ? r.competition : r.coll === 'orders' ? r.itemsSummary : r.coll === 'equipmentLoans' ? r.equipmentName : r.coll === 'planning' ? r.session : (r.label || '');
+    return `<div class="acc-rec"><div><b>${escSearch(COLL_LABELS[r.coll]||'')}</b><small>${escSearch(detail||'')} · ${escSearch(r.date||'')} · ${escSearch(r.ref||'')}</small></div>
+      <div>${status} ${r.coll !== 'planning' ? `<button class="mark-paid-btn" data-accdoc="${i}">📄 ${r.coll==='orders' && r.paid ? 'Facture' : 'Document'}</button>` : ''}</div></div>`;
+  }).join('') : '<p style="color:var(--grey);">Rien pour le moment. Vos prochaines inscriptions et commandes apparaîtront ici.</p>';
+}
+document.getElementById('accountBtn').addEventListener('click', openAccount);
+document.getElementById('accountOverlay').addEventListener('click', async e => {
+  if(e.target.id === 'accountOverlay' || e.target.id === 'accCancel'){ closeAccount(); return; }
+  const tab = e.target.closest('[data-acctab]');
+  if(tab){ accountTab = tab.dataset.acctab; renderAccountModal(); return; }
+  const docBtn = e.target.closest('[data-accdoc]');
+  if(docBtn){
+    const r = window._accRecs[parseInt(docBtn.dataset.accdoc)];
+    closeAccount();
+    openDocument(docFromRecord(r.coll, r, r.coll === 'orders' && r.paid));
+    return;
+  }
+  if(e.target.id === 'accLogout'){ adminSignOut(); return; }
+  if(e.target.id === 'accSaveProfile'){
+    USER_PROFILE = { name: document.getElementById('accProfName').value.trim(), phone: document.getElementById('accProfPhone').value.trim() };
+    try{ await dbRequest(`userProfiles/${AUTH.uid}`, 'PUT', USER_PROFILE); showToast('Infos enregistrées'); }
+    catch(err){ showToast("Erreur d'enregistrement — réessayez."); }
+    renderAccountButton(); prefillForms();
+    return;
+  }
+  if(e.target.id === 'accForgot'){
+    const email = normEmail(document.getElementById('accEmail').value);
+    if(!email){ showToast("Tapez d'abord votre e-mail."); return; }
+    try{ await sendPasswordReset(email); }catch(err){}
+    showToast("Si un compte existe, un e-mail pour changer le mot de passe a été envoyé.");
+    return;
+  }
+  if(e.target.id === 'accSubmit'){
+    const email = normEmail(document.getElementById('accEmail').value);
+    const password = document.getElementById('accPassword').value;
+    if(!email || !password){ showToast("Entrez votre e-mail et votre mot de passe."); return; }
+    e.target.disabled = true;
+    try{
+      if(accountTab === 'signup'){
+        const name = (document.getElementById('accName').value || '').trim();
+        await userSignUp(email, password);
+        if(name){ try{ await dbRequest(`userProfiles/${AUTH.uid}`, 'PUT', { name, phone:'' }); }catch(err){} }
+        showToast('Compte créé, bienvenue !');
+      } else {
+        await adminSignIn(email, password);
+        showToast('Connecté');
+      }
+      location.reload();
+    }catch(err){ showToast(authErrorText(err)); e.target.disabled = false; }
+  }
+});
+document.getElementById('accountOverlay').addEventListener('keydown', e => {
+  if(e.key === 'Enter' && e.target.tagName === 'INPUT' && document.getElementById('accSubmit')) document.getElementById('accSubmit').click();
+});
+
+/* ============================================================
+   ESPACE ADMIN — tout le suivi au même endroit
+   ============================================================ */
+let adminTab = 'overview', adminSearch = '', adminStatus = 'all';
+const MONEY_COLLS = ['registrations','memberships','orders','equipmentLoans','donationRecords'];
+const ADMIN_TABS = [
+  { id:'overview', label:"Vue d'ensemble" },
+  { id:'registrations', label:'Inscriptions compét.' },
+  { id:'memberships', label:'Adhésions' },
+  { id:'orders', label:'Commandes & factures' },
+  { id:'equipmentLoans', label:'Prêts' },
+  { id:'donationRecords', label:'Dons' },
+  { id:'sessions', label:'Séances' },
+  { id:'competitions', label:'Compétitions' },
+  { id:'giftCards', label:'Cartes cadeaux' },
+  { id:'waivers', label:'Attestations' },
+  { id:'notifications', label:'Abonnés' }
+];
+function recAmount(arr, rec){ return docFromRecord(arr, rec).lines.reduce((t,l) => t + (Number(l.amount)||0), 0); }
+function recDetail(arr, r){
+  if(arr === 'registrations') return r.competition + (r.memberClaim ? ' (adhérent)' : '');
+  if(arr === 'memberships') return 'Cotisation' + (r.referrer ? ` — parrain : ${r.referrer}` : '');
+  if(arr === 'orders') return (r.itemsSummary||'') + (r.promoCode?` [code ${r.promoCode}]`:'') + (r.hasPreorder?' 🕓 précommande':'');
+  if(arr === 'equipmentLoans') return `${r.equipmentName}${r.wantedDate?' — le '+r.wantedDate:''} · ${LOAN_STATUS_LABELS[r.status]||r.status||''}`;
+  if(arr === 'donationRecords') return r.label || 'Don';
+  return '';
+}
+function statusLabel(r){
+  if(r.paid) return `<span class="pay-badge paid">Payé${r.method==='sur_place'?' sur place':' en ligne'}</span>`;
+  return r.method === 'sur_place' ? '<span class="pay-badge pending">À payer sur place</span>' : '<span class="pay-badge pending">En ligne — à vérifier</span>';
+}
+function moneyRows(colls){
+  const q = normSearch(adminSearch);
+  const rows = [];
+  colls.forEach(arr => (STATE[arr]||[]).forEach((r, idx) => {
+    if(!r) return;
+    if(adminStatus === 'paid' && !r.paid) return;
+    if(adminStatus === 'place' && (r.paid || r.method !== 'sur_place')) return;
+    if(adminStatus === 'online' && (r.paid || r.method === 'sur_place')) return;
+    const detail = recDetail(arr, r);
+    if(q && !normSearch(`${r.ref||''} ${r.name||''} ${r.email||''} ${r.phone||''} ${detail}`).includes(q)) return;
+    rows.push({ arr, idx, r, detail, amount: recAmount(arr, r) });
+  }));
+  return rows.reverse();
+}
+function adminCounts(){
+  const pending = arr => (STATE[arr]||[]).filter(r => r && !r.paid).length;
+  return {
+    registrations: pending('registrations'), memberships: pending('memberships'), orders: pending('orders'),
+    equipmentLoans: pending('equipmentLoans'), donationRecords: pending('donationRecords'),
+    giftCards: (STATE.giftCards||[]).filter(g => g.pending).length
+  };
+}
+function openAdminPanel(){
+  if(!isAdmin()) return;
+  document.getElementById('adminPanel').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  renderAdminPanel();
+}
+function closeAdminPanel(){
+  document.getElementById('adminPanel').classList.remove('show');
+  document.body.style.overflow = '';
+}
+function renderAdminPanel(){
+  const counts = adminCounts();
+  document.getElementById('adminTabs').innerHTML = ADMIN_TABS.map(t =>
+    `<button data-admintab="${t.id}" class="${adminTab===t.id?'active':''}">${t.label}${counts[t.id]?`<span class="count" title="à traiter">${counts[t.id]}</span>`:''}</button>`).join('');
+  const body = document.getElementById('adminBody');
+  const e = escSearch;
+  const filters = (placeholder) => `<div class="admin-filters">
+      <input type="search" id="adminSearchInput" placeholder="${placeholder}" value="${e(adminSearch)}">
+      <select id="adminStatusSelect">
+        <option value="all" ${adminStatus==='all'?'selected':''}>Tous</option>
+        <option value="paid" ${adminStatus==='paid'?'selected':''}>Payés</option>
+        <option value="place" ${adminStatus==='place'?'selected':''}>À payer sur place</option>
+        <option value="online" ${adminStatus==='online'?'selected':''}>En ligne — à vérifier</option>
+      </select></div>`;
+  const table = rows => rows.length ? `<div class="table-wrap"><table class="admin-table"><thead><tr><th>Réf.</th><th>Date</th><th>Type</th><th>Nom</th><th>Contact</th><th>Détail</th><th>Montant</th><th>Paiement</th><th></th></tr></thead><tbody>
+      ${rows.map(x => `<tr>
+        <td class="ref">${e(x.r.ref||'—')}</td><td>${e(x.r.date||'')}</td><td>${e(COLL_LABELS[x.arr]||'')}</td>
+        <td><b>${e(x.r.name||'')}</b>${x.r.uid?' <span title="a un compte">👤</span>':''}</td>
+        <td>${e(x.r.email||'')}${x.r.phone?'<br>'+e(x.r.phone):''}</td>
+        <td>${e(x.detail)}</td><td class="num">${fmtEur(x.amount)}</td>
+        <td>${statusLabel(x.r)}${x.r.paidDate?`<br><small style="color:var(--grey);">le ${e(x.r.paidDate)}</small>`:''}</td>
+        <td style="white-space:nowrap;">
+          <button class="mark-paid-btn" data-apay="${x.arr}:${x.idx}">${x.r.paid?'Marquer non payé':'✅ Marquer payé'}</button>
+          <button class="mark-paid-btn" data-adoc="${x.arr}:${x.idx}">📄 ${x.arr==='orders' && x.r.paid ? 'Facture' : 'Document'}</button>
+          <button class="icon-btn danger" data-adel="${x.arr}:${x.idx}" title="Supprimer">✕</button>
+        </td></tr>`).join('')}
+    </tbody></table></div>` : '<p style="color:var(--grey);">Rien à afficher.</p>';
+
+  if(adminTab === 'overview'){
+    const sum = f => MONEY_COLLS.flatMap(arr => (STATE[arr]||[]).filter(Boolean).filter(f).map(r => recAmount(arr, r))).reduce((a,b) => a+b, 0);
+    const todo = [];
+    MONEY_COLLS.forEach(arr => (STATE[arr]||[]).forEach((r, idx) => { if(r && !r.paid) todo.push({ arr, idx, r, detail: recDetail(arr, r), amount: recAmount(arr, r) }); }));
+    const stats = [
+      [fmtEur(sum(r => r.paid)), 'Encaissé (marqué payé)'],
+      [fmtEur(sum(r => !r.paid && r.method === 'sur_place')), 'À encaisser sur place'],
+      [fmtEur(sum(r => !r.paid && r.method !== 'sur_place')), 'Paiements en ligne à vérifier'],
+      [(STATE.registrations||[]).length, 'Inscriptions compétitions'],
+      [(STATE.memberships||[]).filter(m => m && m.paid).length + ' / ' + (STATE.memberships||[]).length, 'Adhérents à jour / demandes'],
+      [(STATE.orders||[]).length, 'Commandes boutique'],
+      [(STATE.planning||[]).reduce((t,s) => t + ((s && s.participants)||[]).length, 0), 'Inscrits aux séances'],
+      [STATE.visitCount || 0, 'Visites du site']
+    ];
+    body.innerHTML = `<div class="admin-stats">${stats.map(([n,l]) => `<div class="admin-stat"><div class="n">${e(String(n))}</div><div class="l">${l}</div></div>`).join('')}</div>
+      <h3 style="margin-bottom:10px;">⏳ À traiter (pas encore payé)</h3>
+      ${table(todo.reverse().slice(0, 15))}
+      <h3 style="margin:26px 0 10px;">🧾 Tout le suivi</h3>
+      ${filters('Rechercher un nom, un e-mail, une référence…')}
+      ${table(moneyRows(MONEY_COLLS))}`;
+  } else if(MONEY_COLLS.includes(adminTab)){
+    body.innerHTML = filters('Rechercher un nom, un e-mail, une référence…') + table(moneyRows([adminTab]));
+  } else if(adminTab === 'sessions'){
+    const sessions = (STATE.planning||[]).map((s, idx) => ({ s, idx })).filter(x => x.s);
+    body.innerHTML = sessions.length ? sessions.map(({ s, idx }) => {
+      const parts = s.participants || [];
+      return `<div class="admin-card"><h4>${e(s.name || typeLabel(s.type))} — ${e(s.date||'')} ${e(s.time||'')}</h4>
+        <div class="muted">${e(s.place||'')} · ${parts.length}${s.maxParticipants?` / ${e(String(s.maxParticipants))}`:''} inscrit(s)</div>
+        ${parts.length ? `<div style="margin-top:8px; font-size:0.85rem;">${parts.map(p => `${e(p.name||'')} <span class="muted">(${e(p.email||'')})</span>`).join('<br>')}</div>` : ''}
+        <button class="small-btn" data-asession="${idx}" style="margin-top:10px;">Gérer les inscrits</button></div>`;
+    }).join('') : '<p style="color:var(--grey);">Aucune séance au planning.</p>';
+    body.innerHTML += '<button class="small-btn solid" data-agoto="planning" style="margin-top:8px;">✏️ Modifier le planning</button>';
+  } else if(adminTab === 'competitions'){
+    const comps = STATE.competitions || [];
+    body.innerHTML = comps.length ? comps.map(c => {
+      const regs = (STATE.registrations||[]).filter(r => r && r.competition === c.name);
+      return `<div class="admin-card"><h4>${e(c.name||'')} ${c.hidden?'<span class="muted">(masquée)</span>':''}</h4>
+        <div class="muted">${e(c.date||'')} · ${regs.length} inscrit(s) · ${regs.filter(r => r.paid).length} payé(s) · ${(c.pilots||[]).length} pilote(s) avec résultats</div>
+        <button class="small-btn" data-acomp="${e(c.name||'')}" style="margin-top:10px;">Voir les inscrits</button></div>`;
+    }).join('') : '<p style="color:var(--grey);">Aucune compétition.</p>';
+    body.innerHTML += '<button class="small-btn solid" data-agoto="resultats" style="margin-top:8px;">✏️ Modifier les compétitions et résultats</button>';
+  } else if(adminTab === 'giftCards'){
+    body.innerHTML = `<div class="table-wrap"><table class="admin-table"><thead><tr><th>Code</th><th>Date</th><th>Acheteur</th><th>Montant</th><th>Restant</th><th>Statut</th></tr></thead><tbody>
+      ${(STATE.giftCards||[]).slice().reverse().map(g => { const i = STATE.giftCards.indexOf(g); return `<tr><td class="ref">${e(g.code)}</td><td>${e(g.date||'')}</td><td>${e(g.buyerName||'')}<br><small>${e(g.buyerEmail||'')}</small></td>
+        <td class="num">${fmtEur(g.amount)}</td><td class="num">${fmtEur(g.remaining)}</td>
+        <td>${g.pending ? `<span class="pay-badge pending">Paiement à vérifier</span> <button class="mark-paid-btn" data-agift="${i}">Activer</button>` : `<span class="pay-badge ${g.redeemed?'pending':'paid'}">${g.redeemed?'Utilisée':'Active'}</span>`}</td></tr>`; }).join('') || '<tr><td colspan="6" style="color:var(--grey);">Aucune carte cadeau.</td></tr>'}
+    </tbody></table></div>`;
+  } else if(adminTab === 'waivers'){
+    body.innerHTML = `<div class="table-wrap"><table class="admin-table"><thead><tr><th>Date</th><th>Signataire</th><th>E-mail</th><th>Mineur</th><th>Signature</th></tr></thead><tbody>
+      ${(STATE.waivers||[]).slice().reverse().map(w => `<tr><td>${e(w.date||'')}</td><td>${e(w.signerName||'')}</td><td>${e(w.email||'')}</td><td>${w.isMinor?e(w.minorName||'oui'):'—'}</td>
+        <td><span class="pay-badge ${w.signed?'paid':'pending'}">${w.signed?'Signée':'À signer sur place'}</span></td></tr>`).join('') || '<tr><td colspan="5" style="color:var(--grey);">Aucune attestation.</td></tr>'}
+    </tbody></table></div>`;
+  } else if(adminTab === 'notifications'){
+    body.innerHTML = `<div class="table-wrap"><table class="admin-table"><thead><tr><th>Date</th><th>Nom</th><th>E-mail</th><th>Téléphone</th><th>Par</th></tr></thead><tbody>
+      ${(STATE.notifications||[]).slice().reverse().map(n => `<tr><td>${e(n.date||'')}</td><td>${e(n.name||'')}</td><td>${e(n.email||'')}</td><td>${e(n.phone||'')}</td><td>${[n.wantEmail?'E-mail':null, n.wantSms?'SMS':null].filter(Boolean).join(' + ')}</td></tr>`).join('') || '<tr><td colspan="5" style="color:var(--grey);">Aucun abonné.</td></tr>'}
+    </tbody></table></div>`;
+  }
+  const si = document.getElementById('adminSearchInput');
+  if(si){
+    si.addEventListener('input', () => { adminSearch = si.value; const pos = si.selectionStart; renderAdminPanel(); const n = document.getElementById('adminSearchInput'); n.focus(); n.setSelectionRange(pos, pos); });
+    document.getElementById('adminStatusSelect').addEventListener('change', ev => { adminStatus = ev.target.value; renderAdminPanel(); });
+  }
+}
+function exportAdminCsv(){
+  const colls = MONEY_COLLS.includes(adminTab) ? [adminTab] : MONEY_COLLS;
+  const rows = moneyRows(colls);
+  const esc = v => `"${String(v ?? '').replace(/"/g,'""')}"`;
+  const lines = [['Référence','Date','Type','Nom','E-mail','Téléphone','Détail','Montant','Mode de paiement','Payé','Payé le'].map(esc).join(';')]
+    .concat(rows.map(x => [x.r.ref, x.r.date, COLL_LABELS[x.arr], x.r.name, x.r.email, x.r.phone, x.detail, x.amount.toFixed(2).replace('.',','), x.r.method==='sur_place'?'Sur place':'En ligne', x.r.paid?'Oui':'Non', x.r.paidDate].map(esc).join(';')));
+  const blob = new Blob(['\ufeff' + lines.join('\n')], { type:'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `moteau-suivi-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+document.getElementById('adminTabs').addEventListener('click', e => {
+  const b = e.target.closest('[data-admintab]'); if(!b) return;
+  adminTab = b.dataset.admintab; adminSearch = ''; adminStatus = 'all'; renderAdminPanel();
+});
+document.getElementById('adminBody').addEventListener('click', e => {
+  const t = e.target.closest('[data-apay],[data-adoc],[data-adel],[data-agift],[data-asession],[data-acomp],[data-agoto]'); if(!t) return;
+  const [arr, idxStr] = (t.dataset.apay || t.dataset.adoc || t.dataset.adel || '').split(':');
+  const idx = parseInt(idxStr);
+  if(t.dataset.apay){ setPaid(arr, idx, !STATE[arr][idx].paid); renderAdminPanel(); renderSubmissions(); return; }
+  if(t.dataset.adoc){
+    const rec = STATE[arr][idx], invoice = arr === 'orders' && rec.paid;
+    openDocument(docFromRecord(arr, rec, invoice), invoice ? `Facture à imprimer ou à enregistrer en PDF pour l'envoyer à ${rec.email}.` : "Document du client — à imprimer ou enregistrer en PDF.");
+    return;
+  }
+  if(t.dataset.adel){
+    const rec = STATE[arr][idx];
+    if(!confirm(`Supprimer définitivement « ${COLL_LABELS[arr]} — ${rec.name} » ?`)) return;
+    STATE[arr].splice(idx, 1); saveSection(arr); renderAdminPanel(); renderSubmissions();
+    return;
+  }
+  if(t.dataset.agift){
+    const g = STATE.giftCards[parseInt(t.dataset.agift)];
+    if(!confirm(`Activer la carte ${g.code} (${g.amount} €) ?\nFaites-le seulement si vous avez bien reçu le paiement.`)) return;
+    delete g.pending; saveSection('giftCards'); renderGiftCardsIssued(); renderAdminPanel();
+    return;
+  }
+  if(t.dataset.asession){ openParticipantsModal(parseInt(t.dataset.asession)); return; }
+  if(t.dataset.acomp){ adminTab = 'registrations'; adminSearch = t.dataset.acomp; renderAdminPanel(); return; }
+  if(t.dataset.agoto){ closeAdminPanel(); EDIT_MODE = true; applyEditMode(); location.hash = '#' + t.dataset.agoto; }
+});
+document.getElementById('adminCloseBtn').addEventListener('click', closeAdminPanel);
+document.getElementById('adminLogoutBtn2').addEventListener('click', adminSignOut);
+document.getElementById('adminExportBtn').addEventListener('click', exportAdminCsv);
+document.getElementById('adminEditSiteBtn').addEventListener('click', () => { closeAdminPanel(); EDIT_MODE = true; applyEditMode(); showToast("Mode édition activé — cliquez sur un texte ou une image pour le modifier"); });
+document.getElementById('adminRefreshBtn').addEventListener('click', async () => { await loadAll(); renderAdminPanel(); renderSubmissions(); showToast('Données actualisées'); });
+document.getElementById('adminLoginLink').addEventListener('click', e => {
+  e.preventDefault();
+  if(isAdmin()){ openAdminPanel(); return; }
+  document.getElementById('pwOverlay').classList.add('show');
+  document.getElementById('pwInput').value = '';
+  document.getElementById('pwEmail').focus();
+});
+
+/* ============================================================
    DOCUMENTS : fiche d'inscription, d'adhésion, de prêt, bon de commande, facture
    Le client le reçoit juste après avoir validé ; l'admin peut le ré-éditer
    (et éditer la facture) depuis le tableau de bord.
@@ -5029,8 +5462,11 @@ async function init(){
   if(isAdmin()) await migrateToSecureStorage();
   let enterEdit = false;
   try{ enterEdit = sessionStorage.getItem('moteau_enter_edit') === '1'; sessionStorage.removeItem('moteau_enter_edit'); }catch(err){}
-  if(enterEdit && isAdmin()){ EDIT_MODE = true; showToast("Connecté — mode édition activé"); }
+  document.body.classList.toggle('is-admin', isAdmin());
+  renderAccountButton();
+  if(isLoggedIn() && !isAdmin()) loadUserProfile();
   applyEditMode();
+  if(enterEdit && isAdmin()){ openAdminPanel(); showToast("Connecté à l'espace admin"); }
   startAnnounceCycle();
 }
 init();
