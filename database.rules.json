@@ -126,8 +126,23 @@
       "reviews": {
         ".read": true,
         "$id": {
-          ".write": "!data.exists() && newData.exists()",
-          ".validate": "newData.hasChildren()"
+          ".write": "auth != null && $id == auth.uid && !data.exists() && newData.child('uid').val() == auth.uid && (newData.child('verified').val() != true || root.child('moteau/userRecords/' + auth.uid).exists())",
+          ".validate": "newData.hasChildren(['name','rating','comment'])",
+          "rating": {
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5"
+          },
+          "comment": {
+            ".validate": "newData.isString() && newData.val().length <= 1500"
+          },
+          "name": {
+            ".validate": "newData.isString() && newData.val().length <= 60"
+          },
+          "reply": {
+            ".validate": "auth != null && auth.token.email == 'timaobausmayer04@gmail.com'"
+          },
+          "ts": {
+            ".validate": "newData.isNumber() && newData.val() <= now"
+          }
         }
       },
       "visitCount": {
@@ -241,6 +256,9 @@
           ".write": "newData.isNumber() && newData.val() == (data.exists() ? data.val() : 0) + 1",
           ".validate": "$dev == 'mobile' || $dev == 'tablette' || $dev == 'ordinateur'"
         }
+      },
+      "googleReviewLink": {
+        ".read": true
       }
     }
   }

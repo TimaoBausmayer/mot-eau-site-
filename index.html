@@ -453,6 +453,13 @@ body:not(.is-admin) .edit-fab{display:none;}
 .review-card .review-date{color:var(--grey); font-size:0.78rem;}
 .review-card p{color:var(--cream); font-size:0.92rem;}
 .review-card .icon-btn{position:absolute; top:16px; right:16px;}
+.review-badge{font-size:0.72rem; padding:2px 8px; border:1px solid; margin-left:8px; white-space:nowrap;}
+.review-badge.verified{color:#5fbf6c; border-color:#5fbf6c;}
+.review-badge.member{color:var(--grey); border-color:var(--line);}
+.review-reply{margin-top:12px; border-left:3px solid var(--orange); padding:8px 12px; background:var(--surface-2); font-size:0.88rem;}
+.review-reply b{color:var(--orange); display:block; margin-bottom:3px; font-size:0.8rem;}
+.review-reply-edit{margin-top:10px; display:flex; gap:8px;}
+.review-reply-edit textarea{flex:1; background:var(--black); border:1px solid var(--line); color:var(--cream); padding:8px; font-family:inherit; font-size:0.85rem;}
 
 /* tableau de bord */
 .dash-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:40px;}
@@ -1156,7 +1163,13 @@ body.edit-mode .view-only{display:none;}
     </div>
 
     <div class="signup-card" style="max-width:520px; margin-bottom:40px;">
-      <div class="form-field"><label>Votre nom</label><input type="text" id="reviewName" placeholder="Votre nom"></div>
+      <div id="reviewLoginBox" style="display:none;">
+        <p style="margin-bottom:14px;">🔒 Pour garantir de <b>vrais avis</b>, il faut un compte pour en laisser un (un seul avis par personne).</p>
+        <button class="btn btn-solid" style="width:100%;" id="reviewLoginBtn">Se connecter / créer un compte</button>
+      </div>
+      <div id="reviewDoneBox" style="display:none;"><p>✅ Merci, vous avez déjà donné votre avis. Il apparaît ci-dessous.</p></div>
+      <div id="reviewFormBox">
+      <div class="form-field"><label>Nom affiché</label><input type="text" id="reviewName" placeholder="ex : Léa D." maxlength="40"></div>
       <div class="form-field">
         <label>Concernant</label>
         <select id="reviewCategory">
@@ -1176,9 +1189,15 @@ body.edit-mode .view-only{display:none;}
       </div>
       <div class="form-field"><label>Votre avis</label><textarea id="reviewComment" rows="4" placeholder="Racontez votre expérience..." style="width:100%; background:var(--black); border:1px solid var(--line); color:var(--cream); padding:11px 12px; font-family:inherit; font-size:0.9rem; resize:vertical;"></textarea></div>
       <button class="btn btn-solid" style="width:100%;" id="reviewSubmitBtn">Publier mon avis</button>
-      <p class="hint-text" style="margin-top:10px; margin-bottom:0;">Votre avis est publié immédiatement et visible par tous. Il pourra être retiré par le club s'il ne respecte pas les règles de bonne conduite.</p>
+      <p class="hint-text" style="margin-top:10px; margin-bottom:0;">Un seul avis par compte. Si vous avez déjà participé, adhéré ou commandé via votre compte, votre avis porte le badge « Avis vérifié ». Le club peut répondre, et retirer un avis qui ne respecte pas les règles de bonne conduite.</p>
+      </div>
     </div>
 
+    <div id="googleReviewBox" style="margin:-20px 0 30px;"></div>
+    <div class="edit-only link-field" style="max-width:520px; margin-bottom:30px;">
+      <label>Lien « Laisser un avis Google » (fiche Google de Mot'eau, facultatif)</label>
+      <input type="text" id="googleReviewLinkInput" placeholder="https://g.page/r/...">
+    </div>
     <div class="filter-row" id="reviewFilterRow"></div>
     <div id="reviewsList"></div>
   </div>
@@ -1526,6 +1545,7 @@ const DEFAULTS = {
   adminCustomHTML: "",
   passwords: { club: "" },
   clubCodeHash: "",
+  googleReviewLink: "",
   memberNames: [],   // publié automatiquement : prénoms/noms des adhérents à jour (pour l'espace club)
   equipmentOut: [],  // publié automatiquement : nombre d'équipements prêtés, sans données personnelles
   hero: {
@@ -1818,6 +1838,9 @@ async function loadSection(key){
     let data = await dbRequest(key === 'giftCards' ? 'giftCardsByCode' : encodeURIComponent(key), 'GET');
     if(data === null || data === undefined) return;
     if(key === 'giftCards') data = Object.values(data);
+    else if(key === 'reviews') data = (Array.isArray(data) ? data.map((v, i) => [String(i), v]) : Object.entries(data))
+      .filter(([, v]) => v).map(([k, v]) => ({ ...v, _key: k }))
+      .sort((a, b) => (b.ts || 0) - (a.ts || 0) || (a._key < b._key ? 1 : -1));
     else if(Array.isArray(DEFAULTS[key])) data = toArray(data, NEWEST_FIRST_KEYS.includes(key));
     if(key === 'planning') data.forEach(row => { if(row) row.participants = toArray(row.participants); });
     STATE[key] = data;
@@ -3220,12 +3243,40 @@ document.querySelectorAll('#reviewStarsInput [data-star]').forEach(btn => {
 function starsHtml(n){
   return '★'.repeat(n) + '☆'.repeat(5-n);
 }
+/* Vrais avis : un compte = un avis (rangé sous l'identifiant du compte), badge
+   « Avis vérifié » seulement si le compte a déjà une inscription / commande
+   (contrôlé aussi par les règles de la base, impossible à tricher). */
+let MY_REVIEW_DONE = false;
+async function refreshReviewForm(){
+  const logged = isLoggedIn() && !isAdmin();
+  if(logged){
+    try{ MY_REVIEW_DONE = !!(await dbRequest(`reviews/${AUTH.uid}`, 'GET')); }catch(err){ MY_REVIEW_DONE = false; }
+  }
+  document.getElementById('reviewLoginBox').style.display = (!logged && !isAdmin()) ? '' : 'none';
+  document.getElementById('reviewDoneBox').style.display = logged && MY_REVIEW_DONE ? '' : 'none';
+  document.getElementById('reviewFormBox').style.display = logged && !MY_REVIEW_DONE ? '' : 'none';
+  if(logged && !document.getElementById('reviewName').value && USER_PROFILE && USER_PROFILE.name){
+    const parts = USER_PROFILE.name.trim().split(/\s+/);
+    document.getElementById('reviewName').value = parts[0] + (parts[1] ? ' ' + parts[1][0].toUpperCase() + '.' : '');
+  }
+}
+document.getElementById('reviewLoginBtn').addEventListener('click', openAccount);
+document.getElementById('googleReviewLinkInput').addEventListener('change', function(){
+  STATE.googleReviewLink = this.value.trim(); saveSection('googleReviewLink'); renderReviews();
+});
 document.getElementById('reviewSubmitBtn').addEventListener('click', async () => {
-  const name = document.getElementById('reviewName').value.trim();
+  if(!isLoggedIn() || isAdmin()){ openAccount(); return; }
+  const name = document.getElementById('reviewName').value.trim().slice(0, 40);
   const category = document.getElementById('reviewCategory').value;
-  const comment = document.getElementById('reviewComment').value.trim();
+  const comment = document.getElementById('reviewComment').value.trim().slice(0, 1500);
   if(!name || !comment || reviewSelectedStars === 0){ showToast("Merci de renseigner votre nom, une note et un commentaire."); return; }
-  if(!await addItem('reviews', { name, category, rating: reviewSelectedStars, comment, date: new Date().toLocaleDateString('fr-FR') })) return;
+  let verified = false;
+  try{ verified = !!(await dbRequest(`userRecords/${AUTH.uid}`, 'GET')); }catch(err){}
+  const review = { uid: AUTH.uid, name, category, rating: reviewSelectedStars, comment, verified, ts: Date.now(), date: new Date().toLocaleDateString('fr-FR') };
+  try{ await dbRequest(`reviews/${AUTH.uid}`, 'PUT', review); }
+  catch(err){ showToast("Impossible de publier : vous avez peut-être déjà laissé un avis."); refreshReviewForm(); return; }
+  STATE.reviews.unshift({ ...review, _key: AUTH.uid });
+  MY_REVIEW_DONE = true; refreshReviewForm();
   document.getElementById('reviewName').value = '';
   document.getElementById('reviewComment').value = '';
   reviewSelectedStars = 0;
@@ -3246,10 +3297,14 @@ function renderReviews(){
   renderReviewFilters();
   const filtered = STATE.reviews.filter(r => reviewFilterCat === 'all' || r.category === reviewFilterCat);
   const all = STATE.reviews;
-  const avg = all.length ? (all.reduce((s,r)=>s+r.rating,0) / all.length) : 0;
+  const avg = all.length ? (all.reduce((s,r)=>s+(Number(r.rating)||0),0) / all.length) : 0;
+  const nVerified = all.filter(r => r.verified).length;
   document.getElementById('reviewAvgNum').textContent = all.length ? avg.toFixed(1) : '—';
   document.getElementById('reviewAvgStars').textContent = all.length ? starsHtml(Math.round(avg)) : '';
-  document.getElementById('reviewCountLabel').textContent = all.length ? `${all.length} avis` : 'Aucun avis pour le moment';
+  document.getElementById('reviewCountLabel').textContent = all.length ? `${all.length} avis${nVerified ? ` · dont ${nVerified} vérifié${nVerified>1?'s':''}` : ''}` : 'Aucun avis pour le moment';
+  document.getElementById('googleReviewBox').innerHTML = STATE.googleReviewLink
+    ? `<a class="btn btn-ghost" href="${escSearch(STATE.googleReviewLink)}" target="_blank" rel="noopener">⭐ Laisser aussi un avis sur Google</a>` : '';
+  const gli = document.getElementById('googleReviewLinkInput'); if(gli && document.activeElement !== gli) gli.value = STATE.googleReviewLink || '';
 
   const list = document.getElementById('reviewsList');
   list.innerHTML = filtered.length ? filtered.map((r) => {
@@ -3258,20 +3313,35 @@ function renderReviews(){
     <div class="review-card">
       <button class="icon-btn danger edit-only" data-revdel="${realIdx}">✕</button>
       <div class="review-meta">
-        <span class="review-name">${r.name}</span>
-        <span class="tag">${r.category}</span>
+        <span class="review-name">${escSearch(r.name||'')}${r.verified
+          ? '<span class="review-badge verified" title="Cette personne a déjà participé, adhéré ou commandé avec son compte">✓ Avis vérifié</span>'
+          : r.uid ? '<span class="review-badge member" title="Avis laissé avec un compte Mot\'eau">Compte Mot\'eau</span>' : ''}</span>
+        <span class="tag">${escSearch(r.category||'')}</span>
       </div>
-      <div class="stars-display">${starsHtml(r.rating)}</div>
-      <p>${r.comment}</p>
-      <div class="review-date">${r.date}</div>
+      <div class="stars-display">${starsHtml(Math.max(0, Math.min(5, Number(r.rating)||0)))}</div>
+      <p>${escSearch(r.comment||'')}</p>
+      <div class="review-date">${escSearch(r.date||'')}</div>
+      ${r.reply ? `<div class="review-reply"><b>Réponse de Mot'eau</b>${escSearch(r.reply)}</div>` : ''}
+      ${EDIT_MODE ? `<div class="review-reply-edit"><textarea rows="2" data-revreply="${realIdx}" placeholder="Répondre à cet avis (visible par tous)…">${escSearch(r.reply||'')}</textarea><button class="small-btn" data-revreplysave="${realIdx}">Enregistrer</button></div>` : ''}
     </div>
   `;}).join('') : '<p style="color:var(--grey);">Aucun avis dans cette catégorie pour le moment.</p>';
   applyEditMode();
 }
-document.getElementById('reviewsList').addEventListener('click', e => {
+document.getElementById('reviewsList').addEventListener('click', async e => {
+  const save = e.target.closest('[data-revreplysave]');
+  if(save){
+    const r = STATE.reviews[parseInt(save.dataset.revreplysave)];
+    const reply = document.querySelector(`[data-revreply="${save.dataset.revreplysave}"]`).value.trim();
+    try{ await dbRequest(`reviews/${encodeURIComponent(r._key)}/reply`, reply ? 'PUT' : 'DELETE', reply ? reply : undefined); r.reply = reply; showToast('Réponse enregistrée'); }
+    catch(err){ showToast("Erreur d'enregistrement"); }
+    renderReviews(); return;
+  }
   const btn = e.target.closest('[data-revdel]'); if(!btn) return;
-  STATE.reviews.splice(parseInt(btn.dataset.revdel),1);
-  saveSection('reviews'); renderReviews();
+  const r = STATE.reviews[parseInt(btn.dataset.revdel)];
+  if(!confirm(`Supprimer l'avis de ${r.name} ?`)) return;
+  try{ await dbRequest(`reviews/${encodeURIComponent(r._key)}`, 'DELETE'); }catch(err){ showToast("Erreur de suppression"); return; }
+  STATE.reviews.splice(parseInt(btn.dataset.revdel), 1);
+  renderReviews();
 });
 
 /* ---------- espace club (protégé par mot de passe partagé) ---------- */
@@ -4905,13 +4975,13 @@ function renderAccountButton(){
 }
 async function loadUserProfile(){
   try{ USER_PROFILE = await dbRequest(`userProfiles/${AUTH.uid}`, 'GET') || {}; }catch(err){ USER_PROFILE = {}; }
-  renderAccountButton(); prefillForms();
+  renderAccountButton(); prefillForms(); refreshReviewForm();
 }
 const PREFILL_FIELDS = [
   ['regName','name'],['regEmail','email'],['regPhone','phone'],['memName','name'],['memEmail','email'],['memPhone','phone'],
   ['cartName','name'],['cartEmail','email'],['loanName','name'],['loanEmail','email'],['signupName','name'],['signupEmail','email'],
   ['waiverSignerName','name'],['waiverEmail','email'],['notifName','name'],['notifEmail','email'],['notifPhone','phone'],
-  ['reviewName','name'],['giftBuyerName','name'],['giftBuyerEmail','email'],['donName','name'],['donEmail','email'],['clubMsgName','name']
+  ['giftBuyerName','name'],['giftBuyerEmail','email'],['donName','name'],['donEmail','email'],['clubMsgName','name']
 ];
 function prefillForms(){
   if(!isLoggedIn() || isAdmin()) return;
@@ -5592,7 +5662,7 @@ async function init(){
   try{ enterEdit = sessionStorage.getItem('moteau_enter_edit') === '1'; sessionStorage.removeItem('moteau_enter_edit'); }catch(err){}
   document.body.classList.toggle('is-admin', isAdmin());
   renderAccountButton();
-  if(isLoggedIn() && !isAdmin()) loadUserProfile();
+  if(isLoggedIn() && !isAdmin()) loadUserProfile(); else refreshReviewForm();
   applyEditMode();
   if(enterEdit && isAdmin()){ openAdminPanel(); showToast("Connecté à l'espace admin"); }
   startAnnounceCycle();
