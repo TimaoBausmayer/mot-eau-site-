@@ -4393,7 +4393,7 @@ document.getElementById('loanSubmitBtn').addEventListener('click', async () => {
   document.getElementById('loanName').value = '';
   document.getElementById('loanEmail').value = '';
   document.getElementById('loanDate').value = '';
-  if(mode === 'en_ligne' && eq && eq.link){ goToPayment(eq.link, equipmentName); }
+  if(mode === 'en_ligne' && eq && eq.link){ goToPayment(eq.link, equipmentName, loanRec); }
   showToast(mode==='en_ligne' ? "Demande envoyée — redirection vers le paiement." : "Demande de prêt envoyée, paiement sur place. Merci !");
   renderLoans(); renderEquipment();
 });
@@ -4502,7 +4502,7 @@ async function submitMembership(){
   document.getElementById('memEmail').value = '';
   document.getElementById('memPhone').value = '';
   document.getElementById('memReferrer').value = '';
-  if(mode === 'en_ligne' && STATE.membership.link){ goToPayment(STATE.membership.link, 'Cotisation'); }
+  if(mode === 'en_ligne' && STATE.membership.link){ goToPayment(STATE.membership.link, 'Cotisation', memRec); }
   showToast(mode==='en_ligne' ? "Demande envoyée — redirection vers le paiement." : "Demande envoyée, vous paierez sur place. Merci !");
   renderSubmissions();
   renderReferralTracking();
@@ -4552,7 +4552,7 @@ async function submitRegistration(){
   document.getElementById('regEmail').value = '';
   document.getElementById('regPhone').value = '';
   document.getElementById('regMemberCheck').checked = false;
-  if(mode === 'en_ligne' && STATE.competitionFee.link){ goToPayment(STATE.competitionFee.link, 'Inscription compétition'); }
+  if(mode === 'en_ligne' && STATE.competitionFee.link){ goToPayment(STATE.competitionFee.link, 'Inscription compétition', regRec); }
   showToast(mode==='en_ligne' ? "Inscription envoyée — redirection vers le paiement." : "Inscription envoyée, vous paierez sur place. Merci !");
   renderSubmissions();
 }
@@ -5859,7 +5859,7 @@ document.getElementById('cartCheckoutBtn').addEventListener('click', async () =>
 
   if(mode === 'en_ligne'){
     const first = STATE.products[cart[keys[0]].idx];
-    goToPayment(first.link, first.name);
+    goToPayment(first.link, first.name, orderRec);
   } else {
     showToast("Commande enregistrée — à régler sur place. Merci !");
   }
@@ -6778,8 +6778,17 @@ function docFromRecord(arr, rec, asInvoice){
   return { ...base, kind: asInvoice ? 'facture' : 'commande', lines };
 }
 
-function goToPayment(link, label){
+function goToPayment(link, label, rec){
   if(!link){ alert(`Aucun lien de paiement pour "${label}".\n\nEn mode édition, ouvrez ce produit et collez votre lien Stripe ou PayPal dans le champ "Lien de paiement".`); return; }
+  // Lien Stripe : on y joint la référence de la commande pour que le paiement soit reconnu automatiquement
+  try{
+    const u = new URL(link);
+    if(rec && rec.ref && /(^|\.)stripe\.com$/.test(u.hostname)){
+      u.searchParams.set('client_reference_id', rec.ref);
+      if(rec.email) u.searchParams.set('prefilled_email', rec.email);
+      link = u.toString();
+    }
+  }catch(err){ /* lien non standard : ouvert tel quel */ }
   window.open(link, '_blank');
 }
 
