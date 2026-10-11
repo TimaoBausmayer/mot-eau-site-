@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Création de sites in-game</title>
+<meta name="description" content="Sites vitrines, boutiques et pages de recrutement sur mesure pour les joueurs et entreprises de votre jeu.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="announce" class="announce" hidden></div>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="logo" id="logo"></a>
+    <nav class="links" id="links">
+      <a href="#tarifs">Tarifs</a>
+      <a href="#comparatif">Comparatif</a>
+      <a href="#process">Processus</a>
+      <a href="#realisations">Réalisations</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a href="#commande" class="btn btn-sm">Commander</a>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="glow g1"></div><div class="glow g2"></div>
+    <div class="wrap hero-in">
+      <div class="hero-copy">
+        <span class="badge" id="h-badge"></span>
+        <h1><span id="h-title"></span> <span class="grad" id="h-accent"></span></h1>
+        <p class="lead" id="h-text"></p>
+        <div class="cta-row">
+          <a href="#tarifs" class="btn" id="h-cta1"></a>
+          <a href="#commande" class="btn btn-ghost" id="h-cta2"></a>
+        </div>
+      </div>
+      <div class="mock" aria-hidden="true">
+        <div class="mock-bar"><i></i><i></i><i></i><span>ton-site.rp</span></div>
+        <div class="mock-body">
+          <div class="m-hero"></div>
+          <div class="m-row"><div></div><div></div><div></div></div>
+          <div class="m-line w80"></div><div class="m-line w60"></div>
+          <div class="m-btn"></div>
+        </div>
+      </div>
+    </div>
+    <div class="wrap"><div class="stats" id="stats"></div></div>
+  </section>
+
+  <section id="tarifs" class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Tarifs</span><h2>Choisis la gamme qui te correspond</h2><p>Des prix clairs, sans surprise. Tu peux tout personnaliser avec des options.</p></div>
+      <div class="plans" id="plans"></div>
+    </div>
+  </section>
+
+  <section id="comparatif" class="sec alt">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Comparatif</span><h2>Compare les gammes en un coup d'œil</h2></div>
+      <div class="table-wrap"><table class="cmp" id="cmp"></table></div>
+    </div>
+  </section>
+
+  <section id="options" class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Options</span><h2>Va plus loin avec les suppléments</h2></div>
+      <div class="addons" id="addons"></div>
+    </div>
+  </section>
+
+  <section id="process" class="sec alt">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Processus</span><h2>Comment ça marche</h2></div>
+      <div class="steps" id="steps"></div>
+    </div>
+  </section>
+
+  <section id="realisations" class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Réalisations</span><h2>Quelques-uns de mes projets</h2></div>
+      <div class="works" id="works"></div>
+    </div>
+  </section>
+
+  <section id="avis" class="sec alt" hidden>
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Avis</span><h2>Ils m'ont fait confiance</h2></div>
+      <div class="reviews" id="reviews"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap"><div class="guar" id="guar"></div></div>
+  </section>
+
+  <section id="commande" class="sec alt">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Commande</span><h2>Compose ta commande</h2><p>Choisis ta gamme et tes options, le total se calcule tout seul. Envoie-moi ensuite le récapitulatif.</p></div>
+      <div class="order">
+        <form id="order-form" class="order-main" autocomplete="off">
+          <h3>1. Ta gamme</h3>
+          <div class="pick" id="pick"></div>
+          <h3>2. Tes options</h3>
+          <div class="opts" id="opts"></div>
+          <h3>3. Tes informations</h3>
+          <div class="fields">
+            <label>Ton pseudo en jeu<input name="pseudo" required placeholder="Ex : John Dupont"></label>
+            <label>Nom de ton activité<input name="biz" placeholder="Ex : Garage Los Santos"></label>
+            <label class="full">Décris ton projet<textarea name="desc" rows="4" placeholder="Style, couleurs, ce que tu veux sur le site…"></textarea></label>
+          </div>
+        </form>
+        <aside class="summary">
+          <h3>Récapitulatif</h3>
+          <div id="sum-lines"></div>
+          <div class="promo"><input id="promo" placeholder="Code promo"><button type="button" class="btn btn-sm btn-ghost" id="promo-btn">Appliquer</button></div>
+          <p class="promo-msg" id="promo-msg"></p>
+          <div class="total"><span>Total</span><strong id="total">0</strong></div>
+          <p class="small" id="sum-delay"></p>
+          <button type="button" class="btn full-w" id="copy-btn">Copier ma commande</button>
+          <a class="btn btn-ghost full-w" id="discord-btn" target="_blank" rel="noopener">Ouvrir Discord</a>
+          <a class="btn btn-ghost full-w" id="mail-btn">Envoyer par e-mail</a>
+          <p class="small" id="contact-line"></p>
+          <p class="toast" id="toast" role="status"></p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="sec">
+    <div class="wrap narrow">
+      <div class="sec-head"><span class="eyebrow">FAQ</span><h2>Questions fréquentes</h2></div>
+      <div class="faq" id="faq-list"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap"><div class="final">
+      <h2>Prêt à lancer ton site ?</h2>
+      <p>Commande en 2 minutes, reçois ton site en quelques jours.</p>
+      <a href="#commande" class="btn btn-light">Commander maintenant</a>
+    </div></div>
+  </section>
+</main>
+
+<footer class="foot"><div class="wrap"><span id="f-brand"></span><span id="f-text"></span></div></footer>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
