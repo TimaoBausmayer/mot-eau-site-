@@ -360,6 +360,24 @@ body:not(.is-admin) .edit-fab{display:none;}
 .admin-card{border:1px solid var(--line); background:var(--surface); padding:14px 16px; margin-bottom:12px;}
 .admin-card h4{margin-bottom:6px;}
 .admin-card .muted{color:var(--grey); font-size:0.8rem;}
+/* statistiques de visites */
+.vis-chart{display:flex; gap:8px; height:180px; margin-top:12px;}
+.vis-grid{display:flex; flex-direction:column; justify-content:space-between; font-size:0.7rem; color:var(--grey); text-align:right; min-width:24px;}
+.vis-bars{flex:1; display:flex; align-items:flex-end; gap:2px; border-bottom:1px solid var(--line); background:linear-gradient(to bottom, var(--line) 1px, transparent 1px) 0 0/100% 50%;}
+.vis-col{flex:1; height:100%; display:flex; align-items:flex-end; position:relative; cursor:default; outline:none;}
+.vis-bar{width:100%; max-width:22px; margin:0 auto; background:var(--orange); border-radius:4px 4px 0 0; min-height:0;}
+.vis-col:hover .vis-bar, .vis-col:focus .vis-bar{filter:brightness(1.25);}
+.vis-col:hover::after, .vis-col:focus::after{content:attr(data-tip); position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%); background:var(--surface-2); border:1px solid var(--line); color:var(--cream); font-size:0.75rem; padding:5px 8px; white-space:nowrap; z-index:2; pointer-events:none;}
+.vis-col:first-child:hover::after, .vis-col:first-child:focus::after{left:0; transform:none;}
+.vis-col:last-child:hover::after, .vis-col:last-child:focus::after{left:auto; right:0; transform:none;}
+.vis-axis{display:flex; justify-content:space-between; font-size:0.7rem; color:var(--grey); margin:6px 0 0 32px;}
+.vis-split{display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:12px;}
+.vis-hbars{font-size:0.82rem;}
+.vis-hrow{display:grid; grid-template-columns:minmax(0,42%) minmax(0,1fr) 40px; gap:8px; align-items:center; padding:5px 0;}
+.vis-hlabel{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--cream);}
+.vis-hnum{text-align:right; color:var(--cream);}
+.vis-hbar-track{display:block;}
+.vis-hbar{display:block; height:10px; background:var(--orange); border-radius:0 4px 4px 0;}
 /* documents client : fiche d'inscription, bon de commande, facture */
 .doc-sheet-wrap{max-height:72vh; overflow:auto; background:#e9e5de; padding:14px; margin-bottom:14px;}
 .mdoc{background:#fff; color:#111; padding:28px 30px; font-family:'Space Grotesk', Arial, sans-serif; font-size:13px; line-height:1.45; max-width:720px; margin:0 auto;}
@@ -4816,6 +4834,47 @@ document.getElementById('cartCheckoutBtn').addEventListener('click', async () =>
   renderCart();
 });
 /* ============================================================
+   STATISTIQUES DE VISITES (anonymes) — visibles dans l'Espace admin
+   Une visite = une ouverture du site par un navigateur (les rechargements
+   dans la même session ne comptent pas). Les visites de l'admin sont ignorées.
+   ============================================================ */
+const INCREMENT = { '.sv': { increment: 1 } };
+const localDay = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+function onceThisSession(key){
+  try{ if(sessionStorage.getItem(key)) return false; sessionStorage.setItem(key, '1'); }catch(err){}
+  return true;
+}
+function trackVisit(){
+  if(isAdmin()) return;
+  watchSectionViews();
+  if(!onceThisSession('moteau_visit')) return;
+  STATE.visitCount = (STATE.visitCount || 0) + 1;
+  let src = 'direct';
+  try{
+    const host = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, '') : '';
+    if(host && host !== location.hostname) src = host.replace(/[^a-z0-9-]/gi, '_').slice(0, 60);
+  }catch(err){}
+  const w = window.innerWidth;
+  const device = w < 700 ? 'mobile' : w < 1100 ? 'tablette' : 'ordinateur';
+  [ 'visitCount', `visitsByDay/${localDay()}`, `visitSources/${src}`, `visitDevices/${device}` ]
+    .forEach(path => dbRequest(path, 'PUT', INCREMENT).catch(() => {}));
+}
+function watchSectionViews(){
+  if(!('IntersectionObserver' in window)) return;
+  // une partie compte comme « vue » si elle reste à l'écran au moins 1,5 s (pas en défilant)
+  const timers = {};
+  const io = new IntersectionObserver(entries => entries.forEach(en => {
+    const id = en.target.id;
+    if(!en.isIntersecting){ clearTimeout(timers[id]); return; }
+    timers[id] = setTimeout(() => {
+      io.unobserve(en.target);
+      if(/^[a-z]{1,20}$/.test(id) && onceThisSession('moteau_sec_' + id)) dbRequest(`sectionViews/${id}`, 'PUT', INCREMENT).catch(() => {});
+    }, 1500);
+  }), { threshold: 0.35 });
+  document.querySelectorAll('section[id]').forEach(sec => io.observe(sec));
+}
+
+/* ============================================================
    COMPTES VISITEURS — « Se connecter » en haut à droite
    Le visiteur retrouve ses inscriptions, commandes et documents.
    ============================================================ */
@@ -4943,6 +5002,7 @@ let adminTab = 'overview', adminSearch = '', adminStatus = 'all';
 const MONEY_COLLS = ['registrations','memberships','orders','equipmentLoans','donationRecords'];
 const ADMIN_TABS = [
   { id:'overview', label:"Vue d'ensemble" },
+  { id:'visits', label:'👁️ Visites' },
   { id:'registrations', label:'Inscriptions compét.' },
   { id:'memberships', label:'Adhésions' },
   { id:'orders', label:'Commandes & factures' },
@@ -5047,6 +5107,8 @@ function renderAdminPanel(){
       <h3 style="margin:26px 0 10px;">🧾 Tout le suivi</h3>
       ${filters('Rechercher un nom, un e-mail, une référence…')}
       ${table(moneyRows(MONEY_COLLS))}`;
+  } else if(adminTab === 'visits'){
+    renderAdminVisits(body);
   } else if(MONEY_COLLS.includes(adminTab)){
     body.innerHTML = filters('Rechercher un nom, un e-mail, une référence…') + table(moneyRows([adminTab]));
   } else if(adminTab === 'sessions'){
@@ -5089,6 +5151,56 @@ function renderAdminPanel(){
     si.addEventListener('input', () => { adminSearch = si.value; const pos = si.selectionStart; renderAdminPanel(); const n = document.getElementById('adminSearchInput'); n.focus(); n.setSelectionRange(pos, pos); });
     document.getElementById('adminStatusSelect').addEventListener('change', ev => { adminStatus = ev.target.value; renderAdminPanel(); });
   }
+}
+const SECTION_LABELS = { accueil:'Accueil', concept:'Comment ça marche', histoire:'Notre histoire', planning:'Planning', resultats:'Résultats', regles:'Règles',
+  equipement:'Équipement', adhesion:'Adhésion', attestation:'Attestation', avis:'Avis', club:'Espace club', dashboard:'Tableau de bord', galerie:'Photos / vidéos',
+  tutoriels:'Tutoriels', boutique:'Boutique', dons:'Dons', sponsors:'Sponsors' };
+async function renderAdminVisits(body){
+  body.innerHTML = '<p style="color:var(--grey);">Chargement des statistiques…</p>';
+  const get = async path => { try{ return await dbRequest(path, 'GET') || {}; }catch(err){ return {}; } };
+  const [byDay, sections, sources, devices, total] = await Promise.all([get('visitsByDay'), get('sectionViews'), get('visitSources'), get('visitDevices'), get('visitCount')]);
+  if(adminTab !== 'visits') return;
+  const days = [];
+  for(let i = 29; i >= 0; i--){ const d = new Date(); d.setDate(d.getDate() - i); days.push({ key: localDay(d), d }); }
+  const val = k => Number(byDay[k]) || 0;
+  const sumLast = n => days.slice(-n).reduce((t, x) => t + val(x.key), 0);
+  const max = Math.max(1, ...days.map(x => val(x.key)));
+  const e = escSearch;
+  const fmtDay = d => d.toLocaleDateString('fr-FR', { weekday:'short', day:'numeric', month:'short' });
+  const ranked = (obj, labels) => Object.entries(obj).map(([k, v]) => [labels ? (labels[k] || k) : k, Number(v) || 0]).sort((a,b) => b[1] - a[1]);
+  const hbars = (rows, emptyTxt) => {
+    if(!rows.length) return `<p class="muted" style="color:var(--grey);">${emptyTxt}</p>`;
+    const m = Math.max(1, ...rows.map(r => r[1]));
+    return `<div class="vis-hbars">${rows.map(([label, n]) => `<div class="vis-hrow"><span class="vis-hlabel" title="${e(label)}">${e(label)}</span>
+      <span class="vis-hbar-track"><span class="vis-hbar" style="width:${Math.max(2, n / m * 100)}%"></span></span><span class="vis-hnum">${n}</span></div>`).join('')}</div>`;
+  };
+  const sourceLabels = { direct:'Accès direct / favori' };
+  const srcRows = ranked(sources, sourceLabels).map(([k, n]) => [sourceLabels[k] ? k : k.replace(/_/g, '.'), n]);
+  body.innerHTML = `
+    <div class="admin-stats">
+      <div class="admin-stat"><div class="n">${val(localDay())}</div><div class="l">Visites aujourd'hui</div></div>
+      <div class="admin-stat"><div class="n">${sumLast(7)}</div><div class="l">7 derniers jours</div></div>
+      <div class="admin-stat"><div class="n">${sumLast(30)}</div><div class="l">30 derniers jours</div></div>
+      <div class="admin-stat"><div class="n">${Number(total) || STATE.visitCount || 0}</div><div class="l">Depuis le début</div></div>
+    </div>
+    <div class="admin-card">
+      <h4>Visites par jour — 30 derniers jours</h4>
+      <div class="vis-chart" role="img" aria-label="Visites par jour sur les 30 derniers jours">
+        <div class="vis-grid"><span>${max}</span><span>${Math.round(max/2)}</span><span>0</span></div>
+        <div class="vis-bars">${days.map(x => `<div class="vis-col" tabindex="0" data-tip="${e(fmtDay(x.d))} : ${val(x.key)} visite${val(x.key)>1?'s':''}">
+          <div class="vis-bar" style="height:${val(x.key) / max * 100}%"></div></div>`).join('')}</div>
+      </div>
+      <div class="vis-axis"><span>${e(fmtDay(days[0].d))}</span><span>Aujourd'hui</span></div>
+      <details style="margin-top:10px;"><summary class="muted" style="cursor:pointer; color:var(--grey); font-size:0.8rem;">Voir les chiffres en tableau</summary>
+        <table class="admin-table" style="margin-top:8px;"><thead><tr><th>Jour</th><th class="num">Visites</th></tr></thead><tbody>
+        ${days.slice().reverse().map(x => `<tr><td>${e(fmtDay(x.d))}</td><td class="num">${val(x.key)}</td></tr>`).join('')}</tbody></table></details>
+    </div>
+    <div class="vis-split">
+      <div class="admin-card"><h4>Parties du site les plus vues</h4>${hbars(ranked(sections, SECTION_LABELS), 'Pas encore de données.')}</div>
+      <div class="admin-card"><h4>D'où viennent les visiteurs</h4>${hbars(srcRows, 'Pas encore de données.')}</div>
+      <div class="admin-card"><h4>Appareils utilisés</h4>${hbars(ranked(devices, { mobile:'📱 Téléphone', tablette:'Tablette', ordinateur:'💻 Ordinateur' }), 'Pas encore de données.')}</div>
+    </div>
+    <p style="color:var(--grey); font-size:0.78rem;">Une visite = une personne qui ouvre le site (recharger la page ne compte pas une 2e fois). Vos propres visites en tant qu'admin ne sont pas comptées. Les statistiques par jour démarrent à partir d'aujourd'hui.</p>`;
 }
 function exportAdminCsv(){
   const colls = MONEY_COLLS.includes(adminTab) ? [adminTab] : MONEY_COLLS;
@@ -5425,8 +5537,7 @@ async function init(){
   await loadFavorites();
   await loadLangPreference();
   migrateOldData();
-  STATE.visitCount = (STATE.visitCount || 0) + 1;
-  if(!isAdmin()) saveSection('visitCount'); // les visites de l'admin ne comptent pas
+  trackVisit();
   renderHero();
   renderContact();
   renderBranding();

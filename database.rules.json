@@ -217,6 +217,30 @@
           ".read": "auth != null && auth.uid == $uid",
           ".write": "auth != null && auth.uid == $uid"
         }
+      },
+      "visitsByDay": {
+        "$day": {
+          ".write": "newData.isNumber() && newData.val() == (data.exists() ? data.val() : 0) + 1",
+          ".validate": "$day.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)"
+        }
+      },
+      "sectionViews": {
+        "$sec": {
+          ".write": "newData.isNumber() && newData.val() == (data.exists() ? data.val() : 0) + 1",
+          ".validate": "$sec.matches(/^[a-z]{1,20}$/)"
+        }
+      },
+      "visitSources": {
+        "$src": {
+          ".write": "newData.isNumber() && newData.val() == (data.exists() ? data.val() : 0) + 1",
+          ".validate": "$src.matches(/^[a-zA-Z0-9_-]{1,60}$/)"
+        }
+      },
+      "visitDevices": {
+        "$dev": {
+          ".write": "newData.isNumber() && newData.val() == (data.exists() ? data.val() : 0) + 1",
+          ".validate": "$dev == 'mobile' || $dev == 'tablette' || $dev == 'ordinateur'"
+        }
       }
     }
   }
