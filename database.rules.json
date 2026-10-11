@@ -284,6 +284,15 @@
       },
       "founders": {
         ".read": true
+      },
+      "pushSubs": {
+        "$k": {
+          ".write": "newData.exists() && (!data.exists() || data.child('endpoint').val() == newData.child('endpoint').val())",
+          ".validate": "$k.matches(/^[0-9a-f]{32}$/) && newData.hasChildren(['endpoint','keys']) && newData.child('endpoint').isString() && newData.child('endpoint').val().beginsWith('https://') && newData.child('endpoint').val().length < 1000",
+          "keys": {
+            ".validate": "newData.hasChildren(['p256dh','auth'])"
+          }
+        }
       }
     }
   }

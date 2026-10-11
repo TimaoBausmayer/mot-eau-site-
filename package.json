@@ -1,0 +1,8 @@
+{
+  "name": "mot-eau-site",
+  "private": true,
+  "description": "Site Mot'eau (page statique) + fonction d'envoi des notifications",
+  "dependencies": {
+    "web-push": "3.6.7"
+  }
+}

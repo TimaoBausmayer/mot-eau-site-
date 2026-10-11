@@ -10,6 +10,11 @@
 <meta name="robots" content="index, follow">
 <meta name="google-site-verification" content="9S0Bmx3DnDxYngPGHWJxKxQQclhLUL0Hu6gVl03LBDA" />
 <meta name="theme-color" content="#0a0a09">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mot'eau">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Mot'eau">
 <meta property="og:locale" content="fr_FR">
@@ -1069,6 +1074,11 @@ body.edit-mode .view-only{display:none;}
 
     <div style="margin-top:56px;">
       <h3 class="subhead" style="margin-top:0;">Notifications</h3>
+      <div class="signup-card push-card" style="max-width:460px; margin-bottom:22px;">
+        <p style="margin-bottom:12px;">📲 <b>Sur votre téléphone, automatiquement :</b> nouvelle pièce en boutique, nouvelle compétition, nouvelle séance au planning, nouveau tutoriel…</p>
+        <button class="btn btn-solid push-btn" style="width:100%;" type="button">🔔 Activer les notifications</button>
+        <p class="hint-text push-hint" style="margin:10px 0 0;"></p>
+      </div>
       <p class="hint-text">Recevez un email ou un SMS à chaque nouveauté (nouvelle session au planning, compétition ajoutée...). Facultatif, désinscription possible à tout moment en nous contactant.</p>
       <div class="signup-card" style="max-width:460px;">
         <div class="form-field"><label>Nom</label><input type="text" id="notifName" placeholder="Votre nom"></div>
@@ -1453,7 +1463,7 @@ body.edit-mode .view-only{display:none;}
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© 2026 Mot'eau. Tous droits réservés. · <a href="#" id="adminLoginLink" style="color:var(--grey);">🔒 Espace admin</a></span>
+      <span>© 2026 Mot'eau. Tous droits réservés. · <a href="#adhesion" class="push-foot" style="color:var(--grey);">🔔 Notifications</a> · <a href="#" id="adminLoginLink" style="color:var(--grey);">🔒 Espace admin</a></span>
       <span id="contactLocation" data-editable data-section="contact" data-field="location"></span>
     </div>
   </div>
@@ -1577,6 +1587,7 @@ const DEFAULTS = {
   passwords: { club: "" },
   clubCodeHash: "",
   googleReviewLink: "",
+  pushState: { init:false, auto:true, sent:{} }, // réservé à l'admin : nouveautés déjà notifiées
   memberNames: [],   // publié automatiquement : prénoms/noms des adhérents à jour (pour l'espace club)
   equipmentOut: [],  // publié automatiquement : nombre d'équipements prêtés, sans données personnelles
   hero: {
@@ -1860,6 +1871,7 @@ async function saveSection(key){
       STATE.equipmentOut = Object.entries(out).map(([name, count]) => ({ name, count }));
       await dbRequest('equipmentOut', 'PUT', STATE.equipmentOut);
     }
+    if(isAdmin() && ['products','competitions','planning','tutorials'].includes(key) && typeof schedulePushCheck === 'function') schedulePushCheck();
   }catch(err){
     console.error(err);
     showToast(isAdmin() ? "Erreur d'enregistrement — vérifie ta connexion internet." : "Modification refusée : connectez-vous en mode édition.");
@@ -2209,7 +2221,7 @@ document.getElementById('editFab').addEventListener('click', () => {
   document.getElementById('pwEmail').focus();
 });
 document.getElementById('adminLogoutBtn').addEventListener('click', adminSignOut);
-document.getElementById('exitEditBtn').addEventListener('click', () => { EDIT_MODE = false; applyEditMode(); });
+document.getElementById('exitEditBtn').addEventListener('click', () => { EDIT_MODE = false; applyEditMode(); if(isAdmin()) schedulePushCheck(500); });
 document.getElementById('pwCancel').addEventListener('click', () => document.getElementById('pwOverlay').classList.remove('show'));
 document.getElementById('pwConfirm').addEventListener('click', tryUnlock);
 document.getElementById('pwInput').addEventListener('keydown', e => { if(e.key === 'Enter') tryUnlock(); });
@@ -5116,6 +5128,119 @@ function watchSectionViews(){
 }
 
 /* ============================================================
+   NOTIFICATIONS PUSH (téléphone / ordinateur)
+   - le visiteur clique « Activer les notifications » : son appareil est enregistré
+   - quand l'admin publie une nouveauté, le site appelle /api/notify (fonction
+     Vercel) qui envoie la notification à tous les appareils abonnés
+   ============================================================ */
+const VAPID_PUBLIC_KEY = "BAB6pyViy8jISDLdHQnZ_EuZRjubDNMA2ujEQOCE_exO6XyQbHHemNm1quY7zr2wWivJ9fvPIyWnGnkfkWPgEfg";
+const pushSupported = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const isStandalone = () => window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+function b64ToUint8(b64){
+  const pad = '='.repeat((4 - b64.length % 4) % 4);
+  const raw = atob((b64 + pad).replace(/-/g, '+').replace(/_/g, '/'));
+  return Uint8Array.from(raw, c => c.charCodeAt(0));
+}
+function renderPushUI(){
+  const on = (() => { try{ return localStorage.getItem('moteau_push') === '1'; }catch(err){ return false; } })() && ('Notification' in window) && Notification.permission === 'granted';
+  document.querySelectorAll('.push-btn').forEach(b => { b.textContent = on ? '✅ Notifications activées sur cet appareil' : '🔔 Activer les notifications'; b.disabled = on; });
+  let hint = '';
+  if(isIOS() && !isStandalone()) hint = "Sur iPhone : touchez le bouton Partager ⬆️ puis « Sur l'écran d'accueil », ouvrez Mot'eau depuis l'icône créée, et activez les notifications ici.";
+  else if(!pushSupported()) hint = "Votre navigateur ne permet pas les notifications. Essayez avec Chrome, Firefox, Edge ou Safari à jour.";
+  else if('Notification' in window && Notification.permission === 'denied') hint = "Les notifications sont bloquées pour ce site : autorisez-les dans les réglages du navigateur (icône 🔒 à côté de l'adresse).";
+  else if(on) hint = "Vous serez prévenu à chaque nouveauté. Pour arrêter : réglages du navigateur → notifications.";
+  document.querySelectorAll('.push-hint').forEach(h => h.textContent = hint);
+}
+async function enablePush(){
+  if(isIOS() && !isStandalone()){ renderPushUI(); showToast("Ajoutez d'abord Mot'eau à l'écran d'accueil (voir l'explication)."); return; }
+  if(!pushSupported()){ renderPushUI(); return; }
+  try{
+    const perm = await Notification.requestPermission();
+    if(perm !== 'granted'){ renderPushUI(); showToast("Notifications refusées."); return; }
+    const reg = await navigator.serviceWorker.register('/sw.js');
+    await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if(!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToUint8(VAPID_PUBLIC_KEY) });
+    const j = sub.toJSON();
+    const key = (await sha256Hex(j.endpoint)).slice(0, 32);
+    await dbRequest(`pushSubs/${key}`, 'PUT', { endpoint: j.endpoint, keys: { p256dh: j.keys.p256dh, auth: j.keys.auth }, ts: Date.now() });
+    try{ localStorage.setItem('moteau_push', '1'); }catch(err){}
+    showToast('🔔 Notifications activées !');
+  }catch(err){
+    console.error(err);
+    showToast("Impossible d'activer les notifications sur cet appareil.");
+  }
+  renderPushUI();
+}
+document.addEventListener('click', e => { if(e.target.closest('.push-btn')){ e.preventDefault(); enablePush(); } });
+if(pushSupported() && 'Notification' in window && Notification.permission === 'granted'){
+  navigator.serviceWorker.register('/sw.js').catch(() => {});
+}
+
+/* ---- Envoi automatique (admin) ---- */
+function pushCandidates(){
+  const out = [];
+  (STATE.products||[]).forEach(p => {
+    if(!p || !p.id || !p.name || p.name === 'Nouveau produit') return;
+    const concept = p.stock === 'stock_concept';
+    out.push({ key:'prod:' + p.id, title: concept ? '💡 Nouvelle pièce concept' : '🛍️ Nouveau dans la boutique',
+      body: concept ? `${p.name} — donne ton avis !` : `${p.name}${p.price ? ' — ' + p.price + ' €' : ''}`, url:'/#boutique' });
+  });
+  (STATE.competitions||[]).forEach(c => {
+    if(!c || !c.name || c.hidden) return;
+    out.push({ key:'comp:' + (c.id || c.name), title:'🏆 Nouvelle compétition', body:`${c.name}${c.date ? ' — ' + c.date : ''}. Inscris-toi !`, url:'/#adhesion' });
+  });
+  (STATE.planning||[]).forEach(s => {
+    if(!s || !s.date || s.date === 'Nouvelle date') return;
+    out.push({ key:`plan:${s.date}|${s.time||''}|${s.name||s.type||''}`, title:'📅 Nouvelle séance au planning',
+      body:`${s.name || typeLabel(s.type)} — ${s.date}${s.time && s.time !== '00h00 – 00h00' ? ' · ' + s.time : ''}`, url:'/#planning' });
+  });
+  (STATE.tutorials||[]).forEach(t => {
+    if(!t || !t.title || t.title === 'Nouveau tutoriel') return;
+    out.push({ key:'tuto:' + t.title, title:'🎬 Nouveau tutoriel', body:t.title, url:'/#tutoriels' });
+  });
+  return out;
+}
+async function sendPush(title, body, url){
+  const q = await authQuery();
+  if(!q) throw new Error('not-admin');
+  const res = await fetch('/api/notify', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ idToken: AUTH.idToken, title, body, url }) });
+  if(!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+let pushTimer = null, pushRunning = false;
+function schedulePushCheck(delay = 45000){
+  clearTimeout(pushTimer);
+  pushTimer = setTimeout(checkNewItemsAndPush, delay);
+}
+async function checkNewItemsAndPush(){
+  if(!isAdmin() || pushRunning) return;
+  pushRunning = true;
+  try{
+    const st = STATE.pushState = Object.assign({ init:false, auto:true, sent:{} }, STATE.pushState || {});
+    st.sent = st.sent || {};
+    const items = [];
+    for(const it of pushCandidates()) items.push({ ...it, h: (await sha256Hex(it.key)).slice(0, 24) });
+    if(!st.init){
+      // première fois : tout ce qui existe déjà est considéré comme « déjà annoncé »
+      items.forEach(it => st.sent[it.h] = Date.now());
+      st.init = true; await saveSection('pushState'); return;
+    }
+    const fresh = items.filter(it => !st.sent[it.h]);
+    if(!fresh.length || !st.auto) return;
+    const msg = fresh.length === 1 ? fresh[0]
+      : { title:`✨ ${fresh.length} nouveautés sur Mot'eau`, body: fresh.slice(0, 3).map(f => f.body.split(' — ')[0]).join(' · ') + (fresh.length > 3 ? '…' : ''), url:'/' };
+    const r = await sendPush(msg.title, msg.body, msg.url);
+    fresh.forEach(it => st.sent[it.h] = Date.now());
+    await saveSection('pushState');
+    showToast(`🔔 Notification envoyée à ${r.sent} appareil${r.sent > 1 ? 's' : ''}`);
+  }catch(err){ console.error('push', err); }
+  finally{ pushRunning = false; }
+}
+
+/* ============================================================
    COMPTES VISITEURS — « Se connecter » en haut à droite
    Le visiteur retrouve ses inscriptions, commandes et documents.
    ============================================================ */
@@ -5254,7 +5379,8 @@ const ADMIN_TABS = [
   { id:'giftCards', label:'Cartes cadeaux' },
   { id:'polls', label:'📊 Sondages boutique' },
   { id:'waivers', label:'Attestations' },
-  { id:'notifications', label:'Abonnés' }
+  { id:'push', label:'🔔 Notifications téléphone' },
+  { id:'notifications', label:'Abonnés e-mail/SMS' }
 ];
 function recAmount(arr, rec){ return docFromRecord(arr, rec).lines.reduce((t,l) => t + (Number(l.amount)||0), 0); }
 function recDetail(arr, r){
@@ -5372,6 +5498,37 @@ function renderAdminPanel(){
         <button class="small-btn" data-acomp="${e(c.name||'')}" style="margin-top:10px;">Voir les inscrits</button></div>`;
     }).join('') : '<p style="color:var(--grey);">Aucune compétition.</p>';
     body.innerHTML += '<button class="small-btn solid" data-agoto="resultats" style="margin-top:8px;">✏️ Modifier les compétitions et résultats</button>';
+  } else if(adminTab === 'push'){
+    const st = Object.assign({ auto:true }, STATE.pushState || {});
+    body.innerHTML = `<div class="admin-card"><h4>Abonnés</h4><div class="muted" id="pushSubCount">Chargement…</div></div>
+      <div class="admin-card"><h4>Envoi automatique</h4>
+        <label style="display:flex; gap:8px; align-items:center; margin:8px 0;"><input type="checkbox" id="pushAutoToggle" ${st.auto ? 'checked' : ''}> Envoyer automatiquement une notification quand j'ajoute une pièce en boutique, une compétition (quand je l'affiche), une séance au planning ou un tutoriel</label>
+        <div class="muted">La notification part environ 45 secondes après votre dernière modification (le temps de finir de remplir le nom, le prix…), ou dès que vous quittez le mode édition.</div></div>
+      <div class="admin-card"><h4>Envoyer un message maintenant</h4>
+        <div class="form-field"><label>Titre</label><input type="text" id="pushTitle" maxlength="80" placeholder="ex : 🏆 Compétition ce samedi !"></div>
+        <div class="form-field"><label>Message</label><input type="text" id="pushBody" maxlength="200" placeholder="ex : Rendez-vous à 9h au Lac du Bourget"></div>
+        <div class="form-field"><label>Ouvrir quelle partie du site au clic ?</label><select id="pushUrl">
+          <option value="/">Accueil</option><option value="/#boutique">Boutique</option><option value="/#planning">Planning</option>
+          <option value="/#resultats">Résultats</option><option value="/#adhesion">Inscriptions</option><option value="/#tutoriels">Tutoriels</option></select></div>
+        <button class="small-btn solid" id="pushSendBtn">🔔 Envoyer à tous les abonnés</button></div>`;
+    dbRequest('pushSubs', 'GET').then(subs => {
+      const n = Object.keys(subs || {}).length;
+      const el = document.getElementById('pushSubCount');
+      if(el) el.textContent = `${n} appareil${n > 1 ? 's' : ''} abonné${n > 1 ? 's' : ''} aux notifications.`;
+    }).catch(() => {});
+    document.getElementById('pushAutoToggle').addEventListener('change', ev => {
+      STATE.pushState = Object.assign({ init:false, sent:{} }, STATE.pushState || {}, { auto: ev.target.checked });
+      saveSection('pushState');
+    });
+    document.getElementById('pushSendBtn').addEventListener('click', async () => {
+      const title = document.getElementById('pushTitle').value.trim();
+      if(!title){ showToast('Mettez au moins un titre.'); return; }
+      if(!confirm('Envoyer cette notification à tous les abonnés ?')) return;
+      try{
+        const r = await sendPush(title, document.getElementById('pushBody').value.trim(), document.getElementById('pushUrl').value);
+        showToast(`🔔 Envoyée à ${r.sent} appareil${r.sent > 1 ? 's' : ''}`);
+      }catch(err){ showToast("Erreur d'envoi — réessayez."); }
+    });
   } else if(adminTab === 'polls'){
     const withPolls = (STATE.products||[]).filter(p => p && (p.poll || p.stock === 'stock_concept' || pollStats(p.id).total));
     body.innerHTML = (withPolls.length ? withPolls.map(p => {
@@ -5822,7 +5979,8 @@ async function init(){
   renderSponsors();
   renderCart();
   renderAdminCustomCode();
-  if(isAdmin()) await migrateToSecureStorage();
+  if(isAdmin()){ await migrateToSecureStorage(); schedulePushCheck(3000); }
+  renderPushUI();
   let enterEdit = false;
   try{ enterEdit = sessionStorage.getItem('moteau_enter_edit') === '1'; sessionStorage.removeItem('moteau_enter_edit'); }catch(err){}
   document.body.classList.toggle('is-admin', isAdmin());
