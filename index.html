@@ -374,6 +374,93 @@ body.edit-mode .history-text:empty::before{content:attr(data-placeholder); color
 .pin-cell, .record-cell{text-align:center;}
 .pin-cell input, .record-cell input{width:16px; height:16px; cursor:pointer; accent-color:var(--orange);}
 #printExportArea{display:none;}
+.lazy-video{position:relative; width:100%; aspect-ratio:16/9; border:0; padding:0; cursor:pointer; background:var(--black) center/cover no-repeat; color:var(--cream); display:block;}
+.lazy-video.tall{aspect-ratio:9/12;}
+.lazy-play{position:absolute; inset:0; margin:auto; width:58px; height:58px; border-radius:50%; background:rgba(255,90,31,0.92); color:var(--black); display:flex; align-items:center; justify-content:center; font-size:1.3rem; padding-left:4px;}
+.lazy-label{position:absolute; left:8px; bottom:8px; font-size:0.7rem; background:rgba(10,10,9,0.8); padding:3px 8px; border:1px solid var(--line);}
+.lazy-holder{position:relative; width:100%; aspect-ratio:16/9; background:var(--black);}
+.lazy-holder.tall{aspect-ratio:9/12;}
+.lazy-holder iframe, .lazy-holder video{position:absolute; inset:0; width:100%; height:100%; border:0;}
+.admin-table input[type=text],.admin-table input[type=number],.admin-table input[type=date]{background:var(--black); border:1px solid var(--line); color:var(--cream); padding:6px 8px; font-family:inherit; font-size:0.82rem; width:100%; min-width:80px;}
+/* pilotes + runs */
+.pilot-link{cursor:pointer; text-decoration:underline; text-decoration-color:var(--orange); text-underline-offset:3px;}
+.pilot-dir{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;}
+.pilot-chip{display:flex; align-items:center; gap:8px; border:1px solid var(--line); background:var(--surface); color:var(--cream); padding:4px 12px 4px 4px; font-size:0.84rem; cursor:pointer; font-family:inherit;}
+.pilot-chip:hover{border-color:var(--orange);}
+.pilot-av{width:28px; height:28px; border-radius:50%; background:var(--surface-2) center/cover no-repeat; display:inline-flex; align-items:center; justify-content:center; font-family:'Anton',sans-serif; color:var(--orange); font-size:0.8rem;}
+.pilot-modal-head{display:flex; gap:16px; align-items:center; margin-bottom:14px;}
+.pilot-modal-head .pilot-av{width:84px; height:84px; font-size:2rem;}
+.pilot-stats{display:grid; grid-template-columns:repeat(auto-fill, minmax(120px,1fr)); gap:8px; margin:12px 0;}
+.pilot-stats div{border:1px solid var(--line); padding:8px 10px; font-size:0.72rem; color:var(--grey);}
+.pilot-stats b{display:block; font-family:'Anton',sans-serif; font-size:1.3rem; color:var(--cream); font-weight:400;}
+/* votes du public */
+.contest-card{border:1px solid var(--line); background:var(--surface); padding:20px 22px; margin-bottom:22px;}
+.contest-head{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:6px;}
+.contest-head h3{font-size:1.25rem;}
+.contest-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(210px,1fr)); gap:14px; margin:16px 0 8px;}
+.contest-opt{border:1px solid var(--line); background:var(--black); display:flex; flex-direction:column;}
+.contest-opt.win{border-color:#f2c94c; box-shadow:0 0 18px rgba(242,201,76,0.25);}
+.contest-opt.mine{border-color:var(--orange);}
+.contest-opt-img{width:100%; aspect-ratio:4/3; background:var(--surface-2) center/cover no-repeat; display:flex; align-items:center; justify-content:center; color:var(--grey); font-family:'Anton',sans-serif; font-size:2rem;}
+.contest-opt-body{padding:10px 12px; display:flex; flex-direction:column; gap:8px; flex:1;}
+.contest-opt-label{font-weight:600;}
+.contest-res{display:grid; grid-template-columns:minmax(0,1fr) 40px; gap:8px; align-items:center; font-size:0.8rem; color:var(--grey);}
+.contest-res-track{height:8px; background:var(--surface-2);}
+.contest-res-bar{display:block; height:8px; background:var(--orange); border-radius:0 4px 4px 0;}
+.contest-edit{border-top:1px dashed var(--line); margin-top:12px; padding-top:12px; display:flex; flex-direction:column; gap:8px;}
+.contest-edit input[type=text], .contest-edit textarea, .contest-opt input[type=text]{width:100%; background:var(--black); border:1px solid var(--line); color:var(--cream); padding:7px 9px; font-family:inherit; font-size:0.84rem;}
+/* fidélité */
+.loy-hero{border:1px solid var(--orange); background:rgba(255,90,31,0.06); padding:22px 24px; margin-bottom:24px; display:flex; gap:24px; align-items:center; flex-wrap:wrap;}
+.loy-points{font-family:'Anton',sans-serif; font-size:3.4rem; line-height:1; color:var(--orange);}
+.loy-rewards{display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:14px;}
+.loy-reward{border:1px solid var(--line); background:var(--surface); padding:16px 18px; display:flex; flex-direction:column; gap:8px;}
+.loy-reward.ok{border-color:#5fbf6c;}
+.loy-reward .pts{font-family:'Anton',sans-serif; font-size:1.6rem; color:var(--orange);}
+.loy-prog{height:6px; background:var(--surface-2);}
+.loy-prog span{display:block; height:6px; background:var(--orange);}
+.loy-edit input{background:var(--black); border:1px solid var(--line); color:var(--cream); padding:7px 9px; font-family:inherit; font-size:0.84rem; width:100%;}
+/* actualités */
+.news-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:20px;}
+.news-card{border:1px solid var(--line); background:var(--surface); display:flex; flex-direction:column;}
+.news-card.draft{border-style:dashed; opacity:.85;}
+.news-img{width:100%; aspect-ratio:16/9; background:var(--surface-2) center/cover no-repeat;}
+.news-body{padding:16px 18px; display:flex; flex-direction:column; gap:8px;}
+.news-meta{display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:0.75rem; color:var(--grey);}
+.news-badge{font-size:0.68rem; padding:2px 7px; border:1px solid var(--orange); color:var(--orange); text-transform:uppercase;}
+.news-card h3{font-size:1.1rem; line-height:1.3;}
+.news-text{white-space:pre-wrap; font-size:0.92rem; color:var(--cream); line-height:1.6;}
+.news-text.clamp{display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden;}
+.news-edit{display:flex; flex-direction:column; gap:8px;}
+.news-edit input, .news-edit textarea{width:100%; background:var(--black); border:1px solid var(--line); color:var(--cream); padding:8px 10px; font-family:inherit; font-size:0.85rem; resize:vertical;}
+.news-actions{display:flex; gap:6px; flex-wrap:wrap;}
+/* compte à rebours */
+.countdown{margin-top:30px; border:1px solid var(--line); background:rgba(20,19,17,0.72); padding:14px 18px 16px; max-width:540px;}
+.cd-title{font-size:0.82rem; color:var(--cream); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.05em;}
+.cd-row{display:flex; align-items:center; gap:14px; flex-wrap:wrap;}
+.cd-grid{display:flex; gap:10px;}
+.cd-box{min-width:62px; text-align:center;}
+.cd-num{font-family:'Anton',sans-serif; font-size:2.3rem; line-height:1; color:var(--orange);}
+.cd-lbl{font-size:0.66rem; color:var(--grey); text-transform:uppercase; letter-spacing:0.06em; margin-top:2px;}
+.cd-live{font-family:'Anton',sans-serif; font-size:1.6rem; color:#ff4747;}
+.cd-edit{margin-top:12px; border-top:1px dashed var(--line); padding-top:10px; display:flex; flex-direction:column; gap:6px;}
+.cd-edit input{background:var(--black); border:1px solid var(--line); color:var(--cream); padding:7px 9px; font-family:inherit; font-size:0.82rem;}
+/* FAQ */
+.faq-ask{max-width:640px; margin-bottom:24px;}
+.faq-ask textarea, .faq-answer-form textarea{width:100%; background:var(--black); border:1px solid var(--line); color:var(--cream); padding:10px 12px; font-family:inherit; font-size:0.9rem; resize:vertical; margin-bottom:8px;}
+.faq-ask input{width:100%; background:var(--black); border:1px solid var(--line); color:var(--cream); padding:9px 10px; font-family:inherit; margin-bottom:8px;}
+.faq-q{border:1px solid var(--line); background:var(--surface); padding:16px 20px; margin-bottom:14px;}
+.faq-q.pinned{border-color:var(--orange);}
+.faq-qtext{font-weight:600; font-size:1.02rem; white-space:pre-wrap;}
+.faq-meta{font-size:0.76rem; color:var(--grey); margin:4px 0 10px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+.faq-badge{font-size:0.68rem; padding:2px 7px; border:1px solid; white-space:nowrap;}
+.faq-badge.admin{color:var(--black); background:var(--orange); border-color:var(--orange); font-weight:700;}
+.faq-badge.ok{color:#5fbf6c; border-color:#5fbf6c;}
+.faq-a{border-left:3px solid var(--line); padding:8px 12px; margin:8px 0; font-size:0.9rem;}
+.faq-a > .ugc{white-space:pre-wrap;}
+.faq-a.admin{border-left-color:var(--orange); background:rgba(255,90,31,0.07);}
+.faq-a .faq-meta{margin:0 0 4px;}
+.faq-answer-form{margin-top:10px;}
+.faq-tools{display:flex; gap:6px; margin-left:auto;}
 /* compte visiteur */
 .account-btn{white-space:nowrap; max-width:170px; overflow:hidden; text-overflow:ellipsis;}
 @media(max-width:860px){ .account-btn{padding:9px 10px; font-size:0.78rem; max-width:110px;} }
@@ -778,11 +865,14 @@ body.edit-mode .view-only{display:none;}
     <a href="#accueil" class="logo-slot" id="logoHeader" data-action="upload-logo"><span class="logo" id="logoHeaderText">MOT<span>'</span>EAU</span></a>
     <nav class="nav-links" id="navLinks">
       <a href="#accueil">Accueil</a>
+      <a href="#actualites" id="navNewsLink" style="display:none;">Actualités</a>
       <div class="nav-group">
         <button type="button" class="nav-group-btn">Le Sport ▾</button>
         <div class="nav-dropdown">
           <a href="#planning">Planning</a>
           <a href="#resultats">Résultats</a>
+          <a href="#runs">Les runs</a>
+          <a href="#votes">Vote du public</a>
           <a href="#regles">Règles</a>
           <a href="#equipement">Équipement</a>
         </div>
@@ -793,14 +883,22 @@ body.edit-mode .view-only{display:none;}
         <div class="nav-dropdown">
           <a href="#histoire" id="navHistoryLink">Notre histoire</a>
           <a href="#adhesion">Adhésion</a>
+          <a href="#fidelite">Fidélité</a>
           <a href="#club">Espace Club</a>
           <a href="#attestation">Attestation</a>
           <a href="#avis">Avis</a>
+          <a href="#faq">Foire aux questions</a>
           <a href="#sponsors">Sponsors</a>
         </div>
       </div>
-      <a href="#galerie">Photos / Vidéos</a>
-      <a href="#tutoriels">Tutoriels</a>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn">Médias ▾</button>
+        <div class="nav-dropdown">
+          <a href="#galerie">Photos / Vidéos</a>
+          <a href="#runs">Les runs</a>
+          <a href="#tutoriels">Tutoriels</a>
+        </div>
+      </div>
       <a href="#dashboard" class="edit-only inline">Tableau de bord</a>
       <a href="#dons" class="nav-cta">Faire un don</a>
     </nav>
@@ -841,6 +939,7 @@ body.edit-mode .view-only{display:none;}
         <a href="#regles" class="btn btn-solid">Découvrir le concept</a>
         <a href="#dons" class="btn btn-ghost">Soutenir le projet</a>
       </div>
+      <div class="countdown" id="countdownBox" style="display:none;"></div>
     </div>
     <div class="ramp-graphic" id="heroGraphic" data-action="upload-hero-image">
       <svg id="heroDefaultSvg" viewBox="0 0 400 400" fill="none">
@@ -873,6 +972,16 @@ body.edit-mode .view-only{display:none;}
 </div>
 
 
+
+<section id="actualites" style="display:none;">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="display">Actualités</h2><p class="sub">Les dernières nouvelles du club.</p></div>
+    <p class="hint-text edit-only block">Écrivez vos articles ici. Un article n'est visible des visiteurs (et envoyé en notification sur les téléphones) qu'une fois que vous cliquez sur « Publier ».</p>
+    <div class="news-grid" id="newsGrid"></div>
+    <button class="small-btn" id="newsMoreBtn" style="display:none; margin-top:18px;">Voir toutes les actualités</button>
+    <button class="add-row-btn edit-only block" id="addNewsBtn" style="margin-top:22px;">+ Écrire une actualité</button>
+  </div>
+</section>
 
 <section id="concept">
   <div class="wrap">
@@ -915,6 +1024,7 @@ body.edit-mode .view-only{display:none;}
       <label for="pilotSearchInput" class="hint-text" style="display:block; margin:0 0 8px;">🔎 Chercher un pilote et voir sa place au classement</label>
       <input type="search" id="pilotSearchInput" placeholder="Tape le nom d'un pilote…" autocomplete="off">
       <div id="pilotSearchResults" style="margin-top:10px;"></div>
+      <div id="pilotDirectory" class="pilot-dir"></div>
     </div>
 
     <div id="recordsBlock" class="results-block">
@@ -958,6 +1068,24 @@ body.edit-mode .view-only{display:none;}
       </div>
       <p class="hint-text" id="manchesCumulSummary" style="margin-top:16px; color:var(--orange); font-size:0.9rem;"></p>
     </div>
+  </div>
+</section>
+
+<section id="runs" style="display:none;">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="display">Les runs</h2><p class="sub">Les plus beaux passages en vidéo.</p></div>
+    <div class="admin-filters" id="runsFilterBox" style="margin-bottom:18px;"><input type="search" id="runsSearch" placeholder="Chercher un pilote ou une compétition…"><select id="runsSort"><option value="date">Plus récents</option><option value="speed">Plus rapides</option></select></div>
+    <div class="news-grid" id="runsGrid"></div>
+    <button class="add-row-btn edit-only block" id="addRunBtn" style="margin-top:20px; max-width:360px;">+ Ajouter un run</button>
+  </div>
+</section>
+
+<section id="votes" style="display:none;">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="display">Vote du public</h2><p class="sub">Votez pour votre favori ! Un vote par personne.</p></div>
+    <p class="hint-text edit-only block">Créez un vote (ex : « Meilleure figure du week-end »), ajoutez les options avec leur photo ou vidéo, puis cliquez sur « Publier ». Les visiteurs votent avec leur compte ; les résultats s'affichent après leur vote, et pour vous en permanence.</p>
+    <div id="contestsGrid"></div>
+    <button class="add-row-btn edit-only block" id="addContestBtn" style="margin-top:20px; max-width:360px;">+ Créer un vote</button>
   </div>
 </section>
 
@@ -1135,6 +1263,13 @@ body.edit-mode .view-only{display:none;}
   </div>
 </section>
 
+<section id="fidelite">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="display">Programme fidélité</h2><p class="sub" id="loyaltySub"></p></div>
+    <div id="loyaltyBox"></div>
+  </div>
+</section>
+
 <section id="attestation">
   <div class="wrap">
     <div class="sec-head">
@@ -1224,6 +1359,15 @@ body.edit-mode .view-only{display:none;}
     </div>
     <div class="filter-row" id="reviewFilterRow"></div>
     <div id="reviewsList"></div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="display">Foire aux questions</h2><p class="sub">Une question sur Mot'eau ? Posez-la ici. Tout le monde peut répondre, le club aussi.</p></div>
+    <div class="signup-card faq-ask" id="faqAsk"></div>
+    <div class="form-field" style="max-width:640px;"><input type="search" id="faqSearch" placeholder="Rechercher une question…" style="width:100%; background:var(--black); border:1px solid var(--line); color:var(--cream); padding:11px 12px; font-family:inherit;"></div>
+    <div id="faqList"></div>
   </div>
 </section>
 
@@ -1527,6 +1671,7 @@ body.edit-mode .view-only{display:none;}
   </div>
 </div>
 
+<div class="pw-modal-overlay" id="pilotOverlay"><div class="pw-modal" style="width:min(560px,100%); max-height:90vh; overflow:auto;" id="pilotModal"></div></div>
 <div class="pw-modal-overlay" id="accountOverlay">
   <div class="pw-modal" style="width:min(520px,100%); max-height:90vh; overflow:auto;" id="accountModal"></div>
 </div>
@@ -1605,6 +1750,14 @@ const DEFAULTS = {
   passwords: { club: "" },
   clubCodeHash: "",
   googleReviewLink: "",
+  news: [],
+  countdown: {},
+  contests: [],
+  runs: [],
+  pilotProfiles: {},
+  productCosts: {},
+  expenses: [],
+  loyaltyConfig: { enabled:true, perEuro:1, rewards:[] },
   pushState: { init:false, auto:true, sent:{} }, // réservé à l'admin : nouveautés déjà notifiées
   memberNames: [],   // publié automatiquement : prénoms/noms des adhérents à jour (pour l'espace club)
   equipmentOut: [],  // publié automatiquement : nombre d'équipements prêtés, sans données personnelles
@@ -1883,6 +2036,8 @@ async function saveSection(key){
   try{
     if(key === 'giftCards'){
       await dbRequest('giftCardsByCode', 'PUT', giftCardsToObject(STATE.giftCards));
+    } else if(key === 'contests'){
+      await dbRequest('contests', 'PUT', contestsToObject(STATE.contests));
     } else {
       await dbRequest(encodeURIComponent(key), 'PUT', STATE[key]);
     }
@@ -1900,7 +2055,7 @@ async function saveSection(key){
       STATE.equipmentOut = Object.entries(out).map(([name, count]) => ({ name, count }));
       await dbRequest('equipmentOut', 'PUT', STATE.equipmentOut);
     }
-    if(isAdmin() && ['products','competitions','planning','tutorials'].includes(key) && typeof schedulePushCheck === 'function') schedulePushCheck();
+    if(isAdmin() && ['products','competitions','planning','tutorials','news','contests','runs'].includes(key) && typeof schedulePushCheck === 'function') schedulePushCheck();
   }catch(err){
     console.error(err);
     showToast(isAdmin() ? "Erreur d'enregistrement — vérifie ta connexion internet." : "Modification refusée : connectez-vous en mode édition.");
@@ -1911,6 +2066,8 @@ async function loadSection(key){
     let data = await dbRequest(key === 'giftCards' ? 'giftCardsByCode' : encodeURIComponent(key), 'GET');
     if(data === null || data === undefined) return;
     if(key === 'giftCards') data = Object.values(data);
+    else if(key === 'contests') data = contestsFromObject(data);
+    else if(key === 'loyaltyConfig') data = Object.assign({ enabled:true, perEuro:1, rewards:[] }, data, { rewards: toArray(data.rewards) });
     else if(key === 'reviews') data = (Array.isArray(data) ? data.map((v, i) => [String(i), v]) : Object.entries(data))
       .filter(([, v]) => v).map(([k, v]) => ({ ...v, _key: k }))
       .sort((a, b) => (b.ts || 0) - (a.ts || 0) || (a._key < b._key ? 1 : -1));
@@ -1945,6 +2102,7 @@ function setPaid(arr, idx, paid){
   rec.paidDate = paid ? new Date().toLocaleDateString('fr-FR') : null;
   saveSection(arr);
   if(rec.uid && rec.ref) patchPath(`userRecords/${rec.uid}/${rec.ref}`, { paid: rec.paid, paidDate: rec.paidDate });
+  if(typeof syncLoyaltyForRecord === 'function') syncLoyaltyForRecord(arr, rec);
 }
 async function patchPath(path, fields){
   try{ await dbRequest(path, 'PATCH', fields); return true; }
@@ -1956,8 +2114,25 @@ async function fetchGiftCard(code){
   try{ return await dbRequest(`giftCardsByCode/${encodeURIComponent(code)}`, 'GET'); }
   catch(err){ return null; }
 }
+/* Données réservées à l'admin : inutile (et refusé) de les demander aux visiteurs */
+const PRIVATE_KEYS = ['passwords','memberships','registrations','notifications','waivers','equipmentLoans','donationRecords','orders','referralRewards','giftCards','pushState','productCosts','expenses'];
 async function loadAll(){
-  await Promise.all(Object.keys(DEFAULTS).map(loadSection));
+  const keys = Object.keys(DEFAULTS).filter(k => isAdmin() || !PRIVATE_KEYS.includes(k));
+  await Promise.all(keys.map(loadSection));
+}
+function contestsToObject(list){
+  const o = {};
+  (list || []).forEach(c => {
+    if(!c || !c.id) return;
+    o[c.id] = { id:c.id, title:c.title||'', desc:c.desc||'', open:!!c.open, published:!!c.published, needAccount:c.needAccount !== false, ts:c.ts||Date.now(),
+      options: Object.fromEntries((c.options||[]).filter(op => op && op.id).map((op, i) => [op.id, { id:op.id, label:op.label||'', image:op.image||null, video:op.video||null, order:i }])) };
+  });
+  return o;
+}
+function contestsFromObject(obj){
+  return Object.values(obj || {}).filter(c => c && c.id)
+    .map(c => ({ ...c, options: Object.values(c.options || {}).filter(Boolean).sort((a, b) => (a.order||0) - (b.order||0)) }))
+    .sort((a, b) => (b.ts||0) - (a.ts||0));
 }
 function saveFavorites(){
   try{ localStorage.setItem('moteau_favorites', JSON.stringify(favorites)); }
@@ -2153,6 +2328,13 @@ function applyEditMode(){
   if(typeof renderGeneralRanking === 'function') renderGeneralRanking();
   if(typeof renderPilotSearch === 'function') renderPilotSearch();
   if(typeof renderTutorials === 'function') renderTutorials();
+  if(typeof renderNews === 'function') renderNews();
+  if(typeof renderCountdown === 'function') renderCountdown();
+  if(typeof renderFaq === 'function') renderFaq();
+  if(typeof renderContests === 'function') renderContests();
+  if(typeof renderLoyalty === 'function') renderLoyalty();
+  if(typeof renderRuns === 'function') renderRuns();
+  if(typeof renderPilotDirectory === 'function') renderPilotDirectory();
   if(typeof CLUB_UNLOCKED !== 'undefined' && CLUB_UNLOCKED && typeof renderClubMessages === 'function'){
     renderClubMessages(); renderClubPosts(); renderClubRoster();
   }
@@ -2863,7 +3045,7 @@ function renderPilotSearch(){
     <div class="pilot-result">
       <div class="pr-rank">${f.generalRank}<sup>${f.generalRank===1?'er':'e'}</sup><small>sur ${ranking.length} au général</small></div>
       <div>
-        <div class="pr-name">${escSearch(f.e.pilot.name||'')}</div>
+        <div class="pr-name">${pilotLinkHtml(f.e.pilot.name||'')}</div>
         <div class="pr-meta">${escSearch(f.e.comp.name||'')}${f.e.comp.date ? ' ('+escSearch(f.e.comp.date)+')' : ''} — ${f.compPos}${f.compPos===1?'er':'e'} sur ${f.compTotal}</div>
         <div class="pr-meta">${escSearch(STAGE_RESULT_LABELS[f.e.pilot.result]||f.e.pilot.result||'')} · Temps cumulé : ${formatSecondsToTime(getPilotCumulativeSeconds(f.e.pilot))}</div>
       </div>
@@ -4167,6 +4349,9 @@ const SEARCH_SECTIONS = [
   { name:"Comment ça marche", anchor:"#concept", kw:"principe élan décollage réception chrono" },
   { name:"Planning", anchor:"#planning", kw:"planning séances entraînement horaires inscription essai" },
   { name:"Résultats & compétitions", anchor:"#resultats", kw:"résultats compétitions classement records podium pilotes" },
+  { name:"Les runs (vidéos)", anchor:"#runs", kw:"runs vidéos passages figures pilotes vitesse" },
+  { name:"Vote du public", anchor:"#votes", kw:"vote votes sondage meilleure figure public" },
+  { name:"Programme fidélité", anchor:"#fidelite", kw:"fidélité points récompenses bonnet barème" },
   { name:"Règles", anchor:"#regles", kw:"règles règlement quotas étapes finale documents pdf" },
   { name:"Prêt d'équipement", anchor:"#equipement", kw:"équipement matériel emprunt prêt location casque gilet" },
   { name:"Boutique", anchor:"#boutique", kw:"boutique produits achat panier vêtements" },
@@ -4176,6 +4361,8 @@ const SEARCH_SECTIONS = [
   { name:"Avis", anchor:"#avis", kw:"avis témoignages commentaires" },
   { name:"Sponsors", anchor:"#sponsors", kw:"sponsors partenaires" },
   { name:"Photos / Vidéos", anchor:"#galerie", kw:"photos vidéos galerie" },
+  { name:"Actualités", anchor:"#actualites", kw:"actualités news nouvelles articles blog" },
+  { name:"Foire aux questions", anchor:"#faq", kw:"faq questions réponses aide" },
   { name:"Tutoriels", anchor:"#tutoriels", kw:"tutoriels tuto vidéos apprendre conseils débutant" },
   { name:"Notre histoire", anchor:"#histoire", kw:"histoire club origine création", historyOnly:true },
   { name:"Faire un don", anchor:"#dons", kw:"don soutenir financer" }
@@ -5101,7 +5288,7 @@ document.getElementById('cartCheckoutBtn').addEventListener('click', async () =>
   const items = keys.map(key => {
     const line = cart[key]; const p = STATE.products[line.idx];
     const variant = [line.color, line.size].filter(Boolean).join('/');
-    return { label: `${p.name}${variant?' ('+variant+')':''}`, qty: line.qty, unit: p.price||0 };
+    return { pid: p.id || null, label: `${p.name}${variant?' ('+variant+')':''}`, qty: line.qty, unit: p.price||0 };
   });
   const orderRec = { ref: genRef('CMD'), name, email, itemsSummary, items, total: finalTotal, memberClaim: isMember, promoCode: appliedPromo ? appliedPromo.code : null, giftCardCode: appliedGiftCard ? appliedGiftCard.code : null, hasPreorder, method: mode, paid:false, date: new Date().toLocaleDateString('fr-FR') };
   if(!await addItem('orders', orderRec)) return;
@@ -5245,6 +5432,10 @@ function pushCandidates(){
     out.push({ key:`plan:${s.date}|${s.time||''}|${s.name||s.type||''}`, title:'📅 Nouvelle séance au planning',
       body:`${s.name || typeLabel(s.type)} — ${s.date}${s.time && s.time !== '00h00 – 00h00' ? ' · ' + s.time : ''}`, url:'/#planning' });
   });
+  (STATE.news||[]).forEach(n => {
+    if(!n || !n.published || !n.title) return;
+    out.push({ key:'news:' + n.id, title:'📰 Nouvelle actualité', body:n.title, url:'/#actualites' });
+  });
   (STATE.tutorials||[]).forEach(t => {
     if(!t || !t.title || t.title === 'Nouveau tutoriel') return;
     out.push({ key:'tuto:' + t.title, title:'🎬 Nouveau tutoriel', body:t.title, url:'/#tutoriels' });
@@ -5304,6 +5495,8 @@ function renderAccountButton(){
 async function loadUserProfile(){
   try{ USER_PROFILE = await dbRequest(`userProfiles/${AUTH.uid}`, 'GET') || {}; }catch(err){ USER_PROFILE = {}; }
   renderAccountButton(); prefillForms(); refreshReviewForm();
+  if(typeof renderFaq === 'function') renderFaq();
+  loadLoyalty().then(() => { if(typeof renderLoyalty === 'function') renderLoyalty(); });
 }
 const PREFILL_FIELDS = [
   ['regName','name'],['regEmail','email'],['regPhone','phone'],['memName','name'],['memEmail','email'],['memPhone','phone'],
@@ -5323,6 +5516,11 @@ function openAccount(){
   document.getElementById('accountOverlay').classList.add('show');
 }
 function closeAccount(){ document.getElementById('accountOverlay').classList.remove('show'); }
+function renderAccountModalPoints(){
+  const el = document.getElementById('accPoints'); if(!el || !isLoggedIn() || isAdmin() || !loyaltyCfg().enabled) return;
+  const b = loyaltyBalance(LOYALTY);
+  el.innerHTML = `<div class="loy-hero" style="padding:12px 16px; margin:0; gap:14px;"><div class="loy-points" style="font-size:2rem;">${b}</div><div style="font-size:0.85rem;">point${b>1?'s':''} fidélité · <a href="#fidelite" onclick="closeAccount()" style="color:var(--orange);">voir les récompenses</a></div></div>`;
+}
 async function renderAccountModal(){
   const box = document.getElementById('accountModal');
   if(!isLoggedIn()){
@@ -5344,9 +5542,11 @@ async function renderAccountModal(){
     <div class="form-field"><label>Prénom et nom</label><input type="text" id="accProfName" value="${escSearch((USER_PROFILE&&USER_PROFILE.name)||'')}"></div>
     <div class="form-field"><label>Téléphone</label><input type="text" id="accProfPhone" value="${escSearch((USER_PROFILE&&USER_PROFILE.phone)||'')}"></div>
     <button class="small-btn solid" id="accSaveProfile" style="margin-bottom:20px;">Enregistrer mes infos</button>
+    <div id="accPoints" style="margin-bottom:18px;"></div>
     <h4 style="margin-bottom:10px;">Mes inscriptions, commandes et documents</h4>
     <div id="accRecords"><p style="color:var(--grey);">Chargement…</p></div>
     <div class="pw-actions" style="margin-top:16px;"><button class="btn btn-ghost" id="accLogout" style="flex:1;">Se déconnecter</button><button class="btn btn-solid" id="accCancel" style="flex:1;">Fermer</button></div>`;
+  renderAccountModalPoints();
   let recs = [];
   try{ recs = Object.values(await dbRequest(`userRecords/${AUTH.uid}`, 'GET') || {}); }catch(err){}
   recs.sort((a,b) => String(b.ref).localeCompare(String(a.ref)));
@@ -5427,6 +5627,9 @@ const ADMIN_TABS = [
   { id:'competitions', label:'Compétitions' },
   { id:'giftCards', label:'Cartes cadeaux' },
   { id:'polls', label:'📊 Sondages boutique' },
+  { id:'finance', label:'💰 Finances (privé)' },
+  { id:'loyalty', label:'⭐ Fidélité' },
+  { id:'votes', label:'🗳️ Votes' },
   { id:'waivers', label:'Attestations' },
   { id:'push', label:'🔔 Notifications téléphone' },
   { id:'notifications', label:'Abonnés e-mail/SMS' }
@@ -5587,6 +5790,16 @@ function renderAdminPanel(){
         ${pollResultsHtml(p.id, concept)}</div>`;
     }).join('') : '<p style="color:var(--grey);">Aucun sondage pour le moment. En mode édition, dans la Boutique : mettez une pièce en « Pièce concept » ou cochez « Activer un sondage ».</p>')
       + '<button class="small-btn solid" data-agoto="boutique" style="margin-top:8px;">✏️ Gérer la boutique</button>';
+  } else if(adminTab === 'finance'){
+    renderAdminFinance(body);
+  } else if(adminTab === 'loyalty'){
+    renderAdminLoyalty(body);
+  } else if(adminTab === 'votes'){
+    const cs = STATE.contests || [];
+    body.innerHTML = (cs.length ? cs.map(c => { const st = contestStats(c); return `<div class="admin-card"><h4>${e(c.title||'(sans titre)')} <span class="muted">${c.open?'en cours':'terminé'}${c.published?'':' · brouillon'}</span></h4>
+      <div class="muted" style="margin-bottom:8px;">${st.total} vote${st.total>1?'s':''}</div>
+      ${(c.options||[]).map(o => { const n = st.counts[o.id]||0; return `<div class="vis-hrow"><span class="vis-hlabel">${e(o.label||'')}</span><span class="vis-hbar-track"><span class="vis-hbar" style="width:${st.total?Math.max(2,n/st.total*100):0}%"></span></span><span class="vis-hnum">${n}</span></div>`; }).join('')}</div>`; }).join('')
+      : '<p style="color:var(--grey);">Aucun vote créé.</p>') + '<button class="small-btn solid" data-agoto="votes" style="margin-top:8px;">✏️ Créer / gérer les votes</button>';
   } else if(adminTab === 'giftCards'){
     body.innerHTML = `<div class="table-wrap"><table class="admin-table"><thead><tr><th>Code</th><th>Date</th><th>Acheteur</th><th>Montant</th><th>Restant</th><th>Statut</th></tr></thead><tbody>
       ${(STATE.giftCards||[]).slice().reverse().map(g => { const i = STATE.giftCards.indexOf(g); return `<tr><td class="ref">${e(g.code)}</td><td>${e(g.date||'')}</td><td>${e(g.buyerName||'')}<br><small>${e(g.buyerEmail||'')}</small></td>
@@ -5611,7 +5824,7 @@ function renderAdminPanel(){
 }
 const SECTION_LABELS = { accueil:'Accueil', concept:'Comment ça marche', histoire:'Notre histoire', planning:'Planning', resultats:'Résultats', regles:'Règles',
   equipement:'Équipement', adhesion:'Adhésion', attestation:'Attestation', avis:'Avis', club:'Espace club', dashboard:'Tableau de bord', galerie:'Photos / vidéos',
-  tutoriels:'Tutoriels', boutique:'Boutique', dons:'Dons', sponsors:'Sponsors' };
+  tutoriels:'Tutoriels', actualites:'Actualités', faq:'Foire aux questions', runs:'Les runs', votes:'Vote du public', fidelite:'Fidélité', boutique:'Boutique', dons:'Dons', sponsors:'Sponsors' };
 async function renderAdminVisits(body){
   body.innerHTML = '<p style="color:var(--grey);">Chargement des statistiques…</p>';
   const get = async path => { try{ return await dbRequest(path, 'GET') || {}; }catch(err){ return {}; } };
@@ -5659,6 +5872,175 @@ async function renderAdminVisits(body){
     </div>
     <p style="color:var(--grey); font-size:0.78rem;">Une visite = une personne qui ouvre le site (recharger la page ne compte pas une 2e fois). Vos propres visites en tant qu'admin ne sont pas comptées. Les statistiques par jour démarrent à partir d'aujourd'hui.</p>`;
 }
+/* ============================================================
+   ESPACE ADMIN — FIDÉLITÉ (demandes d'échange, points manuels)
+   ============================================================ */
+async function renderAdminLoyalty(body){
+  body.innerHTML = '<p style="color:var(--grey);">Chargement…</p>';
+  let all = {}; try{ all = await dbRequest('loyalty', 'GET') || {}; }catch(err){}
+  if(adminTab !== 'loyalty') return;
+  const e = escSearch;
+  const users = {}; // uid -> {name,email}
+  LOYALTY_ARRS.forEach(a => (STATE[a] || []).forEach(r => { if(r && r.uid && !users[r.uid]) users[r.uid] = { name:r.name||'', email:r.email||'' }; }));
+  const rows = Object.entries(all).map(([uid, L]) => ({ uid, L, bal: loyaltyBalance(L), u: users[uid] || {} }));
+  const reqs = []; rows.forEach(x => Object.values(x.L.requests || {}).forEach(r => { if(r && r.status === 'pending') reqs.push({ ...r, uid:x.uid, bal:x.bal }); }));
+  body.innerHTML = `
+    <div class="admin-card"><h4>🎁 Demandes d'échange à traiter (${reqs.length})</h4>
+      ${reqs.length ? reqs.map(r => `<div class="acc-rec"><div><b>${e(r.label)}</b> — ${r.points} pts<small>${e(r.name||'')} · ${e(r.email||'')} · ${new Date(r.ts).toLocaleDateString('fr-FR')} · solde actuel : ${r.bal} pts</small></div>
+        <div><button class="mark-paid-btn" data-lyok="${e(r.uid)}:${e(r.rid)}">✅ Remis (retirer les points)</button> <button class="mark-paid-btn" data-lyno="${e(r.uid)}:${e(r.rid)}">Refuser</button></div></div>`).join('') : '<p class="muted" style="color:var(--grey);">Aucune demande en attente.</p>'}</div>
+    <div class="admin-card"><h4>Points des membres</h4>
+      <div class="table-wrap"><table class="admin-table"><thead><tr><th>Membre</th><th>E-mail</th><th class="num">Points</th></tr></thead><tbody>
+      ${rows.sort((a,b) => b.bal - a.bal).map(x => `<tr><td>${e(x.u.name||'—')}</td><td>${e(x.u.email||x.uid)}</td><td class="num">${x.bal}</td></tr>`).join('') || '<tr><td colspan="3" style="color:var(--grey);">Aucun point distribué pour le moment.</td></tr>'}
+      </tbody></table></div></div>
+    <div class="admin-card"><h4>Ajouter ou retirer des points à la main</h4>
+      <div class="form-field"><label>Membre (qui a un compte)</label><select id="lyUser">${Object.entries(users).map(([uid, u]) => `<option value="${e(uid)}">${e(u.name||'')} — ${e(u.email||'')}</option>`).join('') || '<option value="">Aucun membre avec compte</option>'}</select></div>
+      <div class="form-field"><label>Points (négatif pour retirer)</label><input type="number" id="lyPts" value="10"></div>
+      <div class="form-field"><label>Raison</label><input type="text" id="lyNote" maxlength="120" placeholder="ex : cadeau de bienvenue"></div>
+      <button class="small-btn solid" id="lyAdd">Valider</button></div>
+    <div class="admin-card"><h4>Recalculer</h4><div class="muted" style="margin-bottom:8px;">À utiliser après avoir changé « points par euro », ou pour rattraper des paiements marqués « payé » avant la mise en place du programme.</div>
+      <button class="small-btn" id="lyRecalc">Recalculer tous les points</button>
+      <button class="small-btn solid" data-agoto="fidelite" style="margin-left:6px;">✏️ Modifier le barème et les récompenses</button></div>`;
+  body.querySelector('#lyAdd').onclick = async () => {
+    const uid = body.querySelector('#lyUser').value, pts = parseInt(body.querySelector('#lyPts').value);
+    if(!uid || !pts){ showToast('Choisissez un membre et un nombre de points.'); return; }
+    try{ await dbRequest(`loyalty/${uid}/manual/${newId('m')}`, 'PUT', { points:pts, note:body.querySelector('#lyNote').value.trim().slice(0,120), ts:Date.now() }); showToast('Points enregistrés'); renderAdminPanel(); }
+    catch(err){ showToast('Erreur — réessayez.'); }
+  };
+  body.querySelector('#lyRecalc').onclick = async () => { showToast('Calcul en cours…'); const n = await recomputeAllLoyalty(); showToast(`${n} paiements recalculés`); renderAdminPanel(); };
+};
+document.getElementById('adminBody').addEventListener('click', async ev => {
+  const ok = ev.target.closest('[data-lyok]'), no = ev.target.closest('[data-lyno]'); const t = ok || no; if(!t) return;
+  const [uid, rid] = (ok ? ok.dataset.lyok : no.dataset.lyno).split(':');
+  try{
+    if(ok){
+      const r = await dbRequest(`loyalty/${uid}/requests/${rid}`, 'GET'); if(!r) return;
+      await dbRequest(`loyalty/${uid}/spent/${rid}`, 'PUT', { points:r.points, label:r.label, ts:Date.now() });
+      await patchPath(`loyalty/${uid}/requests/${rid}`, { status:'done' });
+    } else await patchPath(`loyalty/${uid}/requests/${rid}`, { status:'rejected' });
+    renderAdminPanel();
+  }catch(err){ showToast('Erreur — réessayez.'); }
+});
+
+/* ============================================================
+   ESPACE ADMIN — FINANCES (privé : aucune règle de lecture pour les visiteurs)
+   ============================================================ */
+const finLots = pid => toArray((STATE.productCosts[pid] || {}).lots).filter(Boolean);
+function finProductStats(p){
+  const lots = finLots(p.id);
+  const qty = lots.reduce((t, l) => t + (Number(l.qty)||0), 0);
+  const invested = lots.reduce((t, l) => t + (Number(l.qty)||0) * (Number(l.unitCost)||0) + (Number(l.shipping)||0) + (Number(l.fees)||0), 0);
+  const unitCost = qty ? invested / qty : 0;
+  let soldPaid = 0, soldPending = 0, revenue = 0, pendingRev = 0;
+  (STATE.orders || []).forEach(o => {
+    if(!o) return;
+    (Array.isArray(o.items) ? o.items : toArray(o.items)).forEach(it => {
+      if(!it) return;
+      const match = it.pid ? it.pid === p.id : String(it.label || '').startsWith(p.name || '\u0000');
+      if(!match) return;
+      const q = Number(it.qty)||0, amt = q * (Number(it.unit)||0);
+      if(o.paid){ soldPaid += q; revenue += amt; } else { soldPending += q; pendingRev += amt; }
+    });
+  });
+  const price = Number(p.price)||0;
+  return { qty, invested, unitCost, soldPaid, soldPending, revenue, pendingRev, price,
+    remaining: qty - soldPaid - soldPending, unitMargin: price - unitCost, marginPct: price ? (price - unitCost) / price * 100 : 0,
+    profit: revenue - soldPaid * unitCost, breakEven: price - unitCost > 0 ? Math.ceil(invested / (price - unitCost)) : null };
+}
+function renderAdminFinance(body){
+  const e = escSearch, num = v => Number(v)||0;
+  if(!STATE.productCosts || Array.isArray(STATE.productCosts)) STATE.productCosts = {};
+  const prods = (STATE.products || []).filter(p => p && p.id);
+  const stats = prods.map(p => ({ p, st: finProductStats(p) }));
+  const expenses = toArray(STATE.expenses).filter(Boolean);
+  const totInvested = stats.reduce((t, x) => t + x.st.invested, 0), totExp = expenses.reduce((t, x) => t + num(x.amount), 0);
+  const totRev = stats.reduce((t, x) => t + x.st.revenue, 0), totProfit = stats.reduce((t, x) => t + x.st.profit, 0);
+  const stockValue = stats.reduce((t, x) => t + Math.max(0, x.st.remaining) * x.st.unitCost, 0);
+  const potential = stats.reduce((t, x) => t + Math.max(0, x.st.remaining) * x.st.unitMargin, 0);
+  const cash = totRev - totInvested - totExp;
+  const cls = v => v >= 0 ? 'color:#5fbf6c;' : 'color:#ff6b6b;';
+  const cards = [
+    [fmtEur(totInvested), 'Investi en marchandises (achat + port + frais)'],
+    [fmtEur(totExp), 'Autres dépenses'],
+    [fmtEur(totRev), 'Ventes encaissées (produits)'],
+    [`<span style="${cls(totProfit)}">${fmtEur(totProfit)}</span>`, 'Bénéfice réalisé sur les ventes'],
+    [`<span style="${cls(cash)}">${fmtEur(cash)}</span>`, 'Trésorerie : ventes − tout ce que j\'ai dépensé'],
+    [fmtEur(stockValue), 'Valeur du stock restant (au prix coûtant)'],
+    [fmtEur(potential), 'Bénéfice encore à faire si tout se vend']
+  ];
+  body.innerHTML = `<p class="hint-text">🔒 Cette page est visible uniquement par vous. Les prix d'achat ne sont jamais envoyés aux visiteurs.</p>
+    <div class="admin-stats">${cards.map(([n, l]) => `<div class="admin-stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('')}</div>
+    <h3 style="margin:18px 0 10px;">Produit par produit</h3>
+    ${stats.length ? stats.map(({ p, st }) => `<div class="admin-card" data-fpid="${e(p.id)}"><h4>${e(p.name||'')} <span class="muted">— prix de vente ${fmtEur(st.price)}</span></h4>
+      <div class="admin-stats" style="margin:10px 0;">
+        <div class="admin-stat"><div class="n">${st.qty}</div><div class="l">Acheté (quantité)</div></div>
+        <div class="admin-stat"><div class="n">${fmtEur(st.invested)}</div><div class="l">Misé au total</div></div>
+        <div class="admin-stat"><div class="n">${st.qty ? fmtEur(st.unitCost) : '—'}</div><div class="l">Coût réel par pièce (avec port)</div></div>
+        <div class="admin-stat"><div class="n" style="${st.qty ? cls(st.unitMargin) : ''}">${st.qty ? fmtEur(st.unitMargin) + ' (' + Math.round(st.marginPct) + '%)' : '—'}</div><div class="l">Bénéfice par pièce</div></div>
+        <div class="admin-stat"><div class="n">${st.soldPaid}${st.soldPending ? ` <small>(+${st.soldPending} à encaisser)</small>` : ''}</div><div class="l">Vendu (payé)</div></div>
+        <div class="admin-stat"><div class="n">${st.qty ? st.remaining : '—'}</div><div class="l">Reste en stock</div></div>
+        <div class="admin-stat"><div class="n" style="${cls(st.profit)}">${fmtEur(st.profit)}</div><div class="l">Bénéfice réalisé</div></div>
+        <div class="admin-stat"><div class="n">${st.breakEven === null ? '—' : st.breakEven + ' pièces'}</div><div class="l">À vendre pour être remboursé</div></div>
+      </div>
+      <table class="admin-table"><thead><tr><th>Date</th><th>Quantité</th><th>Prix d'achat / pièce (€)</th><th>Frais de port (€)</th><th>Autres frais (€)</th><th>Note</th><th></th></tr></thead><tbody>
+      ${finLots(p.id).map(l => `<tr data-flot="${e(l.id)}"><td><input type="date" data-ff="date" value="${e(l.date||'')}"></td><td><input type="number" min="0" data-ff="qty" value="${num(l.qty)}"></td>
+        <td><input type="number" min="0" step="0.01" data-ff="unitCost" value="${num(l.unitCost)}"></td><td><input type="number" min="0" step="0.01" data-ff="shipping" value="${num(l.shipping)}"></td>
+        <td><input type="number" min="0" step="0.01" data-ff="fees" value="${num(l.fees)}"></td><td><input type="text" data-ff="note" value="${e(l.note||'')}" placeholder="fournisseur…"></td>
+        <td><button class="icon-btn danger" data-fdel="${e(l.id)}">✕</button></td></tr>`).join('') || '<tr><td colspan="7" style="color:var(--grey);">Aucun achat enregistré pour ce produit.</td></tr>'}
+      </tbody></table>
+      <button class="small-btn solid" data-fadd="${e(p.id)}" style="margin-top:8px;">+ Ajouter un achat (lot)</button></div>`).join('') : '<p style="color:var(--grey);">Aucun produit en boutique.</p>'}
+    <h3 style="margin:22px 0 10px;">Autres dépenses (matériel, location, pub…)</h3>
+    <table class="admin-table"><thead><tr><th>Date</th><th>Description</th><th>Montant (€)</th><th></th></tr></thead><tbody>
+    ${expenses.map(x => `<tr data-fexp="${e(x.id)}"><td><input type="date" data-fe="date" value="${e(x.date||'')}"></td><td><input type="text" data-fe="label" value="${e(x.label||'')}"></td>
+      <td><input type="number" min="0" step="0.01" data-fe="amount" value="${num(x.amount)}"></td><td><button class="icon-btn danger" data-fexpdel="${e(x.id)}">✕</button></td></tr>`).join('') || '<tr><td colspan="4" style="color:var(--grey);">Aucune dépense.</td></tr>'}
+    </tbody></table>
+    <button class="small-btn solid" id="finAddExp" style="margin-top:8px;">+ Ajouter une dépense</button>
+    <p class="hint-text" style="margin-top:16px;">Le bénéfice se calcule sur le prix affiché des commandes payées (réductions et cartes cadeaux non déduites). Une commande compte comme « vendue » seulement quand vous cliquez « Marquer payé ».</p>
+    <button class="small-btn" id="finCsv" style="margin-top:6px;">⬇️ Exporter en Excel (CSV)</button>`;
+}
+{
+  const bodyEl = document.getElementById('adminBody');
+  const saveFin = () => { saveSection('productCosts'); };
+  bodyEl.addEventListener('change', ev => {
+    if(adminTab !== 'finance') return;
+    const ff = ev.target.dataset.ff, fe = ev.target.dataset.fe; if(!ff && !fe) return;
+    const val = ev.target.type === 'number' ? Math.max(0, parseFloat(ev.target.value) || 0) : ev.target.value;
+    if(ff){
+      const pid = ev.target.closest('[data-fpid]').dataset.fpid, lid = ev.target.closest('[data-flot]').dataset.flot;
+      const lots = finLots(pid), l = lots.find(x => x.id === lid); if(!l) return;
+      l[ff] = val; STATE.productCosts[pid] = { lots }; saveFin();
+    } else {
+      const exp = toArray(STATE.expenses).filter(Boolean), x = exp.find(y => y.id === ev.target.closest('[data-fexp]').dataset.fexp); if(!x) return;
+      x[fe] = val; STATE.expenses = exp; saveSection('expenses');
+    }
+    renderAdminPanel();
+  });
+  bodyEl.addEventListener('click', ev => {
+    if(adminTab !== 'finance') return;
+    const t = ev.target.closest('[data-fadd],[data-fdel],[data-fexpdel],#finAddExp,#finCsv'); if(!t) return;
+    if(t.dataset.fadd){
+      const pid = t.dataset.fadd, lots = finLots(pid);
+      lots.push({ id:newId('l'), date:new Date().toISOString().slice(0,10), qty:0, unitCost:0, shipping:0, fees:0, note:'' });
+      STATE.productCosts[pid] = { lots }; saveFin();
+    } else if(t.dataset.fdel){
+      const pid = t.closest('[data-fpid]').dataset.fpid;
+      if(!confirm('Supprimer cet achat ?')) return;
+      STATE.productCosts[pid] = { lots: finLots(pid).filter(l => l.id !== t.dataset.fdel) }; saveFin();
+    } else if(t.id === 'finAddExp'){
+      STATE.expenses = toArray(STATE.expenses).filter(Boolean).concat({ id:newId('x'), date:new Date().toISOString().slice(0,10), label:'', amount:0 }); saveSection('expenses');
+    } else if(t.dataset.fexpdel){
+      if(!confirm('Supprimer cette dépense ?')) return;
+      STATE.expenses = toArray(STATE.expenses).filter(x => x && x.id !== t.dataset.fexpdel); saveSection('expenses');
+    } else if(t.id === 'finCsv'){
+      const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`, f = n => (Math.round(n*100)/100).toFixed(2).replace('.', ',');
+      const lines = [['Produit','Prix de vente','Quantité achetée','Investi','Coût par pièce','Bénéfice par pièce','Vendus (payés)','Reste','Bénéfice réalisé'].map(esc).join(';')]
+        .concat((STATE.products || []).filter(Boolean).map(p => { const st = finProductStats(p); return [p.name, f(st.price), st.qty, f(st.invested), f(st.unitCost), f(st.unitMargin), st.soldPaid, st.remaining, f(st.profit)].map(esc).join(';'); }));
+      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + lines.join('\n')], { type:'text/csv;charset=utf-8' }));
+      a.download = `moteau-finances-${new Date().toISOString().slice(0,10)}.csv`; a.click(); return;
+    }
+    renderAdminPanel();
+  });
+}
+
 function exportAdminCsv(){
   const colls = MONEY_COLLS.includes(adminTab) ? [adminTab] : MONEY_COLLS;
   const rows = moneyRows(colls);
@@ -5988,6 +6370,616 @@ function migrateOldData(){
   if(!STATE.liveInsta) STATE.liveInsta = { active:false, url:"" };
   if(STATE.waiverText === undefined) STATE.waiverText = DEFAULT_WAIVER_TEXT;
 }
+/* ============================================================
+   OUTILS COMMUNS (ids, dates, vidéos intégrées, noms courts)
+   ============================================================ */
+function newId(prefix){ return prefix + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function localeTag(){ return currentLang === 'en' ? 'en-GB' : 'fr-FR'; }
+function fmtLongDate(ts){ try{ return new Date(ts).toLocaleDateString(localeTag(), { day:'numeric', month:'long', year:'numeric' }); }catch(err){ return ''; } }
+function shortName(full){
+  const parts = String(full||'').trim().split(/\s+/).filter(Boolean);
+  if(!parts.length) return '';
+  return parts[0] + (parts[1] ? ' ' + parts[1][0].toUpperCase() + '.' : '');
+}
+function myPublicName(){ return shortName(USER_PROFILE && USER_PROFILE.name) || ''; }
+/* Détecte YouTube / Instagram / TikTok / Vimeo / fichier vidéo */
+function mediaInfo(url){
+  const u = String(url||'').trim(); if(!u) return null;
+  let m;
+  if((m = u.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/)))
+    return { kind:'youtube', id:m[1], src:`https://www.youtube-nocookie.com/embed/${m[1]}?rel=0&autoplay=1`, thumb:`https://i.ytimg.com/vi/${m[1]}/hqdefault.jpg`, label:'YouTube' };
+  if((m = u.match(/instagram\.com\/(p|reel|reels|tv)\/([A-Za-z0-9_-]+)/)))
+    return { kind:'instagram', id:m[2], src:`https://www.instagram.com/${m[1]==='reels'?'reel':m[1]}/${m[2]}/embed`, thumb:null, label:'Instagram', tall:true };
+  if((m = u.match(/tiktok\.com\/.*\/video\/(\d+)/)))
+    return { kind:'tiktok', id:m[1], src:`https://www.tiktok.com/embed/v2/${m[1]}`, thumb:null, label:'TikTok', tall:true };
+  if((m = u.match(/vimeo\.com\/(?:video\/)?(\d+)/)))
+    return { kind:'vimeo', id:m[1], src:`https://player.vimeo.com/video/${m[1]}?autoplay=1`, thumb:null, label:'Vimeo' };
+  if(/^(https?:\/\/\S+|[\w\/.-]+)\.(mp4|webm|ogg|mov)(\?\S*)?$/i.test(u)) return { kind:'file', src:u, thumb:null, label:'Vidéo' };
+  if(/^https?:\/\//i.test(u)) return { kind:'link', src:u, thumb:null, label:'Lien' };
+  return null;
+}
+/* Lecteur « à la demande » : une vignette, l'iframe ne se charge qu'au clic */
+function lazyVideoHtml(url, poster){
+  const info = mediaInfo(url); const e = escSearch;
+  if(!info) return `<div class="tuto-novideo">${EDIT_MODE ? 'Ajoutez le lien de la vidéo' : 'Vidéo bientôt disponible'}</div>`;
+  if(info.kind === 'link') return `<div class="tuto-novideo"><a href="${e(info.src)}" target="_blank" rel="noopener" style="color:var(--orange);">▶ Voir la vidéo</a></div>`;
+  const bg = info.thumb || poster;
+  return `<button type="button" class="lazy-video ${info.tall ? 'tall' : ''}" data-lazysrc="${e(info.src)}" data-lazykind="${info.kind}" style="${bg ? `background-image:url('${e(bg)}')` : ''}" aria-label="Lire la vidéo">
+    <span class="lazy-play">▶</span><span class="lazy-label">${e(info.label)}</span></button>`;
+}
+document.addEventListener('click', ev => {
+  const b = ev.target.closest('.lazy-video'); if(!b) return;
+  const src = b.dataset.lazysrc, kind = b.dataset.lazykind;
+  const holder = document.createElement('div'); holder.className = 'lazy-holder' + (b.classList.contains('tall') ? ' tall' : '');
+  holder.innerHTML = kind === 'file'
+    ? `<video src="${escSearch(src)}" controls autoplay playsinline></video>`
+    : `<iframe src="${escSearch(src)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+  b.replaceWith(holder);
+});
+
+/* ============================================================
+   ACTUALITÉS
+   ============================================================ */
+let newsShowAll = false;
+const newsOpen = new Set();
+function newsList(){
+  return (STATE.news || []).filter(n => n && (n.published || EDIT_MODE))
+    .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || (b.ts || 0) - (a.ts || 0));
+}
+function renderNews(){
+  const sec = document.getElementById('actualites'); if(!sec) return;
+  const all = newsList();
+  sec.style.display = (EDIT_MODE || all.length) ? '' : 'none';
+  const nav = document.getElementById('navNewsLink'); if(nav) nav.style.display = sec.style.display;
+  const shown = newsShowAll ? all : all.slice(0, 6);
+  const e = escSearch;
+  document.getElementById('newsGrid').innerHTML = shown.map(n => {
+    const long = String(n.text||'').length > 260 || String(n.text||'').split('\n').length > 5;
+    const open = newsOpen.has(n.id);
+    return `<article class="news-card ${n.published ? '' : 'draft'}" data-nid="${e(n.id)}">
+      ${n.image ? `<div class="news-img" style="background-image:url('${n.image}')"></div>` : ''}
+      <div class="news-body">
+        <div class="news-meta"><span>${e(fmtLongDate(n.ts))}</span>${n.pinned ? '<span class="news-badge">📌 À la une</span>' : ''}${n.published ? '' : '<span class="news-badge" style="color:var(--grey); border-color:var(--grey);">Brouillon</span>'}</div>
+        <h3>${e(n.title || (EDIT_MODE ? '(sans titre)' : ''))}</h3>
+        ${n.video ? `<div class="tuto-video" style="aspect-ratio:16/9;">${lazyVideoHtml(n.video)}</div>` : ''}
+        <div class="news-text ${long && !open ? 'clamp' : ''}">${e(n.text || '')}</div>
+        ${long ? `<button type="button" class="acc-link" data-nact="toggle">${open ? 'Réduire' : 'Lire la suite'}</button>` : ''}
+        ${EDIT_MODE ? `<div class="news-edit">
+          <input type="text" data-nfield="title" maxlength="120" value="${e(n.title||'')}" placeholder="Titre de l'actualité">
+          <textarea rows="6" data-nfield="text" maxlength="4000" placeholder="Votre texte…">${e(n.text||'')}</textarea>
+          <input type="text" data-nfield="video" value="${e(n.video||'')}" placeholder="Lien d'une vidéo (YouTube, Instagram, TikTok…) — facultatif">
+          <div class="news-actions">
+            <button class="small-btn solid" data-nact="publish">${n.published ? '✅ Publié — repasser en brouillon' : '📣 Publier'}</button>
+            <button class="small-btn" data-nact="photo">🖼️ ${n.image ? 'Changer la photo' : 'Ajouter une photo'}</button>
+            ${n.image ? '<button class="small-btn" data-nact="photodel">Retirer la photo</button>' : ''}
+            <button class="small-btn" data-nact="pin">${n.pinned ? 'Désépingler' : '📌 Mettre à la une'}</button>
+            <button class="small-btn danger" data-nact="del">Supprimer</button>
+          </div></div>` : ''}
+      </div></article>`;
+  }).join('') || '<p style="color:var(--grey);">Aucune actualité pour le moment.</p>';
+  const more = document.getElementById('newsMoreBtn');
+  more.style.display = all.length > 6 ? '' : 'none';
+  more.textContent = newsShowAll ? 'Réduire la liste' : 'Voir toutes les actualités';
+}
+document.getElementById('newsMoreBtn').addEventListener('click', () => { newsShowAll = !newsShowAll; renderNews(); });
+document.getElementById('newsGrid').addEventListener('change', ev => {
+  const f = ev.target.dataset.nfield; if(!f || !EDIT_MODE) return;
+  const n = STATE.news.find(x => x && x.id === ev.target.closest('[data-nid]').dataset.nid); if(!n) return;
+  n[f] = ev.target.value.trim(); saveSection('news'); renderNews();
+});
+document.getElementById('newsGrid').addEventListener('click', ev => {
+  const btn = ev.target.closest('[data-nact]'); if(!btn) return;
+  const id = btn.closest('[data-nid]').dataset.nid;
+  const n = (STATE.news || []).find(x => x && x.id === id); if(!n) return;
+  const act = btn.dataset.nact;
+  if(act === 'toggle'){ newsOpen.has(id) ? newsOpen.delete(id) : newsOpen.add(id); renderNews(); return; }
+  if(!EDIT_MODE) return;
+  if(act === 'publish'){ n.published = !n.published; if(n.published) n.ts = Date.now(); }
+  else if(act === 'pin') n.pinned = !n.pinned;
+  else if(act === 'photodel') n.image = null;
+  else if(act === 'photo'){ pickImage(url => { n.image = url; saveSection('news'); renderNews(); }); return; }
+  else if(act === 'del'){ if(!confirm('Supprimer cette actualité ?')) return; STATE.news = STATE.news.filter(x => x !== n); }
+  saveSection('news'); renderNews();
+});
+document.getElementById('addNewsBtn').addEventListener('click', () => {
+  if(!Array.isArray(STATE.news)) STATE.news = [];
+  STATE.news.push({ id:newId('n'), title:'', text:'', video:'', image:null, published:false, pinned:false, ts:Date.now() });
+  saveSection('news'); renderNews();
+});
+
+/* ============================================================
+   COMPTE À REBOURS vers la prochaine compétition
+   (suit la prochaine « Compétition » du planning, ou une date fixée à la main)
+   ============================================================ */
+let cdTimer = null, cdTarget = null;
+function parseStartTime(str){
+  const m = String(str||'').match(/(\d{1,2})\s*h\s*(\d{2})?/i);
+  return m ? [Math.min(23, parseInt(m[1])), Math.min(59, parseInt(m[2] || '0'))] : [9, 0];
+}
+function getCountdownTarget(){
+  const now = Date.now(), cd = STATE.countdown || {}, grace = 3 * 3600e3;
+  if(cd.iso){
+    const t = new Date(cd.iso).getTime();
+    if(!isNaN(t) && t > now - grace) return { t, title: cd.title || 'Prochaine compétition' };
+  }
+  let best = null;
+  (STATE.planning || []).forEach(r => {
+    if(!r || !r.dateISO) return;
+    const isComp = r.type === 'competition' || /comp[ée]tition/i.test(typeof typeLabel === 'function' ? String(typeLabel(r.type)) : '');
+    if(!isComp) return;
+    const [h, m] = parseStartTime(r.time);
+    const d = new Date(r.dateISO + 'T00:00:00'); d.setHours(h, m, 0, 0);
+    const t = d.getTime();
+    if(isNaN(t) || t < now - grace) return;
+    if(!best || t < best.t) best = { t, title: r.name || 'Compétition' };
+  });
+  return best;
+}
+function renderCountdown(){
+  const box = document.getElementById('countdownBox'); if(!box) return;
+  cdTarget = getCountdownTarget();
+  if(!cdTarget && !EDIT_MODE){ box.style.display = 'none'; clearInterval(cdTimer); return; }
+  box.style.display = '';
+  const cd = STATE.countdown || {}, e = escSearch;
+  box.innerHTML = (cdTarget
+      ? `<div class="cd-title">⏱️ ${e(cdTarget.title)}</div><div class="cd-row"><div class="cd-grid" id="cdGrid"></div><a class="btn btn-solid" href="#adhesion">S'inscrire</a></div>`
+      : `<div class="cd-title">Aucune compétition à venir dans le planning.</div>`)
+    + (EDIT_MODE ? `<div class="cd-edit">
+        <b style="font-size:0.78rem;">Compte à rebours (visible par vous seulement)</b>
+        <input type="text" id="cdTitleInput" value="${e(cd.title||'')}" placeholder="Titre (ex : Championnat d'été)">
+        <input type="datetime-local" id="cdIsoInput" value="${e(cd.iso||'')}">
+        <div style="display:flex; gap:6px; flex-wrap:wrap;"><button class="small-btn solid" id="cdSaveBtn">Enregistrer cette date</button><button class="small-btn" id="cdAutoBtn">Automatique (planning)</button></div>
+        <span class="hint-text" style="margin:0;">Par défaut, il suit la prochaine séance de type « Compétition » du Planning (avec sa date renseignée).</span></div>` : '');
+  clearInterval(cdTimer);
+  tickCountdown();
+  if(cdTarget) cdTimer = setInterval(tickCountdown, 1000);
+}
+function tickCountdown(){
+  const grid = document.getElementById('cdGrid'); if(!grid || !cdTarget) return;
+  const diff = cdTarget.t - Date.now();
+  if(diff <= 0){
+    grid.innerHTML = '<div class="cd-live">🔴 C\'est en cours !</div>';
+    if(diff < -3 * 3600e3) renderCountdown();
+    return;
+  }
+  const d = Math.floor(diff / 864e5), h = Math.floor(diff % 864e5 / 36e5), m = Math.floor(diff % 36e5 / 6e4), s = Math.floor(diff % 6e4 / 1e3);
+  const box = (n, l) => `<div class="cd-box"><div class="cd-num">${String(n).padStart(2, '0')}</div><div class="cd-lbl">${l}</div></div>`;
+  grid.innerHTML = box(d, 'jours') + box(h, 'heures') + box(m, 'min') + box(s, 'sec');
+}
+document.getElementById('countdownBox').addEventListener('click', ev => {
+  if(!EDIT_MODE) return;
+  if(ev.target.id === 'cdSaveBtn'){
+    const iso = document.getElementById('cdIsoInput').value;
+    if(!iso){ showToast('Choisissez une date et une heure.'); return; }
+    STATE.countdown = { title: document.getElementById('cdTitleInput').value.trim(), iso };
+    saveSection('countdown'); renderCountdown(); showToast('Compte à rebours enregistré');
+  } else if(ev.target.id === 'cdAutoBtn'){
+    STATE.countdown = {}; saveSection('countdown'); renderCountdown(); showToast('Compte à rebours automatique');
+  }
+});
+
+/* ============================================================
+   FOIRE AUX QUESTIONS — tout compte peut poser une question et répondre.
+   Les réponses de l'admin portent le badge « Admin » et sont épinglées en haut.
+   (Le badge est contrôlé par les règles de la base : impossible à imiter.)
+   ============================================================ */
+let FAQ = { q: [], a: {} };
+async function loadFaq(){
+  try{
+    const [qs, as] = await Promise.all([dbRequest('faq', 'GET'), dbRequest('faqAnswers', 'GET')]);
+    FAQ.q = Object.entries(qs || {}).map(([id, v]) => ({ ...v, id })).filter(v => v && v.q);
+    FAQ.a = {};
+    Object.entries(as || {}).forEach(([qid, obj]) => {
+      FAQ.a[qid] = Object.entries(obj || {}).map(([id, v]) => ({ ...v, id })).filter(v => v && v.text);
+    });
+  }catch(err){ /* hors-ligne : liste vide */ }
+}
+function faqAnswersOf(qid){
+  return (FAQ.a[qid] || []).slice().sort((x, y) => (y.admin ? 1 : 0) - (x.admin ? 1 : 0) || (x.ts || 0) - (y.ts || 0));
+}
+function renderFaqAsk(){
+  const box = document.getElementById('faqAsk'); if(!box) return;
+  if(!isLoggedIn()){
+    box.innerHTML = `<p style="margin-bottom:12px;">🔒 Pour poser une question ou répondre, connectez-vous (c'est gratuit et rapide). Cela évite le spam et les faux messages.</p>
+      <button class="btn btn-solid faq-login" style="width:100%;" type="button">Se connecter / créer un compte</button>`;
+    return;
+  }
+  box.innerHTML = `<label class="hint-text" style="display:block; margin:0 0 6px;">Votre question</label>
+    <textarea id="faqNewQ" rows="3" maxlength="500" placeholder="ex : Faut-il savoir nager pour participer ?"></textarea>
+    <label class="hint-text" style="display:block; margin:0 0 6px;">Nom affiché</label>
+    <input type="text" id="faqNewName" maxlength="40" value="${escSearch(isAdmin() ? "Mot'eau" : myPublicName())}" placeholder="ex : Léa D.">
+    <button class="btn btn-solid" style="width:100%;" id="faqAskBtn" type="button">Poser ma question</button>`;
+}
+function renderFaq(){
+  const list = document.getElementById('faqList'); if(!list) return;
+  renderFaqAsk();
+  const q = normSearch((document.getElementById('faqSearch') || {}).value || '');
+  const e = escSearch;
+  const items = FAQ.q.filter(x => !q || normSearch(x.q + ' ' + faqAnswersOf(x.id).map(a => a.text).join(' ')).includes(q))
+    .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || (b.ts || 0) - (a.ts || 0));
+  const canAnswer = isLoggedIn();
+  list.innerHTML = items.length ? items.map(x => {
+    const answers = faqAnswersOf(x.id);
+    const mine = isLoggedIn() && x.uid === AUTH.uid;
+    return `<div class="faq-q ${x.pinned ? 'pinned' : ''}" data-qid="${e(x.id)}">
+      <div class="faq-qtext ugc">${x.pinned ? '📌 ' : ''}${e(x.q)}</div>
+      <div class="faq-meta"><span class="ugc">${e(x.name || '')}</span>${x.admin ? '<span class="faq-badge admin">Admin</span>' : ''}<span>${e(fmtLongDate(x.ts))}</span>
+        ${answers.some(a => a.admin) ? '<span class="faq-badge ok">✓ Répondu par le club</span>' : ''}
+        <span>${answers.length} réponse${answers.length > 1 ? 's' : ''}</span>
+        <span class="faq-tools">
+          ${isAdmin() ? `<button class="small-btn" data-faqact="pin">${x.pinned ? 'Désépingler' : '📌 Épingler'}</button>` : ''}
+          ${(isAdmin() || mine) ? '<button class="icon-btn danger" data-faqact="delq" title="Supprimer">✕</button>' : ''}
+        </span></div>
+      ${answers.map(a => `<div class="faq-a ${a.admin ? 'admin' : ''}" data-aid="${e(a.id)}">
+        <div class="faq-meta"><span class="ugc">${e(a.name || '')}</span>${a.admin ? '<span class="faq-badge admin">📌 Admin</span>' : ''}<span>${e(fmtLongDate(a.ts))}</span>
+          <span class="faq-tools">${(isAdmin() || (isLoggedIn() && a.uid === AUTH.uid)) ? '<button class="icon-btn danger" data-faqact="dela" title="Supprimer">✕</button>' : ''}</span></div>
+        <div class="ugc">${e(a.text)}</div></div>`).join('')}
+      ${canAnswer ? `<div class="faq-answer-form"><textarea rows="2" maxlength="1000" data-ansinput placeholder="Votre réponse…"></textarea><button class="small-btn solid" data-faqact="answer">Répondre</button></div>`
+        : '<p class="hint-text" style="margin:8px 0 0;"><a href="#" class="faq-login">Connectez-vous</a> pour répondre.</p>'}
+    </div>`;
+  }).join('') : '<p style="color:var(--grey);">Aucune question pour le moment — soyez le premier à en poser une !</p>';
+}
+document.getElementById('faqSearch').addEventListener('input', renderFaq);
+document.addEventListener('click', ev => { if(ev.target.closest('.faq-login')){ ev.preventDefault(); openAccount(); } });
+document.getElementById('faqAsk').addEventListener('click', async ev => {
+  if(ev.target.id !== 'faqAskBtn') return;
+  const text = document.getElementById('faqNewQ').value.trim().slice(0, 500);
+  const name = document.getElementById('faqNewName').value.trim().slice(0, 40);
+  if(!text || !name){ showToast('Écrivez votre question et un nom à afficher.'); return; }
+  const id = newId('q');
+  const item = { q:text, name, uid:AUTH.uid, admin:isAdmin(), ts:Date.now() };
+  try{ await dbRequest(`faq/${id}`, 'PUT', item); }catch(err){ showToast("Impossible d'envoyer — réessayez."); return; }
+  FAQ.q.push({ ...item, id });
+  showToast('Question publiée !'); renderFaq();
+});
+document.getElementById('faqList').addEventListener('click', async ev => {
+  const btn = ev.target.closest('[data-faqact]'); if(!btn) return;
+  const qid = btn.closest('[data-qid]').dataset.qid, act = btn.dataset.faqact;
+  const q = FAQ.q.find(x => x.id === qid); if(!q) return;
+  try{
+    if(act === 'answer'){
+      const ta = btn.closest('.faq-answer-form').querySelector('[data-ansinput]');
+      const text = ta.value.trim().slice(0, 1000); if(!text) return;
+      const name = isAdmin() ? "Mot'eau" : (myPublicName() || 'Membre');
+      const id = newId('a'), item = { text, name, uid:AUTH.uid, admin:isAdmin(), ts:Date.now() };
+      await dbRequest(`faqAnswers/${qid}/${id}`, 'PUT', item);
+      (FAQ.a[qid] = FAQ.a[qid] || []).push({ ...item, id }); showToast('Réponse publiée !');
+    } else if(act === 'pin'){
+      q.pinned = !q.pinned;
+      await dbRequest(`faq/${qid}/pinned`, q.pinned ? 'PUT' : 'DELETE', q.pinned ? true : undefined);
+    } else if(act === 'delq'){
+      if(!confirm('Supprimer cette question ?')) return;
+      if(isAdmin()) await dbRequest(`faqAnswers/${qid}`, 'DELETE');
+      await dbRequest(`faq/${qid}`, 'DELETE');
+      FAQ.q = FAQ.q.filter(x => x.id !== qid);
+    } else if(act === 'dela'){
+      const aid = btn.closest('[data-aid]').dataset.aid;
+      if(!confirm('Supprimer cette réponse ?')) return;
+      await dbRequest(`faqAnswers/${qid}/${aid}`, 'DELETE');
+      FAQ.a[qid] = (FAQ.a[qid] || []).filter(x => x.id !== aid);
+    }
+  }catch(err){ console.error(err); showToast('Action refusée ou erreur de connexion.'); }
+  renderFaq();
+});
+
+/* ============================================================
+   PROFILS PILOTES — stats calculées depuis les résultats + photo/bio saisies par l'admin
+   ============================================================ */
+const pilotKey = name => normSearch(name).replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
+const pilotProfileOf = name => (STATE.pilotProfiles && !Array.isArray(STATE.pilotProfiles) && STATE.pilotProfiles[pilotKey(name)]) || {};
+function pilotAvatar(name, big){
+  const pr = pilotProfileOf(name);
+  return `<span class="pilot-av" style="${pr.photo ? `background-image:url('${pr.photo}')` : ''}">${pr.photo ? '' : escSearch((name || '?').trim().charAt(0).toUpperCase())}</span>`;
+}
+const pilotLinkHtml = name => `<span class="pilot-link" data-pilot="${escSearch(name)}">${escSearch(name)}</span>`;
+function allPilotNames(){
+  const seen = {};
+  (STATE.competitions || []).forEach(c => { if(c.hidden && !EDIT_MODE) return; (c.pilots || []).forEach(p => { const k = p && p.name && pilotKey(p.name); if(k && !seen[k]) seen[k] = p.name.trim(); }); });
+  return Object.values(seen).sort((a, b) => a.localeCompare(b, 'fr'));
+}
+function renderPilotDirectory(){
+  const box = document.getElementById('pilotDirectory'); if(!box) return;
+  const names = allPilotNames();
+  box.innerHTML = names.length ? `<div style="width:100%; font-size:0.78rem; color:var(--grey); text-transform:uppercase; letter-spacing:0.08em;">Tous les pilotes</div>` +
+    names.map(n => `<button class="pilot-chip" type="button" data-pilot="${escSearch(n)}">${pilotAvatar(n)}${escSearch(n)}</button>`).join('') : '';
+}
+function pilotStats(name){
+  const k = pilotKey(name), rows = [];
+  (STATE.competitions || []).forEach(c => (c.pilots || []).forEach(p => { if(p && p.name && pilotKey(p.name) === k) rows.push({ comp:c, p }); }));
+  const speeds = rows.map(r => computeSpeedKmh(r.p)).filter(Boolean);
+  const best = rows.reduce((b, r) => (RESULT_PRIORITY[r.p.result] ?? 99) < (RESULT_PRIORITY[b && b.p.result] ?? 99) ? r : b, null);
+  return { rows, topSpeed: speeds.length ? Math.max(...speeds) : null, best,
+    titles: rows.filter(r => r.p.result === 'champion').length, finals: rows.filter(r => ['champion', 'finaliste'].includes(r.p.result)).length };
+}
+function openPilot(name){
+  const k = pilotKey(name), st = pilotStats(name), pr = pilotProfileOf(name), e = escSearch;
+  const runs = (STATE.runs || []).filter(r => r && r.pilot && pilotKey(r.pilot) === k);
+  const box = document.getElementById('pilotModal');
+  box.innerHTML = `<div class="pilot-modal-head">${pilotAvatar(name)}<div><h3 style="margin:0;">${e(name)}</h3>${pr.number ? `<div style="color:var(--orange); font-family:'Anton',sans-serif;">N° ${e(pr.number)}</div>` : ''}</div></div>
+    ${pr.bio ? `<p style="white-space:pre-wrap; color:var(--cream);">${e(pr.bio)}</p>` : ''}
+    <div class="pilot-stats">
+      <div><b>${st.rows.length}</b>Compétition${st.rows.length > 1 ? 's' : ''}</div>
+      <div><b>${st.titles}</b>Victoire${st.titles > 1 ? 's' : ''}</div>
+      <div><b>${st.finals}</b>Finale${st.finals > 1 ? 's' : ''}</div>
+      <div><b>${st.topSpeed ? st.topSpeed.toFixed(1).replace('.', ',') : '—'}</b>Vitesse max (km/h)</div>
+    </div>
+    ${st.rows.length ? `<h4 style="margin:10px 0 6px;">Parcours</h4>` + st.rows.map(r => `<div class="acc-rec"><div><b>${e(r.comp.name || '')}</b><small>${e(r.comp.date || '')}</small></div><div>${e(STAGE_RESULT_LABELS[r.p.result] || r.p.result || '')}${r.p.bestTime ? ` · ${e(r.p.bestTime)}` : ''}</div></div>`).join('') : '<p class="hint-text">Pas encore de résultats enregistrés.</p>'}
+    ${runs.length ? `<h4 style="margin:14px 0 6px;">Ses runs</h4>` + runs.map(r => `<div class="tuto-video" style="aspect-ratio:16/9; margin-bottom:8px;">${lazyVideoHtml(r.video)}</div>`).join('') : ''}
+    ${EDIT_MODE ? `<div class="contest-edit"><b style="font-size:0.85rem;">Fiche (admin)</b>
+      <input type="text" id="pfNumber" maxlength="6" value="${e(pr.number || '')}" placeholder="Numéro de pilote">
+      <textarea id="pfBio" rows="3" maxlength="600" placeholder="Présentation du pilote">${e(pr.bio || '')}</textarea>
+      <div class="news-actions"><button class="small-btn" id="pfPhoto">🖼️ Photo</button>${pr.photo ? '<button class="small-btn" id="pfPhotoDel">✕ Photo</button>' : ''}<button class="small-btn solid" id="pfSave">Enregistrer</button></div></div>` : ''}
+    <div class="pw-actions" style="margin-top:14px;"><button class="btn btn-solid" id="pilotClose" style="flex:1;">Fermer</button></div>`;
+  box.dataset.pilot = name;
+  document.getElementById('pilotOverlay').classList.add('show');
+}
+async function savePilotProfile(name, patch){
+  if(!STATE.pilotProfiles || Array.isArray(STATE.pilotProfiles)) STATE.pilotProfiles = {};
+  const k = pilotKey(name); STATE.pilotProfiles[k] = Object.assign({}, STATE.pilotProfiles[k], patch);
+  await saveSection('pilotProfiles'); renderPilotDirectory(); openPilot(name);
+}
+document.addEventListener('click', ev => {
+  const t = ev.target.closest('[data-pilot]'); if(t && !ev.target.closest('#pilotOverlay .pw-actions')){ ev.preventDefault(); openPilot(t.dataset.pilot); return; }
+  const ov = document.getElementById('pilotOverlay');
+  if(ev.target === ov || ev.target.id === 'pilotClose'){ ov.classList.remove('show'); return; }
+  const name = document.getElementById('pilotModal').dataset.pilot;
+  if(!ov.classList.contains('show') || !EDIT_MODE) return;
+  if(ev.target.id === 'pfSave') savePilotProfile(name, { number: document.getElementById('pfNumber').value.trim(), bio: document.getElementById('pfBio').value.trim() });
+  else if(ev.target.id === 'pfPhoto') pickImageSmall(url => savePilotProfile(name, { photo:url, number: document.getElementById('pfNumber').value.trim(), bio: document.getElementById('pfBio').value.trim() }), 360);
+  else if(ev.target.id === 'pfPhotoDel') savePilotProfile(name, { photo:null });
+});
+
+/* ============================================================
+   GALERIE DES RUNS — vidéos (YouTube, Instagram, TikTok, Vimeo ou fichier)
+   ============================================================ */
+function renderRuns(){
+  const sec = document.getElementById('runs'); if(!sec) return;
+  const all = (STATE.runs || []).filter(Boolean);
+  sec.style.display = (EDIT_MODE || all.length) ? '' : 'none';
+  const q = normSearch(document.getElementById('runsSearch').value), sort = document.getElementById('runsSort').value;
+  let list = all.filter(r => !q || normSearch(`${r.title} ${r.pilot} ${r.competition}`).includes(q));
+  list = list.slice().sort((a, b) => sort === 'speed' ? (Number(b.speed)||0) - (Number(a.speed)||0) : String(b.date||'').localeCompare(String(a.date||'')) || (b.ts||0) - (a.ts||0));
+  const e = escSearch;
+  document.getElementById('runsGrid').innerHTML = list.map(r => `<div class="news-card" data-rid="${e(r.id)}"><div class="news-img" style="aspect-ratio:16/9;">${r.video ? lazyVideoHtml(r.video) : ''}</div>
+    <div class="news-body"><div class="news-meta">${e(r.date ? fmtLongDate(r.date) : '')}${r.competition ? ' · ' + e(r.competition) : ''}</div>
+      <h3 style="font-size:1.05rem;">${e(r.title || '')}</h3>
+      <div style="font-size:0.88rem;">${r.pilot ? pilotLinkHtml(r.pilot) : ''}${r.speed ? ` · <b style="color:var(--orange);">${e(String(r.speed).replace('.', ','))} km/h</b>` : ''}</div>
+      ${EDIT_MODE ? `<div class="contest-edit">
+        <input type="text" data-rf="title" value="${e(r.title||'')}" placeholder="Titre (ex : Run final)">
+        <input type="text" data-rf="pilot" value="${e(r.pilot||'')}" placeholder="Pilote (écrit comme dans les résultats)">
+        <input type="text" data-rf="competition" value="${e(r.competition||'')}" placeholder="Compétition">
+        <input type="number" step="0.1" min="0" data-rf="speed" value="${e(r.speed||'')}" placeholder="Vitesse km/h (facultatif)">
+        <input type="date" data-rf="date" value="${e(r.date||'')}">
+        <input type="text" data-rf="video" value="${e(r.video||'')}" placeholder="Lien de la vidéo (YouTube, Instagram, TikTok…)">
+        <div class="news-actions"><button class="small-btn danger" data-ract="del">Supprimer</button></div></div>` : ''}
+    </div></div>`).join('') || '<p style="color:var(--grey);">Aucun run pour le moment.</p>';
+}
+['runsSearch', 'runsSort'].forEach(id => document.getElementById(id).addEventListener('input', renderRuns));
+document.getElementById('runsGrid').addEventListener('change', ev => {
+  if(!EDIT_MODE || !ev.target.dataset.rf) return;
+  const r = STATE.runs.find(x => x.id === ev.target.closest('[data-rid]').dataset.rid); if(!r) return;
+  r[ev.target.dataset.rf] = ev.target.value.trim(); saveSection('runs'); renderRuns(); renderPilotDirectory();
+});
+document.getElementById('runsGrid').addEventListener('click', ev => {
+  const b = ev.target.closest('[data-ract]'); if(!b || !EDIT_MODE) return;
+  if(!confirm('Supprimer ce run ?')) return;
+  STATE.runs = STATE.runs.filter(x => x.id !== b.closest('[data-rid]').dataset.rid); saveSection('runs'); renderRuns();
+});
+document.getElementById('addRunBtn').addEventListener('click', () => {
+  if(!Array.isArray(STATE.runs)) STATE.runs = [];
+  STATE.runs.unshift({ id:newId('r'), title:'', pilot:'', competition:'', speed:'', date:new Date().toISOString().slice(0, 10), video:'', ts:Date.now() });
+  saveSection('runs'); renderRuns();
+});
+
+/* ============================================================
+   VOTE DU PUBLIC — l'admin crée un vote, chaque compte vote une seule fois
+   (la règle « un vote par compte, vote ouvert, option valide » est dans la base)
+   ============================================================ */
+let VOTES = {};
+async function loadVotes(){
+  VOTES = {};
+  await Promise.all((STATE.contests || []).filter(c => c && c.id && (c.published || isAdmin())).map(async c => {
+    try{ VOTES[c.id] = await dbRequest(`contestVotes/${c.id}`, 'GET') || {}; }catch(err){ VOTES[c.id] = {}; }
+  }));
+}
+function pickImageSmall(callback, maxW = 640){
+  const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*';
+  input.onchange = async () => {
+    if(input.files && input.files[0]){
+      try{ callback(await fileToResizedDataURL(input.files[0], maxW, 0.72)); }
+      catch(err){ alert("Impossible de charger cette image."); }
+    }
+  };
+  input.click();
+}
+function contestStats(c){
+  const votes = Object.values(VOTES[c.id] || {}).filter(v => v && v.opt);
+  const counts = {}; (c.options || []).forEach(o => counts[o.id] = 0);
+  votes.forEach(v => { if(counts[v.opt] !== undefined) counts[v.opt]++; });
+  return { counts, total: votes.length, max: Math.max(0, ...Object.values(counts)) };
+}
+function contestVoterKey(c){ return c.needAccount === false ? voterKey() : (isLoggedIn() ? AUTH.uid : null); }
+function renderContests(){
+  const sec = document.getElementById('votes'); if(!sec) return;
+  const list = (STATE.contests || []).filter(c => c && (EDIT_MODE || c.published));
+  sec.style.display = (EDIT_MODE || list.length) ? '' : 'none';
+  const e = escSearch, grid = document.getElementById('contestsGrid');
+  grid.innerHTML = list.map(c => {
+    const st = contestStats(c);
+    const key = contestVoterKey(c), mine = key ? (VOTES[c.id] || {})[key] : null;
+    const showRes = EDIT_MODE || !c.open || !!mine;
+    const canVote = c.open && !mine && !!key && !EDIT_MODE;
+    const needLogin = c.open && !mine && !key && !EDIT_MODE;
+    return `<div class="contest-card" data-cid="${e(c.id)}">
+      <div class="contest-head"><h3>${e(c.title || (EDIT_MODE ? '(sans titre)' : ''))}</h3>
+        <span class="news-badge" style="${c.open ? '' : 'color:var(--grey); border-color:var(--grey);'}">${c.open ? 'En cours' : 'Terminé'}</span>
+        ${c.published ? '' : '<span class="news-badge" style="color:var(--grey); border-color:var(--grey);">Brouillon</span>'}</div>
+      ${c.desc ? `<p style="color:var(--cream); font-size:0.92rem; white-space:pre-wrap;">${e(c.desc)}</p>` : ''}
+      <div class="contest-grid">${(c.options || []).map(o => {
+        const n = st.counts[o.id] || 0, pct = st.total ? Math.round(n / st.total * 100) : 0;
+        const win = !c.open && st.total > 0 && n === st.max;
+        return `<div class="contest-opt ${win ? 'win' : ''} ${mine && mine.opt === o.id ? 'mine' : ''}" data-oid="${e(o.id)}">
+          <div class="contest-opt-img" style="${o.image ? `background-image:url('${o.image}')` : ''}">${o.image ? '' : e((o.label || '?').charAt(0).toUpperCase())}</div>
+          <div class="contest-opt-body">
+            <div class="contest-opt-label">${win ? '🏆 ' : ''}${e(o.label || (EDIT_MODE ? '(option)' : ''))}${mine && mine.opt === o.id ? ' <span class="news-badge">Ton vote</span>' : ''}</div>
+            ${o.video ? `<div class="tuto-video" style="aspect-ratio:16/9;">${lazyVideoHtml(o.video, o.image)}</div>` : ''}
+            ${showRes ? `<div class="contest-res"><span class="contest-res-track"><span class="contest-res-bar" style="width:${pct}%"></span></span><span>${pct}%</span></div><div style="font-size:0.74rem; color:var(--grey);">${n} vote${n > 1 ? 's' : ''}</div>` : ''}
+            ${canVote ? `<button class="small-btn solid" data-cact="vote">Voter</button>` : ''}
+            ${EDIT_MODE ? `<input type="text" data-ofield="label" value="${e(o.label||'')}" placeholder="Nom de l'option (ex : Backflip de Tom)">
+              <input type="text" data-ofield="video" value="${e(o.video||'')}" placeholder="Lien vidéo (facultatif)">
+              <div class="news-actions"><button class="small-btn" data-cact="opt-photo">🖼️ Photo</button>${o.image ? '<button class="small-btn" data-cact="opt-photodel">✕ Photo</button>' : ''}<button class="small-btn danger" data-cact="del-opt">Retirer</button></div>` : ''}
+          </div></div>`;
+      }).join('')}</div>
+      <div style="font-size:0.8rem; color:var(--grey);">${st.total} vote${st.total > 1 ? 's' : ''}${c.needAccount === false ? '' : ' · un vote par compte'}${!c.open && st.total ? '' : ''}</div>
+      ${needLogin ? '<p style="margin-top:10px;"><button class="btn btn-solid faq-login" type="button">Se connecter pour voter</button></p>' : ''}
+      ${EDIT_MODE ? `<div class="contest-edit">
+        <input type="text" data-cfield="title" maxlength="120" value="${e(c.title||'')}" placeholder="Titre du vote (ex : Meilleure figure de l'été)">
+        <textarea rows="2" data-cfield="desc" maxlength="500" placeholder="Explication (facultatif)">${e(c.desc||'')}</textarea>
+        <label style="font-size:0.82rem;"><input type="checkbox" data-cact="toggle-acc" ${c.needAccount === false ? '' : 'checked'}> Compte obligatoire pour voter (recommandé, évite les faux votes)</label>
+        <div class="news-actions">
+          <button class="small-btn solid" data-cact="toggle-pub">${c.published ? '✅ Publié — repasser en brouillon' : '📣 Publier'}</button>
+          <button class="small-btn" data-cact="toggle-open">${c.open ? '🔒 Clore le vote' : '🔓 Rouvrir le vote'}</button>
+          <button class="small-btn" data-cact="add-opt">+ Ajouter une option</button>
+          <button class="small-btn" data-cact="reset">Remettre les votes à zéro</button>
+          <button class="small-btn danger" data-cact="del">Supprimer ce vote</button>
+        </div></div>` : ''}
+    </div>`;
+  }).join('') || '<p style="color:var(--grey);">Aucun vote pour le moment.</p>';
+}
+document.getElementById('contestsGrid').addEventListener('change', ev => {
+  if(!EDIT_MODE) return;
+  const card = ev.target.closest('[data-cid]'); if(!card) return;
+  const c = STATE.contests.find(x => x.id === card.dataset.cid); if(!c) return;
+  if(ev.target.dataset.cfield){ c[ev.target.dataset.cfield] = ev.target.value.trim(); }
+  else if(ev.target.dataset.ofield){
+    const o = c.options.find(x => x.id === ev.target.closest('[data-oid]').dataset.oid); if(o) o[ev.target.dataset.ofield] = ev.target.value.trim();
+  } else if(ev.target.dataset.cact === 'toggle-acc'){ c.needAccount = ev.target.checked; }
+  else return;
+  saveSection('contests'); renderContests();
+});
+document.getElementById('contestsGrid').addEventListener('click', async ev => {
+  const btn = ev.target.closest('[data-cact]'); if(!btn || btn.tagName === 'INPUT') return;
+  const card = btn.closest('[data-cid]'); const c = STATE.contests.find(x => x.id === card.dataset.cid); if(!c) return;
+  const act = btn.dataset.cact;
+  if(act === 'vote'){
+    const key = contestVoterKey(c); if(!key){ openAccount(); return; }
+    const oid = btn.closest('[data-oid]').dataset.oid, vote = { opt: oid, ts: Date.now() };
+    try{ await dbRequest(`contestVotes/${c.id}/${key}`, 'PUT', vote); }
+    catch(err){ showToast('Vote impossible : déjà voté, ou vote terminé.'); await loadVotes(); renderContests(); return; }
+    (VOTES[c.id] = VOTES[c.id] || {})[key] = vote; showToast('Merci pour ton vote !'); renderContests(); return;
+  }
+  if(!EDIT_MODE) return;
+  if(act === 'toggle-pub'){ c.published = !c.published; if(c.published) c.ts = Date.now(); }
+  else if(act === 'toggle-open') c.open = !c.open;
+  else if(act === 'add-opt') c.options.push({ id:newId('o'), label:'', image:null, video:null });
+  else if(act === 'del-opt'){ const oid = btn.closest('[data-oid]').dataset.oid; c.options = c.options.filter(o => o.id !== oid); }
+  else if(act === 'opt-photo'){ const o = c.options.find(x => x.id === btn.closest('[data-oid]').dataset.oid); pickImageSmall(url => { o.image = url; saveSection('contests'); renderContests(); }); return; }
+  else if(act === 'opt-photodel'){ const o = c.options.find(x => x.id === btn.closest('[data-oid]').dataset.oid); o.image = null; }
+  else if(act === 'reset'){ if(!confirm('Effacer tous les votes de ce concours ?')) return; await dbRequest(`contestVotes/${c.id}`, 'DELETE'); delete VOTES[c.id]; }
+  else if(act === 'del'){ if(!confirm('Supprimer ce vote et ses résultats ?')) return; STATE.contests = STATE.contests.filter(x => x !== c); try{ await dbRequest(`contestVotes/${c.id}`, 'DELETE'); }catch(err){} }
+  else return;
+  saveSection('contests'); renderContests();
+});
+document.getElementById('addContestBtn').addEventListener('click', () => {
+  if(!Array.isArray(STATE.contests)) STATE.contests = [];
+  STATE.contests.unshift({ id:newId('c'), title:'', desc:'', open:true, published:false, needAccount:true, ts:Date.now(),
+    options:[{ id:newId('o'), label:'', image:null, video:null }, { id:newId('o'), label:'', image:null, video:null }] });
+  saveSection('contests'); renderContests();
+});
+
+/* ============================================================
+   PROGRAMME FIDÉLITÉ — 1 € dépensé = N points (N réglable) ; barème défini par l'admin.
+   Les points sont crédités par l'admin quand il marque un paiement « payé »
+   (donc impossible de se donner des points soi-même : la base refuse).
+   ============================================================ */
+const LOYALTY_ARRS = ['registrations', 'memberships', 'orders', 'equipmentLoans'];
+let LOYALTY = null; // données du compte connecté : { earned, manual, spent, requests }
+const sumObj = (o, f) => Object.values(o || {}).reduce((t, v) => t + (Number(f ? f(v) : v) || 0), 0);
+function loyaltyBalance(L){ return sumObj(L && L.earned) + sumObj(L && L.manual, v => v.points) - sumObj(L && L.spent, v => v.points); }
+function loyaltyPending(L){ return sumObj(L && L.requests, v => v.status === 'pending' ? v.points : 0); }
+async function loadLoyalty(){
+  if(!isLoggedIn() || isAdmin()){ LOYALTY = null; return; }
+  try{ LOYALTY = await dbRequest(`loyalty/${AUTH.uid}`, 'GET') || {}; }catch(err){ LOYALTY = {}; }
+}
+function loyaltyCfg(){ return Object.assign({ enabled:true, perEuro:1, rewards:[] }, STATE.loyaltyConfig || {}); }
+function renderLoyalty(){
+  const sec = document.getElementById('fidelite'); if(!sec) return;
+  const cfg = loyaltyCfg(), e = escSearch;
+  sec.style.display = (cfg.enabled || EDIT_MODE) ? '' : 'none';
+  const per = Number(cfg.perEuro) || 1;
+  document.getElementById('loyaltySub').textContent = per === 1 ? "Chaque euro dépensé au club vous rapporte 1 point à échanger contre des récompenses." : `Chaque euro dépensé au club vous rapporte ${per} points à échanger contre des récompenses.`;
+  const rewards = toArray(cfg.rewards).filter(r => r && r.label).sort((a, b) => (a.points||0) - (b.points||0));
+  const logged = isLoggedIn() && !isAdmin();
+  const bal = logged ? loyaltyBalance(LOYALTY) : 0, pend = logged ? loyaltyPending(LOYALTY) : 0;
+  let html = logged
+    ? `<div class="loy-hero"><div><div class="loy-points">${bal}</div><div class="hint-text" style="margin:0;">point${bal > 1 ? 's' : ''} disponible${bal > 1 ? 's' : ''}${pend ? ` · ${pend} en cours d'échange` : ''}</div></div>
+        <div style="flex:1; min-width:220px; color:var(--cream); font-size:0.9rem;">Vos points sont ajoutés quand le club confirme votre paiement (boutique, inscription, adhésion, prêt) fait avec votre compte.</div></div>`
+    : `<div class="loy-hero"><div style="flex:1; min-width:240px;"><b>Connectez-vous pour suivre vos points.</b><div class="hint-text" style="margin:6px 0 0;">Vos achats et inscriptions faits avec votre compte rapportent des points automatiquement.</div></div>
+        ${isAdmin() ? '' : '<button class="btn btn-solid faq-login" type="button">Se connecter / créer un compte</button>'}</div>`;
+  html += `<h3 class="subhead" style="margin-top:0;">Le barème</h3><div class="loy-rewards">` + (rewards.length ? rewards.map(r => {
+    const can = logged && bal - pend >= r.points, pct = logged ? Math.min(100, Math.round(bal / r.points * 100)) : 0;
+    return `<div class="loy-reward ${can ? 'ok' : ''}" data-rid="${e(r.id)}"><div class="pts">${r.points} pts</div><div style="font-weight:600;">${e(r.label)}</div>
+      ${logged ? `<div class="loy-prog"><span style="width:${pct}%"></span></div>
+        ${can ? '<button class="small-btn solid" data-lact="redeem">Échanger mes points</button>' : `<div class="hint-text" style="margin:0;">Encore ${Math.max(0, r.points - (bal - pend))} point${r.points - (bal - pend) > 1 ? 's' : ''}</div>`}` : ''}
+      ${EDIT_MODE ? `<div class="loy-edit"><input type="text" data-lfield="label" value="${e(r.label)}" placeholder="Récompense (ex : Bonnet Mot'eau)"><input type="number" min="1" data-lfield="points" value="${r.points}"><button class="small-btn danger" data-lact="del-reward" style="margin-top:6px;">Retirer</button></div>` : ''}
+    </div>`;
+  }).join('') : `<p style="color:var(--grey);">${EDIT_MODE ? '' : 'Le club prépare ses récompenses : revenez bientôt !'}</p>`) + `</div>`;
+  if(EDIT_MODE) html += `<div class="loy-edit" style="margin-top:20px; max-width:420px; border:1px dashed var(--line); padding:14px;">
+      <b style="font-size:0.85rem;">Réglages (visibles par vous seulement)</b>
+      <label style="display:flex; gap:8px; align-items:center; margin:8px 0;"><input type="checkbox" id="loyEnabled" ${cfg.enabled ? 'checked' : ''} style="width:auto;"> Programme actif (visible des visiteurs)</label>
+      <label class="hint-text" style="margin:0 0 4px; display:block;">Points gagnés pour 1 € dépensé</label><input type="number" min="0.1" step="0.1" id="loyPerEuro" value="${per}">
+      <button class="small-btn solid" id="loyAddReward" style="margin-top:10px;">+ Ajouter une récompense au barème</button></div>`;
+  document.getElementById('loyaltyBox').innerHTML = html;
+}
+async function saveLoyaltyCfg(){ await saveSection('loyaltyConfig'); renderLoyalty(); }
+document.getElementById('loyaltyBox').addEventListener('change', ev => {
+  if(!EDIT_MODE) return;
+  const cfg = STATE.loyaltyConfig = loyaltyCfg(); cfg.rewards = toArray(cfg.rewards);
+  if(ev.target.id === 'loyEnabled') cfg.enabled = ev.target.checked;
+  else if(ev.target.id === 'loyPerEuro') cfg.perEuro = Math.max(0.1, parseFloat(ev.target.value) || 1);
+  else if(ev.target.dataset.lfield){
+    const r = cfg.rewards.find(x => x.id === ev.target.closest('[data-rid]').dataset.rid); if(!r) return;
+    r[ev.target.dataset.lfield] = ev.target.dataset.lfield === 'points' ? Math.max(1, parseInt(ev.target.value) || 1) : ev.target.value.trim();
+  } else return;
+  saveLoyaltyCfg();
+});
+document.getElementById('loyaltyBox').addEventListener('click', async ev => {
+  if(ev.target.id === 'loyAddReward' && EDIT_MODE){
+    const cfg = STATE.loyaltyConfig = loyaltyCfg(); cfg.rewards = toArray(cfg.rewards);
+    cfg.rewards.push({ id:newId('r'), points:100, label:'Nouvelle récompense' }); saveLoyaltyCfg(); return;
+  }
+  const btn = ev.target.closest('[data-lact]'); if(!btn) return;
+  const r = toArray(loyaltyCfg().rewards).find(x => x.id === btn.closest('[data-rid]').dataset.rid); if(!r) return;
+  if(btn.dataset.lact === 'del-reward' && EDIT_MODE){
+    STATE.loyaltyConfig.rewards = toArray(STATE.loyaltyConfig.rewards).filter(x => x.id !== r.id); saveLoyaltyCfg(); return;
+  }
+  if(btn.dataset.lact === 'redeem'){
+    if(!isLoggedIn()){ openAccount(); return; }
+    if(!confirm(`Échanger ${r.points} points contre « ${r.label} » ?\nLe club validera votre demande et vous remettra la récompense.`)) return;
+    const rid = newId('rq');
+    const req = { rid, rewardId:r.id, label:r.label, points:r.points, name:myPublicName() || '', email:AUTH.email, ts:Date.now(), status:'pending' };
+    try{ await dbRequest(`loyalty/${AUTH.uid}/requests/${rid}`, 'PUT', req); }
+    catch(err){ showToast("Demande impossible — réessayez."); return; }
+    LOYALTY = LOYALTY || {}; (LOYALTY.requests = LOYALTY.requests || {})[rid] = req;
+    showToast('Demande envoyée ! Le club vous la confirme bientôt.'); renderLoyalty();
+  }
+});
+/* Admin : crédit / retrait des points quand un paiement est validé */
+async function syncLoyaltyForRecord(arr, rec){
+  const cfg = loyaltyCfg();
+  if(!isAdmin() || cfg.enabled === false || !LOYALTY_ARRS.includes(arr) || !rec || !rec.uid || !rec.ref) return;
+  const pts = rec.paid ? Math.floor(recAmount(arr, rec) * (Number(cfg.perEuro) || 1)) : 0;
+  try{
+    if(pts > 0) await dbRequest(`loyalty/${rec.uid}/earned/${rec.ref}`, 'PUT', pts);
+    else await dbRequest(`loyalty/${rec.uid}/earned/${rec.ref}`, 'DELETE');
+  }catch(err){ console.error('loyalty', err); }
+}
+async function recomputeAllLoyalty(){
+  let n = 0;
+  for(const arr of LOYALTY_ARRS) for(const rec of (STATE[arr] || [])){ if(rec && rec.uid && rec.ref){ await syncLoyaltyForRecord(arr, rec); n++; } }
+  return n;
+}
+
 async function init(){
   await restoreAdminSession();
   await loadAll();
@@ -6017,7 +7009,9 @@ async function init(){
   renderHistory();
   renderGallery();
   renderTutorials();
-  await loadPolls();
+  renderNews(); renderCountdown(); renderLoyalty(); renderRuns(); renderPilotDirectory();
+  await Promise.all([loadPolls(), loadVotes()]);
+  renderContests();
   renderProducts();
   renderPromoCodes();
   renderPromoBox();
@@ -6035,6 +7029,8 @@ async function init(){
   document.body.classList.toggle('is-admin', isAdmin());
   renderAccountButton();
   if(isLoggedIn() && !isAdmin()) loadUserProfile(); else refreshReviewForm();
+  loadFaq().then(renderFaq);
+  loadLoyalty().then(() => { renderLoyalty(); if(typeof renderAccountModalPoints === 'function') renderAccountModalPoints(); });
   applyEditMode();
   if(enterEdit && isAdmin()){ openAdminPanel(); showToast("Connecté à l'espace admin"); }
   startAnnounceCycle();

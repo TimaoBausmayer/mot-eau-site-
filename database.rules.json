@@ -296,7 +296,141 @@
       },
       "team": {
         ".read": true
-      }
+      },
+      "news": {
+        ".read": true
+      },
+      "countdown": {
+        ".read": true
+      },
+      "contests": {
+        ".read": true
+      },
+      "loyaltyConfig": {
+        ".read": true
+      },
+      "runs": {
+        ".read": true
+      },
+      "pilotProfiles": {
+        ".read": true
+      },
+      "i18nEn": {
+        ".read": true
+      },
+      "faq": {
+        ".read": true,
+        "$qid": {
+          ".write": "auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid) || (data.exists() && !newData.exists() && data.child('uid').val() == auth.uid))",
+          ".validate": "newData.hasChildren(['q','name','uid','ts'])",
+          "q": {
+            ".validate": "newData.isString() && newData.val().length >= 3 && newData.val().length <= 600"
+          },
+          "name": {
+            ".validate": "newData.isString() && newData.val().length <= 60"
+          },
+          "uid": {
+            ".validate": "newData.isString()"
+          },
+          "ts": {
+            ".validate": "newData.isNumber() && newData.val() <= now"
+          },
+          "admin": {
+            ".validate": "newData.isBoolean() && newData.val() == true && auth.token.email == 'timaobausmayer04@gmail.com'"
+          },
+          "pinned": {
+            ".validate": "newData.isBoolean() && auth.token.email == 'timaobausmayer04@gmail.com'"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      },
+      "faqAnswers": {
+        ".read": true,
+        "$qid": {
+          "$aid": {
+            ".write": "auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid && root.child('moteau/faq/' + $qid).exists()) || (data.exists() && !newData.exists() && data.child('uid').val() == auth.uid))",
+            ".validate": "newData.hasChildren(['text','name','uid','ts'])",
+            "text": {
+              ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 1500"
+            },
+            "name": {
+              ".validate": "newData.isString() && newData.val().length <= 60"
+            },
+            "uid": {
+              ".validate": "newData.isString()"
+            },
+            "ts": {
+              ".validate": "newData.isNumber() && newData.val() <= now"
+            },
+            "admin": {
+              ".validate": "newData.isBoolean() && newData.val() == true && auth.token.email == 'timaobausmayer04@gmail.com'"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        }
+      },
+      "contestVotes": {
+        "$cid": {
+          ".read": true,
+          "$voter": {
+            ".write": "!data.exists() && newData.exists() && root.child('moteau/contests/' + $cid + '/open').val() == true && root.child('moteau/contests/' + $cid + '/options/' + newData.child('opt').val()).exists() && (root.child('moteau/contests/' + $cid + '/needAccount').val() == false ? ($voter.matches(/^v[0-9a-f]{24}$/) || (auth != null && $voter == auth.uid)) : (auth != null && $voter == auth.uid))",
+            ".validate": "newData.hasChildren(['opt'])",
+            "opt": {
+              ".validate": "newData.isString()"
+            },
+            "ts": {
+              ".validate": "newData.isNumber() && newData.val() <= now"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        }
+      },
+      "loyalty": {
+        "$uid": {
+          ".read": "auth != null && auth.uid == $uid",
+          "requests": {
+            "$rid": {
+              ".write": "auth != null && auth.uid == $uid && !data.exists() && newData.child('status').val() == 'pending'",
+              ".validate": "$rid.matches(/^[a-zA-Z0-9]{1,30}$/) && newData.hasChildren(['rewardId','label','points','status','ts'])",
+              "points": {
+                ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= 1000000"
+              },
+              "label": {
+                ".validate": "newData.isString() && newData.val().length <= 120"
+              },
+              "rewardId": {
+                ".validate": "newData.isString() && newData.val().length <= 40"
+              },
+              "name": {
+                ".validate": "newData.isString() && newData.val().length <= 80"
+              },
+              "email": {
+                ".validate": "newData.isString() && newData.val().length <= 120"
+              },
+              "rid": {
+                ".validate": "newData.isString()"
+              },
+              "ts": {
+                ".validate": "newData.isNumber() && newData.val() <= now"
+              },
+              "status": {
+                ".validate": "newData.isString()"
+              },
+              "$other": {
+                ".validate": false
+              }
+            }
+          }
+        }
+      },
+      "productCosts": {},
+      "expenses": {}
     }
   }
 }
