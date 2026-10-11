@@ -16,8 +16,20 @@ Tout le contenu est dans `config.js` (texte simple, commenté).
 ## Mettre en ligne
 Site statique (HTML/CSS/JS) : héberge le dossier `lt-digital` sur Vercel, Netlify ou GitHub Pages.
 
-## Maquettes de démonstration
-Le dossier `demos/` contient 4 sites exemples complets (restaurant, boutique, coach, artisan),
-visibles depuis la section « Réalisations ». Les images d'aperçu sont dans `images/portfolio/`.
-Pour ajouter un vrai projet : mets une capture d'écran PC (et téléphone) dans `images/portfolio/`,
-puis renseigne-la dans `admin.html` ▸ Réalisations.
+## Maquettes de démonstration (16 métiers)
+Dossier `demos/` : restaurant, boutique, coach, artisan, fromagerie, boucherie, pizzeria, boulangerie,
+fleuriste, barbier, garage, plombier, institut de beauté, photographe, caviste, tatoueur.
+Elles s'affichent dans « Réalisations » avec un filtre par catégorie et s'ouvrent en grand au clic.
+
+### Ajouter un nouveau métier (ex : poissonnerie)
+Les maquettes sont fabriquées automatiquement depuis `tools/niches.py` : copie une entrée, change les
+textes/prix/couleurs, puis lance `python3 tools/generate_demos.py`. (Ou demande-moi : je m'en charge.)
+Les images d'aperçu sont dans `images/portfolio/`.
+
+### Tes vrais projets
+Mets une capture PC (et téléphone) dans `images/portfolio/`, puis renseigne-la dans `admin.html` ▸ Réalisations.
+
+## Dans l'administration
+Démarrer · Prix rapides (tous les prix au même endroit) · Gammes · Options · Comparatif · Réalisations ·
+Accueil · Identité (couleurs, logo) · Sections (afficher/masquer/renommer) · Processus · Avis · Garanties · FAQ · Contact.
+Prix vide = « Sur devis ».

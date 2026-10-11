@@ -39,9 +39,12 @@ const h = (tag, attrs, ...kids) => { const e = document.createElement(tag);
 
 /* ---- sauvegarde + aperçu ---- */
 let t1, t2;
+let dirty = false;
+addEventListener("beforeunload", e=>{ if(dirty){ e.preventDefault(); e.returnValue=""; } });
 function changed(){
+  dirty = true;
   $("st").textContent = "Enregistrement…";
-  clearTimeout(t1); t1 = setTimeout(()=>{ try { localStorage.setItem(KEY, JSON.stringify(cfg)); $("st").textContent = "Brouillon enregistré"; } catch(e){ $("st").textContent = "⚠ Non sauvegardé (navigateur)"; } }, 200);
+  clearTimeout(t1); t1 = setTimeout(()=>{ try { localStorage.setItem(KEY, JSON.stringify(cfg)); $("st").textContent = "✔ Brouillon enregistré — pense à télécharger"; } catch(e){ $("st").textContent = "⚠ Non sauvegardé (navigateur)"; } }, 200);
   clearTimeout(t2); t2 = setTimeout(()=>{ try { $("frame").contentWindow.location.reload(); } catch(e){ $("frame").src = "index.html?preview&t="+Date.now(); } }, 700);
 }
 
@@ -74,6 +77,10 @@ function list(arr, makeNew, titleOf, body, rerender, o={}){
 }
 const slug = s => (s||"gamme").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") || "gamme";
 
+function presets(){
+  const P = [["Bleu LT","#2f6bff","#5ab6ff"],["Violet","#7c5cff","#00d4ff"],["Émeraude","#10b981","#34d399"],["Orange","#f97316","#fbbf24"],["Rose","#ec4899","#f472b6"],["Rouge","#ef4444","#fb923c"],["Or","#d4a84b","#f0d78c"]];
+  return h("div",{style:"display:flex;gap:8px;flex-wrap:wrap"}, P.map(([n,a,b])=>h("button",{type:"button",title:n,style:`background:linear-gradient(135deg,${a},${b});border:0;width:44px;height:44px;border-radius:50%`,on:{click:()=>{ cfg.accent=a; cfg.accent2=b; changed(); show("Identité"); }}})));
+}
 /* ---- sections ---- */
 const S = {};
 S["Identité"] = () => [
@@ -84,8 +91,36 @@ S["Identité"] = () => [
     field("Symbole de la monnaie", ()=>cfg.currency.symbol, v=>cfg.currency.symbol=v)),
   check("Symbole après le prix (290 €) — décoche pour « € 290 »", ()=>cfg.currency.after, v=>cfg.currency.after=v),
   text("Bandeau d'annonce du haut", cfg, "announce", {hint:"Laisse vide pour le cacher."}),
-  text("Texte de pied de page", cfg, "footer")
+  text("Texte de pied de page", cfg, "footer"),
+  h("div",{class:"row"}, text("Logo (petit) — chemin", cfg, "logo", {hint:"Ex : images/logo-small.jpg"}), text("Logo (grand) — chemin", cfg, "logoBig", {hint:"Ex : images/logo.jpg"})),
+  h("div",{class:"f"}, h("span",{},"Palettes toutes prêtes (clique pour appliquer)"), presets())
 ];
+S["Démarrer"] = () => [
+  h("p",{class:"sub"},"Bienvenue ! Voici comment modifier ton site en 3 étapes, sans écrire une ligne de code."),
+  ...[["1","Modifie","Choisis une rubrique à gauche (Prix rapides, Gammes, FAQ…) et change ce que tu veux. L'aperçu à droite se met à jour tout seul."],
+     ["2","Télécharge","Quand tu es content, clique sur le gros bouton bleu « Télécharger config.js » en haut."],
+     ["3","Publie","Sur GitHub, ouvre le dossier lt-digital et remplace le fichier config.js par celui que tu viens de télécharger."]].map(([n,t,x])=>
+    h("div",{class:"item",style:"padding:16px 18px;display:flex;gap:14px;align-items:center"}, h("b",{style:"font-size:1.6rem;color:var(--acc);min-width:26px;text-align:center"},n), h("div",{}, h("b",{},t), h("div",{style:"color:var(--mut);font-size:.9rem"},x)))),
+  h("h3",{style:"margin:22px 0 10px"},"Raccourcis"),
+  h("div",{style:"display:flex;gap:10px;flex-wrap:wrap"}, ["Prix rapides","Gammes & tarifs","Options","Réalisations","Contact"].map(n=>h("button",{on:{click:()=>show(n)}},"→ "+n))),
+  h("p",{class:"sub",style:"margin-top:22px"},"💡 Astuce : « sur devis » = laisse simplement le prix vide. Tu peux masquer n'importe quelle partie du site dans « Sections ». Ton brouillon est gardé dans ce navigateur tant que tu ne l'effaces pas.")
+];
+S["Prix rapides"] = () => {
+  const row = (label, get, set) => h("tr",{}, h("td",{},label), h("td",{}, field("", get, set, {type:"number",min:0,placeholder:"vide = sur devis"})));
+  const t1 = h("table",{}, h("tr",{}, h("th",{},"Gamme"), h("th",{},"Prix ("+cfg.currency.symbol+")")), cfg.plans.map(p=>row(p.name, ()=>p.price==null?"":p.price, v=>p.price=v===""?null:Number(v))));
+  const t2 = h("table",{}, h("tr",{}, h("th",{},"Option"), h("th",{},"Prix ("+cfg.currency.symbol+")")), cfg.addons.map(a=>row(a.name, ()=>a.price==null?"":a.price, v=>a.price=v===""?null:Number(v))));
+  return [h("p",{class:"sub"},"Change tous tes prix au même endroit. Laisse vide pour afficher « Sur devis »."), h("h3",{style:"margin:6px 0 10px"},"Gammes"), h("div",{class:"tbl"},t1), h("h3",{style:"margin:22px 0 10px"},"Options"), h("div",{class:"tbl"},t2)];
+};
+S["Sections"] = () => {
+  const names = {tarifs:"Tarifs",comparatif:"Comparatif",options:"Options",process:"Processus",realisations:"Réalisations",avis:"Avis clients",commande:"Commande",faq:"FAQ"};
+  cfg.sections = cfg.sections || {};
+  return [h("p",{class:"sub"},"Affiche, masque ou renomme chaque bloc de la page d'accueil. Laisse le titre vide pour garder le texte par défaut."),
+    ...Object.keys(names).map(id=>{ const s = cfg.sections[id] = cfg.sections[id] || {show:true,eyebrow:names[id],title:"",subtitle:""};
+      return h("details",{class:"item"}, h("summary",{}, h("span",{class:"t"}, (s.show===false?"🚫 ":"✅ ")+names[id])),
+        h("div",{class:"body"}, check("Afficher cette section", ()=>s.show!==false, v=>{ s.show=v; changed(); show("Sections"); }),
+          text("Petit titre au-dessus", s, "eyebrow"), text("Titre (vide = par défaut)", s, "title"), text("Sous-titre (vide = par défaut)", s, "subtitle")));
+    })];
+};
 S["Accueil"] = () => [
   text("Petit badge", cfg.hero, "badge"), text("Titre (début)", cfg.hero, "title"), text("Titre (partie colorée)", cfg.hero, "titleAccent"),
   text("Paragraphe", cfg.hero, "text", {area:true,rows:4}),
@@ -103,6 +138,7 @@ S["Gammes & tarifs"] = () => [
       h("div",{class:"row"},
         field("Prix", ()=>p.price==null?"":p.price, v=>p.price = v===""?null:Number(v), {type:"number",min:0,placeholder:"vide = sur devis"}),
         text("Délai de livraison", p, "delay"), text("Texte du bouton", p, "cta")),
+      h("div",{class:"row"}, text("Unité après le prix (facultatif)", p, "unit", {placeholder:"/mois"}), text("Groupe (facultatif)", p, "group", {placeholder:"Sites, Boutiques…"})),
       check("Afficher « À partir de » avant le prix", ()=>p.from, v=>p.from=v),
       check("⭐ Mettre en avant (« Le plus choisi »)", ()=>p.popular, v=>{ cfg.plans.forEach(x=>x.popular=false); p.popular=v; changed(); show("Gammes & tarifs"); }),
       field("Ce qui est inclus (1 ligne = 1 point)", ()=>p.features.join("\n"), v=>p.features=v.split("\n").filter(l=>l.trim()!==""), {area:true,rows:7,hint:"Commence une ligne par ! pour l'afficher barrée (non inclus)."})
@@ -124,8 +160,8 @@ S["Comparatif"] = () => {
 S["Options"] = () => [
   h("p",{class:"sub"},"Suppléments que le client peut ajouter à sa commande."),
   list(cfg.addons, ()=>({id:"o"+Date.now().toString(36), name:"Nouvelle option", price:50, qty:false, desc:""}),
-    a=>a.name+" — "+a.price+" "+cfg.currency.symbol,
-    a=>[text("Nom", a, "name"), field("Prix", ()=>a.price, v=>a.price=Number(v)||0, {type:"number",min:0}), text("Description", a, "desc"),
+    a=>a.name+" — "+(a.price==null?"Sur devis":a.price+" "+cfg.currency.symbol),
+    a=>[text("Nom", a, "name"), field("Prix", ()=>a.price==null?"":a.price, v=>a.price = v===""?null:Number(v), {type:"number",min:0,placeholder:"vide = sur devis"}), text("Description", a, "desc"),
         check("Le client peut choisir une quantité (ex : pages en plus)", ()=>a.qty, v=>a.qty=v)],
     ()=>show("Options"), {addLabel:"Ajouter une option"}),
   h("h3",{style:"margin:10px 0"},"Codes promo"),
@@ -148,7 +184,7 @@ S["Processus"] = () => [list(cfg.process, ()=>({title:"Étape",text:""}), s=>s.t
 S["Réalisations"] = () => [
   h("p",{class:"sub"},"Mets tes vrais projets. Pour une capture : place le fichier dans le dossier images/portfolio/ sur GitHub et écris son chemin (ex : images/portfolio/monsite.jpg). Le lien peut être le vrai site ou une page de démo."),
   list(cfg.portfolio, ()=>({name:"Nouveau projet",category:"Site Vitrine",url:"",style:1,image:""}), w=>w.name,
-    w=>[text("Nom du projet", w, "name"), text("Catégorie", w, "category"), text("Lien du site / de la démo (facultatif)", w, "url", {placeholder:"https://... ou demos/restaurant.html"}),
+    w=>[text("Nom du projet", w, "name"), text("Catégorie affichée", w, "category"), text("Filtre (ex : Restauration, Commerces, Artisans…)", w, "tag", {placeholder:"Commerces"}), text("Lien du site / de la démo (facultatif)", w, "url", {placeholder:"https://... ou demos/restaurant.html"}),
         text("Capture d'écran PC (facultatif)", w, "image", {placeholder:"images/portfolio/monsite.jpg"}),
         text("Capture d'écran téléphone (facultatif)", w, "mobile", {placeholder:"images/portfolio/monsite-mobile.jpg"}),
         field("Couleur de l'aperçu automatique (1 à 4)", ()=>w.style, v=>w.style=Math.max(1,Math.min(4,Number(v)||1)), {type:"number",min:1})],
@@ -170,17 +206,18 @@ S["Contact"] = () => [
 ];
 
 /* ---- navigation ---- */
-let current = "Gammes & tarifs";
+const ORDER = ["Démarrer","Prix rapides","Gammes & tarifs","Options","Comparatif","Réalisations","Accueil","Identité","Sections","Processus","Avis clients","Garanties","FAQ","Contact"];
+let current = "Démarrer";
 function show(name){
   current = name; const st = $("edit").scrollTop;
-  $("tabs").innerHTML = ""; Object.keys(S).forEach(n=>$("tabs").append(h("button",{class:n===name?"on":"",on:{click:()=>show(n)}},n)));
+  $("tabs").innerHTML = ""; ORDER.forEach(n=>$("tabs").append(h("button",{class:n===name?"on":"",on:{click:()=>show(n)}},n)));
   $("edit").innerHTML = ""; $("edit").append(h("h2",{},name), ...S[name]()); $("edit").scrollTop = st;
 }
 show(current);
 
 /* ---- actions ---- */
 function build(){ return "/* Fichier généré par la page d'administration — tu peux aussi le modifier à la main. */\nwindow.SITE_CONFIG = " + JSON.stringify(cfg, null, 2) + ";\n"; }
-$("b-dl").onclick = () => { const a = h("a",{href:URL.createObjectURL(new Blob([build()],{type:"text/javascript"})),download:"config.js"}); document.body.append(a); a.click(); a.remove(); };
+$("b-dl").onclick = () => { const a = h("a",{href:URL.createObjectURL(new Blob([build()],{type:"text/javascript"})),download:"config.js"}); document.body.append(a); a.click(); a.remove(); dirty = false; $("st").textContent = "✔ config.js téléchargé — envoie-le sur GitHub"; };
 $("b-reset").onclick = () => { if(confirm("Annuler tous tes changements et revenir au config.js publié ?")){ cfg = JSON.parse(JSON.stringify(ORIGINAL)); try{localStorage.removeItem(KEY);}catch(e){} changed(); show(current); } };
 $("b-import").onclick = () => $("file").click();
 $("file").onchange = async e => { const f = e.target.files[0]; if(!f) return; try {

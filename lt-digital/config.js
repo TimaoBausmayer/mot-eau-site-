@@ -38,7 +38,24 @@ window.SITE_CONFIG = {
     { value: "7j/7", label: "Support après livraison" }
   ],
 
+  /* ---------- SECTIONS : afficher / masquer / renommer ----------
+     Chaque bloc de la page. show:false => la section disparaît (et son lien du menu).
+     Laisse title/subtitle vides ("") pour garder le texte par défaut. */
+  sections: {
+    tarifs:       { show: true, eyebrow: "Tarifs",       title: "", subtitle: "" },
+    comparatif:   { show: true, eyebrow: "Comparatif",   title: "", subtitle: "" },
+    options:      { show: true, eyebrow: "Options",      title: "", subtitle: "" },
+    process:      { show: true, eyebrow: "Processus",    title: "", subtitle: "" },
+    realisations: { show: true, eyebrow: "Réalisations", title: "", subtitle: "" },
+    avis:         { show: true, eyebrow: "Avis",         title: "", subtitle: "" },
+    commande:     { show: true, eyebrow: "Commande",     title: "", subtitle: "" },
+    faq:          { show: true, eyebrow: "FAQ",          title: "", subtitle: "" }
+  },
+
   /* ---------- GAMMES / TARIFS ----------
+     unit      : texte après le prix (ex: "/mois") — facultatif
+     group     : nom d'un groupe (ex: "Sites", "Boutiques") — si tu en mets
+                 plusieurs, des boutons de filtre apparaissent
      id        : identifiant unique (sans espace)
      price     : prix (nombre) — null pour afficher "Sur devis"
      from      : true => affiche "À partir de"
@@ -119,14 +136,15 @@ window.SITE_CONFIG = {
     { label: "Support après livraison", values: { express: "—", vitrine: "7 jours", complet: "30 jours", refonte: "7 jours", surmesure: "Au choix" } }
   ],
 
-  /* ---------- OPTIONS / SUPPLÉMENTS (qty:true => quantité au choix) ---------- */
+  /* ---------- OPTIONS / SUPPLÉMENTS (qty:true => quantité au choix ; price:null => sur devis) ---------- */
   addons: [
     { id: "page",   name: "Page supplémentaire",      price: 40,  qty: true,  desc: "Ajoute autant de pages que nécessaire." },
     { id: "logo",   name: "Création de logo",         price: 80,  qty: false, desc: "Un logo propre à ton activité." },
     { id: "urgent", name: "Livraison express",        price: 100, qty: false, desc: "Ton projet passe en priorité." },
     { id: "domain", name: "Nom de domaine + hébergement (1 an)", price: 60, qty: false, desc: "Je m'occupe de la mise en ligne." },
     { id: "texte",  name: "Rédaction des textes",     price: 70,  qty: false, desc: "Des contenus clairs et percutants." },
-    { id: "maint",  name: "Maintenance (1 mois)",     price: 30,  qty: false, desc: "Mises à jour et modifications." }
+    { id: "maint",  name: "Maintenance (1 mois)",     price: 30,  qty: false, desc: "Mises à jour et modifications." },
+    { id: "spec",   name: "Fonctionnalité spéciale",  price: null, qty: false, desc: "Réservation, espace client… sur devis." }
   ],
 
   /* ---------- CODES PROMO (en %) ---------- */
@@ -142,14 +160,27 @@ window.SITE_CONFIG = {
 
   /* ---------- RÉALISATIONS ----------
      Ce sont des maquettes de démonstration (cliquables). Remplace-les par tes
-     vrais projets : url = lien du site, image = capture d'écran PC,
+     vrais projets : tag = catégorie (sert au filtre), url = lien du site, image = capture d'écran PC,
      mobile = capture d'écran téléphone (facultatif). */
   portfolio: [
-    { name: "Le Comptoir",    category: "Restaurant · Site Vitrine",        url: "demos/restaurant.html", image: "images/portfolio/restaurant.jpg", mobile: "images/portfolio/restaurant-mobile.jpg", style: 1 },
-    { name: "Maison Aurore",  category: "Boutique en ligne · Site Complet", url: "demos/boutique.html",   image: "images/portfolio/boutique.jpg",   mobile: "images/portfolio/boutique-mobile.jpg",   style: 2 },
-    { name: "PEAK Coaching",  category: "Coach sportif · Site Vitrine",     url: "demos/coach.html",      image: "images/portfolio/coach.jpg",      mobile: "images/portfolio/coach-mobile.jpg",      style: 3 },
-    { name: "Atelier Dubois", category: "Artisan · Site Vitrine",           url: "demos/artisan.html",    image: "images/portfolio/artisan.jpg",    mobile: "images/portfolio/artisan-mobile.jpg",    style: 4 }
+    { name: "Le Comptoir", tag: "Restauration", category: "Restaurant · Site Vitrine", url: "demos/restaurant.html", image: "images/portfolio/restaurant.jpg", mobile: "images/portfolio/restaurant-mobile.jpg", style: 1 },
+    { name: "Maison Aurore", tag: "Commerces", category: "Boutique en ligne · Site Complet", url: "demos/boutique.html", image: "images/portfolio/boutique.jpg", mobile: "images/portfolio/boutique-mobile.jpg", style: 2 },
+    { name: "PEAK Coaching", tag: "Services", category: "Coach sportif · Site Vitrine", url: "demos/coach.html", image: "images/portfolio/coach.jpg", mobile: "images/portfolio/coach-mobile.jpg", style: 3 },
+    { name: "Atelier Dubois", tag: "Artisans", category: "Menuisier · Site Vitrine", url: "demos/artisan.html", image: "images/portfolio/artisan.jpg", mobile: "images/portfolio/artisan-mobile.jpg", style: 4 },
+    { name: "La Fromagerie des Alpes", tag: "Commerces", category: "Fromagerie · Maquette", url: "demos/fromagerie.html", image: "images/portfolio/fromagerie.jpg", mobile: "images/portfolio/fromagerie-mobile.jpg", style: 1 },
+    { name: "Boucherie Maison Lefèvre", tag: "Commerces", category: "Boucherie · Maquette", url: "demos/boucherie.html", image: "images/portfolio/boucherie.jpg", mobile: "images/portfolio/boucherie-mobile.jpg", style: 2 },
+    { name: "Pizzeria Bella Napoli", tag: "Restauration", category: "Pizzeria · Maquette", url: "demos/pizzeria.html", image: "images/portfolio/pizzeria.jpg", mobile: "images/portfolio/pizzeria-mobile.jpg", style: 3 },
+    { name: "Boulangerie Le Fournil", tag: "Commerces", category: "Boulangerie · Maquette", url: "demos/boulangerie.html", image: "images/portfolio/boulangerie.jpg", mobile: "images/portfolio/boulangerie-mobile.jpg", style: 4 },
+    { name: "Atelier Floral Camélia", tag: "Commerces", category: "Fleuriste · Maquette", url: "demos/fleuriste.html", image: "images/portfolio/fleuriste.jpg", mobile: "images/portfolio/fleuriste-mobile.jpg", style: 1 },
+    { name: "Barber Club 1925", tag: "Beauté & bien-être", category: "Barbier · Maquette", url: "demos/barbier.html", image: "images/portfolio/barbier.jpg", mobile: "images/portfolio/barbier-mobile.jpg", style: 2 },
+    { name: "Garage Auto Performance", tag: "Services", category: "Garage auto · Maquette", url: "demos/garage.html", image: "images/portfolio/garage.jpg", mobile: "images/portfolio/garage-mobile.jpg", style: 3 },
+    { name: "Duval Plomberie & Chauffage", tag: "Artisans", category: "Plombier · Maquette", url: "demos/plombier.html", image: "images/portfolio/plombier.jpg", mobile: "images/portfolio/plombier-mobile.jpg", style: 4 },
+    { name: "Institut Éclat", tag: "Beauté & bien-être", category: "Institut de beauté · Maquette", url: "demos/esthetique.html", image: "images/portfolio/esthetique.jpg", mobile: "images/portfolio/esthetique-mobile.jpg", style: 1 },
+    { name: "Studio Lumière Photographie", tag: "Services", category: "Photographe · Maquette", url: "demos/photographe.html", image: "images/portfolio/photographe.jpg", mobile: "images/portfolio/photographe-mobile.jpg", style: 2 },
+    { name: "La Cave du Sommelier", tag: "Commerces", category: "Caviste · Maquette", url: "demos/cave.html", image: "images/portfolio/cave.jpg", mobile: "images/portfolio/cave-mobile.jpg", style: 3 },
+    { name: "Ink & Soul Tattoo", tag: "Beauté & bien-être", category: "Tatoueur · Maquette", url: "demos/tatoueur.html", image: "images/portfolio/tatoueur.jpg", mobile: "images/portfolio/tatoueur-mobile.jpg", style: 4 }
   ],
+
 
 
   /* ---------- AVIS CLIENTS ----------
