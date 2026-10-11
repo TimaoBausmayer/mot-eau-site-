@@ -293,6 +293,9 @@
             ".validate": "newData.hasChildren(['p256dh','auth'])"
           }
         }
+      },
+      "team": {
+        ".read": true
       }
     }
   }
