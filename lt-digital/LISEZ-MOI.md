@@ -15,3 +15,9 @@ Tout le contenu est dans `config.js` (texte simple, commenté).
 
 ## Mettre en ligne
 Site statique (HTML/CSS/JS) : héberge le dossier `lt-digital` sur Vercel, Netlify ou GitHub Pages.
+
+## Maquettes de démonstration
+Le dossier `demos/` contient 4 sites exemples complets (restaurant, boutique, coach, artisan),
+visibles depuis la section « Réalisations ». Les images d'aperçu sont dans `images/portfolio/`.
+Pour ajouter un vrai projet : mets une capture d'écran PC (et téléphone) dans `images/portfolio/`,
+puis renseigne-la dans `admin.html` ▸ Réalisations.

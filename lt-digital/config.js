@@ -141,14 +141,16 @@ window.SITE_CONFIG = {
   ],
 
   /* ---------- RÉALISATIONS ----------
-     Ce sont des maquettes d'exemple. Remplace-les par tes vrais projets
-     (mets l'url du site et, si tu veux, image:"images/capture.jpg"). */
+     Ce sont des maquettes de démonstration (cliquables). Remplace-les par tes
+     vrais projets : url = lien du site, image = capture d'écran PC,
+     mobile = capture d'écran téléphone (facultatif). */
   portfolio: [
-    { name: "Restaurant",       category: "Maquette exemple — Site Vitrine",  url: "", style: 1, image: "" },
-    { name: "Boutique en ligne", category: "Maquette exemple — Site Complet", url: "", style: 2, image: "" },
-    { name: "Artisan",          category: "Maquette exemple — Site Vitrine",  url: "", style: 3, image: "" },
-    { name: "Coach sportif",    category: "Maquette exemple — Page Express",  url: "", style: 4, image: "" }
+    { name: "Le Comptoir",    category: "Restaurant · Site Vitrine",        url: "demos/restaurant.html", image: "images/portfolio/restaurant.jpg", mobile: "images/portfolio/restaurant-mobile.jpg", style: 1 },
+    { name: "Maison Aurore",  category: "Boutique en ligne · Site Complet", url: "demos/boutique.html",   image: "images/portfolio/boutique.jpg",   mobile: "images/portfolio/boutique-mobile.jpg",   style: 2 },
+    { name: "PEAK Coaching",  category: "Coach sportif · Site Vitrine",     url: "demos/coach.html",      image: "images/portfolio/coach.jpg",      mobile: "images/portfolio/coach-mobile.jpg",      style: 3 },
+    { name: "Atelier Dubois", category: "Artisan · Site Vitrine",           url: "demos/artisan.html",    image: "images/portfolio/artisan.jpg",    mobile: "images/portfolio/artisan-mobile.jpg",    style: 4 }
   ],
+
 
   /* ---------- AVIS CLIENTS ----------
      Ajoute de VRAIS avis (avec l'accord du client). Liste vide = section cachée.

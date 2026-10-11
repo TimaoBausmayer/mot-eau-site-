@@ -146,10 +146,11 @@ function promoEditor(){
 }
 S["Processus"] = () => [list(cfg.process, ()=>({title:"Étape",text:""}), s=>s.title, s=>[text("Titre", s, "title"), text("Texte", s, "text", {area:true})], ()=>show("Processus"), {addLabel:"Ajouter une étape"})];
 S["Réalisations"] = () => [
-  h("p",{class:"sub"},"Mets tes vrais projets. Pour une image : place le fichier dans le dossier images/ sur GitHub et écris son chemin (ex : images/monsite.jpg)."),
+  h("p",{class:"sub"},"Mets tes vrais projets. Pour une capture : place le fichier dans le dossier images/portfolio/ sur GitHub et écris son chemin (ex : images/portfolio/monsite.jpg). Le lien peut être le vrai site ou une page de démo."),
   list(cfg.portfolio, ()=>({name:"Nouveau projet",category:"Site Vitrine",url:"",style:1,image:""}), w=>w.name,
-    w=>[text("Nom du projet", w, "name"), text("Catégorie", w, "category"), text("Lien du site (facultatif)", w, "url", {placeholder:"https://..."}),
-        text("Image (facultatif)", w, "image", {placeholder:"images/monsite.jpg"}),
+    w=>[text("Nom du projet", w, "name"), text("Catégorie", w, "category"), text("Lien du site / de la démo (facultatif)", w, "url", {placeholder:"https://... ou demos/restaurant.html"}),
+        text("Capture d'écran PC (facultatif)", w, "image", {placeholder:"images/portfolio/monsite.jpg"}),
+        text("Capture d'écran téléphone (facultatif)", w, "mobile", {placeholder:"images/portfolio/monsite-mobile.jpg"}),
         field("Couleur de l'aperçu automatique (1 à 4)", ()=>w.style, v=>w.style=Math.max(1,Math.min(4,Number(v)||1)), {type:"number",min:1})],
     ()=>show("Réalisations"), {addLabel:"Ajouter un projet"})
 ];

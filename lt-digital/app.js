@@ -54,8 +54,11 @@ $("steps").innerHTML = C.process.map(s=>`<div class="step reveal"><h4>${esc(s.ti
 
 /* réalisations */
 $("works").innerHTML = C.portfolio.map(w=>{
-  const img = w.image ? `style="background-image:url('${esc(w.image)}')"` : "";
-  const inner = `<div class="thumb ${w.image?"img":"s"+(w.style||1)}" ${img}></div><div class="work-in"><strong>${esc(w.name)}</strong><br><span>${esc(w.category)}</span></div>`;
+  const shot = w.image
+    ? `<div class="shot"><img src="${esc(w.image)}" alt="Aperçu du site ${esc(w.name)}" loading="lazy">${w.mobile?`<div class="phone"><img src="${esc(w.mobile)}" alt="" loading="lazy"></div>`:""}</div>`
+    : `<div class="shot s${esc(w.style||1)}"></div>`;
+  const dom = (w.url||"").replace(/^https?:\/\//,"").replace(/^demos\//,"").replace(/\.html$/,"") || "ton-site.fr";
+  const inner = `<div class="frame"><div class="fbar"><i></i><i></i><i></i><span>${esc(dom)}</span></div>${shot}</div><div class="work-in"><div><strong>${esc(w.name)}</strong><br><span>${esc(w.category)}</span></div>${w.url?"<em>Voir l'aperçu →</em>":""}</div>`;
   return w.url ? `<a class="work reveal" href="${esc(w.url)}" target="_blank" rel="noopener">${inner}</a>` : `<div class="work reveal">${inner}</div>`;
 }).join("");
 
