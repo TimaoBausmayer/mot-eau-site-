@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Administration — LT Digital</title>
+<link rel="icon" href="images/logo-small.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="top">
+  <h1>⚙️ Administration LT Digital</h1>
+  <span class="st" id="st">Brouillon enregistré</span>
+  <button class="mob" id="b-prev">👁 Aperçu</button>
+  <button id="b-import">📂 Importer config.js</button>
+  <button id="b-reset">↺ Annuler mes changements</button>
+  <button class="primary" id="b-dl">⬇ Télécharger config.js</button>
+  <input type="file" id="file" accept=".js,.json" hidden>
+</div>
+<div class="help"><b>Comment publier :</b> modifie ce que tu veux → l'aperçu à droite se met à jour → clique <b>Télécharger config.js</b> → remplace le fichier <code>config.js</code> du dossier <code>lt-digital</code> sur GitHub (Add file ▸ Upload files). Ton brouillon reste gardé dans ce navigateur tant que tu ne l'effaces pas.</div>
+<div class="main">
+  <nav class="tabs" id="tabs"></nav>
+  <section class="edit" id="edit"></section>
+  <aside class="preview" id="preview"><button class="mob" id="b-close" style="margin:8px">✕ Fermer</button><iframe id="frame" src="index.html?preview" title="Aperçu"></iframe></aside>
+</div>
+<script src="config.js"></script>
+<script>
+(function(){
+const KEY = "ltd_draft";
+const ORIGINAL = JSON.parse(JSON.stringify(window.SITE_CONFIG));
+let cfg;
+try { const d = localStorage.getItem(KEY); cfg = d ? JSON.parse(d) : JSON.parse(JSON.stringify(ORIGINAL)); } catch(e){ cfg = JSON.parse(JSON.stringify(ORIGINAL)); }
+
+const $ = id => document.getElementById(id);
+const h = (tag, attrs, ...kids) => { const e = document.createElement(tag);
+  for (const k in (attrs||{})) { if (k==="on") for (const ev in attrs.on) e.addEventListener(ev, attrs.on[ev]); else if (k==="class") e.className = attrs[k]; else e.setAttribute(k, attrs[k]); }
+  kids.flat().forEach(c => c!=null && e.append(c.nodeType ? c : document.createTextNode(c))); return e; };
+
+/* ---- sauvegarde + aperçu ---- */
+let t1, t2;
+function changed(){
+  $("st").textContent = "Enregistrement…";
+  clearTimeout(t1); t1 = setTimeout(()=>{ try { localStorage.setItem(KEY, JSON.stringify(cfg)); $("st").textContent = "Brouillon enregistré"; } catch(e){ $("st").textContent = "⚠ Non sauvegardé (navigateur)"; } }, 200);
+  clearTimeout(t2); t2 = setTimeout(()=>{ try { $("frame").contentWindow.location.reload(); } catch(e){ $("frame").src = "index.html?preview&t="+Date.now(); } }, 700);
+}
+
+/* ---- briques de formulaire ---- */
+function field(label, get, set, o={}){
+  const inp = o.area ? h("textarea",{rows:o.rows||3}) : h("input",{type:o.type||"text"});
+  if (o.placeholder) inp.placeholder = o.placeholder;
+  if (o.min!=null) inp.min = o.min; if (o.step) inp.step = o.step;
+  inp.value = get() ?? "";
+  inp.addEventListener("input", ()=>{ set(inp.value); changed(); });
+  return h("label",{class:"f"}, h("span",{},label), inp, o.hint ? h("small",{},o.hint) : null);
+}
+const text = (label, obj, key, o) => field(label, ()=>obj[key], v=>obj[key]=v, o);
+function check(label, get, set){
+  const c = h("input",{type:"checkbox"}); c.checked = !!get();
+  c.addEventListener("change", ()=>{ set(c.checked); changed(); });
+  return h("label",{class:"chk"}, c, label);
+}
+function list(arr, makeNew, titleOf, body, rerender, o={}){
+  const wrap = h("div");
+  arr.forEach((it,i)=>{
+    const move = d => e => { e.preventDefault(); const j=i+d; if(j<0||j>=arr.length) return; [arr[i],arr[j]]=[arr[j],arr[i]]; changed(); rerender(); };
+    const del = e => { e.preventDefault(); if(confirm("Supprimer cet élément ?")){ arr.splice(i,1); changed(); rerender(); } };
+    wrap.append(h("details",{class:"item", ...(arr.length<=3||o.open?{open:""}:{})},
+      h("summary",{}, h("span",{class:"t"}, titleOf(it,i)||"(sans titre)"), h("button",{on:{click:move(-1)},title:"Monter"},"↑"), h("button",{on:{click:move(1)},title:"Descendre"},"↓"), h("button",{on:{click:del},title:"Supprimer"},"✕")),
+      h("div",{class:"body"}, body(it,i))));
+  });
+  wrap.append(h("button",{class:"add",on:{click:()=>{ arr.push(makeNew()); changed(); rerender(); }}}, "＋ "+(o.addLabel||"Ajouter")));
+  return wrap;
+}
+const slug = s => (s||"gamme").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") || "gamme";
+
+/* ---- sections ---- */
+const S = {};
+S["Identité"] = () => [
+  text("Nom de la marque", cfg, "brand"), text("Slogan", cfg, "tagline"),
+  h("div",{class:"row"},
+    field("Couleur principale", ()=>cfg.accent, v=>cfg.accent=v, {type:"color"}),
+    field("Couleur secondaire", ()=>cfg.accent2, v=>cfg.accent2=v, {type:"color"}),
+    field("Symbole de la monnaie", ()=>cfg.currency.symbol, v=>cfg.currency.symbol=v)),
+  check("Symbole après le prix (290 €) — décoche pour « € 290 »", ()=>cfg.currency.after, v=>cfg.currency.after=v),
+  text("Bandeau d'annonce du haut", cfg, "announce", {hint:"Laisse vide pour le cacher."}),
+  text("Texte de pied de page", cfg, "footer")
+];
+S["Accueil"] = () => [
+  text("Petit badge", cfg.hero, "badge"), text("Titre (début)", cfg.hero, "title"), text("Titre (partie colorée)", cfg.hero, "titleAccent"),
+  text("Paragraphe", cfg.hero, "text", {area:true,rows:4}),
+  h("div",{class:"row"}, text("Bouton 1", cfg.hero, "cta1"), text("Bouton 2", cfg.hero, "cta2")),
+  h("h3",{style:"margin:18px 0 10px"},"Chiffres clés"),
+  list(cfg.stats, ()=>({value:"",label:""}), s=>s.value+" — "+s.label,
+    s=>h("div",{class:"row"}, text("Chiffre", s, "value"), text("Légende", s, "label")), ()=>show("Accueil"))
+];
+S["Gammes & tarifs"] = () => [
+  h("p",{class:"sub"},"Modifie les prix, les descriptions et ce qui est inclus dans chaque offre."),
+  list(cfg.plans, ()=>({id:"g"+Date.now().toString(36), name:"Nouvelle gamme", tagline:"", price:100, from:false, delay:"3 jours", popular:false, cta:"Choisir", features:["Point inclus 1"]}),
+    p=>p.name+" — "+(p.price==null?"Sur devis":p.price+" "+cfg.currency.symbol),
+    p=>[
+      text("Nom de la gamme", p, "name"), text("Phrase d'accroche", p, "tagline"),
+      h("div",{class:"row"},
+        field("Prix", ()=>p.price==null?"":p.price, v=>p.price = v===""?null:Number(v), {type:"number",min:0,placeholder:"vide = sur devis"}),
+        text("Délai de livraison", p, "delay"), text("Texte du bouton", p, "cta")),
+      check("Afficher « À partir de » avant le prix", ()=>p.from, v=>p.from=v),
+      check("⭐ Mettre en avant (« Le plus choisi »)", ()=>p.popular, v=>{ cfg.plans.forEach(x=>x.popular=false); p.popular=v; changed(); show("Gammes & tarifs"); }),
+      field("Ce qui est inclus (1 ligne = 1 point)", ()=>p.features.join("\n"), v=>p.features=v.split("\n").filter(l=>l.trim()!==""), {area:true,rows:7,hint:"Commence une ligne par ! pour l'afficher barrée (non inclus)."})
+    ], ()=>show("Gammes & tarifs"), {addLabel:"Ajouter une gamme"})
+];
+S["Comparatif"] = () => {
+  const val = v => v===true?"oui":v===false?"non":(v??"");
+  const parse = v => { const x=v.trim().toLowerCase(); return (x==="oui"||x==="✔")?true:(x==="non"||x==="✘"||x==="")?false:v; };
+  const tbl = h("table",{}, h("tr",{}, h("th",{},"Ligne"), cfg.plans.map(p=>h("th",{},p.name)), h("th",{},"")));
+  cfg.compare.forEach((r,i)=>{
+    r.values = r.values||{};
+    tbl.append(h("tr",{}, h("td",{}, field("", ()=>r.label, v=>r.label=v)),
+      cfg.plans.map(p=>h("td",{}, field("", ()=>val(r.values[p.id]), v=>r.values[p.id]=parse(v)))),
+      h("td",{}, h("button",{on:{click:()=>{ cfg.compare.splice(i,1); changed(); show("Comparatif"); }}},"✕"))));
+  });
+  return [h("p",{class:"sub"},"Écris « oui » (✔), « non » (✘) ou n'importe quel texte (ex : 5 pages)."), h("div",{class:"tbl"},tbl),
+    h("button",{class:"add",style:"margin-top:12px",on:{click:()=>{ cfg.compare.push({label:"Nouvelle ligne",values:{}}); changed(); show("Comparatif"); }}},"＋ Ajouter une ligne")];
+};
+S["Options"] = () => [
+  h("p",{class:"sub"},"Suppléments que le client peut ajouter à sa commande."),
+  list(cfg.addons, ()=>({id:"o"+Date.now().toString(36), name:"Nouvelle option", price:50, qty:false, desc:""}),
+    a=>a.name+" — "+a.price+" "+cfg.currency.symbol,
+    a=>[text("Nom", a, "name"), field("Prix", ()=>a.price, v=>a.price=Number(v)||0, {type:"number",min:0}), text("Description", a, "desc"),
+        check("Le client peut choisir une quantité (ex : pages en plus)", ()=>a.qty, v=>a.qty=v)],
+    ()=>show("Options"), {addLabel:"Ajouter une option"}),
+  h("h3",{style:"margin:10px 0"},"Codes promo"),
+  promoEditor()
+];
+function promoEditor(){
+  const box = h("div"); const draw = () => { box.innerHTML = "";
+    Object.keys(cfg.promoCodes).forEach(code=>{
+      box.append(h("div",{class:"row",style:"margin-bottom:10px;align-items:end"},
+        h("label",{class:"f"}, h("span",{},"Code"), h("input",{value:code,readonly:""})),
+        field("Réduction (%)", ()=>cfg.promoCodes[code], v=>cfg.promoCodes[code]=Math.max(0,Math.min(100,Number(v)||0)), {type:"number",min:0}),
+        h("button",{style:"margin-bottom:14px",on:{click:()=>{ delete cfg.promoCodes[code]; changed(); draw(); }}},"Supprimer")));
+    });
+    const c = h("input",{placeholder:"NOUVEAUCODE"}), p = h("input",{type:"number",placeholder:"%",min:0,max:100});
+    box.append(h("div",{class:"row",style:"align-items:end"}, h("label",{class:"f"},h("span",{},"Nouveau code"),c), h("label",{class:"f"},h("span",{},"Réduction (%)"),p),
+      h("button",{style:"margin-bottom:14px",on:{click:()=>{ const k=c.value.trim().toUpperCase(); if(!k) return; cfg.promoCodes[k]=Math.max(0,Math.min(100,Number(p.value)||0)); changed(); draw(); }}},"＋ Ajouter")));
+  }; draw(); return box;
+}
+S["Processus"] = () => [list(cfg.process, ()=>({title:"Étape",text:""}), s=>s.title, s=>[text("Titre", s, "title"), text("Texte", s, "text", {area:true})], ()=>show("Processus"), {addLabel:"Ajouter une étape"})];
+S["Réalisations"] = () => [
+  h("p",{class:"sub"},"Mets tes vrais projets. Pour une image : place le fichier dans le dossier images/ sur GitHub et écris son chemin (ex : images/monsite.jpg)."),
+  list(cfg.portfolio, ()=>({name:"Nouveau projet",category:"Site Vitrine",url:"",style:1,image:""}), w=>w.name,
+    w=>[text("Nom du projet", w, "name"), text("Catégorie", w, "category"), text("Lien du site (facultatif)", w, "url", {placeholder:"https://..."}),
+        text("Image (facultatif)", w, "image", {placeholder:"images/monsite.jpg"}),
+        field("Couleur de l'aperçu automatique (1 à 4)", ()=>w.style, v=>w.style=Math.max(1,Math.min(4,Number(v)||1)), {type:"number",min:1})],
+    ()=>show("Réalisations"), {addLabel:"Ajouter un projet"})
+];
+S["Avis clients"] = () => [
+  h("p",{class:"sub"},"Ajoute de vrais avis (avec l'accord du client). Sans avis, la section n'apparaît pas sur le site."),
+  list(cfg.testimonials, ()=>({name:"",role:"",text:""}), t=>t.name||"Nouvel avis",
+    t=>[text("Nom", t, "name"), text("Rôle / activité", t, "role"), text("Avis", t, "text", {area:true})], ()=>show("Avis clients"), {addLabel:"Ajouter un avis"})
+];
+S["Garanties"] = () => [list(cfg.guarantees, ()=>({icon:"✅",title:"Garantie",text:""}), g=>g.icon+" "+g.title,
+  g=>[h("div",{class:"row"},text("Icône (emoji)", g, "icon"), text("Titre", g, "title")), text("Texte", g, "text", {area:true})], ()=>show("Garanties"), {addLabel:"Ajouter une garantie"})];
+S["FAQ"] = () => [list(cfg.faq, ()=>({q:"Nouvelle question ?",a:""}), f=>f.q,
+  f=>[text("Question", f, "q"), text("Réponse", f, "a", {area:true,rows:4})], ()=>show("FAQ"), {addLabel:"Ajouter une question"})];
+S["Contact"] = () => [
+  text("Lien Instagram", cfg.contact, "instagram", {placeholder:"https://www.instagram.com/..."}),
+  text("Nom Instagram affiché", cfg.contact, "instagramHandle", {placeholder:"@l.t_digital"}),
+  text("E-mail (facultatif)", cfg.contact, "email", {hint:"Laisse vide pour ne pas afficher le bouton e-mail."})
+];
+
+/* ---- navigation ---- */
+let current = "Gammes & tarifs";
+function show(name){
+  current = name; const st = $("edit").scrollTop;
+  $("tabs").innerHTML = ""; Object.keys(S).forEach(n=>$("tabs").append(h("button",{class:n===name?"on":"",on:{click:()=>show(n)}},n)));
+  $("edit").innerHTML = ""; $("edit").append(h("h2",{},name), ...S[name]()); $("edit").scrollTop = st;
+}
+show(current);
+
+/* ---- actions ---- */
+function build(){ return "/* Fichier généré par la page d'administration — tu peux aussi le modifier à la main. */\nwindow.SITE_CONFIG = " + JSON.stringify(cfg, null, 2) + ";\n"; }
+$("b-dl").onclick = () => { const a = h("a",{href:URL.createObjectURL(new Blob([build()],{type:"text/javascript"})),download:"config.js"}); document.body.append(a); a.click(); a.remove(); };
+$("b-reset").onclick = () => { if(confirm("Annuler tous tes changements et revenir au config.js publié ?")){ cfg = JSON.parse(JSON.stringify(ORIGINAL)); try{localStorage.removeItem(KEY);}catch(e){} changed(); show(current); } };
+$("b-import").onclick = () => $("file").click();
+$("file").onchange = async e => { const f = e.target.files[0]; if(!f) return; try {
+  const s = await f.text(); const m = s.match(/SITE_CONFIG\s*=\s*([\s\S]*?);?\s*$/); cfg = JSON.parse(m ? m[1] : s); changed(); show(current);
+} catch(err){ alert("Import impossible : seuls les fichiers générés par cette page (ou du JSON valide) peuvent être importés."); } e.target.value=""; };
+$("b-prev").onclick = () => $("preview").classList.add("open");
+$("b-close").onclick = () => $("preview").classList.remove("open");
+changed();
+})();
+</script>
+</body>
+</html>

@@ -1,14 +1,17 @@
 # LT Digital — site de vente de sites web
 
-## Modifier le contenu
-Ouvre **`config.js`** : tout s'y trouve (nom, couleurs, tarifs, gammes, options,
-codes promo, FAQ, réalisations, avis, contact). Change les valeurs, enregistre, recharge la page.
+## Modifier le site SANS toucher au code
+1. Ouvre **`admin.html`** (même adresse que ton site, en ajoutant `/admin.html`).
+2. Choisis une rubrique à gauche (Gammes & tarifs, Options, FAQ, Contact…), modifie.
+   L'aperçu à droite se met à jour tout seul. Ton brouillon est gardé dans ton navigateur.
+3. Clique **⬇ Télécharger config.js**.
+4. Sur GitHub, dans le dossier `lt-digital`, remplace `config.js` (Add file ▸ Upload files).
+   Le site se met à jour après quelques instants.
 
-- Nouvelle gamme : copie un bloc dans `plans` et change son `id`, `name`, `price`.
-- Prix "Sur devis" : `price: null` ; "à partir de" : `from: true`.
-- Ligne non incluse dans une gamme : commence le texte par `!`.
-- Vrais avis clients : ajoute-les dans `testimonials` (la section apparaît toute seule).
-- Contact : `contact.instagram`, `instagramHandle`, `email`.
+## Modifier à la main (facultatif)
+Tout le contenu est dans `config.js` (texte simple, commenté).
+- "Sur devis" : `price: null` — "à partir de" : `from: true`
+- Ligne non incluse dans une gamme : commence par `!`
 
 ## Mettre en ligne
-Site 100 % statique (HTML/CSS/JS) : héberge le dossier sur Vercel, Netlify ou GitHub Pages.
+Site statique (HTML/CSS/JS) : héberge le dossier `lt-digital` sur Vercel, Netlify ou GitHub Pages.

@@ -1,5 +1,9 @@
 (function(){
-const C = window.SITE_CONFIG;
+let C = window.SITE_CONFIG;
+const PREVIEW = /[?&]preview/.test(location.search);
+if (PREVIEW) { try { const d = localStorage.getItem("ltd_draft"); if (d) C = JSON.parse(d); } catch(e){}
+  const b = document.createElement("div"); b.textContent = "APERÇU — brouillon non publié";
+  b.style.cssText = "position:fixed;left:12px;bottom:12px;z-index:99;background:#ffb020;color:#111;font:700 12px Inter,sans-serif;padding:6px 12px;border-radius:99px"; document.body.appendChild(b); }
 const $ = id => document.getElementById(id);
 const esc = s => String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const fmt = n => { const v = Math.round(n).toLocaleString("fr-FR"); return C.currency.after ? v+" "+C.currency.symbol : C.currency.symbol+v; };
