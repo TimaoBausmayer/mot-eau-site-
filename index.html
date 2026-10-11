@@ -246,6 +246,18 @@ tbody tr:hover{background:var(--surface);}
 .stock-badge.stock_precommande{border-color:var(--orange); color:var(--orange); background:rgba(10,10,9,0.75);}
 .stock-badge.stock_bientot{border-color:var(--grey); color:var(--grey); background:rgba(10,10,9,0.75);}
 .stock-badge.stock_rupture{border-color:#ff5c5c; color:#ff5c5c; background:rgba(10,10,9,0.75);}
+.stock-badge.stock_concept{border-color:#c9a7ff; color:#c9a7ff; background:rgba(10,10,9,0.75);}
+.poll-box{border:1px dashed var(--line); padding:10px 12px; margin:10px 0 4px;}
+.poll-box .poll-q{font-size:0.82rem; margin-bottom:8px;}
+.poll-btns{display:flex; flex-wrap:wrap; gap:6px;}
+.poll-btns button{background:none; border:1px solid var(--line); color:var(--cream); font-size:0.78rem; padding:6px 8px; cursor:pointer; font-family:inherit;}
+.poll-btns button:hover{border-color:var(--orange);}
+.poll-buy{display:flex; align-items:center; gap:6px; font-size:0.78rem; color:var(--grey); margin-top:8px; cursor:pointer;}
+.poll-res{font-size:0.76rem;}
+.poll-res-row{display:grid; grid-template-columns:96px minmax(0,1fr) 36px; gap:6px; align-items:center; margin:3px 0;}
+.poll-res-track{height:8px; background:var(--surface-2);}
+.poll-res-bar{height:8px; background:var(--orange); border-radius:0 4px 4px 0;}
+.poll-res-row span:last-child{text-align:right; color:var(--grey);}
 .stock-select{margin-top:10px;}
 .small-btn[disabled]{opacity:0.4; cursor:not-allowed;}
 .small-btn[disabled]:hover{border-color:var(--line); color:var(--cream);}
@@ -4315,8 +4327,64 @@ const STOCK_STATUSES = {
   stock_en:        { label:"En stock",           short:"En stock" },
   stock_precommande:{ label:"Précommande",        short:"Précommande" },
   stock_bientot:   { label:"Bientôt disponible",  short:"Bientôt" },
-  stock_rupture:   { label:"Rupture de stock",    short:"Rupture" }
+  stock_rupture:   { label:"Rupture de stock",    short:"Rupture" },
+  stock_concept:   { label:"Pièce concept (sondage, pas encore en vente)", short:"Concept" }
 };
+
+/* ============================================================
+   SONDAGES BOUTIQUE — « Cette pièce te plaît ? » (pièces concept ou toute pièce)
+   Un vote par personne (compte, sinon navigateur), résultats visibles après le vote.
+   ============================================================ */
+const POLL_OPTIONS = [ ['love','😍 J\'adore'], ['like','👍 Bien'], ['meh','🤔 Bof'], ['no','👎 Pas pour moi'] ];
+let POLLS = {}; // { productId: { voterKey: {r, buy} } }
+function voterKey(){
+  if(isLoggedIn() && !isAdmin()) return AUTH.uid;
+  let k = null;
+  try{ k = localStorage.getItem('moteau_voter'); }catch(err){}
+  if(!k){
+    k = 'v' + Array.from(crypto.getRandomValues(new Uint8Array(12)), b => b.toString(16).padStart(2,'0')).join('');
+    try{ localStorage.setItem('moteau_voter', k); }catch(err){}
+  }
+  return k;
+}
+async function loadPolls(){
+  try{ POLLS = await dbRequest('productPolls', 'GET') || {}; }catch(err){ POLLS = {}; }
+}
+function pollStats(pid){
+  const votes = Object.values(POLLS[pid] || {}).filter(v => v && v.r);
+  const counts = Object.fromEntries(POLL_OPTIONS.map(([k]) => [k, 0]));
+  votes.forEach(v => { if(counts[v.r] !== undefined) counts[v.r]++; });
+  return { total: votes.length, counts, buy: votes.filter(v => v.buy).length };
+}
+function pollResultsHtml(pid, isConcept){
+  const st = pollStats(pid);
+  if(!st.total) return '<div class="poll-res" style="color:var(--grey);">Pas encore de vote.</div>';
+  const pct = n => Math.round(n / st.total * 100);
+  return `<div class="poll-res">${POLL_OPTIONS.map(([k, label]) => `<div class="poll-res-row"><span>${label}</span><span class="poll-res-track"><span class="poll-res-bar" style="display:block; width:${pct(st.counts[k])}%"></span></span><span>${pct(st.counts[k])}%</span></div>`).join('')}
+    <div style="color:var(--grey); margin-top:4px;">${st.total} vote${st.total>1?'s':''}${isConcept ? ` · 🛒 ${pct(st.buy)}% l'achèteraient` : ''}</div></div>`;
+}
+function pollHtml(p){
+  const isConcept = p.stock === 'stock_concept';
+  const pid = p.id;
+  const mine = (POLLS[pid] || {})[voterKey()];
+  if(EDIT_MODE || mine){
+    return `<div class="poll-box"><div class="poll-q">${mine && !EDIT_MODE ? '✅ Merci pour ton avis ! Résultats :' : '📊 Résultats du sondage :'}</div>${pollResultsHtml(pid, isConcept)}</div>`;
+  }
+  return `<div class="poll-box"><div class="poll-q">${isConcept ? '💡 <b>Pièce concept</b> — pas encore en vente. Elle te plaît ?' : 'Cette pièce te plaît ?'}</div>
+    <div class="poll-btns">${POLL_OPTIONS.map(([k, label]) => `<button type="button" data-action="poll-vote" data-vote="${k}">${label}</button>`).join('')}</div>
+    ${isConcept ? '<label class="poll-buy"><input type="checkbox" data-pollbuy> 🛒 Je l\'achèterais si elle sort</label>' : ''}</div>`;
+}
+async function votePoll(idx, r, card){
+  const p = STATE.products[idx]; if(!p || !p.id) return;
+  const key = voterKey();
+  const buyBox = card.querySelector('[data-pollbuy]');
+  const vote = { r, buy: !!(buyBox && buyBox.checked), ts: Date.now() };
+  try{ await dbRequest(`productPolls/${encodeURIComponent(p.id)}/${key}`, 'PUT', vote); }
+  catch(err){ showToast("Vote déjà enregistré ou erreur de connexion."); }
+  POLLS[p.id] = POLLS[p.id] || {}; POLLS[p.id][key] = vote;
+  showToast('Merci pour ton avis !');
+  renderProducts();
+}
 
 function renderProducts(){
   const grid = document.getElementById('productGrid');
@@ -4337,7 +4405,8 @@ function renderProducts(){
     const isFav = favorites.includes(p.id);
     const stock = p.stock || 'stock_en';
     const stockInfo = STOCK_STATUSES[stock] || STOCK_STATUSES.stock_en;
-    const canBuy = stock !== 'stock_rupture' && stock !== 'stock_bientot';
+    const isConcept = stock === 'stock_concept';
+    const canBuy = stock !== 'stock_rupture' && stock !== 'stock_bientot' && !isConcept;
     return `
     <div class="product-card" data-idx="${idx}">
       <div class="product-thumb" style="${bg}">
@@ -4369,9 +4438,10 @@ function renderProducts(){
             ${sizes.map(s=>`<button type="button" class="size-chip ${s===selSize?'selected':''}" data-action="select-size" data-size="${s}">${s}</button>`).join('')}
           </div>
         </div>` : ''}
+        ${(isConcept || p.poll) ? pollHtml(p) : ''}
         <div class="product-foot">
-          <span class="price"><span data-editable data-field="price">${p.price}</span> €</span>
-          <div class="product-actions">
+          <span class="price">${isConcept && !EDIT_MODE ? '<span style="color:var(--grey); font-size:0.8rem;">Prix envisagé : </span>' : ''}<span data-editable data-field="price">${p.price}</span> €</span>
+          <div class="product-actions" ${isConcept && !EDIT_MODE ? 'style="display:none;"' : ''}>
             <button class="small-btn" data-action="cart-add" ${canBuy?'':'disabled'}>${stock==='stock_precommande'?'Précommander':'Ajouter'}</button>
             <button class="small-btn solid" data-action="cart-buy" ${canBuy?'':'disabled'}>Acheter</button>
           </div>
@@ -4382,6 +4452,7 @@ function renderProducts(){
             ${Object.entries(STOCK_STATUSES).map(([k,v])=>`<option value="${k}" ${stock===k?'selected':''}>${v.label}</option>`).join('')}
           </select>
         </div>
+        <label class="edit-only block poll-buy" style="margin:8px 0;"><input type="checkbox" data-field="poll" ${p.poll?'checked':''}> Activer un sondage « Cette pièce te plaît ? » ${isConcept?'(toujours actif pour une pièce concept)':''}</label>
         <div class="edit-only link-field block stock-select">
           <label>Quantité restante (laisser vide = illimité)</label>
           <input type="number" min="0" data-field="qty" value="${p.qty ?? ''}" placeholder="ex: 15">
@@ -4422,6 +4493,10 @@ document.getElementById('productGrid').addEventListener('click', e => {
   const card = e.target.closest('.product-card'); if(!card) return;
   const idx = parseInt(card.dataset.idx);
   const imgs = STATE.products[idx].images || (STATE.products[idx].images = []);
+
+  const voteBtn = e.target.closest('[data-action="poll-vote"]');
+  if(voteBtn){ votePoll(idx, voteBtn.dataset.vote, card); return; }
+  if(e.target.closest('[data-pollbuy]')) return;
 
   if(e.target.closest('[data-action="add-img"]') && EDIT_MODE){
     pickImage(url => { imgs.push(url); productImgIndex[idx] = imgs.length-1; saveSection('products'); renderProducts(); });
@@ -4505,6 +4580,10 @@ document.getElementById('productGrid').addEventListener('change', e => {
   if(e.target.dataset.field === 'link'){
     STATE.products[idx].link = e.target.value.trim();
     saveSection('products'); return;
+  }
+  if(e.target.dataset.field === 'poll'){
+    STATE.products[idx].poll = e.target.checked;
+    saveSection('products'); renderProducts(); return;
   }
   if(e.target.dataset.field === 'stock'){
     STATE.products[idx].stock = e.target.value;
@@ -5098,6 +5177,7 @@ const ADMIN_TABS = [
   { id:'sessions', label:'Séances' },
   { id:'competitions', label:'Compétitions' },
   { id:'giftCards', label:'Cartes cadeaux' },
+  { id:'polls', label:'📊 Sondages boutique' },
   { id:'waivers', label:'Attestations' },
   { id:'notifications', label:'Abonnés' }
 ];
@@ -5217,6 +5297,15 @@ function renderAdminPanel(){
         <button class="small-btn" data-acomp="${e(c.name||'')}" style="margin-top:10px;">Voir les inscrits</button></div>`;
     }).join('') : '<p style="color:var(--grey);">Aucune compétition.</p>';
     body.innerHTML += '<button class="small-btn solid" data-agoto="resultats" style="margin-top:8px;">✏️ Modifier les compétitions et résultats</button>';
+  } else if(adminTab === 'polls'){
+    const withPolls = (STATE.products||[]).filter(p => p && (p.poll || p.stock === 'stock_concept' || pollStats(p.id).total));
+    body.innerHTML = (withPolls.length ? withPolls.map(p => {
+      const st = pollStats(p.id), concept = p.stock === 'stock_concept';
+      return `<div class="admin-card"><h4>${e(p.name||'')} ${concept ? '<span class="stock-badge stock_concept" style="position:static;">Concept</span>' : ''}</h4>
+        <div class="muted" style="margin-bottom:8px;">${st.total} vote${st.total>1?'s':''}${concept ? ` · ${st.buy} personne${st.buy>1?'s':''} l'achèterai${st.buy>1?'en':''}t` : ''}</div>
+        ${pollResultsHtml(p.id, concept)}</div>`;
+    }).join('') : '<p style="color:var(--grey);">Aucun sondage pour le moment. En mode édition, dans la Boutique : mettez une pièce en « Pièce concept » ou cochez « Activer un sondage ».</p>')
+      + '<button class="small-btn solid" data-agoto="boutique" style="margin-top:8px;">✏️ Gérer la boutique</button>';
   } else if(adminTab === 'giftCards'){
     body.innerHTML = `<div class="table-wrap"><table class="admin-table"><thead><tr><th>Code</th><th>Date</th><th>Acheteur</th><th>Montant</th><th>Restant</th><th>Statut</th></tr></thead><tbody>
       ${(STATE.giftCards||[]).slice().reverse().map(g => { const i = STATE.giftCards.indexOf(g); return `<tr><td class="ref">${e(g.code)}</td><td>${e(g.date||'')}</td><td>${e(g.buyerName||'')}<br><small>${e(g.buyerEmail||'')}</small></td>
@@ -5336,7 +5425,7 @@ document.getElementById('adminCloseBtn').addEventListener('click', closeAdminPan
 document.getElementById('adminLogoutBtn2').addEventListener('click', adminSignOut);
 document.getElementById('adminExportBtn').addEventListener('click', exportAdminCsv);
 document.getElementById('adminEditSiteBtn').addEventListener('click', () => { closeAdminPanel(); EDIT_MODE = true; applyEditMode(); showToast("Mode édition activé — cliquez sur un texte ou une image pour le modifier"); });
-document.getElementById('adminRefreshBtn').addEventListener('click', async () => { await loadAll(); renderAdminPanel(); renderSubmissions(); showToast('Données actualisées'); });
+document.getElementById('adminRefreshBtn').addEventListener('click', async () => { await loadAll(); await loadPolls(); renderAdminPanel(); renderSubmissions(); showToast('Données actualisées'); });
 document.getElementById('adminLoginLink').addEventListener('click', e => {
   e.preventDefault();
   if(isAdmin()){ openAdminPanel(); return; }
@@ -5647,6 +5736,7 @@ async function init(){
   renderHistory();
   renderGallery();
   renderTutorials();
+  await loadPolls();
   renderProducts();
   renderPromoCodes();
   renderPromoBox();

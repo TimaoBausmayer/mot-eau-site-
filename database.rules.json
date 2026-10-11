@@ -259,6 +259,28 @@
       },
       "googleReviewLink": {
         ".read": true
+      },
+      "productPolls": {
+        ".read": true,
+        "$pid": {
+          ".validate": "$pid.matches(/^[a-zA-Z0-9_-]{1,40}$/)",
+          "$voter": {
+            ".write": "!data.exists() && newData.exists() && (($voter.matches(/^v[0-9a-f]{24}$/)) || (auth != null && $voter == auth.uid))",
+            ".validate": "newData.hasChildren(['r'])",
+            "r": {
+              ".validate": "newData.val() == 'love' || newData.val() == 'like' || newData.val() == 'meh' || newData.val() == 'no'"
+            },
+            "buy": {
+              ".validate": "newData.isBoolean()"
+            },
+            "ts": {
+              ".validate": "newData.isNumber() && newData.val() <= now"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        }
       }
     }
   }
