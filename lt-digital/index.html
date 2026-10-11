@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Création de sites in-game</title>
-<meta name="description" content="Sites vitrines, boutiques et pages de recrutement sur mesure pour les joueurs et entreprises de votre jeu.">
+<title>LT Digital — Création &amp; modernisation de sites web</title>
+<meta name="description" content="LT Digital crée et modernise des sites web sur mesure : sites vitrines, boutiques en ligne, refonte. Tarifs clairs, livraison rapide.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="icon" href="images/logo-small.jpg">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -41,16 +42,8 @@
           <a href="#commande" class="btn btn-ghost" id="h-cta2"></a>
         </div>
       </div>
-      <div class="mock" aria-hidden="true">
-        <div class="mock-bar"><i></i><i></i><i></i><span>ton-site.rp</span></div>
-        <div class="mock-body">
-          <div class="m-hero"></div>
-          <div class="m-row"><div></div><div></div><div></div></div>
-          <div class="m-line w80"></div><div class="m-line w60"></div>
-          <div class="m-btn"></div>
-        </div>
+      <div class="hero-logo"><img src="images/logo.jpg" alt="Logo LT Digital — Création & modernisation de sites web" width="420" height="420"></div>
       </div>
-    </div>
     <div class="wrap"><div class="stats" id="stats"></div></div>
   </section>
 
@@ -111,9 +104,10 @@
           <div class="opts" id="opts"></div>
           <h3>3. Tes informations</h3>
           <div class="fields">
-            <label>Ton pseudo en jeu<input name="pseudo" required placeholder="Ex : John Dupont"></label>
-            <label>Nom de ton activité<input name="biz" placeholder="Ex : Garage Los Santos"></label>
-            <label class="full">Décris ton projet<textarea name="desc" rows="4" placeholder="Style, couleurs, ce que tu veux sur le site…"></textarea></label>
+            <label>Ton nom<input name="pseudo" required placeholder="Ex : Jean Dupont"></label>
+            <label>Nom de ton activité<input name="biz" placeholder="Ex : Boulangerie Martin"></label>
+            <label class="full">Ton Instagram ou e-mail<input name="contact" required placeholder="@toncompte ou toi@mail.fr"></label>
+            <label class="full">Décris ton projet<textarea name="desc" rows="4" placeholder="Style, couleurs, ton activité, ce que tu veux sur le site…"></textarea></label>
           </div>
         </form>
         <aside class="summary">
@@ -124,7 +118,7 @@
           <div class="total"><span>Total</span><strong id="total">0</strong></div>
           <p class="small" id="sum-delay"></p>
           <button type="button" class="btn full-w" id="copy-btn">Copier ma commande</button>
-          <a class="btn btn-ghost full-w" id="discord-btn" target="_blank" rel="noopener">Ouvrir Discord</a>
+          <a class="btn btn-ghost full-w" id="insta-btn" target="_blank" rel="noopener">Ouvrir Instagram</a>
           <a class="btn btn-ghost full-w" id="mail-btn">Envoyer par e-mail</a>
           <p class="small" id="contact-line"></p>
           <p class="toast" id="toast" role="status"></p>
@@ -149,7 +143,7 @@
   </section>
 </main>
 
-<footer class="foot"><div class="wrap"><span id="f-brand"></span><span id="f-text"></span></div></footer>
+<footer class="foot"><div class="wrap"><span class="fb"><img id="f-logo" alt="" width="40" height="40"><span id="f-brand"></span></span><span id="f-text"></span><a id="f-insta" target="_blank" rel="noopener"></a></div></footer>
 
 <script src="config.js"></script>
 <script src="app.js"></script>

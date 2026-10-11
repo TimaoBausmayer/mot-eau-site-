@@ -3,29 +3,29 @@ const C = window.SITE_CONFIG;
 const $ = id => document.getElementById(id);
 const esc = s => String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const fmt = n => { const v = Math.round(n).toLocaleString("fr-FR"); return C.currency.after ? v+" "+C.currency.symbol : C.currency.symbol+v; };
-const game = t => String(t).replace(/\{game\}/g, C.game);
 
 /* thème */
 document.documentElement.style.setProperty("--accent", C.accent);
 document.documentElement.style.setProperty("--accent2", C.accent2);
-document.title = C.brand + " — Création de sites " + "pour " + C.game;
+document.title = C.brand + " — " + C.tagline;
 
 /* en-tête */
 if (C.announce) { $("announce").textContent = C.announce; $("announce").hidden = false; }
-$("logo").innerHTML = "<b>" + esc(C.brand) + "</b>";
+$("logo").innerHTML = `<img src="${esc(C.logo)}" alt="" width="46" height="46"><b>${esc(C.brand)}</b>`;
+$("f-logo").src = C.logoBig; $("f-insta").href = C.contact.instagram; $("f-insta").textContent = C.contact.instagramHandle;
 $("f-brand").textContent = "© " + new Date().getFullYear() + " " + C.brand;
 $("f-text").textContent = C.footer;
 $("h-badge").textContent = C.hero.badge;
 $("h-title").textContent = C.hero.title;
 $("h-accent").textContent = C.hero.titleAccent;
-$("h-text").textContent = game(C.hero.text);
+$("h-text").textContent = C.hero.text;
 $("h-cta1").textContent = C.hero.cta1;
 $("h-cta1").href = "#tarifs";
 $("h-cta2").textContent = C.hero.cta2;
 $("stats").innerHTML = C.stats.map(s=>`<div class="stat reveal"><strong>${esc(s.value)}</strong><span>${esc(s.label)}</span></div>`).join("");
 
 /* gammes */
-const priceHTML = p => p.price==null ? `<div class="price">Sur devis</div>` : `<div class="price">${fmt(p.price)}</div>`;
+const priceHTML = p => p.price==null ? `<div class="price">Sur devis</div>` : `<div class="price">${p.from?"<small>À partir de</small> ":""}${fmt(p.price)}</div>`;
 $("plans").innerHTML = C.plans.map(p=>`
   <article class="plan reveal ${p.popular?"pop":""}">
     ${p.popular?'<span class="ribbon">⭐ Le plus choisi</span>':""}
@@ -40,7 +40,7 @@ $("cmp").innerHTML = `<thead><tr><th></th>${C.plans.map(p=>`<th class="${p.popul
 <tbody>${C.compare.map(r=>`<tr><td>${esc(r.label)}</td>${C.plans.map(p=>{
   const v=r.values[p.id]; const c=p.popular?"pop-col":"";
   return `<td class="${c}">${v===true?'<span class="yes">✔</span>':v===false?'<span class="no">✕</span>':esc(v)}</td>`;}).join("")}</tr>`).join("")}
-<tr><td>Prix</td>${C.plans.map(p=>`<td class="${p.popular?"pop-col":""}"><b>${p.price==null?"Sur devis":fmt(p.price)}</b></td>`).join("")}</tr></tbody>`;
+<tr><td>Prix</td>${C.plans.map(p=>`<td class="${p.popular?"pop-col":""}"><b>${p.price==null?"Sur devis":(p.from?"dès ":"")+fmt(p.price)}</b></td>`).join("")}</tr></tbody>`;
 
 /* options */
 $("addons").innerHTML = C.addons.map(a=>`<div class="addon reveal"><h4>${esc(a.name)}</h4><p>${esc(a.desc)}</p><strong>+ ${fmt(a.price)}${a.qty?" / unité":""}</strong></div>`).join("");
@@ -64,7 +64,7 @@ $("guar").innerHTML = C.guarantees.map(g=>`<div class="g reveal"><i>${esc(g.icon
 $("faq-list").innerHTML = C.faq.map(f=>`<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join("");
 
 /* ---------- COMMANDE ---------- */
-$("pick").innerHTML = C.plans.map((p,i)=>`<label><input type="radio" name="plan" value="${esc(p.id)}" ${p.popular||(!C.plans.some(x=>x.popular)&&i===0)?"checked":""}><span><b>${esc(p.name)}</b><small>${p.price==null?"Sur devis":fmt(p.price)}</small></span></label>`).join("");
+$("pick").innerHTML = C.plans.map((p,i)=>`<label><input type="radio" name="plan" value="${esc(p.id)}" ${p.popular||(!C.plans.some(x=>x.popular)&&i===0)?"checked":""}><span><b>${esc(p.name)}</b><small>${p.price==null?"Sur devis":(p.from?"dès ":"")+fmt(p.price)}</small></span></label>`).join("");
 $("opts").innerHTML = C.addons.map(a=>`<label class="opt"><input type="checkbox" data-a="${esc(a.id)}"><div><b>${esc(a.name)}</b><br><small>+ ${fmt(a.price)}${a.qty?" / unité":""}</small></div>${a.qty?`<input type="number" min="1" max="50" value="1" data-q="${esc(a.id)}" aria-label="Quantité">`:""}</label>`).join("");
 
 let promo = 0, promoCode = "";
@@ -72,7 +72,7 @@ const form = $("order-form");
 function state(){
   const plan = C.plans.find(p=>p.id===form.plan.value) || C.plans[0];
   const lines = [];
-  if (plan.price!=null) lines.push([plan.name, plan.price]); else lines.push([plan.name+" (devis)", 0]);
+  if (plan.price!=null) lines.push([plan.name+(plan.from?" (dès)":""), plan.price]); else lines.push([plan.name+" (devis)", 0]);
   C.addons.forEach(a=>{
     const cb = form.querySelector(`[data-a="${a.id}"]`);
     if (cb && cb.checked) {
@@ -92,15 +92,15 @@ function render(){
   $("sum-delay").textContent = "Délai estimé : " + s.plan.delay;
   const msg = message();
   const ct = C.contact;
-  $("discord-btn").hidden = !ct.discord; if (ct.discord) $("discord-btn").href = ct.discord;
+  $("insta-btn").hidden = !ct.instagram; if (ct.instagram) $("insta-btn").href = ct.instagram;
   $("mail-btn").hidden = !ct.email;
   if (ct.email) $("mail-btn").href = "mailto:"+ct.email+"?subject="+encodeURIComponent("Commande — "+s.plan.name)+"&body="+encodeURIComponent(msg);
-  $("contact-line").textContent = [ct.discordTag&&"Discord : "+ct.discordTag, ct.ingame&&"En jeu : "+ct.ingame].filter(Boolean).join(" · ");
+  $("contact-line").textContent = [ct.instagramHandle&&"Instagram : "+ct.instagramHandle, ct.email].filter(Boolean).join(" · ");
 }
 function message(){
   const s = state(), d = new FormData(form);
   return ["🛒 NOUVELLE COMMANDE — "+C.brand, "",
-    "Pseudo : "+(d.get("pseudo")||"—"), "Activité : "+(d.get("biz")||"—"), "",
+    "Nom : "+(d.get("pseudo")||"—"), "Contact : "+(d.get("contact")||"—"), "Activité : "+(d.get("biz")||"—"), "",
     "Gamme : "+s.plan.name, ...s.lines.slice(1).map(l=>"+ "+l[0]),
     promo?"Code promo : "+promoCode+" (-"+promo+"%)":"",
     "TOTAL : "+(s.plan.price==null?"à définir (devis)":fmt(s.total)), "",
@@ -119,7 +119,7 @@ $("promo-btn").onclick = ()=>{
 $("copy-btn").onclick = async ()=>{
   if (!form.reportValidity()) return;
   const t = message();
-  try { await navigator.clipboard.writeText(t); toast("✅ Commande copiée ! Colle-la dans Discord / en jeu."); }
+  try { await navigator.clipboard.writeText(t); toast("✅ Commande copiée ! Envoie-la-moi en message privé sur Instagram."); }
   catch { const ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); toast("✅ Commande copiée !"); }
 };
 document.querySelectorAll("[data-plan]").forEach(b=>b.addEventListener("click",()=>{
