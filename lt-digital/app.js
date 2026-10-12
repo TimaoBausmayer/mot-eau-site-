@@ -886,17 +886,7 @@ $("vat-note").textContent = vatNote;
   const io = new IntersectionObserver(es=>es.forEach(e=>{ if (e.isIntersecting){ e.target.classList.add("shown"); io.unobserve(e.target); } }), {threshold:.2, rootMargin:"0px 0px -8% 0px"});
   const imgs = () => document.querySelectorAll(".svc-vid, .why-vs .vs-yes, .story-img, .founder .fi, .founder img").forEach(el=>{ if (el.dataset.rv5) return; el.dataset.rv5 = 1; el.classList.add("rv5"); io.observe(el); });
   imgs(); ["svcs","works"].forEach(id=>{ const n = $(id); if (n) new MutationObserver(imgs).observe(n, {childList:true, subtree:true}); });
-  /* 5. curseur discret (ordinateur) : point + anneau, « Voir » sur les maquettes */
-  if (fine){ const dot = document.createElement("div"), ring = document.createElement("div"); dot.className = "cur-dot"; ring.className = "cur-ring"; ring.innerHTML = "<span></span>";
-    [dot, ring].forEach(x=>{ x.setAttribute("aria-hidden","true"); document.body.appendChild(x); });
-    let x = -100, y = -100, rx = x, ry = y, shown = false;
-    addEventListener("pointermove", e=>{ x = e.clientX; y = e.clientY; if (!shown){ shown = true; document.documentElement.classList.add("cur-on"); rx = x; ry = y; } }, {passive:true});
-    document.addEventListener("pointerleave", ()=>{ shown = false; document.documentElement.classList.remove("cur-on"); });
-    (function loop(){ rx += (x-rx)*.16; ry += (y-ry)*.16; dot.style.transform = `translate(${x}px,${y}px)`; ring.style.transform = `translate(${rx}px,${ry}px)`; requestAnimationFrame(loop); })();
-    const lab = ring.querySelector("span");
-    document.addEventListener("pointerover", e=>{ const v = e.target.closest(".work, .vf, .vp, .svc-vid"), a = e.target.closest("a, button, summary, label, input, select, textarea, [role=button]");
-      ring.classList.toggle("view", !!v); lab.textContent = v ? (v.classList.contains("svc-vid") ? "Lire" : "Voir") : ""; ring.classList.toggle("hov", !v && !!a); dot.classList.toggle("hide", !!v); });
-    addEventListener("pointerdown", ()=>ring.classList.add("down")); addEventListener("pointerup", ()=>ring.classList.remove("down")); }
+  /* (curseur personnalisé retiré : la souris garde son apparence normale) */
   /* 6. la bande qui défile s'incline selon la vitesse de défilement */
   const tick = document.querySelector(".tick.t1"); if (tick){ let last = scrollY, v = 0;
     (function run(){ const d = scrollY - last; last = scrollY; v += (d - v) * .12; tick.style.setProperty("--sk", Math.max(-8, Math.min(8, v * .35)).toFixed(2) + "deg"); requestAnimationFrame(run); })(); }

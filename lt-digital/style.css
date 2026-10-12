@@ -1402,3 +1402,4 @@ body::after{content:"";position:fixed;inset:0;z-index:300;pointer-events:none;op
 @keyframes lgIn{from{opacity:0}}@keyframes lgImg{from{transform:scale(.9);opacity:0}}
 @media(max-width:960px){.logos{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:640px){.logos{grid-template-columns:repeat(2,1fr);gap:10px}.lgc-in{flex-direction:column;gap:2px;padding:10px 12px}.lg-cta{padding:18px}}
+.cur-dot,.cur-ring{display:none!important}
