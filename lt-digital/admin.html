@@ -118,7 +118,7 @@ S["Prix rapides"] = () => {
   return [h("p",{class:"sub"},"Change tous tes prix au même endroit. Laisse vide pour afficher « Sur devis »."), h("h3",{style:"margin:6px 0 10px"},"Gammes"), h("div",{class:"tbl"},t1), h("h3",{style:"margin:22px 0 10px"},"Options"), h("div",{class:"tbl"},t2), sv.length?h("h3",{style:"margin:22px 0 10px"},"Logo, affiches & réseaux"):null, sv.length?h("div",{class:"tbl"},t3):null].filter(Boolean);
 };
 S["Sections"] = () => {
-  const names = {tarifs:"Tarifs",comparatif:"Comparatif",options:"Options",services:"Logo, affiches & réseaux",process:"Processus",realisations:"Réalisations",avis:"Avis clients",commande:"Commande",faq:"FAQ",histoire:"Notre histoire"};
+  const names = {tarifs:"Tarifs",comparatif:"Comparatif",pourquoi:"Pourquoi un vrai site",options:"Options",services:"Logo, affiches & réseaux",process:"Processus",realisations:"Réalisations",avis:"Avis clients",commande:"Commande",faq:"FAQ",histoire:"Notre histoire"};
   cfg.sections = cfg.sections || {};
   return [h("p",{class:"sub"},"Affiche, masque ou renomme chaque bloc de la page d'accueil. Laisse le titre vide pour garder le texte par défaut."),
     ...Object.keys(names).map(id=>{ const s = cfg.sections[id] = cfg.sections[id] || {show:true,eyebrow:names[id],title:"",subtitle:""};
@@ -185,6 +185,18 @@ function planChecks(label, arr, hint){
       c.addEventListener("change", ()=>{ const k = arr.indexOf(p.id); if(c.checked && k<0) arr.push(p.id); if(!c.checked && k>=0) arr.splice(k,1); changed(); });
       return h("label",{class:"chk",style:"margin:0"}, c, p.name); })), hint ? h("small",{},hint) : null);
 }
+S["Pourquoi un vrai site"] = () => { const W = cfg.why = cfg.why || {items:[],without:[],with:[]}; W.items = W.items||[];
+  const lines = (label, key, rows) => field(label, ()=>(W[key]||[]).join("\n"), v=>W[key] = v.split("\n").map(x=>x.trim()).filter(Boolean), {area:true, rows:rows||5});
+  return [h("p",{class:"sub"},"Ton argumentaire : pourquoi un commerçant a besoin d'un vrai site de qualité. Affiché juste sous le haut de page."),
+    h("div",{class:"row"}, text("Petit titre", W, "eyebrow"), text("Grand titre", W, "title")), text("Introduction", W, "intro", {area:true, rows:3}),
+    h("h3",{style:"margin:18px 0 6px"},"Les avantages (cartes)"),
+    list(W.items, ()=>({icon:"growth", title:"Nouvel avantage", text:""}), it=>it.title,
+      it=>[h("div",{class:"row"}, choose("Icône", ()=>it.icon||"growth", v=>it.icon=v, [["search","🔍 Recherche"],["shield","🛡️ Confiance"],["clock","🕒 Horloge"],["time","⏳ Temps"],["home","🏠 Maison"],["growth","📈 Croissance"]]), text("Titre", it, "title")), text("Texte", it, "text", {area:true})],
+      ()=>show("Pourquoi un vrai site"), {addLabel:"Ajouter un avantage"}),
+    h("h3",{style:"margin:18px 0 6px"},"Comparaison « sans site / avec un site »"),
+    h("div",{class:"row"}, text("Titre colonne de gauche", W, "withoutTitle"), text("Titre colonne de droite", W, "withTitle")),
+    h("div",{class:"row"}, lines("Sans site (une ligne par point)", "without"), lines("Avec un site (une ligne par point)", "with")),
+    text("Bouton sous la comparaison (vide = pas de bouton)", W, "cta")]; };
 S["Logo & réseaux"] = () => { const sv = cfg.services = cfg.services || {eyebrow:"Logo, affiches & réseaux", title:"", intro:"", items:[]}; sv.items = sv.items || [];
   return [h("p",{class:"sub"},"Logo, affiches, flyers, gestion des réseaux sociaux… Le client peut les commander avec un site ou sans site. Mets « /mois » dans Unité pour un abonnement (il s'affiche à part du total)."),
   h("div",{class:"row"}, text("Petit titre", sv, "eyebrow"), text("Grand titre", sv, "title")), text("Phrase d'introduction", sv, "intro"),
@@ -295,9 +307,14 @@ S["Réalisations"] = () => [
     ()=>show("Réalisations"), {addLabel:"Ajouter un projet"})
 ];
 S["Avis clients"] = () => [
-  h("p",{class:"sub"},"Ajoute de vrais avis (avec l'accord du client). Sans avis, la section n'apparaît pas sur le site."),
-  list(cfg.testimonials, ()=>({name:"",role:"",text:""}), t=>t.name||"Nouvel avis",
-    t=>[text("Nom", t, "name"), text("Rôle / activité", t, "role"), text("Avis", t, "text", {area:true})], ()=>show("Avis clients"), {addLabel:"Ajouter un avis"})
+  h("p",{class:"sub"},"Ajoute les vrais avis que tes clients t'envoient (bouton « Laisser un avis » du site). Mets leur logo et une capture de leur site dans le dossier images/avis/ puis écris le chemin ici."),
+  (cfg.reviewsForm = cfg.reviewsForm || {show:true,title:"",text:""}, check("Afficher le bouton « Laisser un avis »", ()=>cfg.reviewsForm.show!==false, v=>{ cfg.reviewsForm.show=v; changed(); })),
+  h("div",{class:"row"}, text("Titre du bouton d'avis", cfg.reviewsForm, "title"), text("Petit texte", cfg.reviewsForm, "text")),
+  list(cfg.testimonials, ()=>({name:"",role:"",rating:5,text:"",site:"",logo:"",image:"",insta:"",date:""}), t=>(t.rating?"★".repeat(t.rating)+" ":"")+(t.role||t.name||"Nouvel avis"),
+    t=>[h("div",{class:"row"}, text("Nom du client", t, "name"), text("Activité / commerce", t, "role"), field("Note (1 à 5)", ()=>t.rating||"", v=>t.rating=Math.max(0,Math.min(5,Number(v)||0)), {type:"number",min:0})),
+      text("Avis", t, "text", {area:true}),
+      h("div",{class:"row"}, text("Lien de son site", t, "site", {placeholder:"https://..."}), text("Instagram", t, "insta", {placeholder:"@compte"}), text("Date", t, "date", {placeholder:"mars 2026"})),
+      h("div",{class:"row"}, text("Logo (chemin de l'image)", t, "logo", {placeholder:"images/avis/logo-martin.png"}), text("Capture du site (chemin de l'image)", t, "image", {placeholder:"images/avis/site-martin.jpg"}))], ()=>show("Avis clients"), {addLabel:"Ajouter un avis"})
 ];
 S["Garanties"] = () => [list(cfg.guarantees, ()=>({icon:"✅",title:"Garantie",text:""}), g=>g.title,
   g=>[text("Titre", g, "title"), text("Texte", g, "text", {area:true})], ()=>show("Garanties"), {addLabel:"Ajouter une garantie"})];
@@ -310,7 +327,7 @@ S["Contact"] = () => [
 ];
 
 /* ---- navigation ---- */
-const ORDER = ["Démarrer","Prix rapides","Gammes & tarifs","Options","Logo & réseaux","Promos","Commande","Comparatif","Réalisations","Notre histoire","Accueil","Identité","Sections","Textes du site","Légal & TVA","Processus","Avis clients","Garanties","FAQ","Contact"];
+const ORDER = ["Démarrer","Prix rapides","Gammes & tarifs","Pourquoi un vrai site","Options","Logo & réseaux","Promos","Commande","Comparatif","Réalisations","Notre histoire","Accueil","Identité","Sections","Textes du site","Légal & TVA","Processus","Avis clients","Garanties","FAQ","Contact"];
 let current = "Démarrer";
 function show(name){
   current = name; const st = $("edit").scrollTop;

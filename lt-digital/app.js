@@ -259,10 +259,44 @@ addEventListener("resize", ()=>{ if(!lb.hidden) lbFit(); });
 drawWorks();
 
 /* avis (affichés seulement s'il y en a) */
-if (C.testimonials && C.testimonials.length) {
+/* pourquoi un vrai site */
+(function(){ const W = C.why; if(!W || !(W.items||[]).length){ $("pourquoi").hidden = true; return; }
+  const sec = $("pourquoi"), hd = sec.querySelector(".sec-head"); hd.querySelector(".eyebrow").textContent = W.eyebrow||""; hd.querySelector("h2").textContent = W.title||""; hd.querySelector("p").textContent = W.intro||"";
+  const I = { search:'<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/>', shield:'<path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6Z"/><path d="m8.8 12 2.2 2.2 4.4-4.4"/>', clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+    time:'<path d="M5 4h14M5 20h14M7 4c0 4.5 10 5.5 10 8s-10 3.5-10 8M17 4c0 4.5-10 5.5-10 8s10 3.5 10 8"/>', home:'<path d="M4 10.5 12 4l8 6.5V20H4Z"/><path d="M10 20v-5h4v5"/>', growth:'<path d="M4 18 10 12l3.5 3.5L20 9"/><path d="M15 9h5v5"/>' };
+  $("why-grid").innerHTML = W.items.map((it,i)=>`<article class="why reveal" style="--d:${i*80}ms"><span class="why-ic"><svg viewBox="0 0 24 24" aria-hidden="true">${I[it.icon]||I.growth}</svg></span><h3>${esc(it.title)}</h3><p>${esc(it.text)}</p></article>`).join("");
+  const li = (arr, ok) => (arr||[]).map(x=>`<li><span class="vs-i ${ok?"ok":"ko"}">${ok?"✓":"✕"}</span>${esc(x)}</li>`).join("");
+  $("why-vs").innerHTML = (W.without||[]).length ? `<div class="vs-col vs-no reveal"><h3>${esc(W.withoutTitle||"Sans site")}</h3><ul>${li(W.without,false)}</ul></div><div class="vs-arrow" aria-hidden="true">→</div><div class="vs-col vs-yes reveal"><h3>${esc(W.withTitle||"Avec un site")}</h3><ul>${li(W.with,true)}</ul>${W.cta?`<a href="#tarifs" class="btn btn-light btn-arrow">${esc(W.cta)}</a>`:""}</div>` : "";
+})();
+
+/* avis clients : note moyenne, cartes avec logo / site, formulaire pour laisser un avis */
+const stars = n => { const r = Math.max(0, Math.min(5, Math.round(+n||0))); return `<span class="stars" aria-label="${r} sur 5">${"★".repeat(r)}<i>${"★".repeat(5-r)}</i></span>`; };
+(function(){ const R = (C.testimonials||[]).filter(t=>t&&t.text), F = C.reviewsForm||{}, T = C.texts||{};
+  if (!R.length && F.show===false) return;
   $("avis").hidden = false;
-  $("reviews").innerHTML = C.testimonials.map(t=>`<div class="review"><p>“${esc(t.text)}”</p><strong>${esc(t.name)}</strong><span>${esc(t.role||"")}</span></div>`).join("");
-}
+  const rated = R.filter(t=>+t.rating>0), avg = rated.length ? rated.reduce((s,t)=>s+(+t.rating),0)/rated.length : 0;
+  $("rv-top").innerHTML = `${rated.length?`<div class="rv-score"><b>${avg.toFixed(1).replace(".",",")}</b><div>${stars(avg)}<small>${rated.length} avis client${rated.length>1?"s":""}</small></div></div>`:""}${F.show!==false?`<div class="rv-cta"><div><strong>${esc(F.title||"Laisse ton avis")}</strong><span>${esc(F.text||"")}</span></div><button type="button" class="btn" id="rv-open">${esc(T.rv_btn||"Laisser un avis")}</button></div>`:""}`;
+  const host = u => { try { return new URL(u).hostname.replace(/^www\./,""); } catch { return u; } };
+  $("reviews").innerHTML = R.length ? R.map((t,i)=>`<article class="review reveal" style="--d:${(i%3)*90}ms">
+    ${t.image?`<a class="rv-shot" ${t.site?`href="${esc(t.site)}" target="_blank" rel="noopener"`:""}><img src="${esc(t.image)}" alt="Site de ${esc(t.role||t.name)}" loading="lazy"></a>`:""}
+    <div class="rv-head">${t.logo?`<img class="rv-logo" src="${esc(t.logo)}" alt="Logo ${esc(t.role||"")}" loading="lazy">`:`<span class="rv-logo rv-ini">${esc((t.role||t.name||"?").trim()[0]||"?")}</span>`}<div><strong>${esc(t.role||t.name)}</strong>${t.role?`<span>${esc(t.name)}</span>`:""}</div>${+t.rating>0?stars(t.rating):""}</div>
+    <p>“${esc(t.text)}”</p>
+    <div class="rv-foot">${t.site?`<a class="rv-link" href="${esc(t.site)}" target="_blank" rel="noopener">${esc(T.rv_site||"Voir son site")} · ${esc(host(t.site))} ↗</a>`:""}${t.insta?`<a class="rv-link" href="https://www.instagram.com/${esc(String(t.insta).replace(/^@/,""))}" target="_blank" rel="noopener">${esc(t.insta.startsWith("@")?t.insta:"@"+t.insta)}</a>`:""}${t.date?`<time>${esc(t.date)}</time>`:""}</div>
+  </article>`).join("") : `<div class="rv-empty">${esc(T.rv_empty||"Les premiers avis arrivent bientôt. Tu as déjà travaillé avec nous ? Ton avis compte !")}</div>`;
+  /* formulaire */
+  const dlg = $("rv-modal"), f = $("rv-form"); let note = 5;
+  $("rv-m-text").textContent = F.text||"";
+  const sIn = $("rv-stars-in"); const drawS = () => { sIn.innerHTML = [1,2,3,4,5].map(n=>`<button type="button" role="radio" aria-checked="${n===note}" aria-label="${n} sur 5" class="${n<=note?"on":""}" data-n="${n}">★</button>`).join("") + `<span>${note}/5</span>`; }; drawS();
+  sIn.addEventListener("click", e=>{ const b = e.target.closest("[data-n]"); if(b){ note = +b.dataset.n; drawS(); } });
+  const open = $("rv-open"); if (open) open.onclick = ()=>{ dlg.showModal ? dlg.showModal() : dlg.setAttribute("open",""); };
+  $("rv-x").onclick = ()=>dlg.close ? dlg.close() : dlg.removeAttribute("open");
+  dlg.addEventListener("click", e=>{ if (e.target===dlg) dlg.close(); });
+  const msg = () => { const d = new FormData(f); return ["NOUVEL AVIS — "+C.brand, "", "Note : "+note+"/5", "Nom : "+(d.get("name")||""), "Activité : "+(d.get("biz")||""), "Site : "+(d.get("site")||"—"), "Instagram : "+(d.get("insta")||"—"), "", "Avis :", d.get("text")||"", "", "✔ J'accepte la publication de mon avis, de mon nom, de mon logo et du lien de mon site."].join("\n"); };
+  const ct = C.contact||{}, toastR = t=>{ $("rv-toast").textContent = t; setTimeout(()=>$("rv-toast").textContent="", 4000); };
+  $("rv-mail").onclick = ()=>{ if(!f.reportValidity()) return; if(!ct.email){ toastR("Ajoute ton e-mail dans l'admin (Contact)."); return; } location.href = "mailto:"+ct.email+"?subject="+encodeURIComponent("Avis client — "+(new FormData(f).get("biz")||""))+"&body="+encodeURIComponent(msg()); toastR("Ta messagerie s'ouvre : pense à joindre ton logo ! Merci 🙏"); };
+  $("rv-copy").onclick = async ()=>{ if(!f.reportValidity()) return; try { await navigator.clipboard.writeText(msg()); } catch { const ta=document.createElement("textarea"); ta.value=msg(); document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
+    toastR("Avis copié ! Colle-le en message privé sur Instagram "+(ct.instagramHandle||"")+", avec ton logo."); if (ct.instagram) window.open(ct.instagram, "_blank", "noopener"); };
+})();
 $("guar").innerHTML = C.guarantees.map(g=>`<div class="g"><h4>${esc(g.title)}</h4><p>${esc(g.text)}</p></div>`).join("");
 $("faq-list").innerHTML = C.faq.map(f=>`<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join("");
 

@@ -68,6 +68,27 @@ window.SITE_CONFIG = {
   },
 
 
+  /* ---------- POURQUOI UN VRAI SITE (argumentaire) ----------
+     icon : search, shield, clock, time, home, growth */
+  why: {
+    eyebrow: "Pourquoi un vrai site",
+    title: "Ton site travaille pour toi, même quand tu es fermé.",
+    intro: "Aujourd'hui, avant de pousser ta porte, tes clients te cherchent sur internet. Ce qu'ils y trouvent décide s'ils viennent… ou s'ils vont chez le voisin.",
+    items: [
+      { icon: "search", title: "Être trouvé sur Google", text: "Quand quelqu'un tape « boulangerie près de chez moi » ou « plombier à côté », ce sont les commerces avec un site qui sortent. Sans site, ces clients partent chez tes concurrents." },
+      { icon: "shield", title: "Inspirer confiance tout de suite", text: "Un site propre, rapide et à jour rassure avant même la première visite. Un site vieillot, lent ou absent donne l'impression que l'activité n'est pas sérieuse." },
+      { icon: "clock", title: "Ouvert 24 h/24, 7 j/7", text: "Horaires, carte, tarifs, adresse, photos : tout est consultable à toute heure. Les réservations, commandes et demandes de devis arrivent même la nuit." },
+      { icon: "time", title: "Moins d'appels, plus de temps", text: "Les questions qui reviennent (horaires, prix, accès) trouvent leur réponse sur le site. Tu passes moins de temps au téléphone et plus sur ton métier." },
+      { icon: "home", title: "Une vitrine qui t'appartient", text: "Les réseaux sociaux changent leurs règles et peuvent bloquer un compte. Ton site, c'est chez toi : ton nom, ton adresse web, tes règles." },
+      { icon: "growth", title: "Plus de clients, plus de chiffre", text: "Un client qui trouve facilement ce qu'il cherche passe à l'action : il appelle, réserve, commande ou vient en boutique. C'est un investissement, pas une dépense." }
+    ],
+    withoutTitle: "Sans site (ou avec un vieux site)",
+    without: ["Invisible quand on te cherche sur Google", "Des clients qui doutent et vont ailleurs", "Des appels à répétition pour les mêmes questions", "Dépendant des réseaux sociaux", "Aucune vente ou réservation en dehors des horaires"],
+    withTitle: "Avec un site L&T Digital",
+    with: ["Trouvé par les clients près de chez toi", "Une image pro qui donne envie de venir", "Infos, prix et horaires toujours à jour", "Ta propre vitrine, à ton nom", "Réservations, commandes et devis 24 h/24"],
+    cta: "Je veux mon site"
+  },
+
   /* ---------- CHIFFRES CLÉS (supprime les lignes inutiles) ---------- */
   stats: [
     { value: "{delivery}",  label: "Délai de livraison de ton site" },
@@ -108,6 +129,7 @@ window.SITE_CONFIG = {
     services:     { show: true, eyebrow: "Logo, affiches & réseaux" },
     process:      { show: true, eyebrow: "Processus",    title: "", subtitle: "" },
     realisations: { show: true, eyebrow: "Réalisations", title: "", subtitle: "" },
+    pourquoi:     { show: true, eyebrow: "Pourquoi un vrai site" },
     avis:         { show: true, eyebrow: "Avis",         title: "", subtitle: "" },
     commande:     { show: true, eyebrow: "Commande",     title: "", subtitle: "" },
     faq:          { show: true, eyebrow: "FAQ",          title: "", subtitle: "" },
@@ -336,7 +358,10 @@ window.SITE_CONFIG = {
   /* ---------- AVIS CLIENTS ----------
      Ajoute de VRAIS avis (avec l'accord du client). Liste vide = section cachée.
      Exemple : { name: "Jean D.", role: "Gérant", text: "Super travail !" } */
+  /* Avis clients : ajoute-les depuis admin.html ▸ Avis clients (avec l'accord du client).
+     rating = note sur 5 · site = lien vers son site · logo / image = chemin d'une image (ex : images/avis/logo-martin.png) */
   testimonials: [],
+  reviewsForm: { show: true, title: "Tu es client ? Laisse ton avis", text: "Raconte ton expérience et montre ton site ou ton logo. Ton avis sera publié après vérification." },
 
   /* ---------- GARANTIES ---------- */
   guarantees: [

@@ -54,6 +54,14 @@
     <div class="wrap"><dl class="stats" id="stats"></dl></div>
   </section>
 
+  <section id="pourquoi" class="sec why-sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow"></span><h2></h2><p></p></div>
+      <div class="why-grid" id="why-grid"></div>
+      <div class="why-vs" id="why-vs"></div>
+    </div>
+  </section>
+
   <section id="tarifs" class="sec">
     <div class="wrap">
       <div class="sec-head"><span class="eyebrow">Tarifs</span><h2>Choisis la gamme qui correspond à ton projet</h2><p>Des prix annoncés, sans surprise. Tu peux tout ajuster avec des options.</p></div>
@@ -106,7 +114,8 @@
 
   <section id="avis" class="sec alt" hidden>
     <div class="wrap">
-      <div class="sec-head"><span class="eyebrow">Avis</span><h2>Ils nous ont fait confiance</h2></div>
+      <div class="sec-head"><span class="eyebrow">Avis</span><h2>Ils nous ont fait confiance</h2><p>Leurs avis, leurs sites, leurs logos : jugez sur pièces.</p></div>
+      <div class="rv-top" id="rv-top"></div>
       <div class="reviews" id="reviews"></div>
     </div>
   </section>
@@ -180,6 +189,25 @@
     </div></div>
   </section>
 </main>
+
+<dialog class="rv-modal" id="rv-modal" aria-labelledby="rv-m-title">
+  <form method="dialog" class="rv-form" id="rv-form" autocomplete="off">
+    <div class="rv-m-head"><h3 id="rv-m-title">Laisser un avis</h3><button type="button" class="rv-x" id="rv-x" aria-label="Fermer">✕</button></div>
+    <p class="small" id="rv-m-text"></p>
+    <div class="rv-stars-in" id="rv-stars-in" role="radiogroup" aria-label="Ta note"></div>
+    <div class="fields">
+      <label>Ton nom<input name="name" required placeholder="Ex : Julie Martin"></label>
+      <label>Ton activité<input name="biz" required placeholder="Ex : Boulangerie Martin"></label>
+      <label class="full">Ton avis<textarea name="text" rows="4" required placeholder="Comment s'est passée la création de ton site ? Qu'est-ce que ça t'a apporté ?"></textarea></label>
+      <label>Lien de ton site<input name="site" type="url" placeholder="https://..."></label>
+      <label>Ton Instagram<input name="insta" placeholder="@toncompte"></label>
+    </div>
+    <p class="small rv-logo-note">📎 Ton logo ou une capture de ton site ? Joins-les à l'e-mail (ou envoie-les en message privé sur Instagram).</p>
+    <label class="cgv"><input type="checkbox" name="ok" required><span>J'accepte que mon avis, mon nom, mon activité, mon logo et le lien de mon site soient publiés sur le site L&amp;T Digital.</span></label>
+    <div class="rv-m-btns"><button type="button" class="btn" id="rv-mail">Envoyer par e-mail</button><button type="button" class="btn btn-ghost" id="rv-copy">Copier pour Instagram</button></div>
+    <p class="toast" id="rv-toast" role="status"></p>
+  </form>
+</dialog>
 
 <div class="cartbar" id="cartbar" hidden><span id="cart-text"></span><a class="btn btn-sm btn-light" href="#commande">Voir ma commande</a></div>
 
