@@ -131,6 +131,7 @@ S["Accueil"] = () => [
   text("Petit badge", cfg.hero, "badge"), text("Titre (début)", cfg.hero, "title"), text("Titre (partie colorée)", cfg.hero, "titleAccent"),
   text("Paragraphe", cfg.hero, "text", {area:true,rows:4}),
   h("div",{class:"row"}, text("Bouton 1", cfg.hero, "cta1"), text("Bouton 2", cfg.hero, "cta2")),
+  check("Afficher Instagram et e-mail sous les boutons (ils sont déjà dans la barre du haut et en bas de page)", ()=>!!cfg.hero.showContact, v=>{ cfg.hero.showContact=v; changed(); }),
   h("h3",{style:"margin:18px 0 6px"},"Mots qui défilent sous le titre"),
   text("Début de la phrase", cfg.hero, "rotatePrefix", {placeholder:"Pensé pour les"}),
   field("Mots (un par ligne) — vide = pas de mots qui défilent", ()=>(cfg.hero.rotate||[]).join("\n"), v=>cfg.hero.rotate = v.split("\n").map(x=>x.trim()).filter(Boolean), {area:true, rows:5}),

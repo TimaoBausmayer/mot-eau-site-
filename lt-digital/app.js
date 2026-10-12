@@ -548,7 +548,7 @@ drawOpts(); drawSvcOpts(); render();
 
 /* Instagram : partout où c'est utile */
 (function(){ const ct = C.contact||{}; if(!ct.instagram) return;
-  const hi=$("h-insta"); hi.hidden=false;
+  const hi=$("h-insta"); hi.hidden = !(C.hero||{}).showContact;
   hi.innerHTML = `<span>${esc((C.texts||{}).hero_question||"Une question ?")}</span><a class="hp" href="${esc(ct.instagram)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" class="f"/></svg>${esc(ct.instagramHandle||"Instagram")}</a>${ct.email?`<a class="hp" href="mailto:${esc(ct.email)}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>${esc(ct.email)}</a>`:""}`;
   [$("nav-insta"),$("final-insta")].forEach(l=>{ l.href=ct.instagram; l.hidden=false; }); })();
 
@@ -692,5 +692,35 @@ $("vat-note").textContent = vatNote;
       const t0 = performance.now(), d = 900; const step = t=>{ const k = Math.min(1,(t-t0)/d), ez = 1-Math.pow(1-k,3); el.textContent = fmt(Math.round(n*ez)); if (k<1) requestAnimationFrame(step); else el.textContent = fmt(n); }; requestAnimationFrame(step); }), {threshold:.6});
     const watchN = () => document.querySelectorAll(".num[data-n]:not(.nw)").forEach(el=>{ el.classList.add("nw"); po.observe(el); });
     watchN(); const mo = new MutationObserver(watchN); [$("plans"), $("svcs")].forEach(el=>el && mo.observe(el, {childList:true})); }
+})();
+
+/* ---------- animations : clarté et mouvement ---------- */
+(function(){ const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* écran d'accueil express (une seule fois par visite, jamais dans l'aperçu de l'admin) */
+  const intro = $("intro"); let seen = false; try { seen = sessionStorage.getItem("ltd_intro")==="1"; sessionStorage.setItem("ltd_intro","1"); } catch {}
+  if (seen || still || PREVIEW) intro.remove(); else { $("intro").querySelector("span").textContent = C.brand; intro.querySelector("img").src = C.logo; setTimeout(()=>intro.remove(), 1500); }
+  /* onglets : un indicateur glisse jusqu'à l'onglet choisi */
+  document.querySelectorAll(".filters").forEach(box=>{
+    const place = () => { const on = box.querySelector(".chip.on"); let ind = box.querySelector(":scope > .ind");
+      if (!on){ if (ind) ind.remove(); return; }
+      if (!ind){ ind = document.createElement("span"); ind.className = "ind"; ind.setAttribute("aria-hidden","true");
+        if (box.dataset.l){ ind.style.cssText = `left:${box.dataset.l}px;width:${box.dataset.w}px;transition:none`; } box.prepend(ind); ind.offsetWidth; ind.style.transition = ""; }
+      const l = on.offsetLeft, w = on.offsetWidth; ind.style.left = l+"px"; ind.style.width = w+"px"; box.dataset.l = l; box.dataset.w = w; };
+    new MutationObserver(m=>{ if (m.some(r=>[...r.addedNodes].some(n=>n.classList && n.classList.contains("chip")))) place(); }).observe(box, {childList:true});
+    box.classList.add("has-ind"); place(); addEventListener("resize", place); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(()=>dispatchEvent(new Event("resize")));
+  /* FAQ : ouverture et fermeture en douceur */
+  if (!still) $("faq-list").addEventListener("click", e=>{ const sm = e.target.closest("summary"); if(!sm) return; const d = sm.parentElement; e.preventDefault();
+    if (d.dataset.anim) return; d.dataset.anim = 1; const start = d.offsetHeight;
+    if (d.open){ const end = sm.offsetHeight + 2; d.classList.add("closing"); d.animate({height:[start+"px", end+"px"]}, {duration:320, easing:"cubic-bezier(.2,.8,.2,1)"}).onfinish = ()=>{ d.open = false; d.classList.remove("closing"); delete d.dataset.anim; }; }
+    else { d.open = true; const end = d.offsetHeight; d.animate({height:[start+"px", end+"px"]}, {duration:380, easing:"cubic-bezier(.2,.8,.2,1)"}).onfinish = ()=>{ delete d.dataset.anim; }; } });
+  /* méthode : une frise se remplit au fil du défilement et allume chaque étape */
+  const steps = $("steps"); if (steps){ const items = [...steps.children]; steps.classList.add("tl");
+    const tick = () => { const r = steps.getBoundingClientRect(), p = Math.max(0, Math.min(1, (innerHeight*.75 - r.top) / (r.height + innerHeight*.25)));
+      steps.style.setProperty("--p", still ? 1 : p); items.forEach((el,i)=>el.classList.toggle("lit", still || p >= (items.length>1 ? i/(items.length-1)*.92 : 0))); };
+    addEventListener("scroll", ()=>requestAnimationFrame(tick), {passive:true}); tick(); }
+  /* réalisations : les cartes arrivent en cascade à chaque filtre */
+  const works = $("works"); const stag = () => [...works.children].forEach((w,i)=>{ if (!w.dataset.st){ w.dataset.st = 1; w.style.setProperty("--n", i % 6); } });
+  new MutationObserver(stag).observe(works, {childList:true}); stag();
 })();
 })();
