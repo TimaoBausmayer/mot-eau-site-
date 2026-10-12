@@ -23,7 +23,7 @@ const items = []; S.offers.cats.forEach((c,ci)=>c.items.forEach(it=>items.push({
 const href = {home:"index.html", offre:"offre.html", contact:"contact.html"};
 const q = n => "contact.html?q="+encodeURIComponent(n);
 
-const topbar = `<div class="top"><div class="w"><span>Maquette de démonstration réalisée par <b>LT Digital</b></span><span><a href="${ROOT}#realisations">← Retour aux réalisations</a> &nbsp;·&nbsp; <a href="${ROOT}#commande">Commander un site comme celui-ci →</a></span></div></div>`;
+const topbar = `<div class="top"><div class="w"><span>Maquette de démonstration réalisée par <b>L&amp;T Digital</b></span><span><a href="${ROOT}#realisations">← Retour aux réalisations</a> &nbsp;·&nbsp; <a href="${ROOT}#commande">Commander un site comme celui-ci →</a></span></div></div>`;
 const header = `<header class="hd" id="hd"><div class="w nv"><a class="lg" href="index.html"><span class="mk">${esc(S.name.trim()[0])}</span><span>${esc(S.name)}</span></a>
 <nav class="nl" id="nl"><a href="index.html" class="${page==="home"?"on":""}">Accueil</a><a href="offre.html" class="${page==="offre"?"on":""}">${esc(S.offers.label)}</a><a href="contact.html" class="${page==="contact"?"on":""}">Contact</a></nav>
 <a class="btn" href="${S.home.ctaHref||"contact.html"}">${esc(S.home.cta)}</a><button class="bg" id="bg" aria-label="Menu">Menu</button></div></header>`;
@@ -76,7 +76,7 @@ function contact(){
 const footer = `<footer class="ft"><div class="w"><div class="g"><div><a class="lg" href="index.html"><span class="mk">${esc(S.name.trim()[0])}</span><span>${esc(S.name)}</span></a><p style="margin-top:14px;max-width:26em">${esc(S.tagline||"")}</p></div>
 <div><h4>Horaires</h4><ul>${S.contact.hours.map(([d,t])=>`<li>${esc(d)} · ${esc(t)}</li>`).join("")}</ul></div>
 <div><h4>Navigation</h4><ul><li><a href="index.html">Accueil</a></li><li><a href="offre.html">${esc(S.offers.label)}</a></li><li><a href="contact.html">Contact</a></li></ul></div></div>
-<div class="bt"><span>© ${new Date().getFullYear()} ${esc(S.name)} — ${esc(S.contact.address)}</span><span>Maquette de démonstration · site réalisé par LT Digital</span></div></div></footer>`;
+<div class="bt"><span>© ${new Date().getFullYear()} ${esc(S.name)} — ${esc(S.contact.address)}</span><span>Maquette de démonstration · site réalisé par L&amp;T Digital</span></div></div></footer>`;
 
 if (window.self !== window.top) document.documentElement.classList.add("embed");
 document.body.innerHTML = topbar + header + `<main>${{home,offre,contact}[page]()}</main>` + footer;

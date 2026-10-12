@@ -290,6 +290,13 @@ $("copy-btn").onclick = async ()=>{
 };
 drawOpts(); render();
 
+/* notre histoire */
+(function(){ const st = C.story; if(!st){ $("histoire").hidden = true; document.querySelectorAll('a[href="#histoire"]').forEach(l=>l.hidden=true); return; }
+  const sec = $("histoire"); sec.querySelector(".eyebrow").textContent = st.eyebrow||"Notre histoire"; sec.querySelector("h2").textContent = st.title||"";
+  $("story-text").innerHTML = (st.paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join("");
+  $("founders").innerHTML = (st.founders||[]).map(f=>`<article class="founder">${f.photo?`<img src="${esc(f.photo)}" alt="${esc(f.name)}" width="88" height="88">`:`<span class="fi" aria-hidden="true">${esc(f.initial||(f.name||"?").trim()[0]||"?")}</span>`}<div><h3>${esc(f.name)}</h3><span class="role">${esc(f.role||"")}</span><p>${esc(f.text||"")}</p></div></article>`).join("");
+  $("values").innerHTML = (st.values||[]).map(v=>`<div class="val"><h4>${esc(v.title)}</h4><p>${esc(v.text)}</p></div>`).join(""); })();
+
 /* Instagram : partout où c'est utile */
 (function(){ const ct = C.contact||{}; if(!ct.instagram) return;
   const hi=$("h-insta"); hi.hidden=false; hi.innerHTML = `Une question ? Écris-moi sur Instagram : <a href="${esc(ct.instagram)}" target="_blank" rel="noopener">${esc(ct.instagramHandle||"Instagram")}</a>`;

@@ -1,4 +1,4 @@
-# LT Digital — site de vente de sites web
+# L&T Digital — site de vente de sites web
 
 ## Modifier le site SANS toucher au code
 1. Ouvre **`admin.html`** (même adresse que ton site, en ajoutant `/admin.html`).

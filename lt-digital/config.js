@@ -7,7 +7,7 @@
 window.SITE_CONFIG = {
 
   /* ---------- IDENTITÉ ---------- */
-  brand: "LT Digital",
+  brand: "L&T Digital",
   tagline: "Création & modernisation de sites web",
   logo: "images/logo-small.jpg",          // petit logo (barre du haut)
   logoBig: "images/logo.jpg",             // grand logo (pied de page)
@@ -25,7 +25,7 @@ window.SITE_CONFIG = {
     badge: "Création & modernisation de sites web",
     title: "Votre site web,",
     titleAccent: "livré en quelques jours.",
-    text: "LT Digital crée et modernise les sites des commerçants, artisans et indépendants. Un seul interlocuteur, un prix annoncé à l'avance, des retouches incluses.",
+    text: "L&T Digital crée et modernise les sites des commerçants, artisans et indépendants. Un seul interlocuteur, un prix annoncé à l'avance, des retouches incluses.",
     cta1: "Voir les tarifs",
     cta2: "Commander",
     /* images du haut de page (captures de tes maquettes) */
@@ -41,6 +41,28 @@ window.SITE_CONFIG = {
     { value: "7j/7", label: "Support après livraison" }
   ],
 
+  /* ---------- NOTRE HISTOIRE (fin de page) ----------
+     paragraphs : un texte par paragraphe ; founders : photo = chemin d'une image (ex "images/fondateur-l.jpg"),
+     vide = pastille avec l'initiale (champ initial). Modifie tout depuis admin.html ▸ Notre histoire. */
+  story: {
+    eyebrow: "Notre histoire",
+    title: "Deux fondateurs, un même objectif : des sites qui vous ressemblent.",
+    paragraphs: [
+      "L&T Digital est née d'une idée simple : les commerçants, artisans et indépendants méritent un site aussi soigné que leur travail, sans jargon et sans prix cachés.",
+      "Nous avons fondé L&T Digital pour proposer des sites modernes, rapides et sur mesure, avec un seul interlocuteur du premier échange jusqu'à la mise en ligne.",
+      "Aujourd'hui, nous créons de nouveaux sites et nous modernisons ceux qui ont vieilli, pour que chaque entreprise ait une vitrine à la hauteur de ce qu'elle propose."
+    ],
+    founders: [
+      { name: "Prénom du fondateur L", initial: "L", role: "Cofondateur", text: "À compléter : son parcours, ce qu'il aime dans ce métier et son rôle chez L&T Digital.", photo: "" },
+      { name: "Prénom du fondateur T", initial: "T", role: "Cofondateur", text: "À compléter : son parcours, ce qu'il aime dans ce métier et son rôle chez L&T Digital.", photo: "" }
+    ],
+    values: [
+      { title: "Clarté", text: "Des prix annoncés, des étapes expliquées, aucune mauvaise surprise." },
+      { title: "Soin", text: "Chaque site est dessiné pour une activité précise, jamais copié-collé." },
+      { title: "Proximité", text: "Un échange direct avec les fondateurs, avant, pendant et après le projet." }
+    ]
+  },
+
   /* ---------- SECTIONS : afficher / masquer / renommer ----------
      Chaque bloc de la page. show:false => la section disparaît (et son lien du menu).
      Laisse title/subtitle vides ("") pour garder le texte par défaut. */
@@ -52,7 +74,8 @@ window.SITE_CONFIG = {
     realisations: { show: true, eyebrow: "Réalisations", title: "", subtitle: "" },
     avis:         { show: true, eyebrow: "Avis",         title: "", subtitle: "" },
     commande:     { show: true, eyebrow: "Commande",     title: "", subtitle: "" },
-    faq:          { show: true, eyebrow: "FAQ",          title: "", subtitle: "" }
+    faq:          { show: true, eyebrow: "FAQ",          title: "", subtitle: "" },
+    histoire:     { show: true, eyebrow: "Notre histoire", title: "", subtitle: "" }
   },
 
   /* ---------- GAMMES / TARIFS ----------

@@ -1,4 +1,4 @@
-/* Moteur commun des maquettes LT Digital. Les couleurs/polices viennent de site.js (theme). */
+/* Moteur commun des maquettes L&T Digital. Les couleurs/polices viennent de site.js (theme). */
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:90px}
 body{background:var(--bg);color:var(--ink);font:400 1rem/1.65 var(--bf),system-ui,sans-serif;overflow-x:hidden}
@@ -8,7 +8,7 @@ a{color:inherit;text-decoration:none}img,svg{max-width:100%;display:block}ul{lis
 :focus-visible{outline:2px solid var(--acc);outline-offset:3px}
 .w{max-width:1180px;margin:0 auto;padding:0 24px}
 
-/* barre LT Digital */
+/* barre L&T Digital */
 .top{background:#0a0f1f;color:#eef1f6;font:500 .74rem/1 'DM Mono',ui-monospace,monospace;letter-spacing:.02em}
 .top .w{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:36px;flex-wrap:wrap;padding-block:6px}
 .top a{opacity:.9}.top a:hover{opacity:1;text-decoration:underline}.top b{color:#8fa6ff;font-weight:500}

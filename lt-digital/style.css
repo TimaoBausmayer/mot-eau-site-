@@ -1,4 +1,4 @@
-/* LT Digital — studio web. Aplats, filets fins, une seule couleur d'accent (celle du logo). */
+/* L&T Digital — studio web. Aplats, filets fins, une seule couleur d'accent (celle du logo). */
 :root{
   --bg:#eef1f6; --panel:#ffffff; --ink:#0a0f1f; --mut:#566078; --rule:#c9d0de;
   --accent:#2750ff; --accent2:#2750ff; --dark:#0a0f1f; --on-dark:#eef1f6; --mut-dark:#9aa5bf;
@@ -237,3 +237,16 @@ s.old,.old{font-size:1.05rem;font-weight:500;color:var(--mut);text-decoration:li
 .lb-view.mob .lb-wrap{border-radius:26px;border:8px solid #000;background:#000;position:relative}.lb-view.mob .lb-box{position:absolute;left:0;top:0}
 .lb-box iframe{width:100%;height:100%;border:0;display:block;background:#fff}.lb-box img{width:100%;height:auto}
 @media(max-width:760px){.lb-bar{padding:10px 14px;gap:10px}.lb-act>a:not(.btn){display:none}.lb-nav{width:34px;height:48px}.lb-stage{padding:10px 6px}.lb-dev button{padding:7px 12px}.lb-act .btn{display:none}}
+
+.story{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:start}
+.story-text p{font-size:1.1rem;color:var(--ink);max-width:34em}.story-text p+p{margin-top:18px;color:var(--mut);font-size:1rem}
+.founders{display:grid;gap:0;border-top:1px solid var(--ink)}
+.founder{display:grid;grid-template-columns:88px 1fr;gap:20px;padding:22px 0;border-bottom:1px solid var(--rule);align-items:start}
+.founder img,.fi{width:88px;height:88px;border-radius:50%;object-fit:cover;border:1px solid var(--ink)}
+.fi{display:grid;place-items:center;background:var(--dark);color:var(--on-dark);font:700 2.2rem var(--hf)}
+.founder h3{font-size:1.2rem}.founder .role{display:block;font:500 .74rem var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--accent);margin:4px 0 8px}
+.founder p{color:var(--mut);font-size:.93rem}
+.values{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:56px}
+.val{border-top:1px solid var(--ink);padding-top:16px}.val h4{font-size:1.1rem;margin-bottom:6px}.val p{color:var(--mut);font-size:.92rem}
+@media(max-width:960px){.story{grid-template-columns:1fr;gap:34px}.values{grid-template-columns:1fr}}
+@media(max-width:560px){.founder{grid-template-columns:64px 1fr;gap:14px}.founder img,.fi{width:64px;height:64px;font-size:1.6rem}}

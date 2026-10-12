@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<title>Administration — LT Digital</title>
+<title>Administration — L&amp;T Digital</title>
 <link rel="icon" href="images/logo-small.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="admin.css">
 </head>
 <body>
 <div class="top">
-  <h1>⚙️ Administration LT Digital</h1>
+  <h1>⚙️ Administration L&amp;T Digital</h1>
   <span class="st" id="st">Brouillon enregistré</span>
   <button class="mob" id="b-prev">👁 Aperçu</button>
   <button id="b-import">📂 Importer config.js</button>
@@ -116,7 +116,7 @@ S["Prix rapides"] = () => {
   return [h("p",{class:"sub"},"Change tous tes prix au même endroit. Laisse vide pour afficher « Sur devis »."), h("h3",{style:"margin:6px 0 10px"},"Gammes"), h("div",{class:"tbl"},t1), h("h3",{style:"margin:22px 0 10px"},"Options"), h("div",{class:"tbl"},t2)];
 };
 S["Sections"] = () => {
-  const names = {tarifs:"Tarifs",comparatif:"Comparatif",options:"Options",process:"Processus",realisations:"Réalisations",avis:"Avis clients",commande:"Commande",faq:"FAQ"};
+  const names = {tarifs:"Tarifs",comparatif:"Comparatif",options:"Options",process:"Processus",realisations:"Réalisations",avis:"Avis clients",commande:"Commande",faq:"FAQ",histoire:"Notre histoire"};
   cfg.sections = cfg.sections || {};
   return [h("p",{class:"sub"},"Affiche, masque ou renomme chaque bloc de la page d'accueil. Laisse le titre vide pour garder le texte par défaut."),
     ...Object.keys(names).map(id=>{ const s = cfg.sections[id] = cfg.sections[id] || {show:true,eyebrow:names[id],title:"",subtitle:""};
@@ -216,6 +216,16 @@ S["Commande"] = () => { cfg.order = cfg.order || {depositPercent:0,note:"",intro
   check("Demander le nom de l'activité", ()=>o.askBusiness!==false, v=>o.askBusiness=v),
   check("Demander la description du projet", ()=>o.askProject!==false, v=>o.askProject=v)
 ]; };
+S["Notre histoire"] = () => { cfg.story = cfg.story || {eyebrow:"Notre histoire",title:"",paragraphs:[],founders:[],values:[]}; const st = cfg.story; st.paragraphs = st.paragraphs||[]; st.founders = st.founders||[]; st.values = st.values||[]; return [
+  h("p",{class:"sub"},"La section qui apparaît à la fin de ton site. Raconte qui vous êtes et présente les fondateurs."),
+  text("Petit titre", st, "eyebrow"), text("Titre", st, "title", {area:true,rows:2}),
+  field("Texte (sépare les paragraphes par une ligne vide)", ()=>st.paragraphs.join("\n\n"), v=>st.paragraphs = v.split(/\n\s*\n/).map(x=>x.trim()).filter(Boolean), {area:true,rows:10}),
+  h("h3",{style:"margin:18px 0 10px"},"Les fondateurs"),
+  list(st.founders, ()=>({name:"Prénom",role:"Cofondateur",text:"",photo:""}), f=>f.name,
+    f=>[text("Prénom (et nom)", f, "name"), h("div",{class:"row"}, text("Rôle", f, "role"), text("Initiale (si pas de photo)", f, "initial")), text("Présentation", f, "text", {area:true,rows:4}), text("Photo (chemin, facultatif)", f, "photo", {placeholder:"images/fondateur.jpg", hint:"Dépose la photo dans le dossier images/ sur GitHub. Sans photo : une pastille avec l'initiale."})], ()=>show("Notre histoire"), {addLabel:"Ajouter un fondateur", open:true}),
+  h("h3",{style:"margin:18px 0 10px"},"Ce qui vous guide (3 valeurs)"),
+  list(st.values, ()=>({title:"Valeur",text:""}), v=>v.title, v=>[text("Titre", v, "title"), text("Texte", v, "text", {area:true,rows:2})], ()=>show("Notre histoire"), {addLabel:"Ajouter une valeur"})
+]; };
 S["Processus"] = () => [list(cfg.process, ()=>({title:"Étape",text:""}), s=>s.title, s=>[text("Titre", s, "title"), text("Texte", s, "text", {area:true})], ()=>show("Processus"), {addLabel:"Ajouter une étape"})];
 S["Réalisations"] = () => [
   h("p",{class:"sub"},"Mets tes vrais projets. Pour une capture : place le fichier dans le dossier images/portfolio/ sur GitHub et écris son chemin (ex : images/portfolio/monsite.jpg). Le lien peut être le vrai site ou une page de démo."),
@@ -242,7 +252,7 @@ S["Contact"] = () => [
 ];
 
 /* ---- navigation ---- */
-const ORDER = ["Démarrer","Prix rapides","Gammes & tarifs","Options","Promos","Commande","Comparatif","Réalisations","Accueil","Identité","Sections","Processus","Avis clients","Garanties","FAQ","Contact"];
+const ORDER = ["Démarrer","Prix rapides","Gammes & tarifs","Options","Promos","Commande","Comparatif","Réalisations","Notre histoire","Accueil","Identité","Sections","Processus","Avis clients","Garanties","FAQ","Contact"];
 let current = "Démarrer";
 function show(name){
   current = name; const st = $("edit").scrollTop;
