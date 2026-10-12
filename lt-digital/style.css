@@ -282,3 +282,8 @@ s.old,.old{font-size:1.05rem;font-weight:500;color:var(--mut);text-decoration:li
 
 .final-addr{margin-top:14px;font:400 .85rem var(--mono);color:var(--mut-dark)}.final-addr a{color:var(--on-dark);border-bottom:1px solid #5a6690}
 .f-contact{display:flex;gap:20px;flex-wrap:wrap;align-items:center}.f-contact a{font:500 .88rem var(--mono)}.f-contact a:hover{color:var(--accent)}
+
+.contactbar{background:var(--dark);color:var(--on-dark);font:500 .8rem var(--mono)}
+.contactbar .wrap{display:flex;gap:8px 10px;flex-wrap:wrap;justify-content:center;align-items:center;padding-block:9px;text-align:center}
+.contactbar a{color:#fff;border-bottom:1px solid #5a6690}.contactbar a:hover{color:#8fa6ff;border-color:#8fa6ff}
+.announce{border-top:1px solid #27304a}
