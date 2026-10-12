@@ -571,7 +571,7 @@ $("vat-note").textContent = vatNote;
 /* textes modifiables (config.texts) */
 (function(){ const T = C.texts||{}; const set=(sel,key,i)=>{ if(T[key]==null) return; const els=document.querySelectorAll(sel); const el = i==null ? els[0] : els[i]; if(el) el.textContent=T[key]; };
   const lab=(i,key)=>{ if(T[key]==null) return; const l=document.querySelectorAll("#order-form .fields label")[i]; if(l&&l.firstChild) l.firstChild.textContent=T[key]; };
-  set('.links a[href="#tarifs"]','nav_tarifs'); set('.links a[href="#comparatif"]','nav_comparatif'); set('.links a[href="#services"]','nav_services'); set('.links a[href="#process"]','nav_process'); set('.links a[href="#realisations"]','nav_realisations'); set('.links a[href="#faq"]','nav_faq'); set('.links a[href="#histoire"]','nav_histoire'); set('#nav-insta','nav_insta'); set('.nav-in > a.btn','nav_cta');
+  set('.links a[href="#tarifs"]','nav_tarifs'); set('.links a[href="#avis"]','nav_avis'); set('.links a[href="#comparatif"]','nav_comparatif'); set('.links a[href="#services"]','nav_services'); set('.links a[href="#process"]','nav_process'); set('.links a[href="#realisations"]','nav_realisations'); set('.links a[href="#faq"]','nav_faq'); set('.links a[href="#histoire"]','nav_histoire'); set('#nav-insta','nav_insta'); set('.nav-in > a.btn','nav_cta');
   set("#order-form > h3","order_plan",0); set("#order-form > h3","order_opts",1); set("#order-form > h3","order_info",2);
   lab(0,"f_name"); lab(1,"f_biz"); lab(2,"f_contact"); lab(3,"f_project");
   set(".summary > h3","sum_title"); set("#promo-btn","promo_btn"); set("#copy-btn","copy_btn"); set("#insta-btn","insta_btn"); set("#mail-btn","mail_btn"); set("#cartbar .btn","cart_btn");
