@@ -673,3 +673,19 @@ p,li,dd{text-wrap:pretty}
 .pop li::before{background-color:rgba(255,255,255,.92)}
 .rv-empty{grid-column:1/-1}
 @media(max-width:560px){.pick{grid-template-columns:1fr 1fr;gap:8px}.pick label{padding:11px 10px;gap:8px}.pick b{font-size:.88rem}.order-main,.summary{padding:18px 14px}}
+
+/* avis : cartes « Ton avis ici » + raccourci dans le haut de page */
+.rv-ghost{border-style:dashed;background:transparent!important;box-shadow:none}
+.rv-ghost:hover{border-color:var(--accent)}
+.rv-q{background:linear-gradient(135deg,#c9d3ff,#e2d9ff);color:var(--accent)!important}
+.rv-lines{display:grid;gap:9px;padding:18px 22px 4px}
+.rv-lines i{display:block;height:10px;border-radius:6px;background:linear-gradient(90deg,#e4e8f1 0%,#f3f5fa 50%,#e4e8f1 100%);background-size:200% 100%;animation:shimmer 1.8s linear infinite}
+@keyframes shimmer{to{background-position:-200% 0}}
+.rv-open2{background:none;border:0;cursor:pointer;padding:0}
+.h-rv{display:inline-flex;align-items:center;gap:10px;margin-top:20px;padding:8px 16px 8px 12px;border-radius:999px;background:rgba(255,255,255,.7);border:1px solid rgba(10,15,31,.1);backdrop-filter:blur(6px);font-size:.86rem;color:var(--mut);transition:border-color .2s,transform .2s;animation:up .7s cubic-bezier(.2,.8,.2,1) both 1.25s}
+.h-rv:hover{border-color:var(--accent);transform:translateY(-2px)}
+.h-rv .stars{color:#f5a524;font-size:.95rem}.h-rv b{color:var(--ink);font:700 .95rem var(--hf)}
+.h-rv em{font-style:normal;color:var(--accent);transition:transform .2s}.h-rv:hover em{transform:translateX(3px)}
+.trust+.h-rv{display:inline-flex}
+@media(prefers-reduced-motion:reduce){.rv-lines i{animation:none}.h-rv{animation:none}}
+.links a,.logo b{white-space:nowrap}.links{gap:22px}

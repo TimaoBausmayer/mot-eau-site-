@@ -282,13 +282,19 @@ const stars = n => { const r = Math.max(0, Math.min(5, Math.round(+n||0))); retu
     <div class="rv-head">${t.logo?`<img class="rv-logo" src="${esc(t.logo)}" alt="Logo ${esc(t.role||"")}" loading="lazy">`:`<span class="rv-logo rv-ini">${esc((t.role||t.name||"?").trim()[0]||"?")}</span>`}<div><strong>${esc(t.role||t.name)}</strong>${t.role?`<span>${esc(t.name)}</span>`:""}</div>${+t.rating>0?stars(t.rating):""}</div>
     <p>“${esc(t.text)}”</p>
     <div class="rv-foot">${t.site?`<a class="rv-link" href="${esc(t.site)}" target="_blank" rel="noopener">${esc(T.rv_site||"Voir son site")} · ${esc(host(t.site))} ↗</a>`:""}${t.insta?`<a class="rv-link" href="https://www.instagram.com/${esc(String(t.insta).replace(/^@/,""))}" target="_blank" rel="noopener">${esc(t.insta.startsWith("@")?t.insta:"@"+t.insta)}</a>`:""}${t.date?`<time>${esc(t.date)}</time>`:""}</div>
-  </article>`).join("") : `<div class="rv-empty">${esc(T.rv_empty||"Les premiers avis arrivent bientôt. Tu as déjà travaillé avec nous ? Ton avis compte !")}</div>`;
+  </article>`).join("") : [0,1,2].map(k=>`<article class="review rv-ghost reveal" style="--d:${k*90}ms"><div class="rv-head"><span class="rv-logo rv-ini rv-q">${k===0?"?":k===1?"★":"✎"}</span><div><strong>${esc(k===0?(T.rv_ghost1||"Ton commerce ici"):k===1?(T.rv_ghost2||"Ton logo, ton site"):(T.rv_ghost3||"Ton avis compte"))}</strong><span>${esc(T.rv_ghost_sub||"Bientôt sur cette page")}</span></div><span class="stars"><i>★★★★★</i></span></div><div class="rv-lines"><i></i><i></i><i style="width:60%"></i></div><div class="rv-foot"><button type="button" class="rv-link rv-open2">${esc(T.rv_btn||"Laisser un avis")} →</button></div></article>`).join("");
   /* formulaire */
   const dlg = $("rv-modal"), f = $("rv-form"); let note = 5;
   $("rv-m-text").textContent = F.text||"";
   const sIn = $("rv-stars-in"); const drawS = () => { sIn.innerHTML = [1,2,3,4,5].map(n=>`<button type="button" role="radio" aria-checked="${n===note}" aria-label="${n} sur 5" class="${n<=note?"on":""}" data-n="${n}">★</button>`).join("") + `<span>${note}/5</span>`; }; drawS();
   sIn.addEventListener("click", e=>{ const b = e.target.closest("[data-n]"); if(b){ note = +b.dataset.n; drawS(); } });
-  const open = $("rv-open"); if (open) open.onclick = ()=>{ dlg.showModal ? dlg.showModal() : dlg.setAttribute("open",""); };
+  const openDlg = ()=>{ dlg.showModal ? dlg.showModal() : dlg.setAttribute("open",""); };
+  const open = $("rv-open"); if (open) open.onclick = openDlg;
+  document.querySelectorAll(".rv-open2").forEach(b=>b.onclick = openDlg);
+  /* raccourci dans le haut de page : note moyenne, ou invitation à laisser un avis */
+  const hr = $("h-rv"); hr.hidden = false;
+  hr.innerHTML = rated.length ? `${stars(avg)}<b>${avg.toFixed(1).replace(".",",")}/5</b><span>${rated.length} avis client${rated.length>1?"s":""}</span><em>→</em>`
+    : `<span class="h-rv-ic" aria-hidden="true">💬</span><span>${esc(T.rv_hero||"Avis clients : découvre-les ou laisse le tien")}</span><em>→</em>`;
   $("rv-x").onclick = ()=>dlg.close ? dlg.close() : dlg.removeAttribute("open");
   dlg.addEventListener("click", e=>{ if (e.target===dlg) dlg.close(); });
   const msg = () => { const d = new FormData(f); return ["NOUVEL AVIS — "+C.brand, "", "Note : "+note+"/5", "Nom : "+(d.get("name")||""), "Activité : "+(d.get("biz")||""), "Site : "+(d.get("site")||"—"), "Instagram : "+(d.get("insta")||"—"), "", "Avis :", d.get("text")||"", "", "✔ J'accepte la publication de mon avis, de mon nom, de mon logo et du lien de mon site."].join("\n"); };
