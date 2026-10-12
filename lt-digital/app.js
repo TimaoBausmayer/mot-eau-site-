@@ -521,7 +521,7 @@ function drawSvcs(){
   $("svc-tabs").innerHTML = gs.length>1 ? gs.map(g=>`<button class="chip ${g===svTab?"on":""}" role="tab" aria-selected="${g===svTab}" data-t="${esc(g)}">${esc(g)} <i>${SI.filter(it=>aGroup(it)===g).length}</i></button>`).join("") : "";
   $("svcs").innerHTML = SI.filter(it=>aGroup(it)===svTab).map((it,i)=>`
   <article class="svc ${it.popular?"pop":""} ${it.video?"has-vid":""}" style="--d:${i*70}ms" data-sid="${esc(it.id)}">
-    ${it.video?`<div class="svc-vid" role="button" tabindex="0" data-v="${esc(it.video)}" data-t="${esc(it.name)}" aria-label="Voir l'aperçu en grand : ${esc(it.name)}"><video muted loop playsinline preload="metadata"><source src="${esc(it.video)}" type="video/mp4"><source src="${esc(String(it.video).replace(/\.mp4$/i,".webm"))}" type="video/webm"></video><span class="svc-play" aria-hidden="true">▶ Aperçu</span></div>`:""}
+    ${it.video?`<div class="svc-vid" role="button" tabindex="0" data-vid="${esc(it.video)}"${it.videoSound?` data-snd="${esc(it.videoSound)}"`:""} data-t="${esc(it.name)}" aria-label="Voir l'aperçu en grand : ${esc(it.name)}"><video muted loop playsinline preload="metadata"><source src="${esc(it.video)}" type="video/mp4"><source src="${esc(String(it.video).replace(/\.mp4$/i,".webm"))}" type="video/webm"></video><span class="svc-play" aria-hidden="true">${it.videoSound?"▶ Aperçu avec le son":"▶ Aperçu"}</span></div>`:""}
     ${it.unit?`<span class="svc-tag">${esc(T0.badge_monthly||"Abonnement")}</span>`:it.popular?`<span class="svc-tag hot">${esc(TX.badge_pop)}</span>`:""}
     <h3>${esc(it.name)}</h3><p>${esc(it.desc||"")}</p>
     <div class="svc-price">${it.price==null?"Sur devis":`${it.from?`<small>${esc(TX.label_from)}</small> `:""}<span class="num" data-n="${it.price}">${fmt(it.price)}</span>${it.unit?` <small>${esc(it.unit)}</small>`:""}${it.qty?` <small>/ unité</small>`:""}${vt}`}</div>
@@ -533,12 +533,12 @@ function drawSvcs(){
 /* aperçus vidéo : ils se lancent seulement quand ils sont visibles à l'écran */
 const vidIO = "IntersectionObserver" in window ? new IntersectionObserver(es=>es.forEach(e=>{ const v = e.target; if (e.isIntersecting) { const p = v.play(); if (p && p.catch) p.catch(()=>{}); } else v.pause(); }), {threshold:.35}) : null;
 /* aperçu vidéo d'un service : un clic l'ouvre en grand */
-function openVid(el){ const src = el.dataset.v, t = el.dataset.t || ""; const ov = document.createElement("div"); ov.className = "vz"; ov.setAttribute("role","dialog"); ov.setAttribute("aria-label", "Aperçu : " + t);
-  ov.innerHTML = `<figure><video controls autoplay muted loop playsinline><source src="${esc(src)}" type="video/mp4"><source src="${esc(String(src).replace(/\.mp4$/i,".webm"))}" type="video/webm"></video><figcaption>${esc(t)}</figcaption></figure><button type="button" aria-label="Fermer">✕</button>`;
+function openVid(el){ const src = el.dataset.snd || el.dataset.vid, t = el.dataset.t || "", snd = !!el.dataset.snd; const ov = document.createElement("div"); ov.className = "vz"; ov.setAttribute("role","dialog"); ov.setAttribute("aria-label", "Aperçu : " + t);
+  ov.innerHTML = `<figure><video controls autoplay ${snd?"":"muted"} loop playsinline><source src="${esc(src)}" type="video/mp4">${snd?"":`<source src="${esc(String(src).replace(/\.mp4$/i,".webm"))}" type="video/webm">`}</video>${snd?"":""}<figcaption>${esc(t)}</figcaption></figure><button type="button" aria-label="Fermer">✕</button>`;
   const close = () => { ov.classList.add("out"); setTimeout(()=>ov.remove(), 250); document.removeEventListener("keydown", kd); }; const kd = e => { if (e.key==="Escape") close(); };
   ov.addEventListener("click", e=>{ if (!e.target.closest("video")) close(); }); document.addEventListener("keydown", kd); document.body.appendChild(ov); ov.querySelector("button").focus(); }
-document.addEventListener("click", e=>{ const v = e.target.closest(".svc-vid[data-v]"); if (v) openVid(v); });
-document.addEventListener("keydown", e=>{ if ((e.key==="Enter"||e.key===" ") && e.target.matches && e.target.matches(".svc-vid[data-v]")){ e.preventDefault(); openVid(e.target); } });
+document.addEventListener("click", e=>{ const v = e.target.closest(".svc-vid[data-vid]"); if (v) openVid(v); });
+document.addEventListener("keydown", e=>{ if ((e.key==="Enter"||e.key===" ") && e.target.matches && e.target.matches(".svc-vid[data-vid]")){ e.preventDefault(); openVid(e.target); } });
 function watchVids(){ document.querySelectorAll(".svc-vid video").forEach(v=>{ if (v.dataset.w) return; v.dataset.w = 1; if (vidIO) vidIO.observe(v); else v.autoplay = true; }); }
 function syncSvcButtons(){ document.querySelectorAll("[data-svc]").forEach(b=>{ const on = !!svcSel[b.dataset.svc]; b.classList.toggle("on", on); b.textContent = on ? (T0.svc_remove||"✓ Ajouté — retirer") : (T0.svc_add||"Ajouter à ma commande"); }); }
 if (SV){

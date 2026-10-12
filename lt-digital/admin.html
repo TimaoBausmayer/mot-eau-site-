@@ -206,7 +206,7 @@ S["Services & pubs"] = () => { const sv = cfg.services = cfg.services || {eyebro
     it=>(it.popular?"⭐ ":"")+it.name+" — "+(it.price==null?"Sur devis":it.price+" "+cfg.currency.symbol+(it.unit?" "+it.unit:""))+" · "+(it.group||"Autres"),
     it=>[ text("Nom", it, "name"), text("Description", it, "desc"),
       h("div",{class:"row"}, field("Prix", ()=>it.price==null?"":it.price, v=>it.price = v===""?null:Number(v), {type:"number",min:0,placeholder:"vide = sur devis"}), text("Unité (ex : /mois)", it, "unit", {placeholder:"vide = paiement unique"}), text("Onglet (pour les ranger)", it, "group", {placeholder:"Réseaux sociaux"})),
-      text("Aperçu vidéo (chemin d'un mp4, facultatif)", it, "video", {placeholder:"images/pubs/courte.mp4"}), field("Ce qui est inclus (une ligne par point)", ()=>(it.features||[]).join("\n"), v=>it.features = v.split("\n").map(x=>x.trim()).filter(Boolean), {area:true, rows:4}),
+      text("Aperçu vidéo (chemin d'un mp4, facultatif)", it, "video", {placeholder:"images/pubs/courte.mp4"}), text("Version avec le son, jouée en grand (mp4, facultatif)", it, "videoSound", {placeholder:"images/pubs/courte-son.mp4"}), field("Ce qui est inclus (une ligne par point)", ()=>(it.features||[]).join("\n"), v=>it.features = v.split("\n").map(x=>x.trim()).filter(Boolean), {area:true, rows:4}),
       check("⭐ Mise en avant (« Le plus choisi »)", ()=>it.popular, v=>{ it.popular=v; changed(); }),
       check("Afficher « dès » devant le prix", ()=>it.from, v=>it.from=v),
       check("Le client peut choisir une quantité (ex : plusieurs affiches)", ()=>it.qty, v=>{ it.qty=v; changed(); show("Services & pubs"); }),
