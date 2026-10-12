@@ -82,7 +82,7 @@ function drawPlans(){
   $("plan-filters").innerHTML = groups.length>1 ? ["Tous"].concat(groups).map(g=>`<button class="chip ${g===groupSel?"on":""}" data-g="${esc(g)}">${esc(g)}</button>`).join("") : "";
   $("plans").innerHTML = C.plans.filter(p=>groupSel==="Tous"||!p.group||p.group===groupSel).map(p=>`
   <article class="plan ${p.popular?"pop":""}">
-    ${p.popular?'<span class="ribbon">${esc(TX.badge_pop)}</span>':""}
+    ${p.popular?`<span class="ribbon">${esc(TX.badge_pop)}</span>`:""}
     <h3>${esc(p.name)}</h3><p class="tag">${esc(p.tagline)}</p>
     ${priceHTML(p)}<div class="delay">${esc(TX.label_delivery)} ${esc(delayOf(p))}</div>
     <ul>${p.features.map(f=>f[0]==="!"?`<li class="no">${esc(f.slice(1))}</li>`:`<li>${esc(f)}</li>`).join("")}</ul>
@@ -92,6 +92,18 @@ function drawPlans(){
 $("plan-filters").addEventListener("click",e=>{ const b=e.target.closest("[data-g]"); if(b){ groupSel=b.dataset.g; drawPlans(); } });
 $("plans").addEventListener("click",e=>{ const b=e.target.closest("[data-plan]"); if(b){ const r=form.querySelector(`input[name=plan][value="${b.dataset.plan}"]`); if(r){ r.checked=true; drawOpts(); render(); } } });
 drawPlans();
+/* mobile : gammes en carrousel (on glisse), centré sur la gamme la plus choisie, avec petits points */
+(function(){ const box = $("plans"), dots = $("plans-dots");
+  const cards = () => [...box.querySelectorAll(".plan")];
+  const sync = () => { const c = cards(), mid = box.scrollLeft + box.clientWidth/2; let k = 0;
+    c.forEach((el,i)=>{ if (Math.abs(el.offsetLeft+el.offsetWidth/2-mid) < Math.abs(c[k].offsetLeft+c[k].offsetWidth/2-mid)) k = i; });
+    [...dots.children].forEach((d,i)=>d.classList.toggle("on", i===k)); };
+  const build = () => { dots.innerHTML = cards().map((_,i)=>`<button type="button" data-i="${i}"></button>`).join(""); sync(); };
+  dots.addEventListener("click", e=>{ const b = e.target.closest("[data-i]"); if(!b) return; const el = cards()[+b.dataset.i]; box.scrollTo({left: el.offsetLeft - (box.clientWidth-el.offsetWidth)/2, behavior:"smooth"}); });
+  box.addEventListener("scroll", ()=>requestAnimationFrame(sync), {passive:true});
+  new MutationObserver(build).observe(box, {childList:true}); build();
+  const pop = box.querySelector(".plan.pop"); if (pop && box.scrollWidth > box.clientWidth) box.scrollLeft = pop.offsetLeft - (box.clientWidth-pop.offsetWidth)/2; sync();
+})();
 
 /* comparatif */
 $("cmp").innerHTML = `<thead><tr><th></th>${C.plans.map(p=>`<th class="${p.popular?"pop-col":""}">${esc(p.name)}</th>`).join("")}</tr></thead>
@@ -345,7 +357,7 @@ $("promo").addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefaul
 $("copy-btn").onclick = async ()=>{
   if (!form.reportValidity()) return;
   const t = message();
-  try { await navigator.clipboard.writeText(t); toast("Commande copiée. Envoie-la-moi en message privé sur Instagram."); }
+  try { await navigator.clipboard.writeText(t); toast("Commande copiée. Envoie-la-nous en message privé sur Instagram ou par e-mail."); }
   catch { const ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); toast("Commande copiée."); }
 };
 /* section « Logo, affiches & réseaux » : onglets + cartes avec bouton Ajouter */
@@ -418,7 +430,7 @@ Object.entries(C.sections||{}).forEach(([id,s])=>{
   const hd = sec.querySelector(".sec-head"); if(!hd) return;
   if (s.eyebrow) hd.querySelector(".eyebrow").textContent = s.eyebrow;
   if (s.title) hd.querySelector("h2").textContent = s.title;
-  if (s.subtitle!=null){ let p = hd.querySelector("p"); if(!p){ p=document.createElement("p"); hd.append(p);} p.textContent = s.subtitle; p.hidden = !s.subtitle; }
+  if (s.subtitle){ let p = hd.querySelector("p"); if(!p){ p=document.createElement("p"); hd.append(p);} p.textContent = s.subtitle; }
 });
 
 /* petites animations : chiffres qui défilent + ombre de la barre */

@@ -80,7 +80,7 @@ h1 em{font-style:normal;color:var(--accent)}
 .price small{font-size:.8rem;font-weight:500}
 .delay{font:400 .8rem var(--mono);color:var(--mut);margin:6px 0 22px;padding-bottom:20px;border-bottom:1px solid var(--rule)}
 .pop .delay{color:var(--mut-dark);border-color:#27304a}
-.plan ul{display:grid;gap:11px;margin-bottom:28px;flex:1;font-size:.92rem}
+.plan ul{display:grid;gap:11px;align-content:start;margin-bottom:28px;flex:1;font-size:.92rem}
 .plan li{padding-left:18px;position:relative}
 .plan li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:2px;background:var(--accent)}
 .pop li::before{background:#7f9bff}
@@ -349,3 +349,27 @@ s.old,.old{font-size:1.05rem;font-weight:500;color:var(--mut);text-decoration:li
 .month{font:500 .82rem var(--mono);color:var(--accent);margin:-4px 0 8px}
 #svc-block{margin-top:6px}
 @media(prefers-reduced-motion:reduce){.svc{animation:none;opacity:1;transform:none}.svc-sec::before{animation:none}}
+
+/* ---------- finitions ---------- */
+p,li,dd{text-wrap:pretty}
+.price>small.vt{display:inline;margin:0 0 0 4px;font:500 .72rem var(--mono);letter-spacing:.03em}
+.plan h3,.svc h3{text-wrap:balance}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+::selection{background:var(--accent);color:#fff}
+.cmp td:first-child,.cmp th:first-child{position:sticky;left:0;z-index:1;background:var(--bg);box-shadow:1px 0 0 var(--rule)}
+.plans-dots{display:none}
+@media(max-width:960px){
+  .plans{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+  .plans::-webkit-scrollbar{display:none}
+  .plan{flex:0 0 min(84%,340px);scroll-snap-align:center;border-top:0;border-left:1px solid var(--rule)}.plan:first-child{border-left:0}
+  .plans-dots{display:flex;justify-content:center;gap:8px;margin-top:16px}
+  .plans-dots button{width:8px;height:8px;padding:0;border:0;border-radius:99px;background:#c3cad9;cursor:pointer;transition:width .3s,background .3s}
+  .plans-dots button.on{width:24px;background:var(--ink)}
+}
+@media(max-width:560px){
+  .filters,.svc-tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-right:-18px;padding-right:18px;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}
+  .filters::-webkit-scrollbar{display:none}
+  .filters .chip{flex:none;white-space:nowrap}
+  .final-btns .btn{flex:1 1 100%}
+  .cmp th,.cmp td{padding:13px 12px}
+}

@@ -70,7 +70,7 @@ window.SITE_CONFIG = {
      vide = pastille avec l'initiale (champ initial). Modifie tout depuis admin.html ▸ Notre histoire. */
   story: {
     eyebrow: "Notre histoire",
-    title: "Deux fondateurs, un même objectif : des sites qui vous ressemblent.",
+    title: "Deux fondateurs, un même objectif : des sites à l'image de chaque commerce.",
     paragraphs: [
       "L&T Digital est née d'une idée simple : les commerçants, artisans et indépendants méritent un site aussi soigné que leur travail, sans jargon et sans prix cachés.",
       "Nous avons fondé L&T Digital pour proposer des sites modernes, rapides et sur mesure, avec un seul interlocuteur du premier échange jusqu'à la mise en ligne.",
@@ -198,7 +198,7 @@ window.SITE_CONFIG = {
   addons: [
     { id: "reservation", name: "Réservation en ligne", price: 140, from: true, group: "Fonctionnalités", popular: true, qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Rendez-vous ou tables réservés directement sur le site." },
     { id: "boutique", name: "Boutique en ligne / catalogue", price: 150, from: true, group: "Fonctionnalités", popular: true, qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Présente et vends tes produits en ligne." },
-    { id: "domain", name: "Nom de domaine + hébergement (1 an)", price: 60, group: "Mise en ligne & visibilité", popular: true, qty: false, plans: [], included: [], tag: "", desc: "Je m'occupe de la mise en ligne." },
+    { id: "domain", name: "Nom de domaine + hébergement (1 an)", price: 60, group: "Mise en ligne & visibilité", popular: true, qty: false, plans: [], included: [], tag: "", desc: "On s'occupe de toute la mise en ligne." },
     { id: "seo", name: "Optimisation Google (SEO)", price: 70, group: "Mise en ligne & visibilité", popular: true, qty: false, plans: [], included: [], tag: "", desc: "Pour mieux apparaître dans les recherches." },
     { id: "maint", name: "Maintenance (1 mois)", price: 30, group: "Service & rapidité", popular: true, qty: false, plans: [], included: [], tag: "", desc: "Mises à jour et petites modifications." },
     { id: "page", name: "Page supplémentaire", price: 40, group: "Contenu & visuel", qty: true, max: 20, plans: ["vitrine","complet","refonte"], included: [], tag: "", desc: "Ajoute autant de pages que nécessaire." },
@@ -291,8 +291,8 @@ window.SITE_CONFIG = {
   /* ---------- PROCESSUS ---------- */
   process: [
     { title: "Tu choisis",  text: "Sélectionne ta gamme et tes options, puis envoie ta commande." },
-    { title: "On échange",  text: "Je te contacte pour cadrer ton besoin : style, couleurs, contenu." },
-    { title: "Je crée",     text: "Tu reçois une première version et tu demandes les retouches voulues." },
+    { title: "On échange",  text: "On te contacte pour cadrer ton besoin : style, couleurs, contenu." },
+    { title: "On crée",     text: "Tu reçois une première version et tu demandes les retouches voulues." },
     { title: "Mise en ligne", text: "Tu valides, tu règles le solde, et ton site est en ligne." }
   ],
 
@@ -332,7 +332,7 @@ window.SITE_CONFIG = {
     { title: "Satisfait ou retouché", text: "Tu valides chaque étape avant la mise en ligne." },
     { icon: "⚡",  title: "Livraison rapide",      text: "Des délais annoncés, et tenus." },
     { title: "100 % unique",          text: "Aucun modèle réutilisé : ton site est le tien." },
-    { title: "Réponse rapide",        text: "Un message et je te réponds en général dans la journée." }
+    { title: "Réponse rapide",        text: "Un message et on te répond en général dans la journée." }
   ],
 
   /* ---------- TEXTES DU SITE (boutons, menus, formulaire…) ----------
@@ -344,7 +344,7 @@ window.SITE_CONFIG = {
     f_name: "Ton nom", f_biz: "Nom de ton activité", f_contact: "Ton Instagram ou e-mail", f_project: "Décris ton projet",
     sum_title: "Récapitulatif", promo_btn: "Appliquer", sum_total: "Total", copy_btn: "Copier ma commande", insta_btn: "Ouvrir Instagram", mail_btn: "Envoyer par e-mail", cart_btn: "Voir ma commande",
     cgv_pre: "J'ai lu et j'accepte les", cgv_link: "conditions générales de vente", legal_mentions: "Mentions légales", legal_cgv: "CGV", legal_privacy: "Confidentialité", top_question: "Une question ? Écris-nous", top_mail_short: "E-mail", top_copy: "Copier le code", top_copied: "Copié !",
-    final_title: "Un site pour ton activité, livré en {delivery}.", final_text: "Commande en deux minutes. Je reviens vers toi dans la journée.", final_btn: "Commander", final_insta: "Écrire sur Instagram", final_mail: "Nous écrire par e-mail"
+    final_title: "Un site pour ton activité, livré en {delivery}.", final_text: "Commande en deux minutes. On revient vers toi dans la journée.", final_btn: "Commander", final_insta: "Écrire sur Instagram", final_mail: "Nous écrire par e-mail"
   },
 
   /* ---------- FAQ ---------- */
@@ -353,9 +353,9 @@ window.SITE_CONFIG = {
     { q: "Comment se passe le paiement ?", a: "Un acompte est demandé au démarrage, le solde à la validation du site. Les moyens de paiement te sont précisés lors de notre échange." },
     { q: "Je n'ai pas besoin de site, juste d'un logo ou d'aide sur mes réseaux. C'est possible ?", a: "Oui. Dans la commande, choisis « Pas de site » puis les prestations voulues (logo, affiches, gestion des réseaux…). Les abonnements réseaux sont payés chaque mois." },
     { q: "Puis-je demander des modifications ?", a: "Oui. Chaque gamme inclut des retouches, et l'option maintenance permet des changements après la livraison." },
-    { q: "Je n'ai pas de logo ni de textes, c'est un problème ?", a: "Pas du tout. Je peux créer ton logo et rédiger tes textes (options)." },
-    { q: "J'ai déjà un site, tu peux le moderniser ?", a: "Oui, c'est la gamme « Refonte de site » : nouveau design, mobile, vitesse, en gardant tes contenus." },
-    { q: "Et si j'ai un besoin très particulier ?", a: "Choisis « Sur mesure » : on discute de ton projet et je te propose un devis." }
+    { q: "Je n'ai pas de logo ni de textes, c'est un problème ?", a: "Pas du tout. On peut créer ton logo et rédiger tes textes (voir les options et la partie « Logo, affiches & réseaux »)." },
+    { q: "J'ai déjà un site, vous pouvez le moderniser ?", a: "Oui, c'est la gamme « Refonte de site » : nouveau design, mobile, vitesse, en gardant tes contenus." },
+    { q: "Et si j'ai un besoin très particulier ?", a: "Choisis « Sur mesure » : on discute de ton projet et on te propose un devis." }
   ],
 
   /* ---------- CONTACT ---------- */
