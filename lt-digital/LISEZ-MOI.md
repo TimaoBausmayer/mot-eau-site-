@@ -47,6 +47,14 @@ Démarrer · Prix rapides (tous les prix au même endroit) · Gammes · Options 
 Accueil · Identité (couleurs, logo) · Sections (afficher/masquer/renommer) · Processus · Avis · Garanties · FAQ · Contact.
 Prix vide = « Sur devis ».
 
+## Logo, affiches & réseaux sociaux
+
+Section sombre « Logo, affiches & réseaux » (logo, identité visuelle, cartes de visite, affiches, flyers, menus, kit réseaux, gestion des réseaux sociaux au mois, montage vidéo, pub…).
+- **Admin → onglet « Logo & réseaux »** : nom, prix, description, ce qui est inclus, onglet de rangement, mise en avant, quantité.
+- **Prix vide = « Sur devis »**. **Unité « /mois » = abonnement** : affiché à part, pas compté dans le total payé tout de suite.
+- Le client peut commander **sans site** (choix « Pas de site » dans la commande).
+- Les prix sont des exemples : change-les dans **Prix rapides** (tout en bas).
+
 ## TVA et pages légales
 Admin ▸ **Légal & TVA** : choisis le régime (TTC, HT ou « TVA non applicable art. 293 B »), le taux, et renseigne ton entreprise
 (SIRET, adresse, hébergeur, médiateur…). Les pages `mentions-legales.html`, `cgv.html` et `confidentialite.html` se remplissent toutes seules,

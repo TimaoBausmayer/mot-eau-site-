@@ -20,6 +20,7 @@
     <nav class="links" id="links">
       <a href="#tarifs">Tarifs</a>
       <a href="#comparatif">Comparatif</a>
+      <a href="#services">Logo &amp; réseaux</a>
       <a href="#process">Méthode</a>
       <a href="#realisations">Réalisations</a>
       <a href="#faq">Questions</a>
@@ -73,6 +74,15 @@
     </div>
   </section>
 
+  <section id="services" class="sec svc-sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Logo, affiches &amp; réseaux</span><h2></h2><p></p></div>
+      <div class="filters svc-tabs" id="svc-tabs" role="tablist"></div>
+      <div class="svcs" id="svcs"></div>
+      <p class="vat-note" id="svc-note"></p>
+    </div>
+  </section>
+
   <section id="process" class="sec alt">
     <div class="wrap">
       <div class="sec-head"><span class="eyebrow">Méthode</span><h2>Comment se passe une commande</h2></div>
@@ -109,6 +119,7 @@
           <div class="pick" id="pick"></div>
           <h3>Tes options</h3>
           <div class="opts" id="opts"></div>
+          <div id="svc-block"><h3 id="svc-h"></h3><div class="opts" id="svc-opts"></div></div>
           <h3>Tes informations</h3>
           <div class="fields">
             <label>Ton nom<input name="pseudo" required placeholder="Ex : Jean Dupont"></label>
@@ -124,6 +135,7 @@
           <div class="promo"><input id="promo" placeholder="Code promo"><button type="button" class="btn btn-sm btn-ghost" id="promo-btn">Appliquer</button></div>
           <p class="promo-msg" id="promo-msg"></p>
           <div class="total"><span>Total</span><strong id="total">0</strong></div>
+          <p class="month" id="sum-month" hidden></p>
           <p class="vatline" id="sum-vat"></p>
           <p class="dep" id="sum-dep"></p>
           <p class="small" id="sum-delay"></p>

@@ -197,12 +197,17 @@ const O = C.order || {}; const T0 = C.texts || {};
 const form = $("order-form");
 const sel = {};            /* options choisies : id -> quantité */
 let applied = "";          /* code promo tapé par le client */
-function curPlan(){ return C.plans.find(p=>p.id===form.plan.value) || C.plans[0]; }
-const allowed = (a,plan) => !(a.plans&&a.plans.length) || a.plans.includes(plan.id);
+/* logo, affiches & réseaux (config.services) : vendus avec ou sans site */
+const SV = C.services && (C.services.items||[]).length ? C.services : null, SI = SV ? SV.items : [];
+const svcSel = {};         /* services choisis : id -> quantité */
+const NONE = {id:"__none", none:true, name:T0.pick_none||"Pas de site", price:0, delay:T0.label_delay_svc||"selon la prestation"};
+function curPlan(){ return form.plan.value==="__none" ? NONE : (C.plans.find(p=>p.id===form.plan.value) || C.plans[0]); }
+const allowed = (a,plan) => !plan.none && (!(a.plans&&a.plans.length) || a.plans.includes(plan.id));
 const included = (a,plan) => !!(a.included&&a.included.includes(plan.id));
 const clamp = (n,lo,hi) => Math.max(lo, Math.min(hi, n));
 
 $("pick").innerHTML = C.plans.map((p,i)=>`<label><input type="radio" name="plan" value="${esc(p.id)}" ${p.popular||(!C.plans.some(x=>x.popular)&&i===0)?"checked":""}><span><b>${esc(p.name)}</b><small>${p.price==null?"Sur devis":(p.from?"dès ":"")+fmt(p.price)}</small></span></label>`).join("");
+if (SV) $("pick").insertAdjacentHTML("beforeend", `<label class="pick-none"><input type="radio" name="plan" value="__none"><span><b>${esc(NONE.name)}</b><small>${esc(T0.pick_none_sub||"Services seuls")}</small></span></label>`);
 if (O.askBusiness===false) form.biz.closest("label").hidden = true;
 if (O.askProject===false) form.desc.closest("label").hidden = true;
 
@@ -212,18 +217,30 @@ function optHTML(a, plan){
   const price = inc ? "Inclus avec "+esc(plan.name) : aPrice(a);
   return `<label class="opt ${inc?"inc":""}"><input type="checkbox" data-a="${esc(a.id)}" ${on?"checked":""} ${inc?"disabled":""}><div><b>${esc(a.name)}</b>${aTag(a)?` <em class="otag">${esc(aTag(a))}</em>`:""}<br><small>${price}</small></div>${a.qty&&!inc?`<input type="number" min="1" max="${a.max||50}" value="${sel[a.id]||1}" data-q="${esc(a.id)}" aria-label="Quantité">`:""}</label>`;
 }
-function groupCounts(){ document.querySelectorAll("#opts details.og").forEach(d=>{ const n = d.querySelectorAll("input[data-a]:checked:not(:disabled)").length; const c = d.querySelector("[data-cnt]"); if(c) c.textContent = n ? n+(n>1?" choisies":" choisie") : ""; }); }
+function groupCounts(){ document.querySelectorAll("#opts details.og, #svc-opts details.og").forEach(d=>{ const n = d.querySelectorAll("input[data-a]:checked:not(:disabled), input[data-s]:checked").length; const c = d.querySelector("[data-cnt]"); if(c) c.textContent = n ? n+(n>1?" choisies":" choisie") : ""; }); }
 function drawOpts(){
   const plan = curPlan(), list = C.addons.filter(a=>allowed(a,plan));
   const pop = list.filter(a=>a.popular), rest = list.filter(a=>!a.popular), groups = [];
   if (pop.length) groups.push(["Populaires", pop]); groupsOf(rest).forEach(g=>groups.push([g, rest.filter(a=>aGroup(a)===g)]));
   if (!gTouched && groups.length) openG.add(groups[0][0]);
   $("opts").innerHTML = groups.length ? groups.map(([g,arr])=>{ const open = openG.has(g) || arr.some(a=>sel[a.id]>0);
-    return `<details class="og" data-g="${esc(g)}" ${open?"open":""}><summary><span>${esc(g)} <i>${arr.length}</i></span><small data-cnt></small></summary><div class="ogl">${arr.map(a=>optHTML(a,plan)).join("")}</div></details>`; }).join("") : `<p class="small">Aucune option disponible pour cette gamme.</p>`;
+    return `<details class="og" data-g="${esc(g)}" ${open?"open":""}><summary><span>${esc(g)} <i>${arr.length}</i></span><small data-cnt></small></summary><div class="ogl">${arr.map(a=>optHTML(a,plan)).join("")}</div></details>`; }).join("") : `<p class="small">${plan.none ? esc(T0.opts_none||"Les options concernent les sites : choisis une gamme pour en ajouter.") : "Aucune option disponible pour cette gamme."}</p>`;
   groupCounts();
 }
 $("opts").addEventListener("toggle", e=>{ const d = e.target; if (d.classList && d.classList.contains("og")){ gTouched = true; d.open ? openG.add(d.dataset.g) : openG.delete(d.dataset.g); } }, true);
+const svPrice = (it, short) => it.price==null ? "Sur devis" : (it.from?"dès ":"")+fmt(it.price)+(it.unit?" "+it.unit:"")+(vtag&&!short?" "+vtag:"")+(it.qty?" / unité":"");
+const svOpen = new Set();
+function drawSvcOpts(){
+  if (!SV){ $("svc-block").hidden = true; return; }
+  $("svc-h").textContent = T0.label_services || "Logo, affiches & réseaux";
+  const plan = curPlan();
+  $("svc-opts").innerHTML = groupsOf(SI).map((g,i)=>{ const arr = SI.filter(it=>aGroup(it)===g), open = svOpen.has(g) || arr.some(it=>svcSel[it.id]) || (plan.none && i===0 && !svOpen.size);
+    return `<details class="og" data-g="${esc(g)}" ${open?"open":""}><summary><span>${esc(g)} <i>${arr.length}</i></span><small data-cnt></small></summary><div class="ogl">${arr.map(it=>`<label class="opt"><input type="checkbox" data-s="${esc(it.id)}" ${svcSel[it.id]?"checked":""}><div><b>${esc(it.name)}</b>${it.unit?` <em class="otag">${esc(T0.badge_monthly||"Abonnement")}</em>`:it.popular?` <em class="otag">Populaire</em>`:""}<br><small>${svPrice(it)}</small></div>${it.qty?`<input type="number" min="1" max="${it.max||50}" value="${svcSel[it.id]||1}" data-sq="${esc(it.id)}" aria-label="Quantité">`:""}</label>`).join("")}</div></details>`; }).join("");
+}
+$("svc-opts").addEventListener("toggle", e=>{ const d = e.target; if (d.classList && d.classList.contains("og")) d.open ? svOpen.add(d.dataset.g) : svOpen.delete(d.dataset.g); }, true);
 function readSel(){
+  $("svc-opts").querySelectorAll("[data-s]").forEach(cb=>{ const id = cb.dataset.s, it = SI.find(x=>x.id===id);
+    if (cb.checked){ const q = $("svc-opts").querySelector(`[data-sq="${id}"]`); svcSel[id] = it.qty ? clamp(parseInt(q&&q.value)||1, 1, it.max||50) : 1; } else delete svcSel[id]; });
   $("opts").querySelectorAll("[data-a]").forEach(cb=>{
     if (cb.disabled) return; const id = cb.dataset.a, a = C.addons.find(x=>x.id===id);
     if (cb.checked){ const q = $("opts").querySelector(`[data-q="${id}"]`); sel[id] = a.qty ? clamp(parseInt(q&&q.value)||1, 1, a.max||50) : 1; } else delete sel[id];
@@ -231,14 +248,18 @@ function readSel(){
 }
 
 function state(){
-  const plan = curPlan(), lines = []; let devis = plan.price==null;
-  lines.push({label: plan.name+(plan.from?" (dès)":""), amount: plan.price||0, devis: plan.price==null});
+  const plan = curPlan(), lines = [], monthly = []; let devis = plan.price==null;
+  lines.push({label: plan.name+(plan.from?" (dès)":""), amount: plan.price||0, devis: plan.price==null, none: plan.none});
   C.addons.forEach(a=>{
     if (!allowed(a,plan)) return;
     if (included(a,plan)){ lines.push({label:a.name, amount:0, inc:true}); return; }
     const q = sel[a.id]; if (!q) return;
     lines.push({label: a.name+(q>1?" ×"+q:""), amount:(a.price||0)*q, devis: a.price==null}); if (a.price==null) devis = true;
   });
+  SI.forEach(it=>{ const q = svcSel[it.id]; if (!q) return;
+    const l = {label: it.name+(q>1?" ×"+q:""), amount:(it.price||0)*q, devis: it.price==null};
+    if (it.unit) monthly.push(Object.assign(l,{unit:it.unit})); else { lines.push(l); if (it.price==null) devis = true; } });
+  const mTotal = monthly.reduce((s,l)=>s+l.amount,0), mDevis = monthly.some(l=>l.devis);
   const sub = lines.reduce((s,l)=>s+l.amount,0);
   let best = null, bd = 0, err = "", typedOK = false;
   promos().forEach(p=>{
@@ -248,22 +269,25 @@ function state(){
     if (typed) typedOK = true;
     const d = promoAmount(p, plan.price||0, sub); if (d>bd){ bd=d; best=p; }
   });
-  return {plan, lines, sub, promo:best, disc:bd, total:Math.max(0,sub-bd), devis, err, typedOK};
+  return {plan, lines, monthly, mTotal, mDevis, sub, promo:best, disc:bd, total:Math.max(0,sub-bd), devis, err, typedOK};
 }
 const grand = s => VAT.mode==="ht" ? s.total*(1+vr) : s.total;
+const monthText = s => s.monthly.length ? "+ "+(s.mTotal?fmt(VAT.mode==="ht"?s.mTotal*(1+vr):s.mTotal):"")+(s.mDevis?(s.mTotal?" + devis":"devis"):"")+" "+(s.monthly[0].unit||"/mois") : "";
 const totalText = s => s.plan.price==null ? (s.total ? fmt(grand(s))+" + devis" : "Sur devis") : fmt(grand(s))+(s.devis?" + devis":"");
 
 function render(){
   const s = state(), plan = s.plan;
-  $("sum-lines").innerHTML = s.lines.map(l=>`<div class="sl"><span>${esc(l.label)}</span><span>${l.inc?"Inclus":l.devis?"à définir":fmt(l.amount)}</span></div>`).join("")
+  $("sum-lines").innerHTML = s.lines.map(l=>`<div class="sl${l.none?" none":""}"><span>${esc(l.label)}</span><span>${l.none?"—":l.inc?"Inclus":l.devis?"à définir":fmt(l.amount)}</span></div>`).join("")
     + (s.promo ? `<div class="sl promo-line"><span>${esc(s.promo.label||(s.promo.code?"Code "+s.promo.code:"Promotion"))} (${promoLabel(s.promo)})</span><span>-${fmt(s.disc)}</span></div>` : "");
+  if (s.monthly.length) $("sum-lines").innerHTML += `<div class="sl sl-h"><span>${esc(T0.label_monthly||"Abonnement mensuel")}</span></div>` + s.monthly.map(l=>`<div class="sl"><span>${esc(l.label)}</span><span>${l.devis?"à définir":fmt(l.amount)+" "+esc(l.unit)}</span></div>`).join("");
   $("total").textContent = totalText(s);
+  $("sum-month").hidden = !s.monthly.length; $("sum-month").textContent = s.monthly.length ? monthText(s)+" — "+(T0.label_monthly_note||"") : "";
   document.querySelector(".total span").textContent = (T0.sum_total||"Total") + (VAT.mode==="franchise" ? "" : " TTC");
   let vl = ""; if (plan.price!=null && s.total>0){ if (VAT.mode==="ttc"){ const ht = s.total/(1+vr); vl = `Dont HT : ${fmt(ht)} · TVA ${VAT.rate} % : ${fmt(s.total-ht)}`; } else if (VAT.mode==="ht") vl = `Total HT : ${fmt(s.total)} · TVA ${VAT.rate} % : ${fmt(s.total*vr)}`; }
   $("sum-vat").textContent = vl; $("sum-vat").hidden = !vl;
   const dp = +O.depositPercent||0;
   $("sum-dep").textContent = dp>0 && s.total>0 && plan.price!=null ? "Acompte à la commande ("+dp+" %) : "+fmt(grand(s)*dp/100) : "";
-  $("sum-delay").textContent = TX.label_delay_est + " " + delayOf(plan);
+  $("sum-delay").textContent = TX.label_delay_est + " " + (plan.none ? NONE.delay : delayOf(plan));
   const sn = [vatNote, O.note].filter(Boolean).join(" "); $("sum-note").textContent = sn; $("sum-note").hidden = !sn;
   const m = $("promo-msg");
   if (!applied){ m.textContent=""; m.className="promo-msg"; }
@@ -274,15 +298,16 @@ function render(){
   $("mail-btn").hidden = !ct.email;
   if (ct.email) $("mail-btn").href = "mailto:"+ct.email+"?subject="+encodeURIComponent("Commande — "+plan.name)+"&body="+encodeURIComponent(message());
   $("contact-line").textContent = [ct.instagramHandle&&"Instagram : "+ct.instagramHandle, ct.email].filter(Boolean).join(" · ");
-  syncAddButtons(s); updateCartbar(s); groupCounts();
+  syncAddButtons(s); syncSvcButtons(); updateCartbar(s); groupCounts();
 }
 function message(){
   const s = state(), d = new FormData(form), dp = +O.depositPercent||0;
   return [(O.intro||"NOUVELLE COMMANDE")+" — "+C.brand, "",
     "Nom : "+(d.get("pseudo")||"—"), "Contact : "+(d.get("contact")||"—"), O.askBusiness===false?"":"Activité : "+(d.get("biz")||"—"), "",
-    "Gamme : "+s.plan.name, ...s.lines.slice(1).map(l=>"+ "+l.label+(l.inc?" (inclus)":"")),
+    "Gamme : "+(s.plan.none ? (T0.pick_none||"Pas de site")+" ("+(T0.pick_none_sub||"services seuls").toLowerCase()+")" : s.plan.name), ...s.lines.slice(1).map(l=>"+ "+l.label+(l.inc?" (inclus)":"")),
+    ...s.monthly.map(l=>"+ "+l.label+" : "+(l.devis?"à définir":fmt(l.amount)+" "+l.unit)),
     s.promo?"Promo : "+(s.promo.code||s.promo.label||"")+" ("+promoLabel(s.promo)+")":"",
-    "TOTAL : "+(s.plan.price==null?"à définir (devis)":totalText(s)),
+    "TOTAL : "+(s.plan.price==null?"à définir (devis)":totalText(s)), s.monthly.length ? "Abonnement : "+monthText(s).replace(/^\+ /,"") : "",
     dp>0&&s.total>0&&s.plan.price!=null?"Acompte ("+dp+" %) : "+fmt(grand(s)*dp/100):"", vatNote, "",
     O.askProject===false?"":"Projet : "+(d.get("desc")||"—")].filter((l,i,arr)=>l!==""||(arr[i-1]!==""&&i>0)).join("\n");
 }
@@ -306,14 +331,14 @@ $("addons").addEventListener("click",e=>{
 });
 let commandeVisible = false;
 function updateCartbar(s){
-  const n = s.lines.filter(l=>!l.inc).length-1, show = n>0 && !commandeVisible;
+  const n = s.lines.filter(l=>!l.inc).length-1+s.monthly.length, show = n>0 && !commandeVisible;
   $("cartbar").hidden = !show;
-  if (show) $("cart-text").textContent = s.plan.name+" + "+n+" option"+(n>1?"s":"")+" · "+totalText(s);
+  if (show) $("cart-text").textContent = (s.plan.none ? "" : s.plan.name+" + ")+n+" "+(s.plan.none?(n>1?"prestations":"prestation"):"ajout"+(n>1?"s":""))+" · "+totalText(s)+(s.monthly.length?" "+monthText(s):"");
 }
 if ("IntersectionObserver" in window) new IntersectionObserver(es=>{ commandeVisible = es[0].isIntersecting; render(); },{threshold:.05}).observe($("commande"));
 
 form.addEventListener("input", ()=>{ readSel(); render(); });
-form.addEventListener("change", e=>{ readSel(); if (e.target.name==="plan") drawOpts(); render(); });
+form.addEventListener("change", e=>{ readSel(); if (e.target.name==="plan"){ drawOpts(); if (curPlan().none) drawSvcOpts(); } render(); });
 form.addEventListener("submit", e=>e.preventDefault());
 $("promo-btn").onclick = ()=>{ applied = $("promo").value.trim().toUpperCase(); render(); };
 $("promo").addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); $("promo-btn").click(); } });
@@ -323,7 +348,33 @@ $("copy-btn").onclick = async ()=>{
   try { await navigator.clipboard.writeText(t); toast("Commande copiée. Envoie-la-moi en message privé sur Instagram."); }
   catch { const ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); toast("Commande copiée."); }
 };
-drawOpts(); render();
+/* section « Logo, affiches & réseaux » : onglets + cartes avec bouton Ajouter */
+let svTab = groupsOf(SI)[0];
+function drawSvcs(){
+  const gs = groupsOf(SI);
+  $("svc-tabs").innerHTML = gs.length>1 ? gs.map(g=>`<button class="chip ${g===svTab?"on":""}" role="tab" aria-selected="${g===svTab}" data-t="${esc(g)}">${esc(g)} <i>${SI.filter(it=>aGroup(it)===g).length}</i></button>`).join("") : "";
+  $("svcs").innerHTML = SI.filter(it=>aGroup(it)===svTab).map((it,i)=>`
+  <article class="svc ${it.popular?"pop":""}" style="--d:${i*70}ms">
+    ${it.unit?`<span class="svc-tag">${esc(T0.badge_monthly||"Abonnement")}</span>`:it.popular?`<span class="svc-tag hot">${esc(TX.badge_pop)}</span>`:""}
+    <h3>${esc(it.name)}</h3><p>${esc(it.desc||"")}</p>
+    <div class="svc-price">${it.price==null?"Sur devis":`${it.from?`<small>${esc(TX.label_from)}</small> `:""}${fmt(it.price)}${it.unit?` <small>${esc(it.unit)}</small>`:""}${it.qty?` <small>/ unité</small>`:""}${vt}`}</div>
+    ${(it.features||[]).length?`<ul>${it.features.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>`:""}
+    <button type="button" class="btn btn-sm svc-add" data-svc="${esc(it.id)}"></button>
+  </article>`).join("");
+  syncSvcButtons();
+}
+function syncSvcButtons(){ document.querySelectorAll("[data-svc]").forEach(b=>{ const on = !!svcSel[b.dataset.svc]; b.classList.toggle("on", on); b.textContent = on ? (T0.svc_remove||"✓ Ajouté — retirer") : (T0.svc_add||"Ajouter à ma commande"); }); }
+if (SV){
+  const sec = $("services"), hd = sec.querySelector(".sec-head");
+  hd.querySelector(".eyebrow").textContent = SV.eyebrow||"Logo, affiches & réseaux"; hd.querySelector("h2").textContent = SV.title||""; hd.querySelector("p").textContent = SV.intro||"";
+  $("svc-note").textContent = [vatNote, SI.some(it=>it.unit) ? (T0.label_monthly_note||"") : ""].filter(Boolean).join(" ");
+  $("svc-tabs").addEventListener("click", e=>{ const b = e.target.closest("[data-t]"); if(b){ svTab = b.dataset.t; drawSvcs(); } });
+  $("svcs").addEventListener("click", e=>{ const b = e.target.closest("[data-svc]"); if(!b) return; const id = b.dataset.svc;
+    if (svcSel[id]) delete svcSel[id]; else { svcSel[id] = 1; svOpen.add(aGroup(SI.find(x=>x.id===id))); }
+    drawSvcOpts(); render(); });
+  drawSvcs();
+} else { $("services").hidden = true; document.querySelectorAll('a[href="#services"]').forEach(l=>l.hidden=true); }
+drawOpts(); drawSvcOpts(); render();
 
 /* notre histoire */
 (function(){ const st = C.story; if(!st){ $("histoire").hidden = true; document.querySelectorAll('a[href="#histoire"]').forEach(l=>l.hidden=true); return; }
@@ -401,7 +452,7 @@ $("vat-note").textContent = vatNote;
 /* textes modifiables (config.texts) */
 (function(){ const T = C.texts||{}; const set=(sel,key,i)=>{ if(T[key]==null) return; const els=document.querySelectorAll(sel); const el = i==null ? els[0] : els[i]; if(el) el.textContent=T[key]; };
   const lab=(i,key)=>{ if(T[key]==null) return; const l=document.querySelectorAll("#order-form .fields label")[i]; if(l&&l.firstChild) l.firstChild.textContent=T[key]; };
-  set('.links a[href="#tarifs"]','nav_tarifs'); set('.links a[href="#comparatif"]','nav_comparatif'); set('.links a[href="#process"]','nav_process'); set('.links a[href="#realisations"]','nav_realisations'); set('.links a[href="#faq"]','nav_faq'); set('.links a[href="#histoire"]','nav_histoire'); set('#nav-insta','nav_insta'); set('.nav-in > a.btn','nav_cta');
+  set('.links a[href="#tarifs"]','nav_tarifs'); set('.links a[href="#comparatif"]','nav_comparatif'); set('.links a[href="#services"]','nav_services'); set('.links a[href="#process"]','nav_process'); set('.links a[href="#realisations"]','nav_realisations'); set('.links a[href="#faq"]','nav_faq'); set('.links a[href="#histoire"]','nav_histoire'); set('#nav-insta','nav_insta'); set('.nav-in > a.btn','nav_cta');
   set("#order-form > h3","order_plan",0); set("#order-form > h3","order_opts",1); set("#order-form > h3","order_info",2);
   lab(0,"f_name"); lab(1,"f_biz"); lab(2,"f_contact"); lab(3,"f_project");
   set(".summary > h3","sum_title"); set("#promo-btn","promo_btn"); set("#copy-btn","copy_btn"); set("#insta-btn","insta_btn"); set("#mail-btn","mail_btn"); set("#cartbar .btn","cart_btn");

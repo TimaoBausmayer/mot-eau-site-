@@ -113,10 +113,12 @@ S["Prix rapides"] = () => {
   const row = (label, get, set) => h("tr",{}, h("td",{},label), h("td",{}, field("", get, set, {type:"number",min:0,placeholder:"vide = sur devis"})));
   const t1 = h("table",{}, h("tr",{}, h("th",{},"Gamme"), h("th",{},"Prix ("+cfg.currency.symbol+")")), cfg.plans.map(p=>row(p.name, ()=>p.price==null?"":p.price, v=>p.price=v===""?null:Number(v))));
   const t2 = h("table",{}, h("tr",{}, h("th",{},"Option"), h("th",{},"Prix ("+cfg.currency.symbol+")")), cfg.addons.map(a=>row(a.name, ()=>a.price==null?"":a.price, v=>a.price=v===""?null:Number(v))));
-  return [h("p",{class:"sub"},"Change tous tes prix au même endroit. Laisse vide pour afficher « Sur devis »."), h("h3",{style:"margin:6px 0 10px"},"Gammes"), h("div",{class:"tbl"},t1), h("h3",{style:"margin:22px 0 10px"},"Options"), h("div",{class:"tbl"},t2)];
+  const sv = (cfg.services&&cfg.services.items)||[];
+  const t3 = h("table",{}, h("tr",{}, h("th",{},"Logo, affiches & réseaux"), h("th",{},"Prix ("+cfg.currency.symbol+")")), sv.map(it=>row(it.name+(it.unit?" ("+it.unit+")":""), ()=>it.price==null?"":it.price, v=>it.price=v===""?null:Number(v))));
+  return [h("p",{class:"sub"},"Change tous tes prix au même endroit. Laisse vide pour afficher « Sur devis »."), h("h3",{style:"margin:6px 0 10px"},"Gammes"), h("div",{class:"tbl"},t1), h("h3",{style:"margin:22px 0 10px"},"Options"), h("div",{class:"tbl"},t2), sv.length?h("h3",{style:"margin:22px 0 10px"},"Logo, affiches & réseaux"):null, sv.length?h("div",{class:"tbl"},t3):null].filter(Boolean);
 };
 S["Sections"] = () => {
-  const names = {tarifs:"Tarifs",comparatif:"Comparatif",options:"Options",process:"Processus",realisations:"Réalisations",avis:"Avis clients",commande:"Commande",faq:"FAQ",histoire:"Notre histoire"};
+  const names = {tarifs:"Tarifs",comparatif:"Comparatif",options:"Options",services:"Logo, affiches & réseaux",process:"Processus",realisations:"Réalisations",avis:"Avis clients",commande:"Commande",faq:"FAQ",histoire:"Notre histoire"};
   cfg.sections = cfg.sections || {};
   return [h("p",{class:"sub"},"Affiche, masque ou renomme chaque bloc de la page d'accueil. Laisse le titre vide pour garder le texte par défaut."),
     ...Object.keys(names).map(id=>{ const s = cfg.sections[id] = cfg.sections[id] || {show:true,eyebrow:names[id],title:"",subtitle:""};
@@ -176,6 +178,19 @@ function planChecks(label, arr, hint){
       c.addEventListener("change", ()=>{ const k = arr.indexOf(p.id); if(c.checked && k<0) arr.push(p.id); if(!c.checked && k>=0) arr.splice(k,1); changed(); });
       return h("label",{class:"chk",style:"margin:0"}, c, p.name); })), hint ? h("small",{},hint) : null);
 }
+S["Logo & réseaux"] = () => { const sv = cfg.services = cfg.services || {eyebrow:"Logo, affiches & réseaux", title:"", intro:"", items:[]}; sv.items = sv.items || [];
+  return [h("p",{class:"sub"},"Logo, affiches, flyers, gestion des réseaux sociaux… Le client peut les commander avec un site ou sans site. Mets « /mois » dans Unité pour un abonnement (il s'affiche à part du total)."),
+  h("div",{class:"row"}, text("Petit titre", sv, "eyebrow"), text("Grand titre", sv, "title")), text("Phrase d'introduction", sv, "intro"),
+  list(sv.items, ()=>({id:"s"+Date.now().toString(36), group:"Logo & identité", name:"Nouvelle prestation", price:50, desc:"", features:[]}),
+    it=>(it.popular?"⭐ ":"")+it.name+" — "+(it.price==null?"Sur devis":it.price+" "+cfg.currency.symbol+(it.unit?" "+it.unit:""))+" · "+(it.group||"Autres"),
+    it=>[ text("Nom", it, "name"), text("Description", it, "desc"),
+      h("div",{class:"row"}, field("Prix", ()=>it.price==null?"":it.price, v=>it.price = v===""?null:Number(v), {type:"number",min:0,placeholder:"vide = sur devis"}), text("Unité (ex : /mois)", it, "unit", {placeholder:"vide = paiement unique"}), text("Onglet (pour les ranger)", it, "group", {placeholder:"Réseaux sociaux"})),
+      field("Ce qui est inclus (une ligne par point)", ()=>(it.features||[]).join("\n"), v=>it.features = v.split("\n").map(x=>x.trim()).filter(Boolean), {area:true, rows:4}),
+      check("⭐ Mise en avant (« Le plus choisi »)", ()=>it.popular, v=>{ it.popular=v; changed(); }),
+      check("Afficher « dès » devant le prix", ()=>it.from, v=>it.from=v),
+      check("Le client peut choisir une quantité (ex : plusieurs affiches)", ()=>it.qty, v=>{ it.qty=v; changed(); show("Logo & réseaux"); }),
+      it.qty ? field("Quantité maximum", ()=>it.max||20, v=>it.max=Math.max(1,Number(v)||1), {type:"number",min:1}) : null ],
+    ()=>show("Logo & réseaux"), {addLabel:"Ajouter une prestation"})]; };
 S["Options"] = () => [
   h("p",{class:"sub"},"Suppléments que le client peut ajouter à sa commande. Tu peux les réserver à certaines gammes ou les offrir dans une gamme."),
   list(cfg.addons, ()=>({id:"o"+Date.now().toString(36), name:"Nouvelle option", price:50, qty:false, max:20, plans:[], included:[], tag:"", desc:""}),
@@ -229,7 +244,7 @@ S["Notre histoire"] = () => { cfg.story = cfg.story || {eyebrow:"Notre histoire"
   h("h3",{style:"margin:18px 0 10px"},"Ce qui vous guide (3 valeurs)"),
   list(st.values, ()=>({title:"Valeur",text:""}), v=>v.title, v=>[text("Titre", v, "title"), text("Texte", v, "text", {area:true,rows:2})], ()=>show("Notre histoire"), {addLabel:"Ajouter une valeur"})
 ]; };
-S["Textes du site"] = () => { cfg.texts = cfg.texts || {}; const L = {nav_tarifs:"Menu : Tarifs",nav_comparatif:"Menu : Comparatif",nav_process:"Menu : Méthode",nav_realisations:"Menu : Réalisations",nav_faq:"Menu : Questions",nav_histoire:"Menu : Notre histoire",nav_insta:"Menu : Instagram",nav_cta:"Menu : bouton Commander",badge_pop:"Badge de la gamme mise en avant",label_delivery:"Mot « Livraison : » sur les gammes",label_from:"Mot « À partir de »",label_delay_est:"Mot « Délai estimé : »",order_plan:"Commande : titre 1",order_opts:"Commande : titre 2",order_info:"Commande : titre 3",f_name:"Champ : nom",f_biz:"Champ : activité",f_contact:"Champ : contact",f_project:"Champ : projet",sum_title:"Récapitulatif : titre",promo_btn:"Bouton code promo",sum_total:"Mot « Total »",copy_btn:"Bouton copier la commande",insta_btn:"Bouton Instagram",mail_btn:"Bouton e-mail",cart_btn:"Barre du bas : bouton",final_title:"Bandeau final : titre",final_text:"Bandeau final : texte",final_btn:"Bandeau final : bouton",final_insta:"Bandeau final : bouton Instagram",final_mail:"Bandeau final : bouton e-mail",top_question:"Barre du haut : phrase de contact",top_mail_short:"Barre du haut : bouton e-mail (mobile)",top_copy:"Barre du haut : infobulle copier le code",top_copied:"Barre du haut : code copié",cgv_pre:"Case CGV : début de phrase",cgv_link:"Case CGV : lien",legal_mentions:"Pied de page : mentions légales",legal_cgv:"Pied de page : CGV",legal_privacy:"Pied de page : confidentialité"};
+S["Textes du site"] = () => { cfg.texts = cfg.texts || {}; const L = {nav_tarifs:"Menu : Tarifs",nav_comparatif:"Menu : Comparatif",nav_services:"Menu : Logo & réseaux",pick_none:"Commande : choix « Pas de site »",pick_none_sub:"Commande : sous-titre « Pas de site »",label_services:"Commande : titre des services",label_monthly:"Récap : titre abonnement",label_monthly_note:"Phrase sous les abonnements",svc_add:"Bouton : ajouter une prestation",svc_remove:"Bouton : prestation ajoutée",badge_monthly:"Badge abonnement",nav_process:"Menu : Méthode",nav_realisations:"Menu : Réalisations",nav_faq:"Menu : Questions",nav_histoire:"Menu : Notre histoire",nav_insta:"Menu : Instagram",nav_cta:"Menu : bouton Commander",badge_pop:"Badge de la gamme mise en avant",label_delivery:"Mot « Livraison : » sur les gammes",label_from:"Mot « À partir de »",label_delay_est:"Mot « Délai estimé : »",order_plan:"Commande : titre 1",order_opts:"Commande : titre 2",order_info:"Commande : titre 3",f_name:"Champ : nom",f_biz:"Champ : activité",f_contact:"Champ : contact",f_project:"Champ : projet",sum_title:"Récapitulatif : titre",promo_btn:"Bouton code promo",sum_total:"Mot « Total »",copy_btn:"Bouton copier la commande",insta_btn:"Bouton Instagram",mail_btn:"Bouton e-mail",cart_btn:"Barre du bas : bouton",final_title:"Bandeau final : titre",final_text:"Bandeau final : texte",final_btn:"Bandeau final : bouton",final_insta:"Bandeau final : bouton Instagram",final_mail:"Bandeau final : bouton e-mail",top_question:"Barre du haut : phrase de contact",top_mail_short:"Barre du haut : bouton e-mail (mobile)",top_copy:"Barre du haut : infobulle copier le code",top_copied:"Barre du haut : code copié",cgv_pre:"Case CGV : début de phrase",cgv_link:"Case CGV : lien",legal_mentions:"Pied de page : mentions légales",legal_cgv:"Pied de page : CGV",legal_privacy:"Pied de page : confidentialité"};
   return [h("p",{class:"sub"},"Tous les petits textes du site : menu, boutons, formulaire de commande, bandeau final. Écris {delivery} pour insérer ton délai de livraison."),
     ...Object.keys(cfg.texts).map(k=>text(L[k]||k, cfg.texts, k, {area:(cfg.texts[k]||"").length>60,rows:2}))]; };
 S["Légal & TVA"] = () => { cfg.vat = cfg.vat || {mode:"ttc",rate:20,note:""}; cfg.legal = cfg.legal || {}; const lg = cfg.legal; ["company","hosting","mediator","cgv"].forEach(k=>lg[k]=lg[k]||{});
@@ -288,7 +303,7 @@ S["Contact"] = () => [
 ];
 
 /* ---- navigation ---- */
-const ORDER = ["Démarrer","Prix rapides","Gammes & tarifs","Options","Promos","Commande","Comparatif","Réalisations","Notre histoire","Accueil","Identité","Sections","Textes du site","Légal & TVA","Processus","Avis clients","Garanties","FAQ","Contact"];
+const ORDER = ["Démarrer","Prix rapides","Gammes & tarifs","Options","Logo & réseaux","Promos","Commande","Comparatif","Réalisations","Notre histoire","Accueil","Identité","Sections","Textes du site","Légal & TVA","Processus","Avis clients","Garanties","FAQ","Contact"];
 let current = "Démarrer";
 function show(name){
   current = name; const st = $("edit").scrollTop;

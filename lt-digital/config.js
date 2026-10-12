@@ -94,6 +94,7 @@ window.SITE_CONFIG = {
     tarifs:       { show: true, eyebrow: "Tarifs",       title: "", subtitle: "" },
     comparatif:   { show: true, eyebrow: "Comparatif",   title: "", subtitle: "" },
     options:      { show: true, eyebrow: "Options",      title: "", subtitle: "" },
+    services:     { show: true, eyebrow: "Logo, affiches & réseaux" },
     process:      { show: true, eyebrow: "Processus",    title: "", subtitle: "" },
     realisations: { show: true, eyebrow: "Réalisations", title: "", subtitle: "" },
     avis:         { show: true, eyebrow: "Avis",         title: "", subtitle: "" },
@@ -230,6 +231,38 @@ window.SITE_CONFIG = {
 
 
 
+  /* ---------- LOGO, AFFICHES & RÉSEAUX SOCIAUX ----------
+     Prestations vendues avec OU sans site (le client peut choisir « Pas de site »).
+     group   : onglet où ranger la prestation
+     price   : prix (null = « Sur devis ») · from : true = « dès »
+     unit    : "/mois" = abonnement (affiché à part, pas dans le total à payer tout de suite)
+     qty     : true = le client choisit une quantité (max = maximum)
+     popular : true = mise en avant · features : petites lignes « ce qui est inclus » */
+  services: {
+    eyebrow: "Logo, affiches & réseaux",
+    title: "Toute ton image, pas seulement ton site",
+    intro: "Logo, affiches, flyers et gestion de tes réseaux sociaux : avec ton site ou sans site, tu prends seulement ce dont tu as besoin.",
+    items: [
+      { id: "s-logo", group: "Logo & identité", name: "Logo essentiel", price: 149, desc: "Un logo simple et lisible pour ton activité.", features: ["2 propositions", "2 retouches", "Fichiers PNG, JPG et PDF"] },
+      { id: "s-logo-pro", group: "Logo & identité", name: "Logo + identité visuelle", price: 349, popular: true, desc: "Ton logo et tout ce qui va autour pour une image pro et cohérente.", features: ["3 propositions", "Retouches illimitées (raisonnables)", "Couleurs et typographies", "Versions claire / foncée / icône", "Mini charte graphique"] },
+      { id: "s-refonte-logo", group: "Logo & identité", name: "Modernisation de logo", price: 99, from: true, desc: "On rafraîchit ton logo existant sans perdre ton identité.", features: ["Nettoyage et vectorisation", "Couleurs modernisées"] },
+      { id: "s-carte", group: "Logo & identité", name: "Carte de visite", price: 49, desc: "Recto-verso, prête à imprimer.", features: ["Fichier imprimeur (PDF)", "QR code vers ton site ou Instagram"] },
+
+      { id: "s-affiche", group: "Affiches & print", name: "Affiche", price: 59, qty: true, max: 20, popular: true, desc: "Pour ta vitrine, un événement, une promo…", features: ["Format A3 / A4", "1 retouche", "Fichier prêt à imprimer"] },
+      { id: "s-flyer", group: "Affiches & print", name: "Flyer recto-verso", price: 69, qty: true, max: 20, desc: "Pour distribuer ou laisser au comptoir.", features: ["Format A5 / A6", "Fichier prêt à imprimer"] },
+      { id: "s-menu", group: "Affiches & print", name: "Carte / menu / tarifs", price: 89, from: true, desc: "Menu de restaurant, carte de prix, plaquette.", features: ["Mise en page claire", "Facile à mettre à jour"] },
+      { id: "s-impression", group: "Affiches & print", name: "Impression et livraison", price: null, desc: "On s'occupe de faire imprimer tes supports.", features: ["Papier au choix", "Prix selon la quantité"] },
+
+      { id: "s-kit", group: "Réseaux sociaux", name: "Kit réseaux sociaux", price: 89, desc: "Photo de profil, bannières et couvertures à tes couleurs.", features: ["Instagram, Facebook, TikTok", "Couvertures de stories à la une"] },
+      { id: "s-templates", group: "Réseaux sociaux", name: "Modèles de publications", price: 119, desc: "10 modèles que tu réutilises toi-même facilement.", features: ["Posts et stories", "Modifiables sur Canva"] },
+      { id: "s-setup", group: "Réseaux sociaux", name: "Création / optimisation de comptes", price: 79, desc: "Comptes bien configurés pour être trouvé.", features: ["Bio, liens, catégories", "Fiche Google conseillée"] },
+      { id: "s-cm-1", group: "Réseaux sociaux", name: "Gestion des réseaux — Essentiel", price: 190, unit: "/mois", desc: "On publie pour toi chaque semaine.", features: ["8 publications / mois", "1 réseau", "Visuels et textes rédigés"] },
+      { id: "s-cm-2", group: "Réseaux sociaux", name: "Gestion des réseaux — Pro", price: 390, unit: "/mois", popular: true, desc: "Une présence active et régulière.", features: ["12 publications + stories", "2 réseaux", "Réponses aux messages", "Bilan chaque mois"] },
+      { id: "s-reel", group: "Réseaux sociaux", name: "Montage vidéo (Reel / TikTok)", price: 49, qty: true, max: 30, desc: "Tes vidéos montées, rythmées et sous-titrées.", features: ["Jusqu'à 60 secondes", "Musique et sous-titres"] },
+      { id: "s-pub", group: "Réseaux sociaux", name: "Campagne de publicité", price: null, desc: "Pubs Instagram / Facebook ciblées autour de chez toi.", features: ["Budget pub en plus", "Réglages et suivi"] }
+    ]
+  },
+
   /* ---------- PROMOTIONS ----------
      code     : le code que tape le client ("" => promo automatique, sans code)
      label    : nom affiché (ex : "Offre de lancement")
@@ -306,7 +339,7 @@ window.SITE_CONFIG = {
      Modifie le texte que tu veux. Tout se change aussi depuis admin.html ▸ Textes du site. */
   texts: {
     nav_tarifs: "Tarifs", nav_comparatif: "Comparatif", nav_process: "Méthode", nav_realisations: "Réalisations", nav_faq: "Questions", nav_histoire: "Notre histoire", nav_insta: "Instagram", nav_cta: "Commander",
-    badge_pop: "Le plus choisi", label_delivery: "Livraison :", label_from: "À partir de", label_delay_est: "Délai estimé :",
+    badge_pop: "Le plus choisi", nav_services: "Logo & réseaux", pick_none: "Pas de site", pick_none_sub: "Services seuls", label_monthly: "Abonnement mensuel", label_monthly_note: "Payé chaque mois, sans engagement au-delà du 1er mois.", label_services: "Logo, affiches & réseaux", label_delivery: "Livraison :", label_from: "À partir de", label_delay_est: "Délai estimé :",
     order_plan: "Ta gamme", order_opts: "Tes options", order_info: "Tes informations",
     f_name: "Ton nom", f_biz: "Nom de ton activité", f_contact: "Ton Instagram ou e-mail", f_project: "Décris ton projet",
     sum_title: "Récapitulatif", promo_btn: "Appliquer", sum_total: "Total", copy_btn: "Copier ma commande", insta_btn: "Ouvrir Instagram", mail_btn: "Envoyer par e-mail", cart_btn: "Voir ma commande",
@@ -318,6 +351,7 @@ window.SITE_CONFIG = {
   faq: [
     { q: "Combien de temps pour recevoir mon site ?", a: "Ton site est livré en {delivery}, selon la gamme et la rapidité de tes retours." },
     { q: "Comment se passe le paiement ?", a: "Un acompte est demandé au démarrage, le solde à la validation du site. Les moyens de paiement te sont précisés lors de notre échange." },
+    { q: "Je n'ai pas besoin de site, juste d'un logo ou d'aide sur mes réseaux. C'est possible ?", a: "Oui. Dans la commande, choisis « Pas de site » puis les prestations voulues (logo, affiches, gestion des réseaux…). Les abonnements réseaux sont payés chaque mois." },
     { q: "Puis-je demander des modifications ?", a: "Oui. Chaque gamme inclut des retouches, et l'option maintenance permet des changements après la livraison." },
     { q: "Je n'ai pas de logo ni de textes, c'est un problème ?", a: "Pas du tout. Je peux créer ton logo et rédiger tes textes (options)." },
     { q: "J'ai déjà un site, tu peux le moderniser ?", a: "Oui, c'est la gamme « Refonte de site » : nouveau design, mobile, vitesse, en gardant tes contenus." },
