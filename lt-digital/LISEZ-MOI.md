@@ -64,7 +64,7 @@ Section sombre « Photos, logo, affiches & réseaux » (photos : on se déplace 
 - **`promo/lt-digital-pub.mp4`** : la pub prête à poster (format vertical 1080 × 1920, 27 s, sans son), pour les Reels, les stories Instagram ou TikTok. Ajoute une musique directement dans Instagram si tu veux.
 - **`promo/lt-digital-pub-2.mp4`** : 2e pub, style clair « avant / après » (25,5 s) : vieux site → nouveau site, photos, logo, réseaux, offre. Page animée : `promo/pub2.html`.
 - **`promo/lt-digital-pub-3.mp4`** : 3e pub « Ton site, en un message » (22 s) : une conversation où un client commande son site, qui se construit et passe en ligne avec des confettis. Page animée : `promo/pub3.html`.
-- **`promo/lt-digital-film-2min.mp4`** : film de présentation de 2 min en 10 chapitres (constat, avant/après, qui on est, sites, 16 métiers, gammes, photos, logo & print, réseaux, méthode, engagements, contact). Page animée : `promo/film.html`.
+- **`promo/lt-digital-film-1min40.mp4`** : film de présentation de 1 min 40 en 10 chapitres (constat, avant/après, qui on est, sites, 16 métiers, gammes, photos, logo & print, réseaux, méthode, engagements, contact). Page animée : `promo/film.html`.
 - **`promo/index.html`** : la 1re pub en page web animée (bouton « Rejouer »). Les textes (prix, code promo, contacts…) se changent directement dans ce fichier.
 - Pour refaire la vidéo après une modification, il faut relancer l'enregistrement : demande-le-moi.
 

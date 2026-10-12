@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>L&amp;T Digital — Le film (2 min)</title>
+<title>L&amp;T Digital — Le film (1 min 40)</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="../images/logo-small.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -246,7 +246,7 @@ h3.t{font:800 92px/1.02 var(--hf);letter-spacing:-.045em}
     <img class="logo" src="../images/logo.jpg" alt="">
     <h1><span class="mask"><span style="--d:.9s">L&amp;T</span></span> <span class="mask"><span class="grad" style="--d:1.05s">Digital</span></span></h1>
     <p class="tag up" style="--d:1.6s">Création &amp; modernisation de sites web</p>
-    <p class="film up" style="--d:2.4s">Présentation · 2 min</p>
+    <p class="film up" style="--d:2.4s">Présentation · 1 min 40</p>
   </section>
 
   <!-- 1. Le constat (6 → 17 s) -->
@@ -399,20 +399,22 @@ h3.t{font:800 92px/1.02 var(--hf);letter-spacing:-.045em}
   </section>
 </div></div>
 
-<div class="ui"><button type="button" id="replay">↺ Rejouer</button><a href="lt-digital-film-2min.mp4" download>⬇ Vidéo MP4</a></div>
+<div class="ui"><button type="button" id="replay">↺ Rejouer</button><a href="lt-digital-film-1min40.mp4" download>⬇ Vidéo MP4</a></div>
 
 <script>
 const vp = document.getElementById("vp");
 const fit = () => { const k = Math.min(innerWidth/1080, innerHeight/1920); vp.style.transform = `scale(${k})`; vp.style.margin = `${(1920*k-1920)/2}px ${(1080*k-1080)/2}px`; };
 addEventListener("resize", fit); fit();
-const DUR = 120000;
+/* vitesse du film : 1.2 = 1 min 40 (le minutage écrit dans le HTML est sur 2 min) */
+const SPEED = 1.2, DUR = 120000 / SPEED;
 const all = () => document.getAnimations();
-const restart = () => all().forEach(a => { a.currentTime = 0; a.play(); });
+const restart = () => all().forEach(a => { a.currentTime = 0; a.playbackRate = SPEED; a.play(); });
+all().forEach(a => a.playbackRate = SPEED);
 document.getElementById("replay").onclick = restart;
 setInterval(() => { if (!document.body.classList.contains("capture")) restart(); }, DUR);
 if (/[?&]capture/.test(location.search)) {
   document.body.classList.add("capture");
-  window.seek = t => { all().forEach(a => { a.pause(); a.currentTime = t; }); };
+  window.seek = t => { all().forEach(a => { a.pause(); a.currentTime = t * SPEED; }); };
 }
 </script>
 </body>
