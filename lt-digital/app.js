@@ -44,6 +44,20 @@ $("h-badge").textContent = C.hero.badge; $("h-badge-wrap").hidden = !C.hero.badg
 /* petites coches sous les boutons */
 (function(){ const t = (C.hero.trust||[]).filter(Boolean); if(!t.length) return; $("h-trust").hidden = false;
   $("h-trust").innerHTML = t.map(x=>`<li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg>${esc(x)}</li>`).join(""); })();
+/* fond du haut : bulles de lumière floues qui flottent (style des pubs) */
+(function(){ const box = $("hero-bokeh"); if (!box) return; const cols = ["127,155,255","192,132,252","94,234,212","200,255,62","255,190,140","255,255,255"];
+  let sd = 5; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647; const k = innerWidth < 700 ? 9 : 16;
+  box.innerHTML = Array.from({length:k}, (_, i) => { const s = 40 + r()*150;
+    return `<i style="--s:${s.toFixed(0)}px;--x:${(r()*100).toFixed(1)}%;--y:${(r()*100).toFixed(1)}%;--c:${cols[i%cols.length]};--o:${(.25+r()*.45).toFixed(2)};--d:${(9+r()*10).toFixed(1)}s;--dl:-${(r()*10).toFixed(1)}s;--mx:${((r()-.5)*120).toFixed(0)}px;--my:${((r()-.5)*160).toFixed(0)}px"></i>`; }).join(""); })();
+/* barre « demande » : des exemples de projets s'écrivent tout seuls */
+(function(){ const list = ((C.hero||{}).prompts||[]).filter(Boolean), el = $("h-prompt"); if (!el || !list.length) return; el.hidden = false;
+  const q = $("hp-q"); el.setAttribute("aria-label", list[0]);
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches){ q.textContent = list[0]; return; }
+  let i = 0, n = 0, del = false;
+  const tick = () => { const txt = list[i];
+    if (!del){ n++; q.textContent = txt.slice(0, n); if (n >= txt.length){ del = true; el.classList.add("ok"); setTimeout(()=>el.classList.remove("ok"), 600); return setTimeout(tick, 1900); } return setTimeout(tick, 38 + Math.random()*55); }
+    n -= 2; q.textContent = txt.slice(0, Math.max(0, n)); if (n <= 0){ del = false; n = 0; i = (i+1) % list.length; return setTimeout(tick, 350); } setTimeout(tick, 18); };
+  setTimeout(tick, 1700); })();
 /* bande des métiers qui défile (tirée des réalisations) */
 (function(){ const names = [...new Set((C.portfolio||[]).map(p=>String(p.category||p.tag||"").split("·")[0].trim()).filter(Boolean))]; if(names.length<3) return;
   const idx = n => (C.portfolio||[]).findIndex(p=>String(p.category||p.tag||"").split("·")[0].trim()===n);
@@ -54,6 +68,15 @@ $("h-text").textContent = C.hero.text;
 $("h-cta1").textContent = C.hero.cta1;
 $("h-cta1").href = "#tarifs";
 $("h-cta2").textContent = C.hero.cta2;
+/* envie d'acheter : prix d'appel dans le bouton, offre en cours, carte de prix sur les maquettes */
+(function(){ const T = C.texts||{}, priced = (C.plans||[]).filter(p=>p.price!=null);
+  if (priced.length){ const min = Math.min(...priced.map(p=>+p.price)); $("h-cta1").insertAdjacentHTML("beforeend", ` <small class="cta-price">${esc(T.hero_from||"dès")} ${esc(fmt(min))}</small>`); }
+  const pr = (C.promos||[]).find(x=>x.active && x.code && !x.auto && (!x.end || new Date(x.end) >= new Date()));
+  if (pr && $("h-offer")){ const v = pr.type==="percent" ? `−${pr.value} %` : `−${fmt(pr.value)}`;
+    $("h-offer").innerHTML = `<b>${esc(v)}</b><span>${esc(pr.label||T.hero_offer||"Offre en cours")} avec le code</span><code>${esc(pr.code)}</code><em aria-hidden="true">→</em>`; $("h-offer").hidden = false; }
+  const pop = (C.plans||[]).find(p=>p.popular && p.price!=null) || priced[0];
+  if (pop) setTimeout(()=>{ const vi = document.querySelector("#hero-vis .vis-in"); if (!vi) return;
+    vi.insertAdjacentHTML("beforeend", `<a href="#tarifs" class="h-price"><span class="hpp-t">${esc(T.badge_pop||"Le plus choisi")}</span><b>${esc(pop.name)}</b><span class="hpp-p">${pop.from?esc(T.hero_from||"dès")+" ":""}<strong>${esc(fmt(pop.price))}</strong></span><small>${esc(TX.label_delivery)} ${esc(delayOf(pop))}</small><span class="hpp-go">${esc(T.hero_price_btn||"Je le veux")} →</span></a>`); }, 0); })();
 $("stats").innerHTML = C.stats.map(s=>`<div class="stat"><dt data-v="${esc(s.value)}">${esc(s.value)}</dt><dd>${esc(s.label)}</dd></div>`).join("");
 /* visuel du haut : tes propres maquettes dans des fenêtres de navigateur */
 (function(){ const v = C.hero.visual || {}, vis = $("hero-vis");

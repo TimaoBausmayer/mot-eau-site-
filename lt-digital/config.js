@@ -47,14 +47,16 @@ window.SITE_CONFIG = {
   /* ---------- HERO (haut de page) ---------- */
   hero: {
     badge: "Création & modernisation de sites web",
-    title: "Votre site web,",
-    titleAccent: "livré en quelques jours.",
-    text: "L&T Digital crée et modernise les sites des commerçants, artisans et indépendants. Un seul interlocuteur, un prix annoncé à l'avance, des retouches incluses.",
+    title: "Le site qui fait venir",
+    titleAccent: "de nouveaux clients.",
+    text: "Un site beau, rapide et bien placé sur Google, qui donne envie de pousser ta porte. L&T Digital s'occupe de tout : prix annoncé à l'avance, retouches incluses, en ligne en {delivery}.",
     cta1: "Voir les tarifs",
-    cta2: "Commander",
+    cta2: "Démarrer mon site",
     /* mots qui défilent sous le titre : « Pour les restaurants », puis « Pour les boulangeries »… (vide = rien) */
     rotatePrefix: "Pensé pour les",
     rotate: ["restaurants", "boulangeries", "boutiques", "artisans", "coiffeurs & barbiers", "garages", "fleuristes", "coachs"],
+    /* barre « demande » qui s'écrit toute seule (clic = page de commande). Vide = pas de barre */
+    prompts: ["Je veux un site pour ma boulangerie", "Un logo pour mon salon de coiffure", "Une pub vidéo pour mon Instagram", "Moderniser le site de mon garage", "Des photos pro de mes produits"],
     /* petites coches sous les boutons */
     trust: ["Prix annoncé à l'avance", "Retouches incluses", "Livré en {delivery}"],
     /* petites notifications animées autour des images (exemples de ce que le site apporte) */
