@@ -164,12 +164,38 @@ drawPlans();
   const pop = box.querySelector(".plan.pop"); if (pop && box.scrollWidth > box.clientWidth) box.scrollLeft = pop.offsetLeft - (box.clientWidth-pop.offsetWidth)/2; sync();
 })();
 
-/* comparatif */
-$("cmp").innerHTML = `<thead><tr><th></th>${C.plans.map(p=>`<th class="${p.popular?"pop-col":""}">${esc(p.name)}</th>`).join("")}</tr></thead>
-<tbody>${C.compare.map(r=>`<tr><td>${esc(r.label)}</td>${C.plans.map(p=>{
-  const v=r.values[p.id]; const c=p.popular?"pop-col":"";
-  return `<td class="${c}">${v===true?'<span class="yes">✔</span>':v===false?'<span class="no">✕</span>':esc(v)}</td>`;}).join("")}</tr>`).join("")}
-<tr><td>Prix</td>${C.plans.map(p=>`<td class="${p.popular?"pop-col":""}"><b>${p.price==null?"Sur devis":(p.from?"dès ":"")+fmt(p.price)+(p.unit?" "+esc(p.unit):"")+(vtag?" "+vtag:"")}</b></td>`).join("")}</tr></tbody>`;
+/* comparatif : choisir les gammes à mettre côte à côte + « seulement les différences » */
+(function(){ const T = C.texts||{}, P = C.plans, rows = C.compare||[];
+  if (!rows.length){ $("comparatif").hidden = true; $("cmp-link").hidden = true; return; }
+  $("cmp-link").lastChild.textContent = " " + (T.cmp_link||"Comparer les gammes côte à côte");
+  const small = () => innerWidth <= 760;
+  let shown = new Set(), diffOnly = false;
+  const pop = P.findIndex(p=>p.popular), def = () => { if (!small()) return P.map(p=>p.id);
+    const a = Math.max(0, pop), b = a+1 < P.length ? a+1 : a-1; return [P[a].id, P[Math.max(0,b)].id]; };
+  shown = new Set(def());
+  const cell = v => v===true ? '<span class="yes" aria-label="Oui">✔</span>' : v===false ? '<span class="no" aria-label="Non">✕</span>' : esc(v==null?"—":v);
+  const priceTxt = p => p.price==null ? "Sur devis" : (p.from?"dès ":"")+fmt(p.price)+(p.unit?" "+esc(p.unit):"")+(vtag?" "+vtag:"");
+  function draw(){
+    const cols = P.filter(p=>shown.has(p.id));
+    $("cmp-tools").innerHTML = `<div class="ct-group"><span class="ct-lbl">${esc(T.cmp_pick||"Gammes à comparer")}</span>${P.map(p=>`<button type="button" class="ct-chip ${shown.has(p.id)?"on":""}" data-p="${esc(p.id)}" aria-pressed="${shown.has(p.id)}">${esc(p.name)}</button>`).join("")}</div>
+      <label class="ct-switch"><input type="checkbox" id="ct-diff" ${diffOnly?"checked":""}><span class="ct-track"><i></i></span>${esc(T.cmp_diff||"Seulement les différences")}</label>`;
+    const vis = rows.filter(r=>{ if(!diffOnly || cols.length<2) return true; const vals = cols.map(p=>JSON.stringify(r.values[p.id])); return new Set(vals).size > 1; });
+    $("cmp").style.minWidth = (small() ? 110 + cols.length*118 : 170 + cols.length*150) + "px";
+    $("cmp").innerHTML = `<thead><tr><th></th>${cols.map(p=>`<th class="${p.popular?"pop-col":""}" data-c="${esc(p.id)}">${p.popular?`<span class="cmp-badge">${esc(TX.badge_pop)}</span>`:""}<b>${esc(p.name)}</b><small>${priceTxt(p)}</small></th>`).join("")}</tr></thead>
+      <tbody>${vis.map(r=>`<tr><td>${esc(r.label)}</td>${cols.map(p=>`<td class="${p.popular?"pop-col":""}" data-c="${esc(p.id)}">${cell(r.values[p.id])}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${cols.length+1}" class="cmp-same">${esc(T.cmp_same||"Ces gammes ont les mêmes caractéristiques : seul le prix change.")}</td></tr>`}
+      <tr class="cmp-price"><td>Prix</td>${cols.map(p=>`<td class="${p.popular?"pop-col":""}" data-c="${esc(p.id)}"><b>${priceTxt(p)}</b></td>`).join("")}</tr>
+      <tr class="cmp-act"><td></td>${cols.map(p=>`<td class="${p.popular?"pop-col":""}" data-c="${esc(p.id)}"><a href="#commande" class="btn btn-sm ${p.popular?"":"btn-ghost"}" data-plan="${esc(p.id)}">${esc(T.cmp_choose||"Choisir")}</a></td>`).join("")}</tr></tbody>`;
+  }
+  $("cmp-tools").addEventListener("click", e=>{ const b = e.target.closest("[data-p]"); if(!b) return; const id = b.dataset.p;
+    if (shown.has(id)){ if (shown.size>1) shown.delete(id); } else shown.add(id); draw(); });
+  $("cmp-tools").addEventListener("change", e=>{ if (e.target.id==="ct-diff"){ diffOnly = e.target.checked; draw(); } });
+  /* colonne survolée mise en avant */
+  $("cmp").addEventListener("mouseover", e=>{ const c = e.target.closest("[data-c]"); $("cmp").querySelectorAll(".hcol").forEach(x=>x.classList.remove("hcol")); if(c) $("cmp").querySelectorAll(`[data-c="${c.dataset.c}"]`).forEach(x=>x.classList.add("hcol")); });
+  $("cmp").addEventListener("mouseleave", ()=>$("cmp").querySelectorAll(".hcol").forEach(x=>x.classList.remove("hcol")));
+  $("cmp").addEventListener("click", e=>{ const b = e.target.closest("[data-plan]"); if(!b) return; const r = form.querySelector(`input[name=plan][value="${b.dataset.plan}"]`); if (r){ r.checked = true; drawOpts(); render(); } });
+  let wasSmall = small(); addEventListener("resize", ()=>{ if (small()!==wasSmall){ wasSmall = small(); shown = new Set(def()); draw(); } });
+  draw();
+})();
 
 /* options : rangées par rubrique (Populaires d'abord) */
 const aTag = a => a.tag || (a.popular ? "Populaire" : "");

@@ -381,7 +381,7 @@ window.SITE_CONFIG = {
   /* ---------- TEXTES DU SITE (boutons, menus, formulaire…) ----------
      Modifie le texte que tu veux. Tout se change aussi depuis admin.html ▸ Textes du site. */
   texts: {
-    nav_tarifs: "Tarifs", nav_comparatif: "Comparatif", nav_process: "Méthode", nav_realisations: "Réalisations", nav_avis: "Avis", mcta_btn: "Commander mon site", nav_faq: "Questions", nav_histoire: "Notre histoire", nav_insta: "Instagram", nav_cta: "Commander",
+    nav_tarifs: "Tarifs", nav_comparatif: "Comparatif", nav_process: "Méthode", nav_realisations: "Réalisations", nav_avis: "Avis", cmp_link: "Comparer les gammes côte à côte", cmp_pick: "Gammes à comparer", cmp_diff: "Seulement les différences", cmp_choose: "Choisir", mcta_btn: "Commander mon site", nav_faq: "Questions", nav_histoire: "Notre histoire", nav_insta: "Instagram", nav_cta: "Commander",
     badge_pop: "Le plus choisi", nav_services: "Services", photo_cta: "Pas de belles photos ? On équipe ton site : shooting, retouche, photos de produits ou pack de photos pro.", photo_cta_btn: "Voir les offres photo", pick_none: "Pas de site", pick_none_sub: "Services seuls", label_monthly: "Abonnement mensuel", label_monthly_note: "Payé chaque mois, sans engagement au-delà du 1er mois.", label_services: "Photos, logo, affiches & réseaux", label_delivery: "Livraison :", label_from: "À partir de", label_delay_est: "Délai estimé :",
     order_plan: "Ta gamme", order_opts: "Tes options", order_info: "Tes informations",
     f_name: "Ton nom", f_biz: "Nom de ton activité", f_contact: "Ton Instagram ou e-mail", f_project: "Décris ton projet",
