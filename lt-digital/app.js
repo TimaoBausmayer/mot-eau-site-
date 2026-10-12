@@ -371,7 +371,7 @@ function state(){
     lines.push({label: a.name+(q>1?" ×"+q:""), amount:(a.price||0)*q, devis: a.price==null}); if (a.price==null) devis = true;
   });
   SI.forEach(it=>{ const q = svcSel[it.id]; if (!q) return;
-    const l = {label: it.name+(q>1?" ×"+q:""), amount:(it.price||0)*q, devis: it.price==null};
+    const l = {label: it.name+(it.from?" (dès)":"")+(q>1?" ×"+q:""), amount:(it.price||0)*q, devis: it.price==null};
     if (it.unit) monthly.push(Object.assign(l,{unit:it.unit})); else { lines.push(l); if (it.price==null) devis = true; } });
   const mTotal = monthly.reduce((s,l)=>s+l.amount,0), mDevis = monthly.some(l=>l.devis);
   const sub = lines.reduce((s,l)=>s+l.amount,0);
