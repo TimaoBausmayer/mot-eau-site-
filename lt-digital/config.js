@@ -14,6 +14,30 @@ window.SITE_CONFIG = {
   accent: "#2f6bff",                      // bleu du logo
   accent2: "#5ab6ff",
 
+  /* ---------- DÉLAI DE LIVRAISON (partout sur le site) ----------
+     Écris {delivery} dans n'importe quel texte pour y mettre ce délai.
+     Chaque gamme peut avoir son propre délai ("delay"), sinon elle prend celui-ci. */
+  delivery: "48 à 72 h",
+
+  /* ---------- TVA ----------
+     mode : "ttc"       => les prix affichés sont TTC (TVA incluse)
+            "ht"        => les prix affichés sont HT (la TVA s'ajoute à la commande)
+            "franchise" => pas de TVA (micro-entreprise : "TVA non applicable, art. 293 B du CGI")
+     rate : taux de TVA en % (20 pour la plupart des prestations de création de sites)
+     note : phrase affichée sous les prix (laisse "" pour le texte automatique) */
+  vat: { mode: "ttc", rate: 20, note: "" },
+
+  /* ---------- INFORMATIONS LÉGALES (pages Mentions légales, CGV, Confidentialité) ----------
+     Remplis ce que tu peux : ce qui manque s'affiche "[à compléter]" sur les pages légales.
+     ⚠ Ce sont des modèles : fais-les relire par un professionnel (expert-comptable, juriste). */
+  legal: {
+    company: { name: "L&T Digital", status: "", capital: "", address: "", siret: "", rcs: "", vatNumber: "", publisher: "", email: "l.t.digital.rb@gmail.com", phone: "" },
+    hosting: { name: "", address: "", website: "" },
+    mediator: { name: "", address: "", website: "" },
+    cgv: { paymentMethods: "", city: "", extra: "" },
+    updated: ""
+  },
+
   /* ---------- MONNAIE ---------- */
   currency: { symbol: "€", after: true },   // after:true => "290 €"
 
@@ -35,7 +59,7 @@ window.SITE_CONFIG = {
 
   /* ---------- CHIFFRES CLÉS (supprime les lignes inutiles) ---------- */
   stats: [
-    { value: "48h",  label: "Délai de livraison dès 1 page" },
+    { value: "{delivery}",  label: "Délai de livraison de ton site" },
     { value: "1", label: "seul interlocuteur, de A à Z" },
     { value: "100%", label: "Adapté au mobile et à la tablette" },
     { value: "7j/7", label: "Support après livraison" }
@@ -91,7 +115,7 @@ window.SITE_CONFIG = {
   plans: [
     {
       id: "express", name: "Page Express", tagline: "Une page, l'essentiel, vite.",
-      price: 99, from: false, delay: "24-48h", popular: false, cta: "Choisir Express",
+      price: 99, from: false, delay: "", popular: false, cta: "Choisir Express",
       features: [
         "1 page unique responsive",
         "Présentation + contact",
@@ -103,7 +127,7 @@ window.SITE_CONFIG = {
     },
     {
       id: "vitrine", name: "Site Vitrine", tagline: "Le choix idéal pour une entreprise.",
-      price: 290, from: false, delay: "3-5 jours", popular: true, cta: "Choisir Vitrine",
+      price: 290, from: false, delay: "", popular: true, cta: "Choisir Vitrine",
       features: [
         "Jusqu'à 5 pages (Accueil, Services, À propos, Galerie, Contact)",
         "Design premium sur mesure",
@@ -115,7 +139,7 @@ window.SITE_CONFIG = {
     },
     {
       id: "complet", name: "Site Complet", tagline: "Boutique, réservation, tout-en-un.",
-      price: 690, from: true, delay: "1-2 semaines", popular: false, cta: "Choisir Complet",
+      price: 690, from: true, delay: "", popular: false, cta: "Choisir Complet",
       features: [
         "Jusqu'à 10 pages",
         "Boutique en ligne ou système de réservation",
@@ -278,9 +302,21 @@ window.SITE_CONFIG = {
     { title: "Réponse rapide",        text: "Un message et je te réponds en général dans la journée." }
   ],
 
+  /* ---------- TEXTES DU SITE (boutons, menus, formulaire…) ----------
+     Modifie le texte que tu veux. Tout se change aussi depuis admin.html ▸ Textes du site. */
+  texts: {
+    nav_tarifs: "Tarifs", nav_comparatif: "Comparatif", nav_process: "Méthode", nav_realisations: "Réalisations", nav_faq: "Questions", nav_histoire: "Notre histoire", nav_insta: "Instagram", nav_cta: "Commander",
+    badge_pop: "Le plus choisi", label_delivery: "Livraison :", label_from: "À partir de", label_delay_est: "Délai estimé :",
+    order_plan: "Ta gamme", order_opts: "Tes options", order_info: "Tes informations",
+    f_name: "Ton nom", f_biz: "Nom de ton activité", f_contact: "Ton Instagram ou e-mail", f_project: "Décris ton projet",
+    sum_title: "Récapitulatif", promo_btn: "Appliquer", sum_total: "Total", copy_btn: "Copier ma commande", insta_btn: "Ouvrir Instagram", mail_btn: "Envoyer par e-mail", cart_btn: "Voir ma commande",
+    cgv_pre: "J'ai lu et j'accepte les", cgv_link: "conditions générales de vente", legal_mentions: "Mentions légales", legal_cgv: "CGV", legal_privacy: "Confidentialité",
+    final_title: "Un site pour ton activité, livré en {delivery}.", final_text: "Commande en deux minutes. Je reviens vers toi dans la journée.", final_btn: "Commander", final_insta: "Écrire sur Instagram"
+  },
+
   /* ---------- FAQ ---------- */
   faq: [
-    { q: "Combien de temps pour recevoir mon site ?", a: "De 24-48h pour une Page Express à 1-2 semaines pour un Site Complet, selon la charge et la rapidité de tes retours." },
+    { q: "Combien de temps pour recevoir mon site ?", a: "Ton site est livré en {delivery}, selon la gamme et la rapidité de tes retours." },
     { q: "Comment se passe le paiement ?", a: "Un acompte est demandé au démarrage, le solde à la validation du site. Les moyens de paiement te sont précisés lors de notre échange." },
     { q: "Puis-je demander des modifications ?", a: "Oui. Chaque gamme inclut des retouches, et l'option maintenance permet des changements après la livraison." },
     { q: "Je n'ai pas de logo ni de textes, c'est un problème ?", a: "Pas du tout. Je peux créer ton logo et rédiger tes textes (options)." },
@@ -292,7 +328,7 @@ window.SITE_CONFIG = {
   contact: {
     instagram: "https://www.instagram.com/l.t_digital",
     instagramHandle: "@l.t_digital",
-    email: ""        // ex: "contact@ltdigital.fr" (laisse "" pour cacher)
+    email: "l.t.digital.rb@gmail.com"   // laisse "" pour cacher le bouton e-mail
   },
 
   footer: "Création & modernisation de sites web."

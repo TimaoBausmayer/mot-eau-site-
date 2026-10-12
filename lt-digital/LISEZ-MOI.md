@@ -46,3 +46,10 @@ Mets une capture PC (et téléphone) dans `images/portfolio/`, puis renseigne-la
 Démarrer · Prix rapides (tous les prix au même endroit) · Gammes · Options (par gamme : réservées, incluses, quantité) · Promos (codes ou automatiques, % ou montant, dates, minimum) · Commande (acompte, note, champs demandés) · Comparatif · Réalisations ·
 Accueil · Identité (couleurs, logo) · Sections (afficher/masquer/renommer) · Processus · Avis · Garanties · FAQ · Contact.
 Prix vide = « Sur devis ».
+
+## TVA et pages légales
+Admin ▸ **Légal & TVA** : choisis le régime (TTC, HT ou « TVA non applicable art. 293 B »), le taux, et renseigne ton entreprise
+(SIRET, adresse, hébergeur, médiateur…). Les pages `mentions-legales.html`, `cgv.html` et `confidentialite.html` se remplissent toutes seules,
+avec un rappel « [à compléter] » pour ce qui manque. La case « J'ai lu et j'accepte les CGV » est obligatoire avant de copier une commande.
+⚠ Ce sont des modèles : à faire relire par un expert-comptable ou un juriste.
+Le délai de livraison se règle une seule fois (Admin ▸ Gammes & tarifs) ; écris `{delivery}` dans un texte pour l'y insérer.

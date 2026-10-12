@@ -6,7 +6,16 @@ if (PREVIEW) { try { const d = localStorage.getItem("ltd_draft"); if (d) C = JSO
   b.style.cssText = "position:fixed;left:12px;bottom:12px;z-index:99;background:#ffb020;color:#111;font:700 12px Inter,sans-serif;padding:6px 12px;border-radius:99px"; document.body.appendChild(b); }
 const $ = id => document.getElementById(id);
 const esc = s => String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const fmt = n => { const v = Math.round(n).toLocaleString("fr-FR"); return C.currency.after ? v+" "+C.currency.symbol : C.currency.symbol+v; };
+const fmt = n => { const r = Math.round(n*100)/100, v = Number.isInteger(r) ? r.toLocaleString("fr-FR") : r.toLocaleString("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2}); return C.currency.after ? v+" "+C.currency.symbol : C.currency.symbol+v; };
+
+/* {delivery} : le délai de livraison réglé dans config.delivery */
+(function tok(o){ const f = s => String(s).replace(/\{delivery\}/g, C.delivery||""); (function w(x){ if(Array.isArray(x)) x.forEach((v,i)=>{ if(typeof v==="string") x[i]=f(v); else w(v); }); else if(x&&typeof x==="object") Object.keys(x).forEach(k=>{ if(typeof x[k]==="string") x[k]=f(x[k]); else w(x[k]); }); })(C); })();
+const TX = Object.assign({ badge_pop:"Le plus choisi", label_delivery:"Livraison :", label_from:"À partir de", label_delay_est:"Délai estimé :" }, C.texts||{});
+const VAT = Object.assign({mode:"ttc",rate:20,note:""}, C.vat||{}); const vr = (+VAT.rate||0)/100;
+const vtag = VAT.mode==="ttc" ? "TTC" : VAT.mode==="ht" ? "HT" : "";
+const vt = vtag ? ` <small class="vt">${vtag}</small>` : "";
+const vatNote = VAT.note || (VAT.mode==="ttc" ? `Prix en euros TTC (TVA ${VAT.rate} % incluse).` : VAT.mode==="ht" ? `Prix en euros HT. TVA ${VAT.rate} % en sus.` : "TVA non applicable, art. 293 B du CGI.");
+const delayOf = p => p.delay || C.delivery || "";
 
 /* thème */
 document.documentElement.style.setProperty("--accent", C.accent);
@@ -63,9 +72,9 @@ function autoPromoFor(plan){
 const unitHTML = p => p.unit ? ` <small>${esc(p.unit)}</small>` : "";
 function priceHTML(p){
   if (p.price==null) return `<div class="price">Sur devis</div>`;
-  const from = p.from ? "<small>À partir de</small> " : "", ap = autoPromoFor(p);
-  if (ap && ap.d>0) return `<div class="price">${from}<s class="old">${fmt(p.price)}</s> ${fmt(p.price-ap.d)}${unitHTML(p)}</div><div class="promo-tag">${esc(ap.p.label||"Promo")} (${promoLabel(ap.p)})</div>`;
-  return `<div class="price">${from}${fmt(p.price)}${unitHTML(p)}</div>`;
+  const from = p.from ? `<small>${esc(TX.label_from)}</small> ` : "", ap = autoPromoFor(p);
+  if (ap && ap.d>0) return `<div class="price">${from}<s class="old">${fmt(p.price)}</s> ${fmt(p.price-ap.d)}${unitHTML(p)}${vt}</div><div class="promo-tag">${esc(ap.p.label||"Promo")} (${promoLabel(ap.p)})</div>`;
+  return `<div class="price">${from}${fmt(p.price)}${unitHTML(p)}${vt}</div>`;
 }
 let groupSel = "Tous";
 function drawPlans(){
@@ -73,9 +82,9 @@ function drawPlans(){
   $("plan-filters").innerHTML = groups.length>1 ? ["Tous"].concat(groups).map(g=>`<button class="chip ${g===groupSel?"on":""}" data-g="${esc(g)}">${esc(g)}</button>`).join("") : "";
   $("plans").innerHTML = C.plans.filter(p=>groupSel==="Tous"||!p.group||p.group===groupSel).map(p=>`
   <article class="plan ${p.popular?"pop":""}">
-    ${p.popular?'<span class="ribbon">Le plus choisi</span>':""}
+    ${p.popular?'<span class="ribbon">${esc(TX.badge_pop)}</span>':""}
     <h3>${esc(p.name)}</h3><p class="tag">${esc(p.tagline)}</p>
-    ${priceHTML(p)}<div class="delay">Livraison : ${esc(p.delay)}</div>
+    ${priceHTML(p)}<div class="delay">${esc(TX.label_delivery)} ${esc(delayOf(p))}</div>
     <ul>${p.features.map(f=>f[0]==="!"?`<li class="no">${esc(f.slice(1))}</li>`:`<li>${esc(f)}</li>`).join("")}</ul>
     <a href="#commande" class="btn ${p.popular?"":"btn-ghost"}" data-plan="${esc(p.id)}">${esc(p.cta)}</a>
   </article>`).join("");
@@ -89,13 +98,13 @@ $("cmp").innerHTML = `<thead><tr><th></th>${C.plans.map(p=>`<th class="${p.popul
 <tbody>${C.compare.map(r=>`<tr><td>${esc(r.label)}</td>${C.plans.map(p=>{
   const v=r.values[p.id]; const c=p.popular?"pop-col":"";
   return `<td class="${c}">${v===true?'<span class="yes">✔</span>':v===false?'<span class="no">✕</span>':esc(v)}</td>`;}).join("")}</tr>`).join("")}
-<tr><td>Prix</td>${C.plans.map(p=>`<td class="${p.popular?"pop-col":""}"><b>${p.price==null?"Sur devis":(p.from?"dès ":"")+fmt(p.price)+(p.unit?" "+esc(p.unit):"")}</b></td>`).join("")}</tr></tbody>`;
+<tr><td>Prix</td>${C.plans.map(p=>`<td class="${p.popular?"pop-col":""}"><b>${p.price==null?"Sur devis":(p.from?"dès ":"")+fmt(p.price)+(p.unit?" "+esc(p.unit):"")+(vtag?" "+vtag:"")}</b></td>`).join("")}</tr></tbody>`;
 
 /* options : rangées par rubrique (Populaires d'abord) */
 const aTag = a => a.tag || (a.popular ? "Populaire" : "");
 const aGroup = a => a.group || "Autres";
 const groupsOf = list => { const out=[]; list.forEach(a=>{ if(!out.includes(aGroup(a))) out.push(aGroup(a)); }); return out; };
-const aPrice = a => a.price==null ? "Sur devis" : "+ "+(a.from?"dès ":"")+fmt(a.price)+(a.qty?" / unité":"");
+const aPrice = a => a.price==null ? "Sur devis" : "+ "+(a.from?"dès ":"")+fmt(a.price)+(vtag?" "+vtag:"")+(a.qty?" / unité":"");
 const hasPop = C.addons.some(a=>a.popular);
 let addonSel = hasPop ? "Populaires" : groupsOf(C.addons)[0];
 function drawAddons(){
@@ -184,7 +193,7 @@ $("guar").innerHTML = C.guarantees.map(g=>`<div class="g"><h4>${esc(g.title)}</h
 $("faq-list").innerHTML = C.faq.map(f=>`<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join("");
 
 /* ---------- COMMANDE ---------- */
-const O = C.order || {};
+const O = C.order || {}; const T0 = C.texts || {};
 const form = $("order-form");
 const sel = {};            /* options choisies : id -> quantité */
 let applied = "";          /* code promo tapé par le client */
@@ -241,17 +250,21 @@ function state(){
   });
   return {plan, lines, sub, promo:best, disc:bd, total:Math.max(0,sub-bd), devis, err, typedOK};
 }
-const totalText = s => s.plan.price==null ? (s.total ? fmt(s.total)+" + devis" : "Sur devis") : fmt(s.total)+(s.devis?" + devis":"");
+const grand = s => VAT.mode==="ht" ? s.total*(1+vr) : s.total;
+const totalText = s => s.plan.price==null ? (s.total ? fmt(grand(s))+" + devis" : "Sur devis") : fmt(grand(s))+(s.devis?" + devis":"");
 
 function render(){
   const s = state(), plan = s.plan;
   $("sum-lines").innerHTML = s.lines.map(l=>`<div class="sl"><span>${esc(l.label)}</span><span>${l.inc?"Inclus":l.devis?"à définir":fmt(l.amount)}</span></div>`).join("")
     + (s.promo ? `<div class="sl promo-line"><span>${esc(s.promo.label||(s.promo.code?"Code "+s.promo.code:"Promotion"))} (${promoLabel(s.promo)})</span><span>-${fmt(s.disc)}</span></div>` : "");
   $("total").textContent = totalText(s);
+  document.querySelector(".total span").textContent = (T0.sum_total||"Total") + (VAT.mode==="franchise" ? "" : " TTC");
+  let vl = ""; if (plan.price!=null && s.total>0){ if (VAT.mode==="ttc"){ const ht = s.total/(1+vr); vl = `Dont HT : ${fmt(ht)} · TVA ${VAT.rate} % : ${fmt(s.total-ht)}`; } else if (VAT.mode==="ht") vl = `Total HT : ${fmt(s.total)} · TVA ${VAT.rate} % : ${fmt(s.total*vr)}`; }
+  $("sum-vat").textContent = vl; $("sum-vat").hidden = !vl;
   const dp = +O.depositPercent||0;
-  $("sum-dep").textContent = dp>0 && s.total>0 && plan.price!=null ? "Acompte à la commande ("+dp+" %) : "+fmt(s.total*dp/100) : "";
-  $("sum-delay").textContent = "Délai estimé : " + plan.delay;
-  $("sum-note").textContent = O.note || ""; $("sum-note").hidden = !O.note;
+  $("sum-dep").textContent = dp>0 && s.total>0 && plan.price!=null ? "Acompte à la commande ("+dp+" %) : "+fmt(grand(s)*dp/100) : "";
+  $("sum-delay").textContent = TX.label_delay_est + " " + delayOf(plan);
+  const sn = [vatNote, O.note].filter(Boolean).join(" "); $("sum-note").textContent = sn; $("sum-note").hidden = !sn;
   const m = $("promo-msg");
   if (!applied){ m.textContent=""; m.className="promo-msg"; }
   else if (s.typedOK){ m.className="promo-msg"; m.textContent = s.promo && s.promo.code && s.promo.code.toUpperCase()===applied ? "Code "+applied+" appliqué ("+promoLabel(s.promo)+")." : "Code valable, mais une réduction plus avantageuse est déjà appliquée."; }
@@ -270,7 +283,7 @@ function message(){
     "Gamme : "+s.plan.name, ...s.lines.slice(1).map(l=>"+ "+l.label+(l.inc?" (inclus)":"")),
     s.promo?"Promo : "+(s.promo.code||s.promo.label||"")+" ("+promoLabel(s.promo)+")":"",
     "TOTAL : "+(s.plan.price==null?"à définir (devis)":totalText(s)),
-    dp>0&&s.total>0&&s.plan.price!=null?"Acompte ("+dp+" %) : "+fmt(s.total*dp/100):"", "",
+    dp>0&&s.total>0&&s.plan.price!=null?"Acompte ("+dp+" %) : "+fmt(grand(s)*dp/100):"", vatNote, "",
     O.askProject===false?"":"Projet : "+(d.get("desc")||"—")].filter((l,i,arr)=>l!==""||(arr[i-1]!==""&&i>0)).join("\n");
 }
 function toast(t){ $("toast").textContent=t; setTimeout(()=>$("toast").textContent="",3500); }
@@ -355,4 +368,19 @@ if ("IntersectionObserver" in window) {
   const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} }),{threshold:.12});
   els.forEach(el=>io.observe(el));
 } else els.forEach(el=>el.classList.add("in"));
+
+/* TVA + légal */
+$("vat-note").textContent = vatNote;
+(function(){ const T = C.texts||{}; $("cgv-pre").textContent = T.cgv_pre||"J'ai lu et j'accepte les"; $("cgv-link").textContent = T.cgv_link||"conditions générales de vente";
+  $("lg-m").textContent = T.legal_mentions||"Mentions légales"; $("lg-c").textContent = T.legal_cgv||"CGV"; $("lg-p").textContent = T.legal_privacy||"Confidentialité";
+  const co = ((C.legal||{}).company)||{}; $("legal-id").textContent = [co.name||"", co.status||"", co.siret?"SIRET "+co.siret:"", VAT.mode==="franchise"?"TVA non applicable, art. 293 B du CGI":(co.vatNumber?"TVA "+co.vatNumber:"")].filter(Boolean).join(" · "); $("legal-id").hidden = !$("legal-id").textContent; })();
+
+/* textes modifiables (config.texts) */
+(function(){ const T = C.texts||{}; const set=(sel,key,i)=>{ if(T[key]==null) return; const els=document.querySelectorAll(sel); const el = i==null ? els[0] : els[i]; if(el) el.textContent=T[key]; };
+  const lab=(i,key)=>{ if(T[key]==null) return; const l=document.querySelectorAll("#order-form .fields label")[i]; if(l&&l.firstChild) l.firstChild.textContent=T[key]; };
+  set('.links a[href="#tarifs"]','nav_tarifs'); set('.links a[href="#comparatif"]','nav_comparatif'); set('.links a[href="#process"]','nav_process'); set('.links a[href="#realisations"]','nav_realisations'); set('.links a[href="#faq"]','nav_faq'); set('.links a[href="#histoire"]','nav_histoire'); set('#nav-insta','nav_insta'); set('.nav-in > a.btn','nav_cta');
+  set("#order-form > h3","order_plan",0); set("#order-form > h3","order_opts",1); set("#order-form > h3","order_info",2);
+  lab(0,"f_name"); lab(1,"f_biz"); lab(2,"f_contact"); lab(3,"f_project");
+  set(".summary > h3","sum_title"); set("#promo-btn","promo_btn"); set("#copy-btn","copy_btn"); set("#insta-btn","insta_btn"); set("#mail-btn","mail_btn"); set("#cartbar .btn","cart_btn");
+  set(".final h2","final_title"); set(".final p","final_text"); set(".final .btn-light","final_btn"); set("#final-insta","final_insta"); })();
 })();

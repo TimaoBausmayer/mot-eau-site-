@@ -106,7 +106,7 @@ S["Démarrer"] = () => [
      ["3","Publie","Sur GitHub, ouvre le dossier lt-digital et remplace le fichier config.js par celui que tu viens de télécharger."]].map(([n,t,x])=>
     h("div",{class:"item",style:"padding:16px 18px;display:flex;gap:14px;align-items:center"}, h("b",{style:"font-size:1.6rem;color:var(--acc);min-width:26px;text-align:center"},n), h("div",{}, h("b",{},t), h("div",{style:"color:var(--mut);font-size:.9rem"},x)))),
   h("h3",{style:"margin:22px 0 10px"},"Raccourcis"),
-  h("div",{style:"display:flex;gap:10px;flex-wrap:wrap"}, ["Prix rapides","Promos","Options","Commande","Réalisations"].map(n=>h("button",{on:{click:()=>show(n)}},"→ "+n)), h("a",{href:"demos/photos.html",target:"_blank",style:"display:inline-block;padding:8px 14px;border:1px solid var(--line);border-radius:10px;color:var(--text)"},"📷 Photos des produits ↗")),
+  h("div",{style:"display:flex;gap:10px;flex-wrap:wrap"}, ["Prix rapides","Promos","Options","Commande","Légal & TVA","Réalisations"].map(n=>h("button",{on:{click:()=>show(n)}},"→ "+n)), h("a",{href:"demos/photos.html",target:"_blank",style:"display:inline-block;padding:8px 14px;border:1px solid var(--line);border-radius:10px;color:var(--text)"},"📷 Photos des produits ↗")),
   h("p",{class:"sub",style:"margin-top:22px"},"💡 Astuce : « sur devis » = laisse simplement le prix vide. Tu peux masquer n'importe quelle partie du site dans « Sections ». Ton brouillon est gardé dans ce navigateur tant que tu ne l'effaces pas.")
 ];
 S["Prix rapides"] = () => {
@@ -138,13 +138,14 @@ S["Accueil"] = () => [
 ];
 S["Gammes & tarifs"] = () => [
   h("p",{class:"sub"},"Modifie les prix, les descriptions et ce qui est inclus dans chaque offre."),
+  text("Délai de livraison (affiché partout sur le site)", cfg, "delivery", {placeholder:"48 à 72 h", hint:"Dans n'importe quel texte, écris {delivery} pour insérer ce délai. Une gamme peut avoir son propre délai ci-dessous."}),
   list(cfg.plans, ()=>({id:"g"+Date.now().toString(36), name:"Nouvelle gamme", tagline:"", price:100, from:false, delay:"3 jours", popular:false, cta:"Choisir", features:["Point inclus 1"]}),
     p=>p.name+" — "+(p.price==null?"Sur devis":p.price+" "+cfg.currency.symbol),
     p=>[
       text("Nom de la gamme", p, "name"), text("Phrase d'accroche", p, "tagline"),
       h("div",{class:"row"},
         field("Prix", ()=>p.price==null?"":p.price, v=>p.price = v===""?null:Number(v), {type:"number",min:0,placeholder:"vide = sur devis"}),
-        text("Délai de livraison", p, "delay"), text("Texte du bouton", p, "cta")),
+        text("Délai de cette gamme", p, "delay", {placeholder:"vide = délai par défaut"}), text("Texte du bouton", p, "cta")),
       h("div",{class:"row"}, text("Unité après le prix (facultatif)", p, "unit", {placeholder:"/mois"}), text("Groupe (facultatif)", p, "group", {placeholder:"Sites, Boutiques…"})),
       check("Afficher « À partir de » avant le prix", ()=>p.from, v=>p.from=v),
       check("⭐ Mettre en avant (« Le plus choisi »)", ()=>p.popular, v=>{ cfg.plans.forEach(x=>x.popular=false); p.popular=v; changed(); show("Gammes & tarifs"); }),
@@ -228,6 +229,39 @@ S["Notre histoire"] = () => { cfg.story = cfg.story || {eyebrow:"Notre histoire"
   h("h3",{style:"margin:18px 0 10px"},"Ce qui vous guide (3 valeurs)"),
   list(st.values, ()=>({title:"Valeur",text:""}), v=>v.title, v=>[text("Titre", v, "title"), text("Texte", v, "text", {area:true,rows:2})], ()=>show("Notre histoire"), {addLabel:"Ajouter une valeur"})
 ]; };
+S["Textes du site"] = () => { cfg.texts = cfg.texts || {}; const L = {nav_tarifs:"Menu : Tarifs",nav_comparatif:"Menu : Comparatif",nav_process:"Menu : Méthode",nav_realisations:"Menu : Réalisations",nav_faq:"Menu : Questions",nav_histoire:"Menu : Notre histoire",nav_insta:"Menu : Instagram",nav_cta:"Menu : bouton Commander",badge_pop:"Badge de la gamme mise en avant",label_delivery:"Mot « Livraison : » sur les gammes",label_from:"Mot « À partir de »",label_delay_est:"Mot « Délai estimé : »",order_plan:"Commande : titre 1",order_opts:"Commande : titre 2",order_info:"Commande : titre 3",f_name:"Champ : nom",f_biz:"Champ : activité",f_contact:"Champ : contact",f_project:"Champ : projet",sum_title:"Récapitulatif : titre",promo_btn:"Bouton code promo",sum_total:"Mot « Total »",copy_btn:"Bouton copier la commande",insta_btn:"Bouton Instagram",mail_btn:"Bouton e-mail",cart_btn:"Barre du bas : bouton",final_title:"Bandeau final : titre",final_text:"Bandeau final : texte",final_btn:"Bandeau final : bouton",final_insta:"Bandeau final : bouton Instagram",cgv_pre:"Case CGV : début de phrase",cgv_link:"Case CGV : lien",legal_mentions:"Pied de page : mentions légales",legal_cgv:"Pied de page : CGV",legal_privacy:"Pied de page : confidentialité"};
+  return [h("p",{class:"sub"},"Tous les petits textes du site : menu, boutons, formulaire de commande, bandeau final. Écris {delivery} pour insérer ton délai de livraison."),
+    ...Object.keys(cfg.texts).map(k=>text(L[k]||k, cfg.texts, k, {area:(cfg.texts[k]||"").length>60,rows:2}))]; };
+S["Légal & TVA"] = () => { cfg.vat = cfg.vat || {mode:"ttc",rate:20,note:""}; cfg.legal = cfg.legal || {}; const lg = cfg.legal; ["company","hosting","mediator","cgv"].forEach(k=>lg[k]=lg[k]||{});
+  const missing = [["Nom / dénomination",lg.company.name],["Forme juridique",lg.company.status],["Adresse",lg.company.address],["SIRET",lg.company.siret],["E-mail",lg.company.email],["Hébergeur",lg.hosting.name],["Médiateur de la consommation",lg.mediator.name],["Ville des tribunaux (CGV)",lg.cgv.city],["Moyens de paiement (CGV)",lg.cgv.paymentMethods]].filter(x=>!x[1]).map(x=>x[0]);
+  return [
+  h("p",{class:"sub"},"TVA, mentions légales, CGV et politique de confidentialité sont générées automatiquement à partir de ces informations (pages mentions-legales.html, cgv.html, confidentialite.html). ⚠ Ce sont des modèles : fais-les relire par un expert-comptable ou un juriste avant de t'en servir."),
+  missing.length ? h("div",{class:"item",style:"padding:14px 16px;border-color:#a8791a;margin-bottom:18px"}, h("b",{},"À compléter pour être en règle :"), h("div",{style:"color:var(--mut);font-size:.9rem;margin-top:4px"}, missing.join(" · "))) : h("div",{class:"item",style:"padding:12px 16px;margin-bottom:18px;border-color:#2e8a5a"},"✔ Toutes les informations principales sont renseignées."),
+  h("h3",{style:"margin:6px 0 10px"},"TVA"),
+  choose("Régime de TVA", ()=>cfg.vat.mode||"ttc", v=>{ cfg.vat.mode=v; changed(); show("Légal & TVA"); }, [["ttc","Prix affichés TTC (TVA incluse)"],["ht","Prix affichés HT (TVA ajoutée à la commande)"],["franchise","Pas de TVA (micro-entreprise : art. 293 B du CGI)"]]),
+  cfg.vat.mode==="franchise" ? null : field("Taux de TVA (%)", ()=>cfg.vat.rate, v=>cfg.vat.rate=Number(v)||0, {type:"number",min:0}),
+  text("Phrase affichée sous les prix (vide = texte automatique)", cfg.vat, "note", {placeholder:"Prix en euros TTC (TVA 20 % incluse)."}),
+  h("h3",{style:"margin:22px 0 10px"},"Ton entreprise (éditeur du site)"),
+  h("div",{class:"row"}, text("Nom ou dénomination", lg.company, "name"), text("Forme juridique", lg.company, "status", {placeholder:"Micro-entreprise, SASU, SAS…"})),
+  h("div",{class:"row"}, text("SIRET", lg.company, "siret"), text("RCS / répertoire des métiers (si applicable)", lg.company, "rcs")),
+  text("Adresse du siège", lg.company, "address"),
+  h("div",{class:"row"}, text("E-mail", lg.company, "email"), text("Téléphone", lg.company, "phone")),
+  h("div",{class:"row"}, text("Capital social (si société)", lg.company, "capital"), text("N° de TVA intracommunautaire", lg.company, "vatNumber", {hint:"Inutile en franchise de TVA."})),
+  text("Directeur de la publication", lg.company, "publisher", {placeholder:"Ton nom"}),
+  h("h3",{style:"margin:22px 0 10px"},"Hébergeur du site"),
+  h("div",{class:"row"}, text("Nom", lg.hosting, "name", {placeholder:"GitHub, Vercel, Netlify…"}), text("Site", lg.hosting, "website")),
+  text("Adresse de l'hébergeur", lg.hosting, "address", {hint:"À copier depuis les mentions légales de ton hébergeur."}),
+  h("h3",{style:"margin:22px 0 10px"},"Médiateur de la consommation"),
+  h("p",{class:"sub"},"Obligatoire si tu vends à des particuliers (consommateurs). Tu choisis un médiateur agréé auquel tu adhères."),
+  h("div",{class:"row"}, text("Nom du médiateur", lg.mediator, "name"), text("Site", lg.mediator, "website")),
+  text("Adresse du médiateur", lg.mediator, "address"),
+  h("h3",{style:"margin:22px 0 10px"},"CGV"),
+  text("Moyens de paiement acceptés", lg.cgv, "paymentMethods", {placeholder:"Virement bancaire, carte, PayPal…"}),
+  text("Ville des tribunaux compétents", lg.cgv, "city", {placeholder:"Ville de ton siège"}),
+  text("Clauses supplémentaires (facultatif)", lg.cgv, "extra", {area:true,rows:4}),
+  text("Date de mise à jour affichée (vide = date du jour)", lg, "updated", {placeholder:"11 octobre 2026"}),
+  h("p",{class:"sub",style:"margin-top:18px"},"Les pages légales s'ouvrent depuis le bas de ton site : "), h("div",{style:"display:flex;gap:10px;flex-wrap:wrap"}, [["Mentions légales","mentions-legales.html"],["CGV","cgv.html"],["Confidentialité","confidentialite.html"]].map(([t,u])=>h("a",{href:u,target:"_blank",style:"padding:8px 14px;border:1px solid var(--line);border-radius:10px;color:var(--text)"},t+" ↗")))
+]; };
 S["Processus"] = () => [list(cfg.process, ()=>({title:"Étape",text:""}), s=>s.title, s=>[text("Titre", s, "title"), text("Texte", s, "text", {area:true})], ()=>show("Processus"), {addLabel:"Ajouter une étape"})];
 S["Réalisations"] = () => [
   h("p",{class:"sub"},"Mets tes vrais projets. Pour une capture : place le fichier dans le dossier images/portfolio/ sur GitHub et écris son chemin (ex : images/portfolio/monsite.jpg). Le lien peut être le vrai site ou une page de démo."),
@@ -254,12 +288,12 @@ S["Contact"] = () => [
 ];
 
 /* ---- navigation ---- */
-const ORDER = ["Démarrer","Prix rapides","Gammes & tarifs","Options","Promos","Commande","Comparatif","Réalisations","Notre histoire","Accueil","Identité","Sections","Processus","Avis clients","Garanties","FAQ","Contact"];
+const ORDER = ["Démarrer","Prix rapides","Gammes & tarifs","Options","Promos","Commande","Comparatif","Réalisations","Notre histoire","Accueil","Identité","Sections","Textes du site","Légal & TVA","Processus","Avis clients","Garanties","FAQ","Contact"];
 let current = "Démarrer";
 function show(name){
   current = name; const st = $("edit").scrollTop;
   $("tabs").innerHTML = ""; ORDER.forEach(n=>$("tabs").append(h("button",{class:n===name?"on":"",on:{click:()=>show(n)}},n)));
-  $("edit").innerHTML = ""; $("edit").append(h("h2",{},name), ...S[name]()); $("edit").scrollTop = st;
+  $("edit").innerHTML = ""; $("edit").append(h("h2",{},name), ...S[name]().filter(Boolean)); $("edit").scrollTop = st;
 }
 show(current);
 

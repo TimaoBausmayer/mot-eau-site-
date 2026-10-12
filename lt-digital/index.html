@@ -54,6 +54,7 @@
       <div class="sec-head"><span class="eyebrow">Tarifs</span><h2>Choisis la gamme qui correspond à ton projet</h2><p>Des prix annoncés, sans surprise. Tu peux tout ajuster avec des options.</p></div>
       <div class="filters" id="plan-filters"></div>
       <div class="plans" id="plans"></div>
+      <p class="vat-note" id="vat-note"></p>
     </div>
   </section>
 
@@ -115,6 +116,7 @@
             <label class="full">Ton Instagram ou e-mail<input name="contact" required placeholder="@toncompte ou toi@mail.fr"></label>
             <label class="full">Décris ton projet<textarea name="desc" rows="4" placeholder="Style, couleurs, ton activité, ce que tu veux sur le site…"></textarea></label>
           </div>
+          <label class="cgv"><input type="checkbox" name="cgv" required><span><span id="cgv-pre"></span> <a href="cgv.html" target="_blank" rel="noopener" id="cgv-link"></a>.</span></label>
         </form>
         <aside class="summary">
           <h3>Récapitulatif</h3>
@@ -122,6 +124,7 @@
           <div class="promo"><input id="promo" placeholder="Code promo"><button type="button" class="btn btn-sm btn-ghost" id="promo-btn">Appliquer</button></div>
           <p class="promo-msg" id="promo-msg"></p>
           <div class="total"><span>Total</span><strong id="total">0</strong></div>
+          <p class="vatline" id="sum-vat"></p>
           <p class="dep" id="sum-dep"></p>
           <p class="small" id="sum-delay"></p>
           <p class="small" id="sum-note" hidden></p>
@@ -166,6 +169,8 @@
 <footer class="foot"><div class="wrap">
   <div class="fb"><img id="f-logo" alt="" width="56" height="56"><div><strong id="f-brand"></strong><span id="f-text"></span></div></div>
   <a id="f-insta" target="_blank" rel="noopener"></a>
+  <nav class="legal-nav" id="legal-nav"><a href="mentions-legales.html" id="lg-m"></a><a href="cgv.html" id="lg-c"></a><a href="confidentialite.html" id="lg-p"></a></nav>
+  <p class="legal-id" id="legal-id"></p>
 </div></footer>
 
 <script src="config.js"></script>
