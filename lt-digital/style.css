@@ -450,3 +450,46 @@ p,li,dd{text-wrap:pretty}
   .hero .stat dt{font-size:1.9rem}
   .hero .insta-line{display:none}
 }
+
+/* ---------- haut de page : finitions v2 ---------- */
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;transition:opacity .4s;background:radial-gradient(420px circle at var(--mx,50%) var(--my,30%),color-mix(in srgb,var(--accent) 16%,transparent),transparent 70%)}
+.hero.lit::before{opacity:1}
+.vf,.vp{cursor:zoom-in}
+.vf .crop{position:relative}
+.vf .crop img,.vp img{transition:opacity .9s ease}
+.vf .crop img.fadein{position:absolute;inset:0 auto auto 0;animation:fadein .9s ease both,scrollshot 14s ease-in-out infinite 1.5s}
+.vp img.fadein{position:absolute;inset:0;animation:fadein .9s ease both}
+@keyframes fadein{from{opacity:0;transform:scale(1.03)}to{opacity:1}}
+.vf .url{transition:opacity .25s,filter .25s}.vf .url.chg{opacity:0;filter:blur(3px)}
+.vhint{position:absolute;right:10px;bottom:10px;z-index:2;padding:5px 11px;border-radius:999px;background:rgba(10,15,31,.82);color:#fff;font:600 .72rem var(--bf);opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s;pointer-events:none}
+.vp .vhint{right:50%;transform:translate(50%,6px);white-space:nowrap;font-size:.62rem;padding:4px 8px}
+.vf:hover .vhint{opacity:1;transform:none}.vp:hover .vhint{opacity:1;transform:translate(50%,0)}
+.vf:hover{box-shadow:0 40px 70px -25px rgba(10,15,31,.5),0 0 0 2px var(--accent)}
+.vp:hover{border-color:var(--accent)}
+.cta-row .btn{transition:background .2s,color .2s,border-color .2s,translate .25s cubic-bezier(.2,.8,.2,1),box-shadow .2s}
+/* contact en pastilles */
+.hero .insta-line{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-top:22px}
+.hero .insta-line>span{color:var(--mut);font-size:.86rem;margin-right:2px}
+.hp{display:inline-flex;align-items:center;gap:7px;padding:6px 13px 6px 10px;border-radius:999px;border:1px solid rgba(10,15,31,.12);background:rgba(255,255,255,.6);backdrop-filter:blur(6px);font:600 .82rem var(--bf);color:var(--ink);transition:border-color .2s,transform .2s,background .2s}
+.hero .insta-line a.hp{border-bottom:1px solid rgba(10,15,31,.12)}.hero .insta-line a.hp:hover{border-color:var(--accent)}
+.hp:hover{border-color:var(--accent);background:#fff;transform:translateY(-2px);color:var(--accent)}
+.hp svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.hp svg .f{fill:currentColor;stroke:none}
+/* bande des métiers cliquable */
+.trades .tr{background:none;border:0;padding:4px 2px;cursor:pointer;font:700 1.15rem var(--hf);letter-spacing:-.01em;color:var(--ink);white-space:nowrap;transition:color .2s}
+.trades .tr:hover{color:var(--accent)}
+/* chiffres en cartes */
+.hero .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:28px;border:0}
+.hero .stat,.hero .stat+.stat{position:relative;padding:22px 22px 18px;border:1px solid rgba(10,15,31,.09);border-radius:16px;background:rgba(255,255,255,.6);backdrop-filter:blur(8px);overflow:hidden;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+.hero .stat::before{content:"";position:absolute;left:0;top:0;height:3px;width:100%;background:linear-gradient(90deg,var(--accent),#7a5cff,#22b8ff);transform:scaleX(0);transform-origin:left;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.hero .stats.in .stat::before{transform:scaleX(1)}
+.hero .stats.in .stat:nth-child(2)::before{transition-delay:.12s}.hero .stats.in .stat:nth-child(3)::before{transition-delay:.24s}.hero .stats.in .stat:nth-child(4)::before{transition-delay:.36s}
+.hero .stat:hover{transform:translateY(-4px);box-shadow:0 20px 40px -24px rgba(10,15,31,.45)}
+.hero .stat dd{padding-bottom:0}
+@media(max-width:960px){.hero .stats{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){
+  .hero .stats{gap:10px}
+  .hero .stat,.hero .stat+.stat,.hero .stat:nth-child(odd),.hero .stat:nth-child(even){padding:16px 14px 14px;border:1px solid rgba(10,15,31,.09);border-left:1px solid rgba(10,15,31,.09)}
+  .vhint{display:none}
+}
+@media(prefers-reduced-motion:reduce){.hero .stat::before{transform:none}.vf .crop img.fadein{animation:none}}
+.hero .trades+.wrap .stats{margin-top:28px}
