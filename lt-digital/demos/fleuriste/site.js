@@ -79,6 +79,7 @@ window.SITE = {
     "intro": "Chaque bouquet est composé à la main le jour même. Livraison à Bordeaux et alentours.",
     "images": false,
     "illustrations": false,
+    "placeholders": false,
     "cats": [
       {
         "name": "Bouquets",

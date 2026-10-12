@@ -79,6 +79,7 @@ window.SITE = {
     "intro": "Une quarantaine de fromages à la coupe, selon la saison et nos visites chez les producteurs.",
     "images": true,
     "illustrations": false,
+    "placeholders": true,
     "cats": [
       {
         "name": "Pâtes dures et pressées",

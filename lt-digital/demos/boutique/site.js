@@ -79,6 +79,7 @@ window.SITE = {
     "intro": "Toutes nos bougies sont coulées à la main, en petites séries, avec une mèche en coton.",
     "images": false,
     "illustrations": false,
+    "placeholders": false,
     "cats": [
       {
         "name": "Bougies parfumées",

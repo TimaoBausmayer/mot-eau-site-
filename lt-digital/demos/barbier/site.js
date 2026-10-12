@@ -79,6 +79,7 @@ window.SITE = {
     "intro": "Sur rendez-vous ou sans, selon l'affluence. Boisson offerte pendant la coupe.",
     "images": false,
     "illustrations": false,
+    "placeholders": false,
     "cats": [
       {
         "name": "Coupes",

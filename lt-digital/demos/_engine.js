@@ -40,7 +40,7 @@ const money = p => esc(p);
 function home(){
   const H = S.home, L = T.layout||"A";
   let feat = items.filter(i=>i.star); if (!feat.length) feat = S.offers.cats.map(c=>c.items[0]).filter(Boolean).map(i=>({...i}));
-  const want = L==="B"?4:3;
+  const want = S.offers.images ? 6 : (L==="B"?4:3);
   if (feat.length<want) items.forEach(i=>{ if(feat.length<want && !feat.includes(i)) feat.push(i); });
   feat = feat.slice(0, want);
   const hl = feat.map((it,i)=>`<a class="card rv${hp(it)}" href="${q(it.name)}">${pic(it)}${it.tag?`<span class="tagc">${esc(it.tag)}</span>`:`<span class="n">${String(i+1).padStart(2,"0")}</span>`}<h3>${esc(it.name)}</h3><p>${esc(it.desc)}</p><span class="pr">${money(it.price)}</span></a>`).join("");
@@ -86,12 +86,16 @@ const hd = document.getElementById("hd"); const sc = ()=>hd.classList.toggle("sc
 document.getElementById("bg").onclick = ()=>document.getElementById("nl").classList.toggle("open");
 const fm = document.getElementById("fm"); if (fm) fm.addEventListener("submit",e=>{ e.preventDefault(); document.getElementById("ok").hidden=false; fm.querySelector("button").disabled=true; });
 /* photo introuvable : on retire la case (le site reste propre tant qu'il n'y a pas de photo) */
+const CLEAN = /[?&]clean/.test(location.search), PH = S.offers.placeholders !== false && !CLEAN;
+const CAM = '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 15h9l3-5h12l3 5h9v24H6z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><circle cx="24" cy="26" r="7.5" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>';
 function dropPic(im){ const p = im.closest(".pic"); if(!p) return; const holder = p.closest(".mc,.it,.card");
+  if (PH){ const a = document.createElement("a"); a.className = "pic empty"; a.href = "../photos.html"; a.target = "_blank"; a.rel = "noopener"; a.title = "Ajouter la photo de ce produit";
+    a.innerHTML = `${CAM}<b>Photo à ajouter</b><span>Ajoute ta vraie photo ici</span>`; p.replaceWith(a); return; }
   if (holder && holder.classList.contains("mc")){ holder.remove(); const mo = document.querySelector(".mosaic"); if (mo && !mo.children.length) mo.outerHTML = visual(); }
   else if (holder) holder.classList.remove("has-pic"); p.remove(); }
 document.querySelectorAll(".pic img").forEach(im=>{ im.addEventListener("error",()=>dropPic(im)); if (im.complete && !im.naturalWidth) dropPic(im); });
 /* agrandir une photo produit */
-document.addEventListener("click",ev=>{ const p=ev.target.closest(".pic"); if(!p||ev.target.closest("a.go")) return; ev.preventDefault();
+document.addEventListener("click",ev=>{ const p=ev.target.closest(".pic"); if(!p||p.classList.contains("empty")||ev.target.closest("a.go")) return; ev.preventDefault();
   const card=p.closest(".it,.card"), name=card&&card.querySelector("h3")?(card.querySelector("h3").firstChild.textContent||"").trim():"";
   const ov=document.createElement("div"); ov.className="zoom"; ov.innerHTML=`<div class="zoom-in">${p.innerHTML}<p>${esc(name)}</p><button type="button">Fermer</button></div>`; document.body.appendChild(ov);
   const close=()=>{ ov.remove(); document.removeEventListener("keydown",kd); }; const kd=e=>{ if(e.key==="Escape") close(); };

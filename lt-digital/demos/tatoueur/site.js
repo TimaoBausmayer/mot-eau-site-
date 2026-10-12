@@ -79,6 +79,7 @@ window.SITE = {
     "intro": "Les prix sont indicatifs : le devis final dépend de la taille, du détail et de l'emplacement.",
     "images": false,
     "illustrations": false,
+    "placeholders": false,
     "cats": [
       {
         "name": "Styles",

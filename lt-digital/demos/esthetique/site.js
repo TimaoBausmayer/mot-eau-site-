@@ -79,6 +79,7 @@ window.SITE = {
     "intro": "Chaque soin commence par un échange pour comprendre vos besoins. Réservation en ligne ou par téléphone.",
     "images": false,
     "illustrations": false,
+    "placeholders": false,
     "cats": [
       {
         "name": "Visage",

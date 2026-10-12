@@ -48,7 +48,7 @@ def site(n):
       home=dict(kicker=n["kicker"], title=n["title"], text=n["text"], cta=n["cta"], cta2=n["cta2"],
                 highlightsTitle=n["hl_title"], highlightsText=n["hl_text"], aboutTitle=n["about_title"], about=n["about"],
                 stats=[list(s) for s in n["stats"]], features=[list(f) for f in n["features"]], ctaTitle=n["ctatitle"], ctaText=n["ctatext"]),
-      offers=dict(label=n["label"], title=n["offers_title"], intro=n["offers_intro"], images=any("img" in it for c in n["cats"] for it in c[2]), illustrations=False,
+      offers=dict(label=n["label"], title=n["offers_title"], intro=n["offers_intro"], images=any("img" in it for c in n["cats"] for it in c[2]), illustrations=False, placeholders=any("img" in it for c in n["cats"] for it in c[2]),
                   cats=[dict(name=c[0], note=c[1], items=[dict(it, photo="../photos/%s.jpg" % it["img"]) if "img" in it else dict(it) for it in c[2]]) for c in n["cats"]]),
       contact=dict(title="Contactez-nous", intro="Une question, un devis, une réservation ? Écrivez-nous ou appelez-nous : nous répondons rapidement.",
                    hours=[list(h) for h in n["hours"]], address=n["address"], phone=n["phone"], email=n["email"], note=n["note"],

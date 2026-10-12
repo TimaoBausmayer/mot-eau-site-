@@ -29,7 +29,9 @@ Pour livrer un site à un client : copie le dossier, change `site.js`, et c'est 
 ### Photos des produits (restaurant, pizzeria, boucherie, fromagerie)
 47 emplacements de photos (un par plat / produit). Ouvre **`demos/photos.html`** : pour chaque produit, clique ou glisse
 une photo, puis « Télécharger mes photos (.zip) », dézippe et envoie les fichiers dans `demos/photos/` sur GitHub.
-Les photos sont recadrées et allégées automatiquement. Une photo absente ne s'affiche tout simplement pas.
+Les photos sont recadrées et allégées automatiquement.
+Tant qu'une photo manque, le site affiche une case « Photo à ajouter » (cliquable : elle ouvre l'outil photos).
+Pour masquer ces cases : dans `site.js`, mets `"placeholders": false` (ou ajoute `?clean` à l'adresse de la page).
 (Pour un autre métier : ajoute `"photo": "../photos/nom.jpg"` à ses produits dans `site.js`.)
 
 ### Ajouter un nouveau métier (ex : poissonnerie)

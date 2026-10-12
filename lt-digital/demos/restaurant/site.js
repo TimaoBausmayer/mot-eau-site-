@@ -79,6 +79,7 @@ window.SITE = {
     "intro": "La carte change chaque mois selon les arrivages. Les plats sont cuisinés sur place, tous les jours.",
     "images": true,
     "illustrations": false,
+    "placeholders": true,
     "cats": [
       {
         "name": "Entrées",

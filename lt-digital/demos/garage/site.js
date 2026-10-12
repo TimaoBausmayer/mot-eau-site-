@@ -79,6 +79,7 @@ window.SITE = {
     "intro": "Tarifs affichés, devis avant travaux et pièces de qualité équivalente ou d'origine.",
     "images": false,
     "illustrations": false,
+    "placeholders": false,
     "cats": [
       {
         "name": "Entretien",

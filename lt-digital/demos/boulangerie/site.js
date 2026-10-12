@@ -79,6 +79,7 @@ window.SITE = {
     "intro": "Tout est pétri, façonné et cuit sur place. Les fournées commencent à 5 h.",
     "images": false,
     "illustrations": false,
+    "placeholders": false,
     "cats": [
       {
         "name": "Pains",

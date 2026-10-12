@@ -79,6 +79,7 @@ window.SITE = {
     "intro": "Sans engagement long. Tu peux changer de formule à tout moment.",
     "images": false,
     "illustrations": false,
+    "placeholders": false,
     "cats": [
       {
         "name": "Coaching mensuel",

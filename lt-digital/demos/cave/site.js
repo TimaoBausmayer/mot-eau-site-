@@ -79,6 +79,7 @@ window.SITE = {
     "intro": "Plus de trois cents références, toutes goûtées et choisies par nos soins.",
     "images": false,
     "illustrations": false,
+    "placeholders": false,
     "cats": [
       {
         "name": "Vins rouges",

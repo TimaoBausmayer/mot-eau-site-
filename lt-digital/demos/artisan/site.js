@@ -79,6 +79,7 @@ window.SITE = {
     "intro": "Chaque projet est dessiné, fabriqué dans l'atelier et posé par nos soins. Devis gratuit sous 48 h.",
     "images": false,
     "illustrations": false,
+    "placeholders": false,
     "cats": [
       {
         "name": "Agencement",

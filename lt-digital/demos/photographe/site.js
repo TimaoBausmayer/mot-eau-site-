@@ -79,6 +79,7 @@ window.SITE = {
     "intro": "Chaque séance est préparée avec vous. Photos retouchées livrées en galerie privée sous 15 jours.",
     "images": false,
     "illustrations": false,
+    "placeholders": false,
     "cats": [
       {
         "name": "Portrait & famille",

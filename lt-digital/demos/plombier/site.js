@@ -79,6 +79,7 @@ window.SITE = {
     "intro": "Un artisan qui se déplace vite, travaille proprement et annonce ses prix à l'avance.",
     "images": false,
     "illustrations": false,
+    "placeholders": false,
     "cats": [
       {
         "name": "Dépannage",
