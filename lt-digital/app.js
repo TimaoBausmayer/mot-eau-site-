@@ -860,13 +860,7 @@ $("vat-note").textContent = vatNote;
   if (still) return;
   const esc = t => String(t).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])), $ = id => document.getElementById(id);
   document.documentElement.classList.add("v5");
-  /* 1. défilement fluide et amorti (ordinateur) */
-  if (fine){ const sc = document.createElement("script"); sc.src = "vendor/lenis.min.js"; sc.async = true;
-    sc.onload = () => { if (!window.Lenis) return; const L = new Lenis({ lerp: .09, wheelMultiplier: .95, anchors: { offset: -84 } }); window.__lenis = L;
-      document.documentElement.classList.add("lenis-on"); (function raf(t){ L.raf(t); requestAnimationFrame(raf); })(performance.now());
-      /* fenêtres (recherche, aperçus) : on met le défilement en pause */
-      new MutationObserver(()=>{ const lock = document.body.style.overflow === "hidden" || document.documentElement.classList.contains("lock"); lock ? L.stop() : L.start(); }).observe(document.body, {attributes:true, attributeFilter:["style","class"]}); };
-    document.head.appendChild(sc); }
+  /* (défilement fluide retiré : la molette garde son comportement normal) */
   /* 2. le haut de page se rétracte et s'estompe quand on descend */
   const hero = document.querySelector(".hero"), hin = hero && hero.querySelector(".hero-in");
   let tk = 0; const onS = () => { if (tk) return; tk = requestAnimationFrame(()=>{ tk = 0; if (!hero) return; const h = hero.offsetHeight, y = Math.min(1, Math.max(0, scrollY / (h * .9)));

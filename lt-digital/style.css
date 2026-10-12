@@ -1306,10 +1306,6 @@ html{scrollbar-color:rgba(255,255,255,.18) var(--bg)}
    ANIMATIONS v5 — mouvement haut de gamme (sobre, fluide, précis)
    ====================================================================== */
 :root{--ex:cubic-bezier(.16,1,.3,1);--io:cubic-bezier(.65,0,.35,1);--serif:'Instrument Serif',Georgia,serif}
-/* défilement fluide (Lenis) */
-html.lenis-on{scroll-behavior:auto!important}
-html.lenis-on body{height:auto}
-.lenis.lenis-stopped{overflow:hidden}
 /* plus de bulles sur tout le site : un grain très fin à la place */
 .sky-bokeh,.cursor-glow{display:none!important}
 body::after{content:"";position:fixed;inset:0;z-index:300;pointer-events:none;opacity:.035;
