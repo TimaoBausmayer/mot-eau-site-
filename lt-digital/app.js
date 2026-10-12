@@ -763,7 +763,7 @@ $("vat-note").textContent = vatNote;
   function score(x, ws){ let s = 0; for (const w of ws){ const alts = [w].concat(SYN[w]||[]); const hit = alts.find(a=>x.n.includes(a)); if (!hit) return 0; s += norm(x.t).includes(hit) ? 3 : 1; if (norm(x.t).startsWith(hit)) s += 2; } if (x.type==="Page") s += 1; return s; }
   function draw(){
     const q = norm(inp.value).trim();
-    if (!q){ list = IDX.filter(x=>x.type==="Page"); res.innerHTML = `<div class="srch-quick">${QUICK.map(([ic,t,k])=>`<button type="button" data-q="${esc(k)}"><span>${ic}</span>${esc(t)}</button>`).join("")}</div><div class="srch-h">Aller à…</div>` + list.map((x,i)=>row(x,i)).join(""); }
+    if (!q){ list = IDX.filter(x=>x.type==="Page"); res.innerHTML = `<div class="srch-quick">${QUICK.map(([ic,t,k])=>`<button type="button" data-q="${esc(k)}">${esc(t)}</button>`).join("")}</div><div class="srch-h">Aller à…</div>` + list.map((x,i)=>row(x,i)).join(""); }
     else {
       const STOP = new Set(["un","une","le","la","les","de","des","du","et","ou","pour","combien","coute","cout","couter","est","ce","que","qui","quoi","mon","ma","mes","ton","je","veux","voudrais","comment","quel","quelle","quels","a","au","aux","sur","en","il","y","faire","avoir","vous","on","peut","puis","ya","dans"]);
       let ws = q.split(/[^a-z0-9€]+/).filter(Boolean).filter(w=>!STOP.has(w)).map(w=>w.replace(/s$/,"")).filter(Boolean);
@@ -775,7 +775,7 @@ $("vat-note").textContent = vatNote;
     }
     sel = 0; mark();
   }
-  const row = (x,i) => `<button type="button" class="srch-r" role="option" data-i="${i}"><span class="ic">${x.ic}</span><span class="tx"><b>${esc(x.t)}</b><small>${esc(x.s||"")}</small></span><em>${esc(x.type)}</em></button>`;
+  const row = (x,i) => `<button type="button" class="srch-r" role="option" data-i="${i}"><span class="tx"><b>${esc(x.t)}</b><small>${esc(x.s||"")}</small></span><em>${esc(x.type)}</em></button>`;
   function mark(){ res.querySelectorAll(".srch-r").forEach(b=>{ const on = +b.dataset.i===sel; b.classList.toggle("on", on); b.setAttribute("aria-selected", on); if (on) b.scrollIntoView({block:"nearest"}); }); }
   function open(q){ box.hidden = false; document.body.classList.add("srch-open"); inp.value = q||""; draw(); setTimeout(()=>inp.focus(), 30); }
   function close(){ box.hidden = true; document.body.classList.remove("srch-open"); }

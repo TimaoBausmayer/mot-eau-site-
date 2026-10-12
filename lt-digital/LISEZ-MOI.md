@@ -74,7 +74,7 @@ Section sombre « Photos, logo, affiches & réseaux » (photos : on se déplace 
 
 ## Pubs vidéo (services) et s'y retrouver sur le site
 
-- **Pubs vidéo** : un onglet « Pubs vidéo » dans la section Services (8 prestations : pub courte 149 €, longue 349 €, pack de 3 399 €, style portfolio 249 €, visuel animé 39 €, 5 stories 99 €, voix off 49 €, film sur mesure sur devis). Modifie noms, prix et textes dans **Admin → Services & pubs**. Chaque carte peut avoir un **aperçu vidéo** (chemin d'un mp4 dans `images/pubs/`, plus un `.webm` du même nom pour les vieux navigateurs).
+- **Pubs vidéo** : un onglet « Pubs vidéo » dans la section Services (6 prestations : pub courte 149 €, longue 349 €, pack de 3 399 €, style portfolio 249 €, visuel animé 39 €, 5 stories 99 €). Exemples de stories, post carré et bannière : dossier `exemples/` (page animée : `promo/stories.html`). Modifie noms, prix et textes dans **Admin → Services & pubs**. Chaque carte peut avoir un **aperçu vidéo** (chemin d'un mp4 dans `images/pubs/`, plus un `.webm` du même nom pour les vieux navigateurs).
 - **Recherche** : bouton « Rechercher » en haut (ou touche **/** ou **Ctrl+K**). Tape un mot (« logo », « pub », « délai »…) : prix, services, options, questions, maquettes, contacts. Un clic t'emmène au bon endroit, qui s'illumine.
 - **Plan de la page** : petits points à droite (ordinateur) : la section en cours s'allume, un survol affiche son nom.
 
