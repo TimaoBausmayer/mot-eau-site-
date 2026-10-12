@@ -125,6 +125,9 @@ S["Accueil"] = () => [
   text("Petit badge", cfg.hero, "badge"), text("Titre (début)", cfg.hero, "title"), text("Titre (partie colorée)", cfg.hero, "titleAccent"),
   text("Paragraphe", cfg.hero, "text", {area:true,rows:4}),
   h("div",{class:"row"}, text("Bouton 1", cfg.hero, "cta1"), text("Bouton 2", cfg.hero, "cta2")),
+  h("h3",{style:"margin:18px 0 6px"},"Images du haut de page"),
+  h("p",{class:"sub"},"Chemins des captures affichées à droite du titre (ex : images/portfolio/restaurant.jpg). Vide = rien."),
+  ...(cfg.hero.visual = cfg.hero.visual || {a:"",b:"",phone:""}, [text("Grande fenêtre", cfg.hero.visual, "a"), text("Fenêtre du bas", cfg.hero.visual, "b"), text("Téléphone", cfg.hero.visual, "phone")]),
   h("h3",{style:"margin:18px 0 10px"},"Chiffres clés"),
   list(cfg.stats, ()=>({value:"",label:""}), s=>s.value+" — "+s.label,
     s=>h("div",{class:"row"}, text("Chiffre", s, "value"), text("Légende", s, "label")), ()=>show("Accueil"))
@@ -195,8 +198,8 @@ S["Avis clients"] = () => [
   list(cfg.testimonials, ()=>({name:"",role:"",text:""}), t=>t.name||"Nouvel avis",
     t=>[text("Nom", t, "name"), text("Rôle / activité", t, "role"), text("Avis", t, "text", {area:true})], ()=>show("Avis clients"), {addLabel:"Ajouter un avis"})
 ];
-S["Garanties"] = () => [list(cfg.guarantees, ()=>({icon:"✅",title:"Garantie",text:""}), g=>g.icon+" "+g.title,
-  g=>[h("div",{class:"row"},text("Icône (emoji)", g, "icon"), text("Titre", g, "title")), text("Texte", g, "text", {area:true})], ()=>show("Garanties"), {addLabel:"Ajouter une garantie"})];
+S["Garanties"] = () => [list(cfg.guarantees, ()=>({icon:"✅",title:"Garantie",text:""}), g=>g.title,
+  g=>[text("Titre", g, "title"), text("Texte", g, "text", {area:true})], ()=>show("Garanties"), {addLabel:"Ajouter une garantie"})];
 S["FAQ"] = () => [list(cfg.faq, ()=>({q:"Nouvelle question ?",a:""}), f=>f.q,
   f=>[text("Question", f, "q"), text("Réponse", f, "a", {area:true,rows:4})], ()=>show("FAQ"), {addLabel:"Ajouter une question"})];
 S["Contact"] = () => [

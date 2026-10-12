@@ -18,23 +18,26 @@ window.SITE_CONFIG = {
   currency: { symbol: "€", after: true },   // after:true => "290 €"
 
   /* ---------- BANDEAU D'ANNONCE (laisse "" pour le cacher) ---------- */
-  announce: "🔥 Offre de lancement : -10 % avec le code BIENVENUE",
+  announce: "Offre de lancement : -10 % avec le code BIENVENUE",
 
   /* ---------- HERO (haut de page) ---------- */
   hero: {
     badge: "Création & modernisation de sites web",
-    title: "Un site web professionnel qui",
-    titleAccent: "fait la différence.",
-    text: "Sites vitrines, boutiques en ligne, refonte de site existant… LT Digital conçoit des sites modernes, rapides et sur mesure pour les entrepreneurs, artisans, associations et créateurs.",
+    title: "Votre site web,",
+    titleAccent: "livré en quelques jours.",
+    text: "LT Digital crée et modernise les sites des commerçants, artisans et indépendants. Un seul interlocuteur, un prix annoncé à l'avance, des retouches incluses.",
     cta1: "Voir les tarifs",
-    cta2: "Commander maintenant"
+    cta2: "Commander",
+    /* images du haut de page (captures de tes maquettes) */
+    visual: { a: "images/portfolio/restaurant.jpg", b: "images/portfolio/boutique.jpg", phone: "images/portfolio/coach-mobile.jpg" }
   },
+
 
   /* ---------- CHIFFRES CLÉS (supprime les lignes inutiles) ---------- */
   stats: [
     { value: "48h",  label: "Délai de livraison dès 1 page" },
-    { value: "100%", label: "Sur mesure, jamais de copier-coller" },
-    { value: "Mobile", label: "Sites adaptés mobile & tablette" },
+    { value: "1", label: "seul interlocuteur, de A à Z" },
+    { value: "100%", label: "Adapté au mobile et à la tablette" },
     { value: "7j/7", label: "Support après livraison" }
   ],
 
@@ -190,10 +193,10 @@ window.SITE_CONFIG = {
 
   /* ---------- GARANTIES ---------- */
   guarantees: [
-    { icon: "🛡️", title: "Satisfait ou retouché", text: "Tu valides chaque étape avant la mise en ligne." },
+    { title: "Satisfait ou retouché", text: "Tu valides chaque étape avant la mise en ligne." },
     { icon: "⚡",  title: "Livraison rapide",      text: "Des délais annoncés, et tenus." },
-    { icon: "🎨", title: "100 % unique",          text: "Aucun modèle réutilisé : ton site est le tien." },
-    { icon: "💬", title: "Réponse rapide",        text: "Un message et je te réponds en général dans la journée." }
+    { title: "100 % unique",          text: "Aucun modèle réutilisé : ton site est le tien." },
+    { title: "Réponse rapide",        text: "Un message et je te réponds en général dans la journée." }
   ],
 
   /* ---------- FAQ ---------- */
