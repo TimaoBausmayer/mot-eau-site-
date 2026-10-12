@@ -689,16 +689,32 @@ $("vat-note").textContent = vatNote;
       b.addEventListener("pointermove", e=>{ const q = b.getBoundingClientRect(); b.style.translate = `${(e.clientX-q.left-q.width/2)*.12}px ${(e.clientY-q.top-q.height/2)*.2}px`; });
       b.addEventListener("pointerleave", ()=>{ b.style.translate = ""; }); });
   }
-  /* les prix des gammes défilent jusqu'à leur valeur quand on arrive dessus */
-  if ("IntersectionObserver" in window){
-    const io = new IntersectionObserver(es=>es.forEach(e=>{ if (!e.isIntersecting) return; io.unobserve(e.target);
-      const pr = e.target.querySelector(".price"); if (!pr || pr.querySelector("s")) return;
-      const tn = [...pr.childNodes].find(n=>n.nodeType===3 && /\d/.test(n.textContent)); if (!tn) return;
-      const full = tn.textContent, m = full.match(/(\d(?:[\d\s\u202f]*\d)?)/); if (!m) return; const end = +m[1].replace(/\D/g,""); if (!end) return;
-      const t0 = performance.now(), D = 900; const step = now => { const k = Math.min(1,(now-t0)/D), v = Math.round(end*(1-Math.pow(1-k,3)));
-        tn.textContent = full.replace(m[1], v.toLocaleString("fr-FR")); if (k<1) requestAnimationFrame(step); else tn.textContent = full; }; requestAnimationFrame(step); }), {threshold:.4});
-    const watch = () => document.querySelectorAll("#plans .plan").forEach(p=>{ if (!p.dataset.cnt){ p.dataset.cnt = 1; io.observe(p); } });
-    watch(); new MutationObserver(watch).observe($("plans"), {childList:true}); }
+})();
+/* ---------- animations v4 ---------- */
+(function(){
+  /* deux bandes qui défilent en se croisant sous le haut de page (tes services) */
+  const grp = [...new Set(((C.services||{}).items||[]).map(x=>x.group).filter(Boolean))];
+  const words = ["Sites web", ...grp, "Livré en " + (C.delivery||"quelques jours")];
+  const row = arr => arr.map(w=>`<span>${esc(w)}</span><i>✦</i>`).join("");
+  document.querySelectorAll("#ticks .tick-in").forEach((el,k)=>{ const a = k ? [...words].reverse() : words; el.innerHTML = row(a) + row(a) + row(a); });
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+  /* étoiles qui scintillent dans le fond */
+  const sky = document.querySelector(".sky-bokeh");
+  if (sky){ let sd = 3; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
+    sky.insertAdjacentHTML("beforeend", Array.from({length: innerWidth < 700 ? 8 : 16}, () => `<b style="left:${(r()*100).toFixed(1)}%;top:${(r()*100).toFixed(1)}%;--z:${(8+r()*12).toFixed(0)}px;--d:${(2+r()*3).toFixed(1)}s;--dl:-${(r()*4).toFixed(1)}s">✦</b>`).join("")); }
+  /* maquettes, questions, valeurs : apparaissent une par une */
+  const io = new IntersectionObserver(es=>es.forEach(e=>{ if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }), {threshold:.15});
+  const seq = () => { document.querySelectorAll(".works > .work, .faq > details, #why-vs li, .rv-top, .guar > .g").forEach((el,i,all)=>{ if (el.dataset.sq) return; el.dataset.sq = 1;
+    const sib = [...el.parentNode.children].indexOf(el); el.classList.add("sq"); el.style.setProperty("--q", (sib % 6) * 90 + "ms"); io.observe(el); }); };
+  seq(); ["works","reviews"].forEach(id=>{ const n = $(id); if (n) new MutationObserver(seq).observe(n, {childList:true}); });
+  /* titres de section : glissent légèrement avec le défilement (profondeur) */
+  const heads = [...document.querySelectorAll("main .sec-head")]; let tk = 0;
+  addEventListener("scroll", ()=>{ if (tk) return; tk = requestAnimationFrame(()=>{ tk = 0; const H = innerHeight;
+    heads.forEach(h=>{ const b = h.getBoundingClientRect(); if (b.bottom < -100 || b.top > H + 100) return; const k = (b.top + b.height/2 - H/2) / H; h.style.setProperty("--py", (k * -28).toFixed(1) + "px"); }); }); }, {passive:true});
+  /* bandes : accélèrent quand on fait défiler */
+  const ticks = document.querySelectorAll("#ticks .tick-in"); let last = scrollY, sp = 0, pos = 0;
+  (function run(){ const d = Math.abs(scrollY - last); last = scrollY; sp = sp * .9 + d * .1; pos += .5 + sp * .25;
+    ticks.forEach((t,k)=>{ const w = t.scrollWidth / 3 || 1; const x = (pos % w); t.style.transform = `translateX(${k ? -w + x : -x}px)`; }); requestAnimationFrame(run); })();
 })();
 /* ---------- animations supplémentaires ---------- */
 (function(){ if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;

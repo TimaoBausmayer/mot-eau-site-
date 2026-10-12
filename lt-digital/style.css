@@ -1213,3 +1213,35 @@ input::placeholder,textarea::placeholder{color:rgba(220,225,250,.38)}
 @media(max-width:700px){.cursor-glow{display:none}.reveal{transform:translateY(24px);filter:blur(4px)}}
 @media(prefers-reduced-motion:reduce){.sky-bokeh,.cursor-glow,.hero-bg::after{display:none}.reveal{filter:none;transform:none}
   .sec-head h2 .gw>span,.why-ic,.svc-ic,.hero h1 em,.hero .vis-in,.hp-ic,.hero .stat,.btn::before{animation:none!important}}
+
+/* ======================================================================
+   ANIMATIONS v4
+   ====================================================================== */
+/* bandes croisées sous le haut de page */
+.ticks{position:relative;height:150px;margin:-18px 0 -40px;overflow:hidden;z-index:2;pointer-events:none}
+.tick{position:absolute;left:-5%;right:-5%;top:50%;padding:14px 0;overflow:hidden;white-space:nowrap}
+.tick.t1{background:var(--lime);transform:translateY(-50%) rotate(-3deg);box-shadow:0 20px 50px -20px rgba(200,255,62,.5);z-index:2}
+.tick.t2{background:rgba(255,255,255,.06);border-block:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px);transform:translateY(-50%) rotate(2.5deg)}
+.tick-in{display:inline-flex;align-items:center;gap:26px;will-change:transform}
+.tick span{font:800 1.5rem var(--hf);letter-spacing:-.02em;text-transform:uppercase}
+.tick.t1 span{color:#0a0912}.tick.t1 i{color:#0a0912}
+.tick.t2 span{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.7)}.tick.t2 i{color:var(--lime)}
+.tick i{font-style:normal;font-size:1rem}
+/* étoiles qui scintillent */
+.sky-bokeh b{position:absolute;font-size:var(--z);color:var(--lime);opacity:0;text-shadow:0 0 10px rgba(200,255,62,.8);animation:twinkle var(--d) ease-in-out var(--dl) infinite}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.4) rotate(0)}50%{opacity:.55;transform:scale(1) rotate(90deg)}}
+/* apparitions une par une */
+.sq{opacity:0;transform:translateY(30px) scale(.96);filter:blur(6px);transition:opacity .7s cubic-bezier(.2,.8,.2,1) var(--q,0ms),transform .8s cubic-bezier(.2,.8,.2,1) var(--q,0ms),filter .7s ease var(--q,0ms)}
+.sq.in{opacity:1;transform:none;filter:none}
+.works > .work.sq .frame{clip-path:inset(0 0 100% 0 round 16px);transition:clip-path 1s cubic-bezier(.7,0,.2,1) calc(var(--q,0ms) + 150ms),transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
+.works > .work.sq.in .frame{clip-path:inset(0 0 0 0 round 16px)}
+#why-vs li.sq{transform:translateX(-20px)}#why-vs li.sq.in{transform:none}
+/* titres : profondeur au défilement */
+main .sec-head{translate:0 var(--py,0px);transition:translate .2s linear}
+/* « le plus choisi » : badge qui sautille */
+.plan.pop .ribbon,.cmp-badge,.svc.pop .svc-tag.hot{animation:hop 2.8s cubic-bezier(.3,1.6,.5,1) infinite}
+@keyframes hop{0%,70%,100%{transform:none}78%{transform:translateY(-5px) rotate(-3deg)}86%{transform:translateY(0) rotate(2deg)}}
+/* grands mots du bas : reflet qui passe */
+.final h2{background:linear-gradient(100deg,#fff 40%,#c8ff3e 50%,#fff 60%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:grad 6s linear infinite}
+@media(max-width:700px){.ticks{height:110px;margin:-10px 0 -24px}.tick{padding:10px 0}.tick span{font-size:1.1rem}}
+@media(prefers-reduced-motion:reduce){.sq,.works > .work.sq .frame{opacity:1;transform:none;filter:none;clip-path:none}.sky-bokeh b,.plan.pop .ribbon,.cmp-badge,.final h2{animation:none}}
