@@ -1403,3 +1403,32 @@ body::after{content:"";position:fixed;inset:0;z-index:300;pointer-events:none;op
 @media(max-width:960px){.logos{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:640px){.logos{grid-template-columns:repeat(2,1fr);gap:10px}.lgc-in{flex-direction:column;gap:2px;padding:10px 12px}.lg-cta{padding:18px}}
 .cur-dot,.cur-ring{display:none!important}
+
+/* ---------- menu « Services » déroulant ---------- */
+.dd{position:relative;display:flex;align-items:center;gap:2px}
+.dd-tg{display:grid;place-items:center;width:22px;height:22px;padding:0;border:0;border-radius:6px;background:none;color:inherit;cursor:pointer;transition:background .2s,transform .3s var(--ex,ease)}
+.dd-tg svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s var(--ex,ease)}
+.dd-tg:hover{background:rgba(255,255,255,.08)}
+.dd-menu{position:absolute;top:calc(100% + 16px);left:-22px;z-index:70;width:340px;padding:8px;border-radius:18px;background:rgba(18,16,30,.97);border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 30px 70px -20px rgba(0,0,0,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  opacity:0;visibility:hidden;transform:translateY(-8px) scale(.98);transform-origin:20% 0;transition:opacity .25s,transform .35s var(--ex,ease),visibility 0s .35s}
+.dd-menu::before{content:"";position:absolute;left:0;right:0;top:-18px;height:18px}
+.dd:hover .dd-menu,.dd.open .dd-menu,.dd:focus-within .dd-menu{opacity:1;visibility:visible;transform:none;transition:opacity .25s,transform .35s var(--ex,ease),visibility 0s}
+.dd:hover .dd-tg svg,.dd.open .dd-tg svg{transform:rotate(180deg)}
+.dd-menu button{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border:0;border-radius:12px;background:none;color:#fff;text-align:left;cursor:pointer;font:inherit;transition:background .2s}
+.dd-menu button:hover,.dd-menu button:focus-visible{background:rgba(255,255,255,.06)}
+.dd-menu i{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.06);font-style:normal;font-size:1rem}
+.dd-menu button:hover i{background:rgba(200,255,62,.14)}
+.dd-menu b{display:block;font:600 .92rem var(--bf);color:#fff}
+.dd-menu small{display:block;font-size:.78rem;color:var(--mut);font-weight:400}
+.links .dd-menu .dd-all{display:block;margin:4px 4px 2px;padding:10px 12px;border-top:1px solid rgba(255,255,255,.08);color:var(--lime);font:600 .84rem var(--bf)}
+.links .dd-menu .dd-all::after{display:none}
+@media(max-width:960px){
+  .dd{flex-wrap:wrap;border-top:1px solid var(--rule)}
+  .links .dd>a{border-top:0;flex:1}
+  .dd-tg{width:44px;height:44px;margin-right:12px}
+  .dd-menu{position:static;width:100%;padding:0 12px 10px;border:0;border-radius:0;background:none;box-shadow:none;backdrop-filter:none;display:none;opacity:1;visibility:visible;transform:none}
+  .dd.open .dd-menu{display:block}
+  .dd:hover .dd-menu{display:none}.dd.open:hover .dd-menu{display:block}
+  .links .dd-menu .dd-all{border-top:0;padding:10px 12px}
+}

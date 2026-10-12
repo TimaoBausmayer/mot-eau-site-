@@ -781,6 +781,25 @@ $("vat-note").textContent = vatNote;
   b.hidden = false; b.innerHTML = `<span class="pc-ic" aria-hidden="true">🎬</span><span>${esc(T.pub_cta)}</span><b>${esc(T.pub_cta_btn||"Voir")} →</b>`;
   b.onclick = ()=>{ svTab = aGroup(g); drawSvcs(); $("services").scrollIntoView({behavior:"smooth"}); }; })();
 
+/* ---------- menu « Services » déroulant : logos, pubs, réseaux & boost, affiches, photos… ---------- */
+(function(){ const menu = $("dd-menu"), dd = $("dd-svc"), tg = $("dd-tg"); if (!menu) return;
+  const INFO = { "Pubs vidéo":["🎬","Pubs vidéo","Pubs animées, stories, visuels"], "Réseaux sociaux":["🚀","Réseaux sociaux & boost","Gestion, boost de publications"],
+    "Affiches & print":["🖨️","Affiches & print","Affiches, flyers, cartes de visite"], "Photos & vidéo":["📸","Photos & vidéo","Séance photo, retouche, vidéo"], "Logo & identité":["✒️","Logo & identité","Création de logo sur mesure"] };
+  const groups = SV ? [...new Set(SI.map(aGroup))] : [];
+  const order = ["Pubs vidéo","Réseaux sociaux","Affiches & print","Photos & vidéo","Logo & identité"]; groups.sort((a,b)=>(order.indexOf(a)+99)%99 - (order.indexOf(b)+99)%99);
+  const rows = [];
+  if (!$("logos").hidden || ((C.logos||{}).items||[]).length) rows.push(`<button type="button" role="menuitem" data-go="logos"><i>🎨</i><span><b>Nos logos</b><small>Nos designs à découvrir</small></span></button>`);
+  groups.forEach(g=>{ const [ic,t,d] = INFO[g] || ["✦", g, ""]; const n = SI.filter(it=>aGroup(it)===g).length;
+    rows.push(`<button type="button" role="menuitem" data-g="${esc(g)}"><i>${ic}</i><span><b>${esc(t)}</b><small>${esc(d || (n+" prestations"))}</small></span></button>`); });
+  menu.innerHTML = rows.join("") + `<a class="dd-all" href="#services">Tous les services et prix →</a>`;
+  const close = () => { dd.classList.remove("open"); tg.setAttribute("aria-expanded","false"); };
+  tg.addEventListener("click", e=>{ e.stopPropagation(); const o = dd.classList.toggle("open"); tg.setAttribute("aria-expanded", o); });
+  document.addEventListener("click", e=>{ if (!dd.contains(e.target)) close(); });
+  document.addEventListener("keydown", e=>{ if (e.key==="Escape") close(); });
+  menu.addEventListener("click", e=>{ const b = e.target.closest("button,a"); if (!b) return; close(); $("links").classList.remove("open");
+    if (b.dataset.go){ e.preventDefault(); $(b.dataset.go).scrollIntoView({behavior:"smooth"}); }
+    else if (b.dataset.g){ svTab = b.dataset.g; drawSvcs(); $("services").scrollIntoView({behavior:"smooth"}); } }); })();
+
 /* ---------- nos designs de logos ---------- */
 (function(){ const L = C.logos || {}, list = (L.items||[]).filter(x=>x && x.image); if (!list.length) return;
   $("logos").hidden = false; $("lg-eb").textContent = L.eyebrow||"Logos"; { const ws = String(L.title||"").split(/\s+/).filter(Boolean), g = ws.length > 3 ? 2 : 1; $("lg-title").innerHTML = ws.map((w,k)=>`<span class="w2${k >= ws.length-g ? " gw" : ""}"><span style="--i:${k}">${esc(w)}</span></span>`).join(" "); } $("lg-text").textContent = L.text||"";

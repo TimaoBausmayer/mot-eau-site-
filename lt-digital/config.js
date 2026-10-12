@@ -309,6 +309,7 @@ window.SITE_CONFIG = {
       { id: "s-cm-1", group: "Réseaux sociaux", name: "Gestion des réseaux — Essentiel", price: 190, unit: "/mois", desc: "On publie pour toi chaque semaine.", features: ["8 publications / mois", "1 réseau", "Visuels et textes rédigés"] },
       { id: "s-cm-2", group: "Réseaux sociaux", name: "Gestion des réseaux — Pro", price: 390, unit: "/mois", popular: true, desc: "Une présence active et régulière.", features: ["12 publications + stories", "2 réseaux", "Réponses aux messages", "Bilan chaque mois"] },
       { id: "s-reel", group: "Réseaux sociaux", name: "Montage vidéo (Reel / TikTok)", price: 49, qty: true, max: 30, desc: "Tes vidéos montées, rythmées et sous-titrées.", features: ["Jusqu'à 60 secondes", "Musique et sous-titres"] },
+      { id: "s-boost", group: "Réseaux sociaux", name: "Boost de publications", price: 39, qty: true, max: 20, popular: true, desc: "On sponsorise tes meilleures publications Instagram / Facebook / TikTok auprès des gens de ta ville. Prix par boost, budget publicitaire en plus.", features: ["Ciblage autour de ton commerce", "Choix de la publication à booster", "Bilan des résultats"] },
       { id: "s-pub", group: "Réseaux sociaux", name: "Campagne de publicité", price: null, desc: "Pubs Instagram / Facebook ciblées autour de chez toi.", features: ["Budget pub en plus", "Réglages et suivi"] }
     ]
   },
