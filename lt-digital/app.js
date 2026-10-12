@@ -20,6 +20,9 @@ const delayOf = p => p.delay || C.delivery || "";
 /* thème */
 document.documentElement.style.setProperty("--accent", C.accent);
 document.documentElement.style.setProperty("--accent2", C.accent2);
+/* texte posé sur la couleur principale : foncé si la couleur est claire, blanc sinon */
+(function(){ const m = String(C.accent||"").match(/^#?([0-9a-f]{6})$/i); if (!m) return; const n = parseInt(m[1],16), L = (.299*(n>>16) + .587*(n>>8&255) + .114*(n&255))/255;
+  document.documentElement.style.setProperty("--on-accent", L > .6 ? "#0a0912" : "#fff"); })();
 document.title = C.brand + " — " + C.tagline;
 
 /* en-tête */
@@ -46,7 +49,7 @@ $("h-badge").textContent = C.hero.badge; $("h-badge-wrap").hidden = !C.hero.badg
   $("h-trust").innerHTML = t.map(x=>`<li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg>${esc(x)}</li>`).join(""); })();
 /* fond du haut : bulles de lumière floues qui flottent (style des pubs) */
 (function(){ const box = $("hero-bokeh"); if (!box) return; const cols = ["127,155,255","192,132,252","94,234,212","200,255,62","255,190,140","255,255,255"];
-  let sd = 5; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647; const k = innerWidth < 700 ? 9 : 16;
+  let sd = 5; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647; const k = innerWidth < 700 ? 7 : 11;
   box.innerHTML = Array.from({length:k}, (_, i) => { const s = 40 + r()*150;
     return `<i style="--s:${s.toFixed(0)}px;--x:${(r()*100).toFixed(1)}%;--y:${(r()*100).toFixed(1)}%;--c:${cols[i%cols.length]};--o:${(.25+r()*.45).toFixed(2)};--d:${(9+r()*10).toFixed(1)}s;--dl:-${(r()*10).toFixed(1)}s;--mx:${((r()-.5)*120).toFixed(0)}px;--my:${((r()-.5)*160).toFixed(0)}px"></i>`; }).join(""); })();
 /* barre « demande » : des exemples de projets s'écrivent tout seuls */

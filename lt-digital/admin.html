@@ -82,7 +82,7 @@ function list(arr, makeNew, titleOf, body, rerender, o={}){
 const slug = s => (s||"gamme").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") || "gamme";
 
 function presets(){
-  const P = [["Bleu LT","#2f6bff","#5ab6ff"],["Violet","#7c5cff","#00d4ff"],["Émeraude","#10b981","#34d399"],["Orange","#f97316","#fbbf24"],["Rose","#ec4899","#f472b6"],["Rouge","#ef4444","#fb923c"],["Or","#d4a84b","#f0d78c"]];
+  const P = [["Citron (actuel)","#c8ff3e","#8fa2ff"],["Bleu LT","#2f6bff","#5ab6ff"],["Violet","#7c5cff","#00d4ff"],["Émeraude","#10b981","#34d399"],["Orange","#f97316","#fbbf24"],["Rose","#ec4899","#f472b6"],["Rouge","#ef4444","#fb923c"],["Or","#d4a84b","#f0d78c"]];
   return h("div",{style:"display:flex;gap:8px;flex-wrap:wrap"}, P.map(([n,a,b])=>h("button",{type:"button",title:n,style:`background:linear-gradient(135deg,${a},${b});border:0;width:44px;height:44px;border-radius:50%`,on:{click:()=>{ cfg.accent=a; cfg.accent2=b; changed(); show("Identité"); }}})));
 }
 /* ---- sections ---- */

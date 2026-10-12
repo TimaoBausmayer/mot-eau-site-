@@ -11,8 +11,8 @@ window.SITE_CONFIG = {
   tagline: "Création & modernisation de sites web",
   logo: "images/logo-small.jpg",          // petit logo (barre du haut)
   logoBig: "images/logo.jpg",             // grand logo (pied de page)
-  accent: "#2f6bff",                      // bleu du logo
-  accent2: "#5ab6ff",
+  accent: "#c8ff3e",                      // vert citron (couleur principale du site)
+  accent2: "#8fa2ff",
 
   /* ---------- DÉLAI DE LIVRAISON (partout sur le site) ----------
      Écris {delivery} dans n'importe quel texte pour y mettre ce délai.
@@ -49,21 +49,19 @@ window.SITE_CONFIG = {
     badge: "Création & modernisation de sites web",
     title: "Le site qui fait venir",
     titleAccent: "de nouveaux clients.",
-    text: "Un site beau, rapide et bien placé sur Google, qui donne envie de pousser ta porte. L&T Digital s'occupe de tout : prix annoncé à l'avance, retouches incluses, en ligne en {delivery}.",
+    text: "Un site beau, rapide et bien placé sur Google. On s'occupe de tout, en ligne en {delivery}.",
     cta1: "Voir les tarifs",
     cta2: "Démarrer mon site",
     /* mots qui défilent sous le titre : « Pour les restaurants », puis « Pour les boulangeries »… (vide = rien) */
     rotatePrefix: "Pensé pour les",
-    rotate: ["restaurants", "boulangeries", "boutiques", "artisans", "coiffeurs & barbiers", "garages", "fleuristes", "coachs"],
+    rotate: [],
     /* barre « demande » qui s'écrit toute seule (clic = page de commande). Vide = pas de barre */
     prompts: ["Je veux un site pour ma boulangerie", "Un logo pour mon salon de coiffure", "Une pub vidéo pour mon Instagram", "Moderniser le site de mon garage", "Des photos pro de mes produits"],
     /* petites coches sous les boutons */
     trust: ["Prix annoncé à l'avance", "Retouches incluses", "Livré en {delivery}"],
     /* petites notifications animées autour des images (exemples de ce que le site apporte) */
     notes: [
-      { icon: "🔔", title: "Nouvelle réservation", text: "Table pour 4 · ce soir 20 h" },
-      { icon: "✓", title: "Ton site est en ligne", text: "Livré en {delivery}" },
-      { icon: "★", title: "Nouvel avis client", text: "« Super site, très clair ! »" }
+      { icon: "🔔", title: "Nouvelle réservation", text: "Table pour 4 · ce soir 20 h" }
     ],
     /* images du haut de page (captures de tes maquettes) */
     visual: { a: "images/portfolio/restaurant.jpg", b: "images/portfolio/boutique.jpg", phone: "images/portfolio/coach-mobile.jpg" }
