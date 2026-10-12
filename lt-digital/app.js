@@ -781,6 +781,19 @@ $("vat-note").textContent = vatNote;
   b.hidden = false; b.innerHTML = `<span class="pc-ic" aria-hidden="true">🎬</span><span>${esc(T.pub_cta)}</span><b>${esc(T.pub_cta_btn||"Voir")} →</b>`;
   b.onclick = ()=>{ svTab = aGroup(g); drawSvcs(); $("services").scrollIntoView({behavior:"smooth"}); }; })();
 
+/* ---------- nos designs de logos ---------- */
+(function(){ const L = C.logos || {}, list = (L.items||[]).filter(x=>x && x.image); if (!list.length) return;
+  $("logos").hidden = false; $("lg-eb").textContent = L.eyebrow||"Logos"; { const ws = String(L.title||"").split(/\s+/).filter(Boolean), g = ws.length > 3 ? 2 : 1; $("lg-title").innerHTML = ws.map((w,k)=>`<span class="w2${k >= ws.length-g ? " gw" : ""}"><span style="--i:${k}">${esc(w)}</span></span>`).join(" "); } $("lg-text").textContent = L.text||"";
+  $("lg-note").textContent = L.note||""; $("lg-btn").textContent = L.cta||"Je veux mon logo";
+  $("logos-grid").innerHTML = list.map((x,i)=>`<button type="button" class="lgc reveal" style="--d:${(i%4)*80}ms" data-i="${i}" aria-label="Agrandir le logo ${esc(x.name||"")}"><span class="lgc-img"><img src="${esc(x.image)}" alt="Logo ${esc(x.name||"")}" loading="lazy"></span><span class="lgc-in"><b>${esc(x.name||"")}</b><small>${esc(x.sector||"")}</small></span></button>`).join("");
+  $("logos-grid").addEventListener("click", e=>{ const b = e.target.closest("[data-i]"); if (!b) return; const x = list[+b.dataset.i];
+    const ov = document.createElement("div"); ov.className = "lg-zoom"; ov.innerHTML = `<figure><img src="${esc(x.image)}" alt="Logo ${esc(x.name||"")}"><figcaption><b>${esc(x.name||"")}</b> · ${esc(x.sector||"")}</figcaption></figure><button type="button" aria-label="Fermer">✕</button>`;
+    const close = ()=>{ ov.classList.add("out"); setTimeout(()=>ov.remove(), 250); document.removeEventListener("keydown", kd); }; const kd = ev=>{ if (ev.key==="Escape") close(); };
+    ov.addEventListener("click", close); document.addEventListener("keydown", kd); document.body.appendChild(ov); });
+  $("lg-btn").onclick = ()=>{ const g = SI.find(it=>/logo/i.test(aGroup(it))); if (SV && g){ svTab = aGroup(g); drawSvcs(); $("services").scrollIntoView({behavior:"smooth"}); } else location.hash = "#commande"; };
+  if ("IntersectionObserver" in window){ const io = new IntersectionObserver(es=>es.forEach(e=>{ if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }), {threshold:.1}); document.querySelectorAll("#logos .reveal, #logos .sec-head").forEach(el=>io.observe(el)); }
+  else document.querySelectorAll("#logos .reveal").forEach(el=>el.classList.add("in")); })();
+
 /* ---------- s'y retrouver : recherche (touche « / ») + plan de la page ---------- */
 (function(){ const T = C.texts||{}, still = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const norm = x => String(x||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
@@ -790,7 +803,7 @@ $("vat-note").textContent = vatNote;
   const go = (id, then) => { const el = $(id); if(!el || el.hidden) return; el.scrollIntoView({behavior: still?"auto":"smooth"}); if (then) setTimeout(then, still?0:450); };
 
   /* sections de la page */
-  const SECS = [["top","Accueil","🏠"],["pourquoi","Pourquoi un vrai site","💡"],["tarifs","Tarifs des sites","💶"],["comparatif","Comparer les gammes","⇄"],["services","Services : photos, logo, pubs, réseaux","🎨"],["options","Options des sites","➕"],["process","La méthode en 4 étapes","🧭"],["realisations","Réalisations (maquettes)","🖼️"],["avis","Avis clients","⭐"],["commande","Commander","🛒"],["faq","Questions fréquentes","❓"],["histoire","Notre histoire","👥"]];
+  const SECS = [["top","Accueil","🏠"],["pourquoi","Pourquoi un vrai site","💡"],["tarifs","Tarifs des sites","💶"],["comparatif","Comparer les gammes","⇄"],["services","Services : photos, logo, pubs, réseaux","🎨"],["logos","Nos designs de logos","✒️"],["options","Options des sites","➕"],["process","La méthode en 4 étapes","🧭"],["realisations","Réalisations (maquettes)","🖼️"],["avis","Avis clients","⭐"],["commande","Commander","🛒"],["faq","Questions fréquentes","❓"],["histoire","Notre histoire","👥"]];
   const IDX = [];
   SECS.forEach(([id,t,ic])=>{ if ($(id) && !$(id).hidden) IDX.push({type:"Page", ic, t, s:"Aller à cette section", k:t+" "+id, run:()=>go(id)}); });
   (C.plans||[]).forEach(p=>IDX.push({type:"Tarif", ic:"💶", t:p.name+" — "+price(p.price)+(p.from?" (dès)":""), s:p.tagline||"", k:[p.name,p.tagline,(p.features||[]).join(" ")].join(" "), run:()=>go("tarifs",()=>{ groupSel="Tous"; drawPlans(); flash([...document.querySelectorAll("#plans .plan")].find(c=>c.querySelector(`[data-plan="${p.id}"]`))); })}));

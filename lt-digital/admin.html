@@ -309,6 +309,14 @@ S["Réalisations"] = () => [
         field("Couleur de l'aperçu automatique (1 à 4)", ()=>w.style, v=>w.style=Math.max(1,Math.min(4,Number(v)||1)), {type:"number",min:1})],
     ()=>show("Réalisations"), {addLabel:"Ajouter un projet"})
 ];
+S["Logos"] = () => { cfg.logos = cfg.logos || {items:[]}; cfg.logos.items = cfg.logos.items || []; return [
+  h("p",{class:"sub"},"Tes designs de logos. Pour en ajouter un : place l'image dans le dossier images/logos/ sur GitHub et écris son chemin (ex : images/logos/monlogo.jpg). Liste vide = la section disparaît."),
+  text("Petit titre", cfg.logos, "eyebrow"), text("Titre", cfg.logos, "title"), text("Texte", cfg.logos, "text", {area:true}),
+  text("Phrase à côté du bouton", cfg.logos, "note", {area:true}), text("Bouton", cfg.logos, "cta"),
+  list(cfg.logos.items, ()=>({name:"Nouveau logo", sector:"", image:"images/logos/"}), x=>x.name,
+    x=>[text("Nom", x, "name"), text("Activité", x, "sector"), text("Image", x, "image", {placeholder:"images/logos/monlogo.jpg"})],
+    ()=>show("Logos"), {addLabel:"Ajouter un logo"})
+]; };
 S["Avis clients"] = () => [
   h("p",{class:"sub"},"Ajoute les vrais avis que tes clients t'envoient (bouton « Laisser un avis » du site). Mets leur logo et une capture de leur site dans le dossier images/avis/ puis écris le chemin ici."),
   (cfg.reviewsForm = cfg.reviewsForm || {show:true,title:"",text:""}, check("Afficher le bouton « Laisser un avis »", ()=>cfg.reviewsForm.show!==false, v=>{ cfg.reviewsForm.show=v; changed(); })),
@@ -330,7 +338,7 @@ S["Contact"] = () => [
 ];
 
 /* ---- navigation ---- */
-const ORDER = ["Démarrer","Prix rapides","Gammes & tarifs","Pourquoi un vrai site","Options","Services & pubs","Promos","Commande","Comparatif","Réalisations","Notre histoire","Accueil","Identité","Sections","Textes du site","Légal & TVA","Processus","Avis clients","Garanties","FAQ","Contact"];
+const ORDER = ["Démarrer","Prix rapides","Gammes & tarifs","Pourquoi un vrai site","Options","Services & pubs","Promos","Commande","Comparatif","Réalisations","Logos","Notre histoire","Accueil","Identité","Sections","Textes du site","Légal & TVA","Processus","Avis clients","Garanties","FAQ","Contact"];
 let current = "Démarrer";
 function show(name){
   current = name; const st = $("edit").scrollTop;

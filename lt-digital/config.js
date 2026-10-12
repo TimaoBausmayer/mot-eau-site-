@@ -350,6 +350,31 @@ window.SITE_CONFIG = {
      Ce sont des maquettes de démonstration (cliquables). Remplace-les par tes
      vrais projets : tag = catégorie (sert au filtre), url = lien du site, image = capture d'écran PC,
      mobile = capture d'écran téléphone (facultatif). */
+  /* ---------- NOS DESIGNS DE LOGOS ----------
+     image : chemin de l'image (dossier images/logos/) · name : nom · sector : activité
+     Section masquée si la liste est vide. */
+  logos: {
+    eyebrow: "Logos",
+    title: "Voici nos designs de logos",
+    text: "Chaque logo est dessiné sur mesure, pour l'activité et le style de chaque client. On en crée autant que tu veux : un logo, une déclinaison, une identité complète.",
+    note: "Ton logo sur mesure, avec plusieurs propositions et des retouches jusqu'à ce qu'il te plaise.",
+    cta: "Je veux mon logo",
+    items: [
+      { name: "LT Digital", sector: "Agence web", image: "images/logos/lt-digital.jpg" },
+      { name: "Agrovia", sector: "Agriculture", image: "images/logos/agrovia.jpg" },
+      { name: "Horizon Immo", sector: "Immobilier", image: "images/logos/horizon-immo.jpg" },
+      { name: "Le Reflet", sector: "Barbier", image: "images/logos/le-reflet.jpg" },
+      { name: "Green Clean", sector: "Nettoyage", image: "images/logos/green-clean.jpg" },
+      { name: "Bella Pizza", sector: "Pizzeria", image: "images/logos/bella-pizza.jpg" },
+      { name: "FitZone", sector: "Salle de sport", image: "images/logos/fitzone.jpg" },
+      { name: "Nexa Tech", sector: "Informatique", image: "images/logos/nexa-tech.jpg" },
+      { name: "Vesti'R", sector: "Prêt-à-porter", image: "images/logos/vestir.jpg" },
+      { name: "Alp'Explor", sector: "Voyages", image: "images/logos/alp-explor.jpg" },
+      { name: "Réno+", sector: "Rénovation", image: "images/logos/reno-plus.jpg" },
+      { name: "Shoply", sector: "E-commerce", image: "images/logos/shoply.jpg" }
+    ]
+  },
+
   portfolio: [
     { name: "Le Comptoir", tag: "Restauration", category: "Restaurant · site de 3 pages", url: "demos/restaurant/index.html", image: "images/portfolio/restaurant.jpg", mobile: "images/portfolio/restaurant-mobile.jpg", features: ["Google Maps", "Réservation", "Notifications"], style: 1 },
     { name: "Maison Aurore", tag: "Commerces", category: "Boutique · site de 3 pages", url: "demos/boutique/index.html", image: "images/portfolio/boutique.jpg", mobile: "images/portfolio/boutique-mobile.jpg", style: 2 },
