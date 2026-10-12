@@ -669,14 +669,6 @@ $("vat-note").textContent = vatNote;
 
 /* ---------- animations v3 : bulles de lumière sur tout le site, halo qui suit la souris, apparitions plus vivantes ---------- */
 (function(){ if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  /* bulles floues qui flottent derrière tout le site */
-  const sky = document.createElement("div"); sky.className = "sky-bokeh"; sky.setAttribute("aria-hidden","true");
-  const cols = ["127,155,255","192,132,252","94,234,212","200,255,62","255,190,140"]; let sd = 11; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
-  sky.innerHTML = Array.from({length: innerWidth < 700 ? 3 : 6}, (_, i) => { const z = 60 + r()*160;
-    return `<i style="--s:${z.toFixed(0)}px;--x:${(r()*100).toFixed(1)}%;--y:${(r()*100).toFixed(1)}%;--c:${cols[i%cols.length]};--d:${(14+r()*14).toFixed(1)}s;--dl:-${(r()*14).toFixed(1)}s;--mx:${((r()-.5)*220).toFixed(0)}px;--my:${((r()-.5)*260).toFixed(0)}px"></i>`; }).join("");
-  document.body.prepend(sky);
-  /* les bulles bougent un peu avec le défilement (profondeur) */
-  let tk = 0; addEventListener("scroll", ()=>{ if (tk) return; tk = requestAnimationFrame(()=>{ tk = 0; sky.style.transform = `translateY(${-(scrollY*.06)%400}px)`; }); }, {passive:true});
 })();
 /* ---------- animations v4 ---------- */
 (function(){
@@ -857,4 +849,48 @@ $("vat-note").textContent = vatNote;
   const dotsVis = () => { const l = document.querySelector(".lb"); dots.classList.toggle("off", scrollY < 400 || !!(l && !l.hidden) || !box.hidden); };
   addEventListener("scroll", dotsVis, {passive:true}); dotsVis();
 })();
+})();
+
+/* =====================================================================
+   ANIMATIONS v5 — mouvement « haut de gamme » : défilement fluide, haut de page qui se rétracte,
+   boutons dont le texte roule, curseur discret, images qui se dévoilent.
+   ===================================================================== */
+(function(){
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches, fine = matchMedia("(hover:hover) and (pointer:fine)").matches;
+  if (still) return;
+  const esc = t => String(t).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])), $ = id => document.getElementById(id);
+  document.documentElement.classList.add("v5");
+  /* 1. défilement fluide et amorti (ordinateur) */
+  if (fine){ const sc = document.createElement("script"); sc.src = "vendor/lenis.min.js"; sc.async = true;
+    sc.onload = () => { if (!window.Lenis) return; const L = new Lenis({ lerp: .09, wheelMultiplier: .95, anchors: { offset: -84 } }); window.__lenis = L;
+      document.documentElement.classList.add("lenis-on"); (function raf(t){ L.raf(t); requestAnimationFrame(raf); })(performance.now());
+      /* fenêtres (recherche, aperçus) : on met le défilement en pause */
+      new MutationObserver(()=>{ const lock = document.body.style.overflow === "hidden" || document.documentElement.classList.contains("lock"); lock ? L.stop() : L.start(); }).observe(document.body, {attributes:true, attributeFilter:["style","class"]}); };
+    document.head.appendChild(sc); }
+  /* 2. le haut de page se rétracte et s'estompe quand on descend */
+  const hero = document.querySelector(".hero"), hin = hero && hero.querySelector(".hero-in");
+  let tk = 0; const onS = () => { if (tk) return; tk = requestAnimationFrame(()=>{ tk = 0; if (!hero) return; const h = hero.offsetHeight, y = Math.min(1, Math.max(0, scrollY / (h * .9)));
+      hero.style.setProperty("--hs", y.toFixed(3)); }); };
+  addEventListener("scroll", onS, {passive:true}); onS();
+  /* 3. boutons : le texte roule vers le haut au survol */
+  document.querySelectorAll(".btn, .links a").forEach(b=>{ if (b.children.length || !b.textContent.trim() || b.dataset.roll) return; const t = b.textContent.trim(); b.dataset.roll = 1;
+    b.innerHTML = `<span class="roll"><span>${esc(t)}</span><span aria-hidden="true">${esc(t)}</span></span>`; });
+  /* 4. images : se dévoilent avec un léger zoom arrière */
+  const io = new IntersectionObserver(es=>es.forEach(e=>{ if (e.isIntersecting){ e.target.classList.add("shown"); io.unobserve(e.target); } }), {threshold:.2, rootMargin:"0px 0px -8% 0px"});
+  const imgs = () => document.querySelectorAll(".svc-vid, .why-vs .vs-yes, .story-img, .founder .fi, .founder img").forEach(el=>{ if (el.dataset.rv5) return; el.dataset.rv5 = 1; el.classList.add("rv5"); io.observe(el); });
+  imgs(); ["svcs","works"].forEach(id=>{ const n = $(id); if (n) new MutationObserver(imgs).observe(n, {childList:true, subtree:true}); });
+  /* 5. curseur discret (ordinateur) : point + anneau, « Voir » sur les maquettes */
+  if (fine){ const dot = document.createElement("div"), ring = document.createElement("div"); dot.className = "cur-dot"; ring.className = "cur-ring"; ring.innerHTML = "<span></span>";
+    [dot, ring].forEach(x=>{ x.setAttribute("aria-hidden","true"); document.body.appendChild(x); });
+    let x = -100, y = -100, rx = x, ry = y, shown = false;
+    addEventListener("pointermove", e=>{ x = e.clientX; y = e.clientY; if (!shown){ shown = true; document.documentElement.classList.add("cur-on"); rx = x; ry = y; } }, {passive:true});
+    document.addEventListener("pointerleave", ()=>{ shown = false; document.documentElement.classList.remove("cur-on"); });
+    (function loop(){ rx += (x-rx)*.16; ry += (y-ry)*.16; dot.style.transform = `translate(${x}px,${y}px)`; ring.style.transform = `translate(${rx}px,${ry}px)`; requestAnimationFrame(loop); })();
+    const lab = ring.querySelector("span");
+    document.addEventListener("pointerover", e=>{ const v = e.target.closest(".work, .vf, .vp, .svc-vid"), a = e.target.closest("a, button, summary, label, input, select, textarea, [role=button]");
+      ring.classList.toggle("view", !!v); lab.textContent = v ? (v.classList.contains("svc-vid") ? "Lire" : "Voir") : ""; ring.classList.toggle("hov", !v && !!a); dot.classList.toggle("hide", !!v); });
+    addEventListener("pointerdown", ()=>ring.classList.add("down")); addEventListener("pointerup", ()=>ring.classList.remove("down")); }
+  /* 6. la bande qui défile s'incline selon la vitesse de défilement */
+  const tick = document.querySelector(".tick.t1"); if (tick){ let last = scrollY, v = 0;
+    (function run(){ const d = scrollY - last; last = scrollY; v += (d - v) * .12; tick.style.setProperty("--sk", Math.max(-8, Math.min(8, v * .35)).toFixed(2) + "deg"); requestAnimationFrame(run); })(); }
 })();
