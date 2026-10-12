@@ -67,6 +67,7 @@ Section sombre « Photos, logo, affiches & réseaux » (photos : on se déplace 
 - **`promo/lt-digital-film-1min40.mp4`** : film de présentation de 1 min 40 en 10 chapitres (constat, avant/après, qui on est, sites, 16 métiers, gammes, photos, logo & print, réseaux, méthode, engagements, contact). Page animée : `promo/film.html`.
 - **`promo/lt-digital-pub-4.mp4`** : 4e pub, style « cinéma orange » plein écran vertical (30 s), coupes calées sur un tempo de 120 BPM. Page animée : `promo/pub5.html`. Texte de voix off : `promo/voix-off-pub4.txt`. La musique s'ajoute dans TikTok/Instagram (« Utiliser ce son »).
 - **`promo/lt-digital-pub-1min30.mp4`** : pub de 1 min 30, style « cinéma orange » plein écran, 25 scènes calées sur 120 BPM. Page animée : `promo/pub6.html`. Voix off : `promo/voix-off-1min30.txt`.
+- **Versions avec son** : `promo/lt-digital-pub-1min30-son.mp4` et `promo/lt-digital-pub-4-son.mp4` (musique originale + bruitages calés sur les coupes, créés pour L&T Digital : libres d'utilisation). Musique seule : `promo/musique-pub-1min30.mp3`. Pour refaire le son : `python3 tools/musique.py pub6 sortie.wav`.
 - **`promo/index.html`** : la 1re pub en page web animée (bouton « Rejouer »). Les textes (prix, code promo, contacts…) se changent directement dans ce fichier.
 - Pour refaire la vidéo après une modification, il faut relancer l'enregistrement : demande-le-moi.
 
