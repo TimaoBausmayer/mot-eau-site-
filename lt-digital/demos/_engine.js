@@ -28,7 +28,10 @@ const header = `<header class="hd" id="hd"><div class="w nv"><a class="lg" href=
 <nav class="nl" id="nl"><a href="index.html" class="${page==="home"?"on":""}">Accueil</a><a href="offre.html" class="${page==="offre"?"on":""}">${esc(S.offers.label)}</a><a href="contact.html" class="${page==="contact"?"on":""}">Contact</a></nav>
 <a class="btn" href="${S.home.ctaHref||"contact.html"}">${esc(S.home.cta)}</a><button class="bg" id="bg" aria-label="Menu">Menu</button></div></header>`;
 
-const pic = it => it.photo ? `<div class="pic" tabindex="0" role="button" aria-label="Agrandir ${esc(it.name)}"><img src="${esc(it.photo)}" alt="${esc(it.name)}" loading="lazy"></div>` : (it.img && window.FOOD && window.FOOD[it.img]) ? `<div class="pic" tabindex="0" role="button" aria-label="Agrandir ${esc(it.name)}">${window.FOOD[it.img](window.__foodU())}</div>` : "";
+const pic = it => {
+  if (it.photo) return `<div class="pic" tabindex="0" role="button" aria-label="Agrandir ${esc(it.name)}"><img src="${esc(it.photo)}" alt="${esc(it.name)}"></div>`;
+  if (S.offers.illustrations && it.img && window.FOOD && window.FOOD[it.img]) return `<div class="pic" tabindex="0" role="button" aria-label="Agrandir ${esc(it.name)}">${window.FOOD[it.img](window.__foodU())}</div>`;
+  return ""; };
 const hp = it => pic(it) ? " has-pic" : "";
 const heroVisual = () => { if(!S.offers.images) return visual(); const seen=[]; [...items.filter(i=>i.star), ...items].forEach(i=>{ if(seen.length<4 && pic(i) && !seen.includes(i)) seen.push(i); }); return `<div class="mosaic">${seen.map(i=>`<div class="mc has-pic">${pic(i)}<span>${esc(i.name)}</span></div>`).join("")}</div>`; };
 const visual = () => `<div class="visbox">${(V[T.visual]||V.plate)()}</div>`;
@@ -82,7 +85,12 @@ document.body.innerHTML = topbar + header + `<main>${{home,offre,contact}[page](
 const hd = document.getElementById("hd"); const sc = ()=>hd.classList.toggle("sc", scrollY>8); sc(); addEventListener("scroll",sc,{passive:true});
 document.getElementById("bg").onclick = ()=>document.getElementById("nl").classList.toggle("open");
 const fm = document.getElementById("fm"); if (fm) fm.addEventListener("submit",e=>{ e.preventDefault(); document.getElementById("ok").hidden=false; fm.querySelector("button").disabled=true; });
-/* agrandir une photo / illustration produit */
+/* photo introuvable : on retire la case (le site reste propre tant qu'il n'y a pas de photo) */
+function dropPic(im){ const p = im.closest(".pic"); if(!p) return; const holder = p.closest(".mc,.it,.card");
+  if (holder && holder.classList.contains("mc")){ holder.remove(); const mo = document.querySelector(".mosaic"); if (mo && !mo.children.length) mo.outerHTML = visual(); }
+  else if (holder) holder.classList.remove("has-pic"); p.remove(); }
+document.querySelectorAll(".pic img").forEach(im=>{ im.addEventListener("error",()=>dropPic(im)); if (im.complete && !im.naturalWidth) dropPic(im); });
+/* agrandir une photo produit */
 document.addEventListener("click",ev=>{ const p=ev.target.closest(".pic"); if(!p||ev.target.closest("a.go")) return; ev.preventDefault();
   const card=p.closest(".it,.card"), name=card&&card.querySelector("h3")?(card.querySelector("h3").firstChild.textContent||"").trim():"";
   const ov=document.createElement("div"); ov.className="zoom"; ov.innerHTML=`<div class="zoom-in">${p.innerHTML}<p>${esc(name)}</p><button type="button">Fermer</button></div>`; document.body.appendChild(ov);

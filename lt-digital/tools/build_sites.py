@@ -33,8 +33,8 @@ HEADER = """/* =================================================================
                     aperture, wine, mandala, barbell, rings, plate, candles
    - Dans un texte, {{mot}} met le mot en couleur (titre de l'accueil).
    - Un produit avec un "tag" est mis en avant sur l'accueil.
-   - Photos des produits : "img": "pizza-margherita" (illustration) ou "photo": "photos/ma-photo.jpg"
-     (ta vraie photo, placée dans le dossier de la maquette). La photo remplace l'illustration.
+   - Photos des produits : "photo": "../photos/pizza-margherita.jpg" (dossier demos/photos/).
+     Photo absente = la case n'apparaît pas. Outil pour les ajouter : demos/photos.html
    ===================================================================== */
 """
 
@@ -48,8 +48,8 @@ def site(n):
       home=dict(kicker=n["kicker"], title=n["title"], text=n["text"], cta=n["cta"], cta2=n["cta2"],
                 highlightsTitle=n["hl_title"], highlightsText=n["hl_text"], aboutTitle=n["about_title"], about=n["about"],
                 stats=[list(s) for s in n["stats"]], features=[list(f) for f in n["features"]], ctaTitle=n["ctatitle"], ctaText=n["ctatext"]),
-      offers=dict(label=n["label"], title=n["offers_title"], intro=n["offers_intro"], images=any("img" in it for c in n["cats"] for it in c[2]),
-                  cats=[dict(name=c[0], note=c[1], items=[{k:v for k,v in it.items()} for it in c[2]]) for c in n["cats"]]),
+      offers=dict(label=n["label"], title=n["offers_title"], intro=n["offers_intro"], images=any("img" in it for c in n["cats"] for it in c[2]), illustrations=False,
+                  cats=[dict(name=c[0], note=c[1], items=[dict(it, photo="../photos/%s.jpg" % it["img"]) if "img" in it else dict(it) for it in c[2]]) for c in n["cats"]]),
       contact=dict(title="Contactez-nous", intro="Une question, un devis, une réservation ? Écrivez-nous ou appelez-nous : nous répondons rapidement.",
                    hours=[list(h) for h in n["hours"]], address=n["address"], phone=n["phone"], email=n["email"], note=n["note"],
                    form=dict(title=n["form_title"], options=n["form_options"], button=n["form_button"], success=n["form_success"], itemCta=n["item_cta"])))
@@ -60,4 +60,7 @@ if __name__ == "__main__":
         for page, f in (("home","index.html"),("offre","offre.html"),("contact","contact.html")):
             open(os.path.join(d, f), "w", encoding="utf-8").write(SHELL.format(name=n["name"], page=page, bg=n["pal"]["bg"]))
         open(os.path.join(d, "site.js"), "w", encoding="utf-8").write(HEADER.format(name=n["name"]) + "window.SITE = " + json.dumps(site(n), ensure_ascii=False, indent=2) + ";\n")
-    print(len(NICHES), "maquettes construites dans", os.path.abspath(DEMOS))
+    slots = [dict(key=it["img"], name=it["name"], site=n["name"], short=n["short"], cat=c[0]) for n in NICHES for c in n["cats"] for it in c[2] if "img" in it]
+    os.makedirs(os.path.join(DEMOS, "photos"), exist_ok=True)
+    open(os.path.join(DEMOS, "photos", "slots.js"), "w", encoding="utf-8").write("window.PHOTO_SLOTS = " + json.dumps(slots, ensure_ascii=False, indent=1) + ";\n")
+    print(len(NICHES), "maquettes construites,", len(slots), "emplacements photo, dans", os.path.abspath(DEMOS))

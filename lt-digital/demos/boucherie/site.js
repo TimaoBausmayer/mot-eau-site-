@@ -7,8 +7,8 @@
                     aperture, wine, mandala, barbell, rings, plate, candles
    - Dans un texte, {mot} met le mot en couleur (titre de l'accueil).
    - Un produit avec un "tag" est mis en avant sur l'accueil.
-   - Photos des produits : "img": "pizza-margherita" (illustration) ou "photo": "photos/ma-photo.jpg"
-     (ta vraie photo, placée dans le dossier de la maquette). La photo remplace l'illustration.
+   - Photos des produits : "photo": "../photos/pizza-margherita.jpg" (dossier demos/photos/).
+     Photo absente = la case n'apparaît pas. Outil pour les ajouter : demos/photos.html
    ===================================================================== */
 window.SITE = {
   "name": "Boucherie Maison Lefèvre",
@@ -78,6 +78,7 @@ window.SITE = {
     "title": "Au comptoir",
     "intro": "Toute la viande est française et traçable. Dites-nous l'épaisseur, on découpe devant vous.",
     "images": true,
+    "illustrations": false,
     "cats": [
       {
         "name": "Bœuf & veau",
@@ -89,7 +90,8 @@ window.SITE = {
             "price": "36 €/kg",
             "tag": "Signature",
             "star": true,
-            "img": "cote-boeuf"
+            "img": "cote-boeuf",
+            "photo": "../photos/cote-boeuf.jpg"
           },
           {
             "name": "Entrecôte",
@@ -97,7 +99,8 @@ window.SITE = {
             "price": "28 €/kg",
             "tag": "",
             "star": false,
-            "img": "entrecote"
+            "img": "entrecote",
+            "photo": "../photos/entrecote.jpg"
           },
           {
             "name": "Rôti de veau",
@@ -105,7 +108,8 @@ window.SITE = {
             "price": "26 €/kg",
             "tag": "",
             "star": false,
-            "img": "roti-veau"
+            "img": "roti-veau",
+            "photo": "../photos/roti-veau.jpg"
           },
           {
             "name": "Steak haché pur bœuf",
@@ -113,7 +117,8 @@ window.SITE = {
             "price": "16 €/kg",
             "tag": "",
             "star": false,
-            "img": "steak-hache"
+            "img": "steak-hache",
+            "photo": "../photos/steak-hache.jpg"
           }
         ]
       },
@@ -127,7 +132,8 @@ window.SITE = {
             "price": "24 €/kg",
             "tag": "",
             "star": false,
-            "img": "gigot"
+            "img": "gigot",
+            "photo": "../photos/gigot.jpg"
           },
           {
             "name": "Poulet fermier",
@@ -135,7 +141,8 @@ window.SITE = {
             "price": "12 €/kg",
             "tag": "",
             "star": false,
-            "img": "poulet"
+            "img": "poulet",
+            "photo": "../photos/poulet.jpg"
           },
           {
             "name": "Côtes de porc",
@@ -143,7 +150,8 @@ window.SITE = {
             "price": "14 €/kg",
             "tag": "",
             "star": false,
-            "img": "cotes-porc"
+            "img": "cotes-porc",
+            "photo": "../photos/cotes-porc.jpg"
           },
           {
             "name": "Saucisses maison",
@@ -151,7 +159,8 @@ window.SITE = {
             "price": "14 €/kg",
             "tag": "Fait maison",
             "star": true,
-            "img": "saucisses"
+            "img": "saucisses",
+            "photo": "../photos/saucisses.jpg"
           }
         ]
       },
@@ -165,7 +174,8 @@ window.SITE = {
             "price": "29 €",
             "tag": "Été",
             "star": true,
-            "img": "panier-bbq"
+            "img": "panier-bbq",
+            "photo": "../photos/panier-bbq.jpg"
           },
           {
             "name": "Plateau de charcuterie",
@@ -173,7 +183,8 @@ window.SITE = {
             "price": "32 €",
             "tag": "",
             "star": false,
-            "img": "charcuterie"
+            "img": "charcuterie",
+            "photo": "../photos/charcuterie.jpg"
           },
           {
             "name": "Plat du jour à emporter",
@@ -181,7 +192,8 @@ window.SITE = {
             "price": "9 €",
             "tag": "",
             "star": false,
-            "img": "plat-jour"
+            "img": "plat-jour",
+            "photo": "../photos/plat-jour.jpg"
           }
         ]
       }

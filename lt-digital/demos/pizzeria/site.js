@@ -7,8 +7,8 @@
                     aperture, wine, mandala, barbell, rings, plate, candles
    - Dans un texte, {mot} met le mot en couleur (titre de l'accueil).
    - Un produit avec un "tag" est mis en avant sur l'accueil.
-   - Photos des produits : "img": "pizza-margherita" (illustration) ou "photo": "photos/ma-photo.jpg"
-     (ta vraie photo, placée dans le dossier de la maquette). La photo remplace l'illustration.
+   - Photos des produits : "photo": "../photos/pizza-margherita.jpg" (dossier demos/photos/).
+     Photo absente = la case n'apparaît pas. Outil pour les ajouter : demos/photos.html
    ===================================================================== */
 window.SITE = {
   "name": "Pizzeria Bella Napoli",
@@ -78,6 +78,7 @@ window.SITE = {
     "title": "Nos pizzas",
     "intro": "Une pâte légère, des produits italiens, une cuisson de 90 secondes à 450 °C.",
     "images": true,
+    "illustrations": false,
     "cats": [
       {
         "name": "Les classiques",
@@ -89,7 +90,8 @@ window.SITE = {
             "price": "9 €",
             "tag": "Classique",
             "star": true,
-            "img": "pizza-margherita"
+            "img": "pizza-margherita",
+            "photo": "../photos/pizza-margherita.jpg"
           },
           {
             "name": "Regina",
@@ -97,7 +99,8 @@ window.SITE = {
             "price": "12 €",
             "tag": "",
             "star": false,
-            "img": "pizza-regina"
+            "img": "pizza-regina",
+            "photo": "../photos/pizza-regina.jpg"
           },
           {
             "name": "Diavola",
@@ -105,7 +108,8 @@ window.SITE = {
             "price": "13 €",
             "tag": "Épicée",
             "star": true,
-            "img": "pizza-diavola"
+            "img": "pizza-diavola",
+            "photo": "../photos/pizza-diavola.jpg"
           },
           {
             "name": "Napoli",
@@ -113,7 +117,8 @@ window.SITE = {
             "price": "12 €",
             "tag": "",
             "star": false,
-            "img": "pizza-napoli"
+            "img": "pizza-napoli",
+            "photo": "../photos/pizza-napoli.jpg"
           }
         ]
       },
@@ -127,7 +132,8 @@ window.SITE = {
             "price": "14 €",
             "tag": "Best-seller",
             "star": true,
-            "img": "pizza-4fromages"
+            "img": "pizza-4fromages",
+            "photo": "../photos/pizza-4fromages.jpg"
           },
           {
             "name": "Burrata",
@@ -135,7 +141,8 @@ window.SITE = {
             "price": "15 €",
             "tag": "",
             "star": false,
-            "img": "pizza-burrata"
+            "img": "pizza-burrata",
+            "photo": "../photos/pizza-burrata.jpg"
           },
           {
             "name": "Calzone",
@@ -143,7 +150,8 @@ window.SITE = {
             "price": "13 €",
             "tag": "",
             "star": false,
-            "img": "calzone"
+            "img": "calzone",
+            "photo": "../photos/calzone.jpg"
           },
           {
             "name": "Végétarienne",
@@ -151,7 +159,8 @@ window.SITE = {
             "price": "12 €",
             "tag": "",
             "star": false,
-            "img": "pizza-vege"
+            "img": "pizza-vege",
+            "photo": "../photos/pizza-vege.jpg"
           }
         ]
       },
@@ -165,7 +174,8 @@ window.SITE = {
             "price": "6 €",
             "tag": "",
             "star": false,
-            "img": "tiramisu"
+            "img": "tiramisu",
+            "photo": "../photos/tiramisu.jpg"
           },
           {
             "name": "Panna cotta",
@@ -173,7 +183,8 @@ window.SITE = {
             "price": "5 €",
             "tag": "",
             "star": false,
-            "img": "pannacotta"
+            "img": "pannacotta",
+            "photo": "../photos/pannacotta.jpg"
           },
           {
             "name": "Boissons italiennes",
@@ -181,7 +192,8 @@ window.SITE = {
             "price": "dès 3 €",
             "tag": "",
             "star": false,
-            "img": "spritz"
+            "img": "spritz",
+            "photo": "../photos/spritz.jpg"
           }
         ]
       }

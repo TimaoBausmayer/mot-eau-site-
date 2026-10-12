@@ -7,8 +7,8 @@
                     aperture, wine, mandala, barbell, rings, plate, candles
    - Dans un texte, {mot} met le mot en couleur (titre de l'accueil).
    - Un produit avec un "tag" est mis en avant sur l'accueil.
-   - Photos des produits : "img": "pizza-margherita" (illustration) ou "photo": "photos/ma-photo.jpg"
-     (ta vraie photo, placée dans le dossier de la maquette). La photo remplace l'illustration.
+   - Photos des produits : "photo": "../photos/pizza-margherita.jpg" (dossier demos/photos/).
+     Photo absente = la case n'apparaît pas. Outil pour les ajouter : demos/photos.html
    ===================================================================== */
 window.SITE = {
   "name": "La Fromagerie des Alpes",
@@ -78,6 +78,7 @@ window.SITE = {
     "title": "Notre sélection",
     "intro": "Une quarantaine de fromages à la coupe, selon la saison et nos visites chez les producteurs.",
     "images": true,
+    "illustrations": false,
     "cats": [
       {
         "name": "Pâtes dures et pressées",
@@ -89,7 +90,8 @@ window.SITE = {
             "price": "29 €/kg",
             "tag": "Coup de cœur",
             "star": true,
-            "img": "comte"
+            "img": "comte",
+            "photo": "../photos/comte.jpg"
           },
           {
             "name": "Beaufort d'été",
@@ -97,7 +99,8 @@ window.SITE = {
             "price": "34 €/kg",
             "tag": "",
             "star": false,
-            "img": "beaufort"
+            "img": "beaufort",
+            "photo": "../photos/beaufort.jpg"
           },
           {
             "name": "Abondance fermier",
@@ -105,7 +108,8 @@ window.SITE = {
             "price": "27 €/kg",
             "tag": "",
             "star": false,
-            "img": "abondance"
+            "img": "abondance",
+            "photo": "../photos/abondance.jpg"
           }
         ]
       },
@@ -119,7 +123,8 @@ window.SITE = {
             "price": "24 €/kg",
             "tag": "Local",
             "star": true,
-            "img": "reblochon"
+            "img": "reblochon",
+            "photo": "../photos/reblochon.jpg"
           },
           {
             "name": "Brie de Meaux",
@@ -127,7 +132,8 @@ window.SITE = {
             "price": "21 €/kg",
             "tag": "",
             "star": false,
-            "img": "brie"
+            "img": "brie",
+            "photo": "../photos/brie.jpg"
           },
           {
             "name": "Chèvre cendré",
@@ -135,7 +141,8 @@ window.SITE = {
             "price": "7 €/pièce",
             "tag": "",
             "star": false,
-            "img": "chevre"
+            "img": "chevre",
+            "photo": "../photos/chevre.jpg"
           },
           {
             "name": "Saint-Marcellin",
@@ -143,7 +150,8 @@ window.SITE = {
             "price": "3,80 €",
             "tag": "",
             "star": false,
-            "img": "saint-marcellin"
+            "img": "saint-marcellin",
+            "photo": "../photos/saint-marcellin.jpg"
           }
         ]
       },
@@ -157,7 +165,8 @@ window.SITE = {
             "price": "39 €",
             "tag": "Fête",
             "star": true,
-            "img": "plateau-6"
+            "img": "plateau-6",
+            "photo": "../photos/plateau-6.jpg"
           },
           {
             "name": "Plateau 12 personnes",
@@ -165,7 +174,8 @@ window.SITE = {
             "price": "72 €",
             "tag": "",
             "star": false,
-            "img": "plateau-12"
+            "img": "plateau-12",
+            "photo": "../photos/plateau-12.jpg"
           },
           {
             "name": "Kit raclette",
@@ -173,7 +183,8 @@ window.SITE = {
             "price": "18 €/pers.",
             "tag": "",
             "star": false,
-            "img": "raclette"
+            "img": "raclette",
+            "photo": "../photos/raclette.jpg"
           },
           {
             "name": "Fondue savoyarde",
@@ -181,7 +192,8 @@ window.SITE = {
             "price": "16 €/pers.",
             "tag": "",
             "star": false,
-            "img": "fondue"
+            "img": "fondue",
+            "photo": "../photos/fondue.jpg"
           }
         ]
       }

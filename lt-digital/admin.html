@@ -106,7 +106,7 @@ S["Démarrer"] = () => [
      ["3","Publie","Sur GitHub, ouvre le dossier lt-digital et remplace le fichier config.js par celui que tu viens de télécharger."]].map(([n,t,x])=>
     h("div",{class:"item",style:"padding:16px 18px;display:flex;gap:14px;align-items:center"}, h("b",{style:"font-size:1.6rem;color:var(--acc);min-width:26px;text-align:center"},n), h("div",{}, h("b",{},t), h("div",{style:"color:var(--mut);font-size:.9rem"},x)))),
   h("h3",{style:"margin:22px 0 10px"},"Raccourcis"),
-  h("div",{style:"display:flex;gap:10px;flex-wrap:wrap"}, ["Prix rapides","Promos","Options","Commande","Réalisations"].map(n=>h("button",{on:{click:()=>show(n)}},"→ "+n))),
+  h("div",{style:"display:flex;gap:10px;flex-wrap:wrap"}, ["Prix rapides","Promos","Options","Commande","Réalisations"].map(n=>h("button",{on:{click:()=>show(n)}},"→ "+n)), h("a",{href:"demos/photos.html",target:"_blank",style:"display:inline-block;padding:8px 14px;border:1px solid var(--line);border-radius:10px;color:var(--text)"},"📷 Photos des produits ↗")),
   h("p",{class:"sub",style:"margin-top:22px"},"💡 Astuce : « sur devis » = laisse simplement le prix vide. Tu peux masquer n'importe quelle partie du site dans « Sections ». Ton brouillon est gardé dans ce navigateur tant que tu ne l'effaces pas.")
 ];
 S["Prix rapides"] = () => {

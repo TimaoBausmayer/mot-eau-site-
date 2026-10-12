@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Photos des produits — LT Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=DM+Mono:wght@400;500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef1f6;--panel:#fff;--ink:#0a0f1f;--mut:#566078;--rule:#c9d0de;--acc:#2750ff;--ok:#12805c}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.6 'Hanken Grotesk',system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque','Hanken Grotesk',sans-serif;letter-spacing:-.02em;line-height:1.1}
+.w{max-width:1180px;margin:0 auto;padding:0 20px}
+header{background:var(--panel);border-bottom:1px solid var(--ink);padding:22px 0}
+header .w{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+header h1{font-size:1.5rem}header a{font:500 .85rem 'DM Mono',monospace;border-bottom:1px solid var(--acc)}
+.intro{padding:34px 0 10px}.intro h2{font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:12px}.intro p{color:var(--mut);max-width:46em}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:26px 0 8px;border:1px solid var(--ink);background:var(--panel)}
+.steps div{padding:18px 20px}.steps div+div{border-left:1px solid var(--rule)}.steps b{display:block;font:500 .78rem 'DM Mono',monospace;color:var(--acc);margin-bottom:6px}
+.bar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--rule);padding:12px 0}
+.bar .w{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.bar .st{margin-right:auto;font:500 .85rem 'DM Mono',monospace;color:var(--mut)}
+button,.btn{font:600 .92rem 'Hanken Grotesk',sans-serif;padding:11px 20px;border-radius:4px;border:1px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer}
+button:hover{background:var(--ink);color:#fff}.primary{background:var(--ink);color:#fff}.primary:hover{background:var(--acc);border-color:var(--acc)}
+button:disabled{opacity:.4;cursor:not-allowed}
+h3.site{margin:34px 0 14px;font-size:1.3rem;display:flex;align-items:baseline;gap:12px}h3.site small{font:400 .8rem 'DM Mono',monospace;color:var(--mut)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+.slot{background:var(--panel);border:1px solid var(--rule);border-radius:6px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .2s}
+.slot.over{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc)}.slot.has{border-color:var(--ok)}
+.ph{aspect-ratio:4/3;background:#dfe4ee;display:grid;place-items:center;color:var(--mut);font-size:.8rem;text-align:center;padding:10px;cursor:pointer;position:relative;overflow:hidden}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ph span{pointer-events:none}
+.info{padding:12px 14px 14px}.info b{display:block;font-size:.98rem}.info small{color:var(--mut);font-size:.78rem}.info code{display:block;margin-top:6px;font:400 .72rem 'DM Mono',monospace;color:var(--mut)}
+.row{display:flex;gap:8px;margin-top:10px}.row button{padding:7px 12px;font-size:.8rem}
+footer{padding:40px 0 60px;color:var(--mut);font-size:.88rem}
+@media(max-width:700px){.steps{grid-template-columns:1fr}.steps div+div{border-left:0;border-top:1px solid var(--rule)}}
+</style>
+</head>
+<body>
+<header><div class="w"><h1>Photos des produits</h1><a href="../index.html#realisations">← Retour au site LT Digital</a></div></header>
+<main class="w">
+  <section class="intro">
+    <h2>Mets tes vraies photos, produit par produit.</h2>
+    <p>Choisis une photo pour chaque plat ou produit (ou glisse-la sur la case). Elle est automatiquement recadrée et allégée. Quand tu as fini, télécharge le dossier et envoie-le sur GitHub : les photos apparaissent sur les maquettes.</p>
+    <div class="steps">
+      <div><b>1 · CHOISIS</b>Clique sur une case (ou glisse une photo dessus). Tu peux en mettre seulement quelques-unes.</div>
+      <div><b>2 · TÉLÉCHARGE</b>Clique sur « Télécharger mes photos » : tu reçois un fichier .zip.</div>
+      <div><b>3 · PUBLIE</b>Dézippe-le. Sur GitHub, dans le dossier <code>lt-digital/demos/photos</code>, ajoute les fichiers (Add file ▸ Upload files).</div>
+    </div>
+  </section>
+</main>
+<div class="bar"><div class="w"><span class="st" id="st">0 photo choisie</span><button id="zip" class="primary" disabled>Télécharger mes photos (.zip)</button></div></div>
+<main class="w" id="app"></main>
+<footer class="w">Les photos manquantes ne s'affichent simplement pas sur la maquette. Utilise des photos dont tu as les droits (les tiennes, ou libres de droits).</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="photos/slots.js"></script>
+<script>
+(function(){
+const S = window.PHOTO_SLOTS || [], blobs = {};
+const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const app = document.getElementById("app");
+const bySite = {}; S.forEach(s=>(bySite[s.site] = bySite[s.site]||{short:s.short, list:[]}).list.push(s));
+app.innerHTML = Object.entries(bySite).map(([site,o])=>`<h3 class="site">${esc(site)} <small>${esc(o.short)} · ${o.list.length} emplacements</small></h3><div class="grid">${o.list.map(s=>`
+<div class="slot" data-k="${esc(s.key)}"><div class="ph" tabindex="0" role="button" aria-label="Choisir une photo pour ${esc(s.name)}"><img src="photos/${esc(s.key)}.jpg" alt="" onerror="this.remove()"><span>Clique ou glisse une photo ici</span></div>
+<div class="info"><b>${esc(s.name)}</b><small>${esc(s.cat)}</small><code>${esc(s.key)}.jpg</code><div class="row"><button type="button" data-pick>Choisir</button><button type="button" data-del hidden>Retirer</button></div></div><input type="file" accept="image/*" hidden></div>`).join("")}</div>`).join("");
+
+function count(){ const n = Object.keys(blobs).length; document.getElementById("st").textContent = n+" photo"+(n>1?"s":"")+" choisie"+(n>1?"s":""); document.getElementById("zip").disabled = !n; }
+async function load(slot, file){
+  if (!file || !file.type.startsWith("image/")) return;
+  const bmp = await createImageBitmap(file); const W = 1200, H = 900, r = Math.max(W/bmp.width, H/bmp.height);
+  const c = document.createElement("canvas"); c.width = W; c.height = H; const x = c.getContext("2d");
+  x.drawImage(bmp, (W-bmp.width*r)/2, (H-bmp.height*r)/2, bmp.width*r, bmp.height*r);
+  const blob = await new Promise(res=>c.toBlob(res,"image/jpeg",.85)); const k = slot.dataset.k; blobs[k] = blob;
+  const ph = slot.querySelector(".ph"); ph.querySelectorAll("img").forEach(i=>i.remove()); const im = document.createElement("img"); im.src = URL.createObjectURL(blob); ph.prepend(im);
+  slot.classList.add("has"); slot.querySelector("[data-del]").hidden = false; count();
+}
+app.addEventListener("click", e=>{ const s = e.target.closest(".slot"); if(!s) return;
+  if (e.target.closest("[data-del]")){ delete blobs[s.dataset.k]; s.classList.remove("has"); const im = s.querySelector(".ph img"); if(im) im.remove(); e.target.hidden = true; count(); return; }
+  if (e.target.closest(".ph, [data-pick]")) s.querySelector("input[type=file]").click(); });
+app.addEventListener("change", e=>{ if(e.target.type==="file") load(e.target.closest(".slot"), e.target.files[0]); });
+app.addEventListener("keydown", e=>{ if((e.key==="Enter"||e.key===" ") && e.target.classList.contains("ph")){ e.preventDefault(); e.target.click(); } });
+["dragover","dragenter"].forEach(t=>app.addEventListener(t,e=>{ const s=e.target.closest(".slot"); if(s){ e.preventDefault(); s.classList.add("over"); } }));
+["dragleave","drop"].forEach(t=>app.addEventListener(t,e=>{ const s=e.target.closest(".slot"); if(s) s.classList.remove("over"); }));
+app.addEventListener("drop", e=>{ const s=e.target.closest(".slot"); if(s){ e.preventDefault(); load(s, e.dataTransfer.files[0]); } });
+document.getElementById("zip").onclick = async ()=>{
+  if (!window.JSZip){ alert("Le module de compression n'a pas pu se charger. Vérifie ta connexion et recharge la page."); return; }
+  const z = new JSZip(); Object.entries(blobs).forEach(([k,b])=>z.file(k+".jpg", b));
+  const out = await z.generateAsync({type:"blob"}); const a = document.createElement("a"); a.href = URL.createObjectURL(out); a.download = "photos-lt-digital.zip"; document.body.appendChild(a); a.click(); a.remove(); dirty = false; };
+let dirty = true; addEventListener("beforeunload", e=>{ if(Object.keys(blobs).length && dirty){ e.preventDefault(); e.returnValue=""; } });
+})();
+</script>
+</body>
+</html>

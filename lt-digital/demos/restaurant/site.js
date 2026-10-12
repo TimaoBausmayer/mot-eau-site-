@@ -7,8 +7,8 @@
                     aperture, wine, mandala, barbell, rings, plate, candles
    - Dans un texte, {mot} met le mot en couleur (titre de l'accueil).
    - Un produit avec un "tag" est mis en avant sur l'accueil.
-   - Photos des produits : "img": "pizza-margherita" (illustration) ou "photo": "photos/ma-photo.jpg"
-     (ta vraie photo, placée dans le dossier de la maquette). La photo remplace l'illustration.
+   - Photos des produits : "photo": "../photos/pizza-margherita.jpg" (dossier demos/photos/).
+     Photo absente = la case n'apparaît pas. Outil pour les ajouter : demos/photos.html
    ===================================================================== */
 window.SITE = {
   "name": "Le Comptoir",
@@ -78,6 +78,7 @@ window.SITE = {
     "title": "Une cuisine de saison",
     "intro": "La carte change chaque mois selon les arrivages. Les plats sont cuisinés sur place, tous les jours.",
     "images": true,
+    "illustrations": false,
     "cats": [
       {
         "name": "Entrées",
@@ -89,7 +90,8 @@ window.SITE = {
             "price": "9 €",
             "tag": "Saison",
             "star": true,
-            "img": "veloute"
+            "img": "veloute",
+            "photo": "../photos/veloute.jpg"
           },
           {
             "name": "Œuf parfait",
@@ -97,7 +99,8 @@ window.SITE = {
             "price": "11 €",
             "tag": "",
             "star": false,
-            "img": "oeuf"
+            "img": "oeuf",
+            "photo": "../photos/oeuf.jpg"
           },
           {
             "name": "Terrine de campagne",
@@ -105,7 +108,8 @@ window.SITE = {
             "price": "10 €",
             "tag": "",
             "star": false,
-            "img": "terrine"
+            "img": "terrine",
+            "photo": "../photos/terrine.jpg"
           },
           {
             "name": "Salade de chèvre chaud",
@@ -113,7 +117,8 @@ window.SITE = {
             "price": "11 €",
             "tag": "",
             "star": false,
-            "img": "salade-chevre"
+            "img": "salade-chevre",
+            "photo": "../photos/salade-chevre.jpg"
           }
         ]
       },
@@ -127,7 +132,8 @@ window.SITE = {
             "price": "26 €",
             "tag": "Signature",
             "star": true,
-            "img": "magret"
+            "img": "magret",
+            "photo": "../photos/magret.jpg"
           },
           {
             "name": "Pavé de cabillaud",
@@ -135,7 +141,8 @@ window.SITE = {
             "price": "24 €",
             "tag": "",
             "star": false,
-            "img": "cabillaud"
+            "img": "cabillaud",
+            "photo": "../photos/cabillaud.jpg"
           },
           {
             "name": "Burger du Comptoir",
@@ -143,7 +150,8 @@ window.SITE = {
             "price": "19 €",
             "tag": "Best-seller",
             "star": true,
-            "img": "burger"
+            "img": "burger",
+            "photo": "../photos/burger.jpg"
           },
           {
             "name": "Risotto aux champignons",
@@ -151,7 +159,8 @@ window.SITE = {
             "price": "18 €",
             "tag": "",
             "star": false,
-            "img": "risotto"
+            "img": "risotto",
+            "photo": "../photos/risotto.jpg"
           }
         ]
       },
@@ -165,7 +174,8 @@ window.SITE = {
             "price": "9 €",
             "tag": "",
             "star": false,
-            "img": "tarte-tatin"
+            "img": "tarte-tatin",
+            "photo": "../photos/tarte-tatin.jpg"
           },
           {
             "name": "Fondant au chocolat",
@@ -173,7 +183,8 @@ window.SITE = {
             "price": "10 €",
             "tag": "",
             "star": false,
-            "img": "fondant"
+            "img": "fondant",
+            "photo": "../photos/fondant.jpg"
           },
           {
             "name": "Café gourmand",
@@ -181,7 +192,8 @@ window.SITE = {
             "price": "8 €",
             "tag": "",
             "star": false,
-            "img": "cafe-gourmand"
+            "img": "cafe-gourmand",
+            "photo": "../photos/cafe-gourmand.jpg"
           }
         ]
       },
@@ -195,7 +207,8 @@ window.SITE = {
             "price": "6 €",
             "tag": "",
             "star": false,
-            "img": "vin-verre"
+            "img": "vin-verre",
+            "photo": "../photos/vin-verre.jpg"
           },
           {
             "name": "Bière artisanale",
@@ -203,7 +216,8 @@ window.SITE = {
             "price": "5 €",
             "tag": "",
             "star": false,
-            "img": "biere"
+            "img": "biere",
+            "photo": "../photos/biere.jpg"
           },
           {
             "name": "Café, thé, infusion",
@@ -211,7 +225,8 @@ window.SITE = {
             "price": "2,50 €",
             "tag": "",
             "star": false,
-            "img": "cafe"
+            "img": "cafe",
+            "photo": "../photos/cafe.jpg"
           }
         ]
       }

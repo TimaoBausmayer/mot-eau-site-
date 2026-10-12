@@ -27,10 +27,10 @@ illustration. Enregistre, recharge : c'est à jour. Aucune autre ligne de code �
 Pour livrer un site à un client : copie le dossier, change `site.js`, et c'est son site.
 
 ### Photos des produits (restaurant, pizzeria, boucherie, fromagerie)
-Chaque produit s'affiche avec une image qu'on peut agrandir d'un clic. Ce sont des illustrations dessinées
-(47 plats et produits). Pour mettre une vraie photo : place le fichier dans le dossier de la maquette
-(ex : `demos/pizzeria/margherita.jpg`) et, dans `site.js`, ajoute au produit `"photo": "margherita.jpg"`.
-La photo remplace l'illustration. Pour afficher des images sur un autre métier, ajoute `"photo"` ou `"img"` à ses produits.
+47 emplacements de photos (un par plat / produit). Ouvre **`demos/photos.html`** : pour chaque produit, clique ou glisse
+une photo, puis « Télécharger mes photos (.zip) », dézippe et envoie les fichiers dans `demos/photos/` sur GitHub.
+Les photos sont recadrées et allégées automatiquement. Une photo absente ne s'affiche tout simplement pas.
+(Pour un autre métier : ajoute `"photo": "../photos/nom.jpg"` à ses produits dans `site.js`.)
 
 ### Ajouter un nouveau métier (ex : poissonnerie)
 Copie un dossier de `demos/`, renomme-le et modifie son `site.js`. (Ou ajoute une entrée dans `tools/niches.py`
