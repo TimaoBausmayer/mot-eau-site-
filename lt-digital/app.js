@@ -23,7 +23,7 @@ document.documentElement.style.setProperty("--accent2", C.accent2);
 document.title = C.brand + " — " + C.tagline;
 
 /* en-tête */
-if (C.announce) { $("announce").textContent = C.announce; $("announce").hidden = false; }
+
 $("logo").innerHTML = `<img src="${esc(C.logo)}" alt="" width="46" height="46"><b>${esc(C.brand)}</b>`;
 $("f-logo").src = C.logoBig; $("f-insta").href = C.contact.instagram; $("f-insta").textContent = C.contact.instagramHandle;
 $("f-brand").textContent = "© " + new Date().getFullYear() + " " + C.brand;
@@ -332,12 +332,12 @@ drawOpts(); render();
   $("founders").innerHTML = (st.founders||[]).map(f=>`<article class="founder">${f.photo?`<img src="${esc(f.photo)}" alt="${esc(f.name)}" width="88" height="88">`:`<span class="fi" aria-hidden="true">${esc(f.initial||(f.name||"?").trim()[0]||"?")}</span>`}<div><h3>${esc(f.name)}</h3><span class="role">${esc(f.role||"")}</span><p>${esc(f.text||"")}</p></div></article>`).join("");
   $("values").innerHTML = (st.values||[]).map(v=>`<div class="val"><h4>${esc(v.title)}</h4><p>${esc(v.text)}</p></div>`).join(""); })();
 
-/* barre du haut : question + Instagram + e-mail */
-(function(){ const ct = C.contact||{}, T = C.texts||{}; if(!ct.instagram && !ct.email) return; $("contactbar").hidden = false;
-  $("cb-q").textContent = (T.top_question||"Une question ?") + " " + (ct.instagram ? (T.top_insta||"Écris-nous sur Instagram") : (T.top_mail_only||"Écris-nous par e-mail"));
-  const i=$("cb-insta"); if(ct.instagram){ i.href=ct.instagram; i.textContent=ct.instagramHandle||"Instagram"; } else i.hidden=true;
-  $("cb-or").textContent = ct.instagram && ct.email ? (T.top_mail||"ou par e-mail :") : "";
-  const m=$("cb-mail"); if(ct.email){ m.href="mailto:"+ct.email; m.textContent=ct.email; } else m.hidden=true; })();
+/* barre du haut : offre + question / Instagram / e-mail (une seule ligne propre) */
+(function(){ const ct = C.contact||{}, T = C.texts||{}; const promo = C.announce||""; if(!promo && !ct.instagram && !ct.email) return;
+  const q = (T.top_question||"Une question ?") + " " + (ct.instagram ? (T.top_insta||"Écris-nous sur Instagram") : (T.top_mail_only||"Écris-nous par e-mail"));
+  const contact = `<span class="tb-contact">${esc(q)}${ct.instagram?` <a href="${esc(ct.instagram)}" target="_blank" rel="noopener">${esc(ct.instagramHandle||"Instagram")}</a>`:""}${ct.instagram&&ct.email?` <span class="tb-or">${esc(T.top_mail||"ou par e-mail :")}</span>`:""}${ct.email?` <a href="mailto:${esc(ct.email)}">${esc(ct.email)}</a>`:""}</span>`;
+  const seg = `<span class="tb-seg">${promo?`<span class="tb-promo">${esc(promo)}</span>`:""}${contact}</span>`;
+  $("tb-in").innerHTML = `<div class="tb-track">${seg}${seg.replace('class="tb-seg"','class="tb-seg dup" aria-hidden="true"').replace(/<a /g,'<a tabindex="-1" ')}</div>`; $("topbar").hidden = false; })();
 
 /* e-mail : contact direct */
 (function(){ const em = (C.contact||{}).email; if(!em) return; const T = C.texts||{};
