@@ -34,19 +34,23 @@
 
 <main id="top">
   <section class="hero">
+    <div class="hero-bg" aria-hidden="true"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><span class="hero-grid"></span></div>
     <div class="wrap hero-in">
       <div class="hero-copy">
-        <p class="kicker" id="h-badge"></p>
-        <h1><span id="h-title"></span> <em id="h-accent"></em></h1>
+        <p class="kicker" id="h-badge-wrap"><i class="k-dot" aria-hidden="true"></i><span id="h-badge"></span></p>
+        <h1 id="h1"><span id="h-title"></span> <em id="h-accent"></em></h1>
+        <p class="hero-rot" id="h-rot" hidden></p>
         <p class="lead" id="h-text"></p>
         <div class="cta-row">
-          <a href="#tarifs" class="btn" id="h-cta1"></a>
+          <a href="#tarifs" class="btn btn-arrow" id="h-cta1"></a>
           <a href="#commande" class="btn btn-ghost" id="h-cta2"></a>
         </div>
+        <ul class="trust" id="h-trust" hidden></ul>
         <p class="insta-line" id="h-insta" hidden></p>
       </div>
       <div class="hero-vis" id="hero-vis" aria-hidden="true"></div>
     </div>
+    <div class="trades" id="trades" aria-hidden="true" hidden><div class="trades-track" id="trades-track"></div></div>
     <div class="wrap"><dl class="stats" id="stats"></dl></div>
   </section>
 

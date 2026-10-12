@@ -28,17 +28,43 @@ $("logo").innerHTML = `<img src="${esc(C.logo)}" alt="" width="46" height="46"><
 $("f-logo").src = C.logoBig; $("f-insta").href = C.contact.instagram; $("f-insta").textContent = C.contact.instagramHandle;
 $("f-brand").textContent = "© " + new Date().getFullYear() + " " + C.brand;
 $("f-text").textContent = C.footer;
-$("h-badge").textContent = C.hero.badge;
-$("h-title").textContent = C.hero.title;
-$("h-accent").textContent = C.hero.titleAccent;
+$("h-badge").textContent = C.hero.badge; $("h-badge-wrap").hidden = !C.hero.badge;
+/* titre : chaque mot apparaît l'un après l'autre */
+(function(){ let i = 0; const words = (el, txt) => { el.innerHTML = String(txt||"").split(/\s+/).filter(Boolean).map(w=>`<span class="w" style="--i:${i++}"><span>${esc(w)}</span></span>`).join(" "); };
+  words($("h-title"), C.hero.title); words($("h-accent"), C.hero.titleAccent);
+  $("h1").style.setProperty("--n", i);
+  $("h-accent").insertAdjacentHTML("beforeend", `<svg class="swoosh" viewBox="0 0 300 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 10 C 70 2, 150 2, 298 8" /></svg>`); })();
+/* mots qui défilent : « Pensé pour les restaurants / boulangeries / … » */
+(function(){ const r = (C.hero.rotate||[]).filter(Boolean); if(!r.length) return; const el = $("h-rot"); el.hidden = false;
+  el.innerHTML = `${esc(C.hero.rotatePrefix||"")} <span class="rot">${r.map((w,i)=>`<b class="${i?"":"on"}">${esc(w)}</b>`).join("")}</span>`;
+  const bs = el.querySelectorAll(".rot b"), box = el.querySelector(".rot"); let k = 0;
+  const fit = () => { box.style.width = bs[k].offsetWidth + "px"; }; requestAnimationFrame(fit); addEventListener("resize", fit);
+  if (r.length<2 || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  setInterval(()=>{ const o = bs[k]; o.classList.remove("on"); o.classList.add("out"); setTimeout(()=>o.classList.remove("out"), 500); k = (k+1)%bs.length; bs[k].classList.add("on"); fit(); }, 2200); })();
+/* petites coches sous les boutons */
+(function(){ const t = (C.hero.trust||[]).filter(Boolean); if(!t.length) return; $("h-trust").hidden = false;
+  $("h-trust").innerHTML = t.map(x=>`<li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg>${esc(x)}</li>`).join(""); })();
+/* bande des métiers qui défile (tirée des réalisations) */
+(function(){ const names = [...new Set((C.portfolio||[]).map(p=>String(p.category||p.tag||"").split("·")[0].trim()).filter(Boolean))]; if(names.length<3) return;
+  const row = names.map(n=>`<span>${esc(n)}</span><i>✦</i>`).join(""); $("trades-track").innerHTML = row + row; $("trades").hidden = false; })();
 $("h-text").textContent = C.hero.text;
 $("h-cta1").textContent = C.hero.cta1;
 $("h-cta1").href = "#tarifs";
 $("h-cta2").textContent = C.hero.cta2;
 $("stats").innerHTML = C.stats.map(s=>`<div class="stat"><dt data-v="${esc(s.value)}">${esc(s.value)}</dt><dd>${esc(s.label)}</dd></div>`).join("");
 /* visuel du haut : tes propres maquettes dans des fenêtres de navigateur */
-(function(){ const v = C.hero.visual || {}; const fr = (cls, src)=> src ? `<div class="vf ${cls}"><div class="bar"><i></i><i></i><i></i></div><div class="crop"><img src="${esc(src)}" alt=""></div></div>` : "";
-  $("hero-vis").innerHTML = fr("a", v.a) + fr("b", v.b) + (v.phone ? `<div class="vp"><img src="${esc(v.phone)}" alt=""></div>` : ""); $("hero-vis").hidden = !(v.a||v.b); })();
+(function(){ const v = C.hero.visual || {}, vis = $("hero-vis");
+  const host = src => { const p = (C.portfolio||[]).find(x=>x.image===src||x.mobile===src); return p ? p.name.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"")+".fr" : "ton-site.fr"; };
+  const fr = (cls, src)=> src ? `<div class="vf ${cls}"><div class="bar"><i></i><i></i><i></i><span class="url">${esc(host(src))}</span></div><div class="crop"><img src="${esc(src)}" alt=""></div></div>` : "";
+  const notes = (C.hero.notes||[]).filter(n=>n&&n.title).slice(0,3);
+  vis.innerHTML = `<div class="vis-in">${fr("a", v.a) + fr("b", v.b) + (v.phone ? `<div class="vp"><img src="${esc(v.phone)}" alt=""></div>` : "")}${notes.map((n,i)=>`<div class="note n${i+1}" style="--k:${i}"><span class="ni">${esc(n.icon||"•")}</span><span><b>${esc(n.title)}</b><small>${esc(n.text||"")}</small></span></div>`).join("")}</div>`;
+  vis.hidden = !(v.a||v.b);
+  /* léger effet 3D qui suit la souris (ordinateur uniquement) */
+  if (matchMedia("(hover:hover) and (pointer:fine)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches){
+    const inner = vis.querySelector(".vis-in"); let raf = 0;
+    addEventListener("pointermove", e=>{ if(raf) return; raf = requestAnimationFrame(()=>{ raf = 0; const r = vis.getBoundingClientRect(); if (r.bottom<0) return;
+      const x = (e.clientX/innerWidth-.5), y = (e.clientY/innerHeight-.5); inner.style.transform = `rotateY(${x*8}deg) rotateX(${-y*6}deg)`; }); }, {passive:true});
+  } })();
 
 /* promotions : liste config.promos (l'ancien format config.promoCodes reste lu) */
 const frDate = d => String(d).split("-").reverse().join("/");

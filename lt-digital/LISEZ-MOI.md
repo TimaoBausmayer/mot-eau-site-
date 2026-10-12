@@ -47,6 +47,10 @@ Démarrer · Prix rapides (tous les prix au même endroit) · Gammes · Options 
 Accueil · Identité (couleurs, logo) · Sections (afficher/masquer/renommer) · Processus · Avis · Garanties · FAQ · Contact.
 Prix vide = « Sur devis ».
 
+## Haut de page (animations)
+
+Admin → **Accueil** : badge, titre (les mots apparaissent un par un, la partie colorée a un dégradé animé), **mots qui défilent** (« Pensé pour les restaurants / boulangeries… », un mot par ligne), **petites coches** sous les boutons, **notifications animées** autour des images (3 max). La bande des métiers qui défile se remplit toute seule avec tes réalisations.
+
 ## Logo, affiches & réseaux sociaux
 
 Section sombre « Logo, affiches & réseaux » (logo, identité visuelle, cartes de visite, affiches, flyers, menus, kit réseaux, gestion des réseaux sociaux au mois, montage vidéo, pub…).

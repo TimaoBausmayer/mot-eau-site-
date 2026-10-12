@@ -52,6 +52,17 @@ window.SITE_CONFIG = {
     text: "L&T Digital crée et modernise les sites des commerçants, artisans et indépendants. Un seul interlocuteur, un prix annoncé à l'avance, des retouches incluses.",
     cta1: "Voir les tarifs",
     cta2: "Commander",
+    /* mots qui défilent sous le titre : « Pour les restaurants », puis « Pour les boulangeries »… (vide = rien) */
+    rotatePrefix: "Pensé pour les",
+    rotate: ["restaurants", "boulangeries", "boutiques", "artisans", "coiffeurs & barbiers", "garages", "fleuristes", "coachs"],
+    /* petites coches sous les boutons */
+    trust: ["Prix annoncé à l'avance", "Retouches incluses", "Livré en {delivery}"],
+    /* petites notifications animées autour des images (exemples de ce que le site apporte) */
+    notes: [
+      { icon: "🔔", title: "Nouvelle réservation", text: "Table pour 4 · ce soir 20 h" },
+      { icon: "✓", title: "Ton site est en ligne", text: "Livré en {delivery}" },
+      { icon: "★", title: "Nouvel avis client", text: "« Super site, très clair ! »" }
+    ],
     /* images du haut de page (captures de tes maquettes) */
     visual: { a: "images/portfolio/restaurant.jpg", b: "images/portfolio/boutique.jpg", phone: "images/portfolio/coach-mobile.jpg" }
   },
