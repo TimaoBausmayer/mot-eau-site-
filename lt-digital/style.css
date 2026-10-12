@@ -1155,3 +1155,61 @@ input::placeholder,textarea::placeholder{color:rgba(220,225,250,.38)}
 .rv-logo{background:rgba(255,255,255,.08)}
 .final::before{background:rgba(124,92,255,.35)}
 .srch-box{border-color:rgba(255,255,255,.16);background:#12101c}.srch-btn{border-color:rgba(255,255,255,.22)}
+
+/* ======================================================================
+   ANIMATIONS v3 — plus de mouvement, sans surcharger
+   ====================================================================== */
+/* bulles de lumière qui flottent derrière tout le site */
+.sky-bokeh{position:fixed;inset:-200px 0;z-index:-1;pointer-events:none;will-change:transform}
+.sky-bokeh i{position:absolute;left:var(--x);top:var(--y);width:var(--s);height:var(--s);border-radius:50%;opacity:.28;
+  background:radial-gradient(circle,rgba(var(--c),.16) 0 52%,rgba(var(--c),.5) 64%,rgba(var(--c),.08) 70%,rgba(var(--c),0) 74%);
+  animation:hbk var(--d) ease-in-out var(--dl) infinite alternate}
+/* halo qui suit la souris */
+.cursor-glow{position:fixed;left:-220px;top:-220px;width:440px;height:440px;border-radius:50%;pointer-events:none;z-index:1;opacity:0;transition:opacity .5s;mix-blend-mode:screen;
+  background:radial-gradient(circle,rgba(200,255,62,.07),rgba(124,92,255,.05) 35%,transparent 65%)}
+.cursor-glow.on{opacity:1}
+/* titres de section : derniers mots en dégradé animé (comme le haut de page) */
+.sec-head h2 .gw>span{background:linear-gradient(100deg,#8fa2ff 0%,#c58cff 30%,#5eead4 60%,#c8ff3e 80%,#8fa2ff 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:grad 8s linear infinite}
+.svc-sec .sec-head h2 .gw>span{color:transparent}
+/* apparitions : flou + zoom + légère rotation 3D, en cascade */
+.reveal{opacity:0;transform:perspective(900px) translateY(34px) rotateX(8deg) scale(.97);filter:blur(8px);
+  transition:opacity .8s cubic-bezier(.2,.8,.2,1) var(--d,0ms),transform .9s cubic-bezier(.2,.8,.2,1) var(--d,0ms),filter .8s ease var(--d,0ms)}
+.reveal.in{opacity:1;transform:none;filter:none}
+/* petits titres : point vert qui pulse */
+.eyebrow{position:relative}
+.sec-head.in .eyebrow::after{content:"";display:inline-block;width:6px;height:6px;margin-left:10px;border-radius:50%;background:var(--lime);vertical-align:middle;box-shadow:0 0 0 0 rgba(200,255,62,.6);animation:kpulse 2s ease-out infinite}
+/* icônes des cartes : flottent doucement, tournent au survol */
+.why-ic,.svc-ic{animation:icf 4s ease-in-out infinite;animation-delay:var(--d,0ms)}
+@keyframes icf{50%{transform:translateY(-5px)}}
+.why:hover .why-ic{animation:none;transform:rotate(-8deg) scale(1.12);box-shadow:0 0 24px rgba(200,255,62,.35);transition:transform .3s,box-shadow .3s}
+/* cartes : se soulèvent avec une lueur au survol */
+.why,.plan,.addon,.svc,.g,.step,.review,.val,.founder{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s}
+.why:hover,.addon:hover,.g:hover,.step:hover,.review:hover,.val:hover,.founder:hover{transform:translateY(-6px);border-color:rgba(200,255,62,.3)!important;box-shadow:0 30px 60px -30px rgba(0,0,0,.9),0 0 40px -14px rgba(124,92,255,.5)}
+/* maquettes (réalisations) : lueur verte au lieu de l'ombre dure */
+.work:hover .frame{transform:translateY(-6px);box-shadow:0 30px 60px -24px rgba(0,0,0,.9),0 0 0 2px var(--lime),0 0 50px -10px rgba(200,255,62,.4)}
+.work .frame{transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
+/* boutons : reflet qui passe régulièrement + relief au survol */
+.btn{transition:background .2s,color .2s,border-color .2s,translate .25s cubic-bezier(.2,.8,.2,1),box-shadow .3s,transform .2s}
+.btn:hover{box-shadow:0 12px 34px -10px rgba(200,255,62,.55)}
+.btn:active{transform:scale(.97)}
+.vs-yes .btn::before,.final .btn:first-of-type::before,.pop .btn::before,#mcta .btn::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.5) 50%,transparent 70%);transform:translateX(-120%);animation:shine 4.5s ease-in-out infinite 1s;pointer-events:none}
+/* haut de page : rayon de lumière qui traverse + étincelles */
+.hero-bg::after{content:"";position:absolute;top:-30%;left:-40%;width:30%;height:160%;transform:rotate(18deg);
+  background:linear-gradient(90deg,transparent,rgba(200,215,255,.07),rgba(255,255,255,.12),rgba(200,215,255,.07),transparent);animation:streak 9s cubic-bezier(.6,0,.4,1) 2.5s infinite}
+@keyframes streak{0%{left:-40%}35%,100%{left:130%}}
+.hero h1 em{animation:emGlow 4s ease-in-out 2s infinite}
+@keyframes emGlow{50%{filter:drop-shadow(0 0 18px rgba(143,162,255,.45))}}
+.hero .vis-in{animation:sway 12s ease-in-out infinite}
+@keyframes sway{0%,100%{rotate:0deg}50%{rotate:-1.2deg}}
+.hp-ic{display:inline-block;animation:twk 2.4s ease-in-out infinite}
+@keyframes twk{50%{transform:rotate(90deg) scale(1.3);filter:drop-shadow(0 0 6px var(--lime))}}
+/* chiffres du haut : bordure qui s'allume à tour de rôle */
+.hero .stat{animation:statGlow 8s ease-in-out infinite;animation-delay:calc(var(--k,0) * 2s)}
+.hero .stat:nth-child(2){--k:1}.hero .stat:nth-child(3){--k:2}.hero .stat:nth-child(4){--k:3}
+@keyframes statGlow{0%,20%,100%{border-color:rgba(255,255,255,.1)}8%{border-color:rgba(200,255,62,.5);box-shadow:0 0 30px -8px rgba(200,255,62,.35)}}
+/* images des services : léger zoom lent */
+.svc-vid video,.svc-img img{transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.svc:hover .svc-vid video,.svc:hover .svc-img img{transform:scale(1.05)}
+@media(max-width:700px){.cursor-glow{display:none}.reveal{transform:translateY(24px);filter:blur(4px)}}
+@media(prefers-reduced-motion:reduce){.sky-bokeh,.cursor-glow,.hero-bg::after{display:none}.reveal{filter:none;transform:none}
+  .sec-head h2 .gw>span,.why-ic,.svc-ic,.hero h1 em,.hero .vis-in,.hp-ic,.hero .stat,.btn::before{animation:none!important}}

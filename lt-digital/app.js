@@ -667,11 +667,45 @@ $("vat-note").textContent = vatNote;
   b.hidden = false; b.innerHTML = `<span class="pc-ic" aria-hidden="true">📸</span><span>${esc(T.photo_cta)}</span><b>${esc(T.photo_cta_btn||"Voir")} →</b>`;
   b.onclick = ()=>{ svTab = aGroup(g); drawSvcs(); $("services").scrollIntoView({behavior:"smooth"}); }; })();
 
+/* ---------- animations v3 : bulles de lumière sur tout le site, halo qui suit la souris, apparitions plus vivantes ---------- */
+(function(){ if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  /* bulles floues qui flottent derrière tout le site */
+  const sky = document.createElement("div"); sky.className = "sky-bokeh"; sky.setAttribute("aria-hidden","true");
+  const cols = ["127,155,255","192,132,252","94,234,212","200,255,62","255,190,140"]; let sd = 11; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
+  sky.innerHTML = Array.from({length: innerWidth < 700 ? 5 : 9}, (_, i) => { const z = 60 + r()*160;
+    return `<i style="--s:${z.toFixed(0)}px;--x:${(r()*100).toFixed(1)}%;--y:${(r()*100).toFixed(1)}%;--c:${cols[i%cols.length]};--d:${(14+r()*14).toFixed(1)}s;--dl:-${(r()*14).toFixed(1)}s;--mx:${((r()-.5)*220).toFixed(0)}px;--my:${((r()-.5)*260).toFixed(0)}px"></i>`; }).join("");
+  document.body.prepend(sky);
+  /* les bulles bougent un peu avec le défilement (profondeur) */
+  let tk = 0; addEventListener("scroll", ()=>{ if (tk) return; tk = requestAnimationFrame(()=>{ tk = 0; sky.style.transform = `translateY(${-(scrollY*.06)%400}px)`; }); }, {passive:true});
+  /* halo vert très doux qui suit la souris (ordinateur) */
+  if (matchMedia("(hover:hover) and (pointer:fine)").matches){
+    const c = document.createElement("div"); c.className = "cursor-glow"; c.setAttribute("aria-hidden","true"); document.body.appendChild(c);
+    let x = innerWidth/2, y = innerHeight/2, cx = x, cy = y, on = false;
+    addEventListener("pointermove", e=>{ x = e.clientX; y = e.clientY; if (!on){ on = true; c.classList.add("on"); loop(); } }, {passive:true});
+    document.addEventListener("pointerleave", ()=>c.classList.remove("on"));
+    function loop(){ cx += (x-cx)*.12; cy += (y-cy)*.12; c.style.transform = `translate(${cx}px,${cy}px)`; requestAnimationFrame(loop); }
+    /* tous les boutons deviennent légèrement « aimantés » */
+    document.querySelectorAll("main .btn:not(.hero .btn), .final .btn").forEach(b=>{
+      b.addEventListener("pointermove", e=>{ const q = b.getBoundingClientRect(); b.style.translate = `${(e.clientX-q.left-q.width/2)*.12}px ${(e.clientY-q.top-q.height/2)*.2}px`; });
+      b.addEventListener("pointerleave", ()=>{ b.style.translate = ""; }); });
+  }
+  /* les prix des gammes défilent jusqu'à leur valeur quand on arrive dessus */
+  if ("IntersectionObserver" in window){
+    const io = new IntersectionObserver(es=>es.forEach(e=>{ if (!e.isIntersecting) return; io.unobserve(e.target);
+      const pr = e.target.querySelector(".price"); if (!pr || pr.querySelector("s")) return;
+      const tn = [...pr.childNodes].find(n=>n.nodeType===3 && /\d/.test(n.textContent)); if (!tn) return;
+      const full = tn.textContent, m = full.match(/(\d(?:[\d\s\u202f]*\d)?)/); if (!m) return; const end = +m[1].replace(/\D/g,""); if (!end) return;
+      const t0 = performance.now(), D = 900; const step = now => { const k = Math.min(1,(now-t0)/D), v = Math.round(end*(1-Math.pow(1-k,3)));
+        tn.textContent = full.replace(m[1], v.toLocaleString("fr-FR")); if (k<1) requestAnimationFrame(step); else tn.textContent = full; }; requestAnimationFrame(step); }), {threshold:.4});
+    const watch = () => document.querySelectorAll("#plans .plan").forEach(p=>{ if (!p.dataset.cnt){ p.dataset.cnt = 1; io.observe(p); } });
+    watch(); new MutationObserver(watch).observe($("plans"), {childList:true}); }
+})();
 /* ---------- animations supplémentaires ---------- */
 (function(){ if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   /* titres de section : les mots montent un par un quand la section arrive */
   document.querySelectorAll("main .sec-head h2").forEach(h=>{ const t = h.textContent.trim(); if(!t) return; let i = 0;
-    h.innerHTML = t.split(/\s+/).map(w=>`<span class="w2"><span style="--i:${i++}">${esc(w)}</span></span>`).join(" "); });
+    const ws = t.split(/\s+/), g = ws.length > 3 ? 2 : 1;   /* les derniers mots prennent le dégradé animé du haut de page */
+    h.innerHTML = ws.map((w,k)=>`<span class="w2${k >= ws.length-g ? " gw" : ""}"><span style="--i:${i++}">${esc(w)}</span></span>`).join(" "); });
   /* cartes : légère inclinaison 3D + reflet lumineux qui suit la souris */
   if (matchMedia("(hover:hover) and (pointer:fine)").matches){
     document.addEventListener("pointermove", e=>{ const c = e.target.closest && e.target.closest(".why, .svc, .step, .review, .g, .val, .plan, .addon, .founder"); if(!c) return;
