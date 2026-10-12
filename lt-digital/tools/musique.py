@@ -175,84 +175,116 @@ PUBS = {
     ),
 }
 
+# ---------------------------------------------------------------- nouveaux instruments (style doux)
+def epiano(freq, length=1.6):
+    """piano électrique chaleureux (FM douce + trémolo)"""
+    L = n(length); t = np.arange(L) / SR
+    I = 1.6 * np.exp(-t / 0.25)
+    s = np.sin(2 * np.pi * freq * t + I * np.sin(2 * np.pi * freq * t))
+    s += 0.18 * np.sin(2 * np.pi * 2 * freq * t) * np.exp(-t / 0.4)
+    s *= np.exp(-t / 0.9) * np.minimum(1, t / 0.004) * (1 + 0.08 * np.sin(2 * np.pi * 5 * t))
+    return s
+
+def bell(freq, length=1.2):
+    L = n(length); t = np.arange(L) / SR
+    s = np.sin(2 * np.pi * freq * t + 1.2 * np.exp(-t / 0.15) * np.sin(2 * np.pi * 3.5 * freq * t))
+    return s * np.exp(-t / 0.45) * np.minimum(1, t / 0.002)
+
+def soft_kick():
+    L = n(0.35); t = np.arange(L) / SR
+    f = 48 + 70 * np.exp(-t / 0.03)
+    return np.sin(2 * np.pi * np.cumsum(f) / SR) * env_exp(L, 0.16)
+
+def clap():
+    L = n(0.35); s = np.zeros(L)
+    for d in (0, 0.009, 0.018, 0.027):
+        k = n(d); s[k:] += band(noise(0.35), 1000, 6000)[: L - k] * env_exp(L - k, 0.012 if d < .027 else 0.09)
+    return s * 0.5
+
+def shaker():
+    L = n(0.06)
+    return band(noise(0.06), 6000, 14000) * env_exp(L, 0.012) * np.minimum(1, np.arange(L) / SR / 0.008)
+
+def warm_bass(freq, length):
+    L = n(length); t = np.arange(L) / SR
+    s = np.sin(2 * np.pi * freq * t) + 0.15 * np.sin(4 * np.pi * freq * t)
+    return s * np.minimum(1, t / 0.01) * np.clip((length - t) / 0.05, 0, 1)
+
+def reverb(x, sec=1.8, mix=0.25):
+    ir = rng.standard_normal(n(sec)) * np.exp(-np.arange(n(sec)) / SR / (sec / 5))
+    ir = band(ir, 200, 7000); ir /= np.sqrt(np.sum(ir ** 2))
+    N = 1 << int(np.ceil(np.log2(len(x) + len(ir))))
+    w = np.fft.irfft(np.fft.rfft(x, N) * np.fft.rfft(ir, N), N)[: len(x)]
+    return x + w * mix
+
+# accords « feel good » : Fa maj7 – Mi m7 – Ré m7 – Do maj7
+CHORDS2 = [(41, [53, 57, 60, 64]), (40, [52, 55, 59, 62]), (38, [50, 53, 57, 60]), (36, [48, 52, 55, 59])]
+HOOK = [76, 74, 72, 74, 76, 79, 76, 72]   # petite mélodie (cloche)
+
 # ---------------------------------------------------------------- composition
 def build(cfg):
     D = cfg["dur"]; L = n(D) + n(2.5)
-    drums = np.zeros(L); bass = np.zeros(L); pad = np.zeros(L); arp = np.zeros(L); fx = np.zeros(L)
+    music = np.zeros(L); drums = np.zeros(L); fx = np.zeros(L)
     in_break = lambda t: any(a <= t < b for a, b in cfg["breaks"])
-    K, S, H, HO = kick(), snare(), hat(), hat(True)
+    K, C, SH = soft_kick(), clap(), shaker()
 
-    # pad (un accord par mesure de 2 s, depuis le début)
+    # accords au piano : sur le 1 et en syncope (« et » du 2), une mesure = 2 s
     bar = 0; t = OFF - 2.0
     while t < D:
-        root, notes = CHORDS[bar % 4]
-        for m in notes:
-            add(pad, max(0, t), pad_voice(hz(m), 2.15 if t >= 0 else 2.15 + t), 0.055)
+        root, notes = CHORDS2[bar % 4]
+        for off, g in ((0.0, 1.0), (0.75, 0.7), (1.25, 0.55)):
+            if 0 <= t + off < D - 1:
+                for m in notes: add(music, t + off, epiano(hz(m)), 0.05 * g)
+        if t + 2 > 2.37 and not in_break(t + 0.1) and t < cfg["end_drums"]:      # basse ronde
+            for off, ln in ((0.0, 0.7), (0.75, 0.45), (1.25, 0.6)):
+                if t + off >= 0: add(music, t + off, warm_bass(hz(root - 12), ln), 0.22)
+        if bar % 2 == 1 and t > 4:                                                # mélodie toutes les 2 mesures
+            for k, m in enumerate(HOOK):
+                add(music, t + k * 0.25, bell(hz(m)), 0.045)
         t += 2.0; bar += 1
 
-    # rythme
-    i = 0
-    while True:
-        t = OFF + i * BEAT
-        if t >= D: break
-        chord = CHORDS[int((t - OFF) // 2.0) % 4]
-        started = t >= 2.37
-        if started and not in_break(t) and t < cfg["end_drums"]:
-            add(drums, t, K, 0.95)
-            if i % 2 == 1: add(drums, t, S, 0.55)
-            add(drums, t + 0.25, HO if i % 2 else H, 0.22)
-            add(drums, t, H, 0.15)
-            if i % 4 == 3: add(drums, t + 0.375, K, 0.45)     # petite relance
-            for k in range(2):                                 # basse en croches
-                add(bass, t + k * 0.25, sub(hz(chord[0] - 12), 0.24), 0.42)
-        if t >= 2.37 and t < D - 2:                            # arpège en doubles croches
-            notes = chord[1]
-            for k in range(4):
-                m = notes[(i * 4 + k) % len(notes)] + 12
-                add(arp, t + k * 0.125, pluck(hz(m)), 0.07 if not in_break(t) else 0.1)
-        i += 1
-
-    # « sidechain » : le pad et la basse respirent sur la grosse caisse
-    duck = np.ones(L); dl = n(0.22); shape = 1 - 0.6 * np.exp(-np.arange(dl) / SR / 0.06)
+    # batterie légère
     i = 0
     while OFF + i * BEAT < D:
         t = OFF + i * BEAT
         if t >= 2.37 and not in_break(t) and t < cfg["end_drums"]:
-            j = n(t); duck[j:j + dl] = np.minimum(duck[j:j + dl], shape[: len(duck[j:j + dl])])
+            if i % 2 == 0 or i % 8 == 7: add(drums, t, K, 0.7)
+            if i % 2 == 1: add(drums, t, C, 0.5)
+            for k in range(4): add(drums, t + k * 0.125, SH, 0.12 if k % 2 else 0.07)
         i += 1
-    pad *= duck; bass *= duck
+    music = reverb(music, 2.2, 0.3) + reverb(drums, 1.0, 0.12)
 
-    # bruitages
+    # bruitages (devant)
     for c in cfg["cuts"]:
-        add(fx, c - 0.42, whoosh(), 0.25)
-        if c not in cfg["big"]: add(fx, c, hit(), 0.35)
+        add(fx, c - 0.42, whoosh(), 0.55)
+        if c not in cfg["big"]: add(fx, c, hit(), 0.55)
     for c in cfg["big"]:
-        add(fx, c - 1.5, riser(1.5), 0.3)
-        add(fx, c, impact(), 0.7)
+        add(fx, c - 1.5, riser(1.5), 0.45)
+        add(fx, c, impact(), 0.9)
     for a, b, k in cfg["typing"]:
         for x in np.linspace(a, b, k):
-            add(fx, x + rng.uniform(-0.01, 0.01), click(), 0.5)
-    for c in cfg["clicks"]: add(fx, c, click(), 1.0); add(fx, c, ding(), 0.6)
-    for c in cfg["slams"]: add(fx, c, hit(), 0.45)
-    for c in cfg["stamps"]: add(fx, c, hit(), 0.6); add(fx, c, band(noise(0.15), 200, 2000) * env_exp(n(0.15), 0.03), 0.4)
+            add(fx, x + rng.uniform(-0.01, 0.01), click(), 0.9)
+    for c in cfg["clicks"]: add(fx, c, click(), 1.0); add(fx, c, ding(), 0.9)
+    for c in cfg["slams"]: add(fx, c, hit(), 0.7)
+    for c in cfg["stamps"]: add(fx, c, hit(), 0.8); add(fx, c, band(noise(0.15), 200, 2000) * env_exp(n(0.15), 0.03), 0.6)
     for c in cfg["glitch"]:
-        for k in range(6): add(fx, c + k * 0.05, band(noise(0.04), 300 + 900 * k, 4000 + 900 * k), 0.25)
-    for c in cfg["shutters"]: add(fx, c, shutter(), 0.8)
-    for c in cfg["dings"]: add(fx, c, ding(), 0.9)
+        for k in range(6): add(fx, c + k * 0.05, band(noise(0.04), 300 + 900 * k, 4000 + 900 * k), 0.35)
+    for c in cfg["shutters"]: add(fx, c, shutter(), 1.2)
+    for c in cfg["dings"]: add(fx, c, ding(), 1.2)
     a, b, k = cfg["counter"]
-    for x in np.linspace(a, b, k) ** 1 : add(fx, x, tick(), 1.0)
+    for x in np.linspace(a, b, k): add(fx, x, tick(), 1.4)
+    fx = reverb(fx, 0.8, 0.12)
 
-    mix = drums * 1.0 + bass * 1.0 + pad * 1.0 + arp * 1.0 + fx * 1.0
-    # stéréo : pad et arpège légèrement élargis
-    left = mix + 0.15 * np.roll(pad + arp, n(0.011))
-    right = mix + 0.15 * np.roll(pad + arp, n(0.017))
+    # mixage : bruitages devant, musique en fond (~ -12 dB)
+    music /= np.max(np.abs(music)) + 1e-9
+    fx /= np.max(np.abs(fx)) + 1e-9
+    mix = music * 0.24 + fx * 0.85
+    left = mix + 0.08 * np.roll(music, n(0.012)); right = mix + 0.08 * np.roll(music, n(0.019))
     st = np.stack([left, right], 1)[: n(D)]
-    # fondu de fin + limiteur doux
     fo = n(3.0); st[-fo:] *= np.linspace(1, 0, fo)[:, None]
     st[: n(0.05)] *= np.linspace(0, 1, n(0.05))[:, None]
-    st = np.tanh(st / np.max(np.abs(st)) * 1.6)
-    st = st / np.max(np.abs(st)) * 0.89
-    return st
+    st = np.tanh(st / np.max(np.abs(st)) * 1.1)
+    return st / np.max(np.abs(st)) * 0.89
 
 def save(st, path):
     data = (st * 32767).astype(np.int16)
