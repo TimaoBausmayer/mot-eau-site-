@@ -15,6 +15,7 @@ E = 60 / 90 / 2          # une croche
 BAR = 8 * E
 DUR = 32.0
 DROP, BRK, BACK, END = 8.0, 18.667, 22.667, 29.333
+FX_ONLY = "--bruitages" in sys.argv
 
 # ---------------------------------------------------------------- instruments
 def kick():
@@ -200,8 +201,8 @@ def build():
 
     music /= np.max(np.abs(music)) + 1e-9
     fx /= np.max(np.abs(fx)) + 1e-9
-    mix = music * 0.72 + fx * 0.5
-    side = reverb(keys + lead, 1.2, 0.0) * 0.06
+    mix = (music * 0.72 if not FX_ONLY else 0) + fx * 0.5
+    side = reverb(keys + lead, 1.2, 0.0) * (0.06 if not FX_ONLY else 0)
     st = np.stack([mix + np.roll(side, n(0.011)), mix - np.roll(side, n(0.017))], 1)[: n(DUR)]
     fo = n(2.0); st[-fo:] *= np.linspace(1, 0, fo)[:, None] ** 1.5
     st[: n(0.02)] *= np.linspace(0, 1, n(0.02))[:, None]
