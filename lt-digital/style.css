@@ -1245,3 +1245,18 @@ main .sec-head{translate:0 var(--py,0px);transition:translate .2s linear}
 .final h2{background:linear-gradient(100deg,#fff 40%,#c8ff3e 50%,#fff 60%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:grad 6s linear infinite}
 @media(max-width:700px){.ticks{height:110px;margin:-10px 0 -24px}.tick{padding:10px 0}.tick span{font-size:1.1rem}}
 @media(prefers-reduced-motion:reduce){.sq,.works > .work.sq .frame{opacity:1;transform:none;filter:none;clip-path:none}.sky-bokeh b,.plan.pop .ribbon,.cmp-badge,.final h2{animation:none}}
+
+/* ======================================================================
+   VERSION PLUS CALME — on garde l'essentiel du mouvement
+   ====================================================================== */
+.mega,.tick.t2{display:none!important}
+.ticks{height:110px;margin:-10px 0 -20px}
+.tick.t1{transform:translateY(-50%) rotate(-2deg)}
+.sky-bokeh i{opacity:.18}
+.plan.pop .ribbon,.cmp-badge,.svc.pop .svc-tag.hot,.why-ic,.svc-ic,.hero .vis-in,.hp-ic,.hero .stat,.hero h1 em,.final h2{animation:none!important}
+.final h2{background:none;color:inherit;-webkit-background-clip:border-box;background-clip:border-box}
+.sec-head.in .eyebrow::after{display:none}
+.vs-yes .btn::before,.final .btn:first-of-type::before,.pop .btn::before,#mcta .btn::before{display:none}
+.hero-bg::after{animation-duration:14s}
+.reveal{transform:translateY(24px);filter:blur(4px)}
+.why:hover,.addon:hover,.g:hover,.step:hover,.review:hover,.val:hover,.founder:hover{transform:translateY(-3px);box-shadow:0 24px 50px -30px rgba(0,0,0,.9)}
