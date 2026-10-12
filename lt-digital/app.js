@@ -332,12 +332,22 @@ drawOpts(); render();
   $("founders").innerHTML = (st.founders||[]).map(f=>`<article class="founder">${f.photo?`<img src="${esc(f.photo)}" alt="${esc(f.name)}" width="88" height="88">`:`<span class="fi" aria-hidden="true">${esc(f.initial||(f.name||"?").trim()[0]||"?")}</span>`}<div><h3>${esc(f.name)}</h3><span class="role">${esc(f.role||"")}</span><p>${esc(f.text||"")}</p></div></article>`).join("");
   $("values").innerHTML = (st.values||[]).map(v=>`<div class="val"><h4>${esc(v.title)}</h4><p>${esc(v.text)}</p></div>`).join(""); })();
 
-/* barre du haut : offre + question / Instagram / e-mail (une seule ligne propre) */
+/* barre du haut : offre + contact, moderne et animée (desktop : une ligne ; mobile : messages qui alternent) */
 (function(){ const ct = C.contact||{}, T = C.texts||{}; const promo = C.announce||""; if(!promo && !ct.instagram && !ct.email) return;
-  const q = (T.top_question||"Une question ?") + " " + (ct.instagram ? (T.top_insta||"Écris-nous sur Instagram") : (T.top_mail_only||"Écris-nous par e-mail"));
-  const contact = `<span class="tb-contact">${esc(q)}${ct.instagram?` <a href="${esc(ct.instagram)}" target="_blank" rel="noopener">${esc(ct.instagramHandle||"Instagram")}</a>`:""}${ct.instagram&&ct.email?` <span class="tb-or">${esc(T.top_mail||"ou par e-mail :")}</span>`:""}${ct.email?` <a href="mailto:${esc(ct.email)}">${esc(ct.email)}</a>`:""}</span>`;
-  const seg = `<span class="tb-seg">${promo?`<span class="tb-promo">${esc(promo)}</span>`:""}${contact}</span>`;
-  $("tb-in").innerHTML = `<div class="tb-track">${seg}${seg.replace('class="tb-seg"','class="tb-seg dup" aria-hidden="true"').replace(/<a /g,'<a tabindex="-1" ')}</div>`; $("topbar").hidden = false; })();
+  const ic = { ig:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" class="f"/></svg>',
+    mail:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>' };
+  const m = promo.match(/code\s+([A-Z0-9_-]{3,})/i);
+  const promoHTML = !promo ? "" : `<span class="tb-promo"><i class="tb-dot" aria-hidden="true"></i>${m ? esc(promo.slice(0,m.index+5)) + `<button type="button" class="tb-code" data-code="${esc(m[1])}" title="${esc(T.top_copy||"Copier le code")}">${esc(m[1])}</button>` + esc(promo.slice(m.index+m[0].length)) : esc(promo)}</span>`;
+  const links = `${ct.instagram?`<a class="tb-pill" href="${esc(ct.instagram)}" target="_blank" rel="noopener">${ic.ig}<span>${esc(ct.instagramHandle||"Instagram")}</span></a>`:""}${ct.email?`<a class="tb-pill" href="mailto:${esc(ct.email)}">${ic.mail}<span class="tb-mail">${esc(ct.email)}</span><span class="tb-mail-s">${esc(T.top_mail_short||"E-mail")}</span></a>`:""}`;
+  const contact = `<span class="tb-contact"><span class="tb-q">${esc(T.top_question||"Une question ? Écris-nous")}</span>${links}</span>`;
+  const slides = [promoHTML, contact].filter(Boolean);
+  $("tb-in").innerHTML = `<div class="tb-row">${slides.map((h,i)=>`<div class="tb-slide${i===0?" on":""}">${h}</div>`).join("")}</div>`;
+  const bar = $("topbar"); bar.hidden = false;
+  bar.querySelectorAll(".tb-code").forEach(b=>b.addEventListener("click",()=>{ const c=b.dataset.code; (navigator.clipboard?navigator.clipboard.writeText(c):Promise.reject()).catch(()=>{}).finally(()=>{ b.classList.add("ok"); b.textContent = T.top_copied||"Copié !"; setTimeout(()=>{ b.classList.remove("ok"); b.textContent=c; },1600); }); }));
+  const sl = bar.querySelectorAll(".tb-slide"); if(sl.length<2) return; let k = 0, paused = false;
+  bar.addEventListener("mouseenter",()=>paused=true); bar.addEventListener("mouseleave",()=>paused=false);
+  setInterval(()=>{ if(paused || !matchMedia("(max-width:900px)").matches || matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+    sl[k].classList.remove("on"); sl[k].classList.add("out"); const old = sl[k]; setTimeout(()=>old.classList.remove("out"),600); k = (k+1)%sl.length; sl[k].classList.add("on"); }, 4200); })();
 
 /* e-mail : contact direct */
 (function(){ const em = (C.contact||{}).email; if(!em) return; const T = C.texts||{};
