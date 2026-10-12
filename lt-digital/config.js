@@ -230,6 +230,8 @@ window.SITE_CONFIG = {
      tag      : badge facultatif (sinon "Populaire" si popular) */
   addons: [
     { id: "reservation", name: "Réservation en ligne", price: 140, from: true, group: "Fonctionnalités", popular: true, qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Rendez-vous ou tables réservés directement sur le site." },
+    { id: "carte", name: "Google Maps + bouton itinéraire", price: 30, group: "Fonctionnalités", popular: true, qty: false, plans: [], included: [], tag: "", desc: "Ta carte Google Maps sur le site, avec un bouton « Itinéraire » qui guide le client jusqu'à chez toi." },
+    { id: "notif", name: "Système de notifications (e-mail / SMS)", price: 50, group: "Fonctionnalités", popular: true, qty: false, plans: [], included: [], tag: "", desc: "Tu es prévenu à chaque réservation, commande ou message, et ton client reçoit sa confirmation + un rappel la veille." },
     { id: "boutique", name: "Boutique en ligne / catalogue", price: 150, from: true, group: "Fonctionnalités", popular: true, qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Présente et vends tes produits en ligne." },
     { id: "domain", name: "Nom de domaine + hébergement (1 an)", price: 60, group: "Mise en ligne & visibilité", popular: true, qty: false, plans: [], included: [], tag: "", desc: "On s'occupe de toute la mise en ligne." },
     { id: "seo", name: "Optimisation Google (SEO)", price: 70, group: "Mise en ligne & visibilité", popular: true, qty: false, plans: [], included: [], tag: "", desc: "Pour mieux apparaître dans les recherches." },
@@ -247,7 +249,6 @@ window.SITE_CONFIG = {
     { id: "whatsapp", name: "Bouton WhatsApp / Instagram", price: 30, group: "Fonctionnalités", qty: false, plans: [], included: [], tag: "", desc: "Un contact direct en un clic." },
     { id: "newsletter", name: "Inscription à la newsletter", price: 60, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Récupère les e-mails de tes visiteurs." },
     { id: "avis", name: "Affichage des avis clients", price: 45, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Mets en avant les retours de tes clients." },
-    { id: "carte", name: "Carte interactive + « ouvert maintenant »", price: 30, group: "Fonctionnalités", qty: false, plans: [], included: [], tag: "", desc: "Plan, horaires et statut ouvert/fermé en direct." },
     { id: "blog", name: "Blog / actualités modifiable", price: 90, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Publie des nouvelles facilement." },
     { id: "espace", name: "Espace client / connexion", price: null, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Un espace privé pour tes clients." },
     { id: "spec", name: "Fonctionnalité spéciale", price: null, group: "Fonctionnalités", qty: false, plans: [], included: [], tag: "", desc: "Un besoin particulier ? On chiffre ensemble." },
@@ -350,16 +351,16 @@ window.SITE_CONFIG = {
      vrais projets : tag = catégorie (sert au filtre), url = lien du site, image = capture d'écran PC,
      mobile = capture d'écran téléphone (facultatif). */
   portfolio: [
-    { name: "Le Comptoir", tag: "Restauration", category: "Restaurant · site de 3 pages", url: "demos/restaurant/index.html", image: "images/portfolio/restaurant.jpg", mobile: "images/portfolio/restaurant-mobile.jpg", style: 1 },
+    { name: "Le Comptoir", tag: "Restauration", category: "Restaurant · site de 3 pages", url: "demos/restaurant/index.html", image: "images/portfolio/restaurant.jpg", mobile: "images/portfolio/restaurant-mobile.jpg", features: ["Google Maps", "Réservation", "Notifications"], style: 1 },
     { name: "Maison Aurore", tag: "Commerces", category: "Boutique · site de 3 pages", url: "demos/boutique/index.html", image: "images/portfolio/boutique.jpg", mobile: "images/portfolio/boutique-mobile.jpg", style: 2 },
-    { name: "PEAK Coaching", tag: "Services", category: "Coach sportif · site de 3 pages", url: "demos/coach/index.html", image: "images/portfolio/coach.jpg", mobile: "images/portfolio/coach-mobile.jpg", style: 3 },
+    { name: "PEAK Coaching", tag: "Services", category: "Coach sportif · site de 3 pages", url: "demos/coach/index.html", image: "images/portfolio/coach.jpg", mobile: "images/portfolio/coach-mobile.jpg", features: ["Réservation", "Notifications"], style: 3 },
+    { name: "Barber Club 1925", tag: "Beauté & bien-être", category: "Barbier · site de 3 pages", url: "demos/barbier/index.html", image: "images/portfolio/barbier.jpg", mobile: "images/portfolio/barbier-mobile.jpg", features: ["Google Maps", "Prise de RDV", "Notifications"], style: 2 },
     { name: "Atelier Dubois", tag: "Artisans", category: "Menuiserie · site de 3 pages", url: "demos/artisan/index.html", image: "images/portfolio/artisan.jpg", mobile: "images/portfolio/artisan-mobile.jpg", style: 4 },
     { name: "La Fromagerie des Alpes", tag: "Commerces", category: "Fromagerie · site de 3 pages", url: "demos/fromagerie/index.html", image: "images/portfolio/fromagerie.jpg", mobile: "images/portfolio/fromagerie-mobile.jpg", style: 1 },
     { name: "Boucherie Maison Lefèvre", tag: "Commerces", category: "Boucherie · site de 3 pages", url: "demos/boucherie/index.html", image: "images/portfolio/boucherie.jpg", mobile: "images/portfolio/boucherie-mobile.jpg", style: 2 },
     { name: "Pizzeria Bella Napoli", tag: "Restauration", category: "Pizzeria · site de 3 pages", url: "demos/pizzeria/index.html", image: "images/portfolio/pizzeria.jpg", mobile: "images/portfolio/pizzeria-mobile.jpg", style: 3 },
-    { name: "Boulangerie Le Fournil", tag: "Commerces", category: "Boulangerie · site de 3 pages", url: "demos/boulangerie/index.html", image: "images/portfolio/boulangerie.jpg", mobile: "images/portfolio/boulangerie-mobile.jpg", style: 4 },
+    { name: "Boulangerie Le Fournil", tag: "Commerces", category: "Boulangerie · site de 3 pages", url: "demos/boulangerie/index.html", image: "images/portfolio/boulangerie.jpg", mobile: "images/portfolio/boulangerie-mobile.jpg", features: ["Google Maps"], style: 4 },
     { name: "Atelier Floral Camélia", tag: "Commerces", category: "Fleuriste · site de 3 pages", url: "demos/fleuriste/index.html", image: "images/portfolio/fleuriste.jpg", mobile: "images/portfolio/fleuriste-mobile.jpg", style: 1 },
-    { name: "Barber Club 1925", tag: "Beauté & bien-être", category: "Barbier · site de 3 pages", url: "demos/barbier/index.html", image: "images/portfolio/barbier.jpg", mobile: "images/portfolio/barbier-mobile.jpg", style: 2 },
     { name: "Garage Auto Performance", tag: "Services", category: "Garage auto · site de 3 pages", url: "demos/garage/index.html", image: "images/portfolio/garage.jpg", mobile: "images/portfolio/garage-mobile.jpg", style: 3 },
     { name: "Duval Plomberie & Chauffage", tag: "Artisans", category: "Plombier · site de 3 pages", url: "demos/plombier/index.html", image: "images/portfolio/plombier.jpg", mobile: "images/portfolio/plombier-mobile.jpg", style: 4 },
     { name: "Institut Éclat", tag: "Beauté & bien-être", category: "Institut de beauté · site de 3 pages", url: "demos/esthetique/index.html", image: "images/portfolio/esthetique.jpg", mobile: "images/portfolio/esthetique-mobile.jpg", style: 1 },

@@ -33,6 +33,7 @@ window.SITE = {
     "onacc": "#0e0e11"
   },
   "home": {
+    "ctaHref": "index.html#reserver",
     "kicker": "Barbier · Nantes",
     "title": "Coupe, barbe, {style}. Rien que du propre.",
     "text": "Un salon pour hommes à l'ancienne : coupe aux ciseaux, taille de barbe, rasage à la lame chaude. Prenez rendez-vous en ligne ou passez directement.",
@@ -163,6 +164,44 @@ window.SITE = {
         ]
       }
     ]
+  },
+  "extras": {
+    "maps": true,
+    "notify": true,
+    "booking": {
+      "kicker": "Prise de rendez-vous",
+      "title": "Votre créneau en 3 clics",
+      "text": "Choisissez la prestation, le jour et l'heure. Vous recevez un rappel la veille.",
+      "services": [
+        "Coupe homme · 25 €",
+        "Coupe + barbe · 38 €",
+        "Taille de barbe · 18 €",
+        "Rasage à la lame · 30 €",
+        "Coupe enfant · 18 €"
+      ],
+      "serviceLabel": "Prestation",
+      "slots": [
+        "9h30",
+        "10h15",
+        "11h00",
+        "14h00",
+        "14h45",
+        "15h30",
+        "16h15",
+        "17h00",
+        "18h30"
+      ],
+      "full": [
+        "10h15",
+        "16h15"
+      ],
+      "closed": [
+        0,
+        1
+      ],
+      "button": "Réserver mon créneau",
+      "notifTitle": "Nouveau rendez-vous"
+    }
   },
   "contact": {
     "title": "Contactez-nous",

@@ -33,6 +33,7 @@ window.SITE = {
     "onacc": "#0b1230"
   },
   "home": {
+    "ctaHref": "index.html#reserver",
     "kicker": "Coaching sportif · Nantes",
     "title": "Transforme ton corps. {Dépasse} tes limites.",
     "text": "Un programme sur mesure, un suivi chaque semaine et des résultats que tu peux mesurer. Séances en salle ou en visio, pour débutants comme confirmés.",
@@ -170,6 +171,37 @@ window.SITE = {
         ]
       }
     ]
+  },
+  "extras": {
+    "maps": false,
+    "notify": true,
+    "booking": {
+      "kicker": "Réservation de séance",
+      "title": "Votre séance découverte",
+      "text": "Bloquez votre créneau : on vous confirme tout de suite par SMS.",
+      "services": [
+        "Séance découverte (offerte)",
+        "Séance individuelle",
+        "Bilan + programme"
+      ],
+      "serviceLabel": "Séance",
+      "slots": [
+        "6h30",
+        "7h30",
+        "12h15",
+        "13h00",
+        "18h00",
+        "19h00"
+      ],
+      "full": [
+        "18h00"
+      ],
+      "closed": [
+        0
+      ],
+      "button": "Réserver ma séance",
+      "notifTitle": "Nouvelle séance réservée"
+    }
   },
   "contact": {
     "title": "Contactez-nous",

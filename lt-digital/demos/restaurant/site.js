@@ -33,6 +33,7 @@ window.SITE = {
     "onacc": "#17100d"
   },
   "home": {
+    "ctaHref": "index.html#reserver",
     "kicker": "Bistrot · cuisine maison",
     "title": "L'art de la table, {sans chichi}.",
     "text": "Produits de saison, recettes de caractère et une salle chaleureuse au cœur de la ville. Déjeuner entre collègues ou dîner à deux, il y a toujours une place pour vous.",
@@ -232,6 +233,35 @@ window.SITE = {
         ]
       }
     ]
+  },
+  "extras": {
+    "maps": true,
+    "notify": true,
+    "booking": {
+      "kicker": "Réservation en ligne",
+      "title": "Réservez votre table",
+      "text": "Choisissez le jour, l'heure et le nombre de couverts : c'est confirmé tout de suite.",
+      "slots": [
+        "12h00",
+        "12h30",
+        "13h00",
+        "19h00",
+        "19h30",
+        "20h00",
+        "20h30",
+        "21h00"
+      ],
+      "full": [
+        "20h00"
+      ],
+      "people": true,
+      "peopleLabel": "Couverts",
+      "closed": [
+        1
+      ],
+      "button": "Réserver ma table",
+      "notifTitle": "Nouvelle réservation de table"
+    }
   },
   "contact": {
     "title": "Contactez-nous",

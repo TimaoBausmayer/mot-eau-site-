@@ -178,6 +178,9 @@ window.SITE = {
       }
     ]
   },
+  "extras": {
+    "maps": true
+  },
   "contact": {
     "title": "Contactez-nous",
     "intro": "Une question, un devis, une réservation ? Écrivez-nous ou appelez-nous : nous répondons rapidement.",

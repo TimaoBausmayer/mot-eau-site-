@@ -1297,3 +1297,7 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--lime)!impor
 html{scrollbar-color:rgba(255,255,255,.18) var(--bg)}
 ::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:10px;border:2px solid var(--bg)}::-webkit-scrollbar-thumb:hover{background:var(--lime)}
 @media(max-width:560px){.hero .note{display:none}}
+/* réalisations : fonctions en badges (Google Maps, Réservation, Notifications…) */
+.work-ft{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.work-ft b{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;border:1px solid rgba(200,255,62,.35);background:rgba(200,255,62,.08);color:var(--lime);font:600 .72rem var(--bf)}
+.work-ft b::before{content:"✦";font-size:.6rem}

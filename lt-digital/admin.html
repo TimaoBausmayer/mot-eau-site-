@@ -305,6 +305,7 @@ S["Réalisations"] = () => [
     w=>[text("Nom du projet", w, "name"), text("Catégorie affichée", w, "category"), text("Filtre (ex : Restauration, Commerces, Artisans…)", w, "tag", {placeholder:"Commerces"}), text("Lien du site / de la démo (facultatif)", w, "url", {placeholder:"https://... ou demos/pizzeria/index.html"}),
         text("Capture d'écran PC (facultatif)", w, "image", {placeholder:"images/portfolio/monsite.jpg"}),
         text("Capture d'écran téléphone (facultatif)", w, "mobile", {placeholder:"images/portfolio/monsite-mobile.jpg"}),
+        field("Fonctions à mettre en avant (une par ligne, ex : Google Maps, Réservation, Notifications)", ()=>(w.features||[]).join("\n"), v=>{ w.features = v.split("\n").map(x=>x.trim()).filter(Boolean); changed(); }, {area:true, rows:3}),
         field("Couleur de l'aperçu automatique (1 à 4)", ()=>w.style, v=>w.style=Math.max(1,Math.min(4,Number(v)||1)), {type:"number",min:1})],
     ()=>show("Réalisations"), {addLabel:"Ajouter un projet"})
 ];

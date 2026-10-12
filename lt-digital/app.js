@@ -253,7 +253,7 @@ const workHTML = (w,i)=>{
     ? `<div class="shot"><img src="${esc(w.image)}" alt="Aperçu du site ${esc(w.name)}" loading="lazy">${w.mobile?`<div class="phone"><img src="${esc(w.mobile)}" alt="" loading="lazy"></div>`:""}</div>`
     : `<div class="shot s${esc(w.style||1)}"></div>`;
   const dom = (w.url||"").replace(/^https?:\/\//,"").replace(/^demos\//,"").replace(/\/?index\.html$/,"").replace(/\.html$/,"") || "ton-site.fr";
-  const inner = `<div class="frame"><div class="fbar"><i></i><i></i><i></i><span>${esc(dom)}</span></div>${shot}</div><div class="work-in"><div><strong>${esc(w.name)}</strong><br><span>${esc(w.category)}</span></div>${w.url?"<em>Voir l'aperçu →</em>":""}</div>`;
+  const inner = `<div class="frame"><div class="fbar"><i></i><i></i><i></i><span>${esc(dom)}</span></div>${shot}</div><div class="work-in"><div><strong>${esc(w.name)}</strong><br><span>${esc(w.category)}</span></div>${w.url?"<em>Voir l'aperçu →</em>":""}</div>${(w.features||[]).length?`<div class="work-ft">${w.features.map(f=>`<b>${esc(f)}</b>`).join("")}</div>`:""}`;
   return `<a class="work" data-i="${i}" href="${esc(w.url||w.image||"#")}" target="_blank" rel="noopener">${inner}</a>`;
 };
 function drawWorks(){

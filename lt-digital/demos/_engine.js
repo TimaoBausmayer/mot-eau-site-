@@ -82,7 +82,7 @@ function home(){
 <section class="sec"><div class="w"><div class="sh rv"><span class="eb">${esc(H.highlightsKicker||S.offers.label)}</span><h2>${esc(H.highlightsTitle||S.offers.title)}</h2><p>${esc(H.highlightsText||"")}</p></div><div class="hl">${hl}</div><div class="ctas rv"><a class="btn o" href="offre.html">${esc(H.cta2)}</a></div></div></section>
 <section class="sec alt"><div class="w duo"><div class="rv">${visual()}</div><div class="rv"><span class="eb">${esc(H.aboutKicker||"À propos")}</span><h2>${esc(H.aboutTitle)}</h2><p>${esc(H.about)}</p><div class="stats">${H.stats.map(([v,l])=>`<div><strong>${esc(v)}</strong><span>${esc(l)}</span></div>`).join("")}</div></div></div></section>
 <section class="sec"><div class="w"><div class="feat">${H.features.map(([t,x])=>`<div class="rv"><span class="ico">${icon(t+" "+x)}</span><h4>${esc(t)}</h4><p>${esc(x)}</p></div>`).join("")}</div></div></section>
-<section class="cta"><div class="w"><div><h2>${esc(H.ctaTitle||"Une question ? Parlons-en.")}</h2><p>${esc(H.ctaText||"")}</p></div><a class="btn" href="contact.html">${esc(H.cta)}</a></div></section>`;
+${extrasHome()}<section class="cta"><div class="w"><div><h2>${esc(H.ctaTitle||"Une question ? Parlons-en.")}</h2><p>${esc(H.ctaText||"")}</p></div><a class="btn" href="contact.html">${esc(H.cta)}</a></div></section>`;
 }
 
 function offre(){
@@ -96,11 +96,43 @@ ${O.cats.map((c,i)=>`<section class="cat" id="c${i}"><div class="w"><h2 class="r
 function map(){
   return `<svg viewBox="0 0 640 360" class="map" role="img" aria-label="Plan du quartier"><rect width="640" height="360" fill="var(--bg2)"/><g fill="var(--bg)" stroke="var(--line)" stroke-width="2"><rect x="30" y="30" width="150" height="90" rx="4"/><rect x="210" y="30" width="110" height="90" rx="4"/><rect x="350" y="30" width="130" height="90" rx="4"/><rect x="510" y="30" width="100" height="90" rx="4"/><rect x="30" y="150" width="150" height="70" rx="4"/><rect x="350" y="150" width="130" height="70" rx="4"/><rect x="510" y="150" width="100" height="70" rx="4"/><rect x="30" y="250" width="290" height="80" rx="4"/><rect x="350" y="250" width="260" height="80" rx="4"/></g><rect x="210" y="150" width="110" height="70" rx="4" fill="var(--acc)" opacity=".16" stroke="var(--acc)" stroke-width="2"/><path d="M0 235C140 215 260 245 420 225S600 205 640 215" stroke="var(--acc2)" stroke-width="9" fill="none" opacity=".28"/><g transform="translate(265 150)"><circle class="ring" cx="0" cy="50" r="16" fill="none" stroke="var(--acc)" stroke-width="3"/><g class="pin"><path d="M0 52c-20-26-30-38-30-56a30 30 0 0 1 60 0c0 18-10 30-30 56z" fill="var(--acc)" stroke="var(--ink)" stroke-width="3"/><circle cx="0" cy="-5" r="10" fill="var(--bg)"/></g></g></svg>`;
 }
+/* ---------------------------------------------------------------------
+   OPTIONS DE LA MAQUETTE (dans site.js → "extras") :
+   "maps": true                       → carte Google Maps + bouton itinéraire
+   "booking": { … }                   → réservation en ligne (jours, créneaux, nombre de personnes)
+   "notify": true                     → notifications : le commerçant est prévenu, le client reçoit sa confirmation
+   --------------------------------------------------------------------- */
+const X = S.extras || {};
+const PIN = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5c-3.9 0-7 3-7 6.9 0 5.1 7 12.1 7 12.1s7-7 7-12.1c0-3.9-3.1-6.9-7-6.9z" fill="#ea4335"/><circle cx="12" cy="9.4" r="2.6" fill="#7a1a12"/></svg>';
+function gmap(){
+  const a = encodeURIComponent(S.name + " " + S.contact.address);
+  return `<div class="gmap rv"><div class="gm-map">${map()}<span class="gm-pin">${PIN}</span><span class="gm-pulse"></span>
+  <div class="gm-ctrl" aria-hidden="true"><b>+</b><b>−</b></div><span class="gm-brand">${PIN}Google Maps</span></div>
+  <div class="gm-card"><div><strong>${esc(S.name)}</strong><span>${esc(S.short)} · ${esc(S.contact.address)}</span></div>
+  <div class="gm-btns"><a class="gm-go" href="https://www.google.com/maps/dir/?api=1&destination=${a}" target="_blank" rel="noopener">➜ Itinéraire</a><a href="https://www.google.com/maps/search/?api=1&query=${a}" target="_blank" rel="noopener">Ouvrir dans Maps</a></div></div></div>`;
+}
+function booking(){
+  const B = X.booking, d0 = new Date(), J = ["Dim","Lun","Mar","Mer","Jeu","Ven","Sam"], M = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+  const closed = B.closed || [];
+  const days = []; for (let k = 0; days.length < 7 && k < 14; k++){ const d = new Date(d0); d.setDate(d0.getDate()+k); if (closed.includes(d.getDay())) continue; days.push(d); }
+  return `<form class="bk rv" id="bk"><div class="bk-h"><span class="eb">${esc(B.kicker||"Réservation en ligne")}</span><h2>${esc(B.title||"Réservez en 30 secondes")}</h2><p>${esc(B.text||"Choisissez un jour et un créneau : c'est confirmé tout de suite.")}</p></div>
+  ${B.services?`<label class="bk-l">${esc(B.serviceLabel||"Prestation")}<select name="sv">${B.services.map(x=>`<option>${esc(x)}</option>`).join("")}</select></label>`:""}
+  <div class="bk-l">Jour</div><div class="bk-days">${days.map((d,i)=>`<button type="button" class="${i?"":"on"}" data-d="${J[d.getDay()]} ${d.getDate()} ${M[d.getMonth()]}"><small>${i===0?"Auj.":J[d.getDay()]}</small><b>${d.getDate()}</b><small>${M[d.getMonth()]}</small></button>`).join("")}</div>
+  <div class="bk-l">Créneau</div><div class="bk-slots">${(B.slots||[]).map((t,i)=>`<button type="button" class="${i===1?"on":""}${(B.full||[]).includes(t)?" full":""}" ${(B.full||[]).includes(t)?"disabled":""}>${esc(t)}</button>`).join("")}</div>
+  ${B.people?`<div class="bk-row"><span class="bk-l">${esc(B.peopleLabel||"Personnes")}</span><div class="bk-step"><button type="button" data-s="-1" aria-label="Moins">−</button><output id="bk-n">2</output><button type="button" data-s="1" aria-label="Plus">+</button></div></div>`:""}
+  <div class="bk-two"><input required name="n" placeholder="Votre nom"><input required name="t" placeholder="06 00 00 00 00"></div>
+  <button class="btn bk-go" type="submit">${esc(B.button||"Confirmer la réservation")}</button>
+  <div class="bk-ok" id="bk-ok" hidden></div><p class="bk-note">Démonstration : aucune réservation n'est réellement envoyée.</p></form>`;
+}
+function extrasHome(){
+  if (!X.maps && !X.booking) return "";
+  return `<section class="sec alt xtra" id="reserver"><div class="w${X.booking && X.maps ? " xtra-g" : ""}">${X.booking?booking():""}${X.maps?`<div><div class="sh rv"><span class="eb">Nous trouver</span><h2>${esc(S.contact.address)}</h2><p>${esc(S.contact.hours[0][0])} · ${esc(S.contact.hours[0][1])}</p></div>${gmap()}</div>`:""}</div></section>`;
+}
 function contact(){
   const C = S.contact, F = C.form, qv = new URLSearchParams(location.search).get("q")||"";
   return `<div class="ph"><div class="w"><span class="eb">${esc(S.short)}</span><h1>${esc(C.title)}</h1><p class="lead">${esc(C.intro)}</p></div></div>
 <div class="w ct"><div class="info rv"><dl><div><dt>Adresse</dt><dd>${esc(C.address)}</dd></div><div><dt>Téléphone</dt><dd>${esc(C.phone)}</dd></div>${C.email?`<div><dt>E-mail</dt><dd>${esc(C.email)}</dd></div>`:""}${C.social?`<div><dt>${esc(C.social.label)}</dt><dd>${esc(C.social.text)}</dd></div>`:""}</dl>
-<table class="hrs">${C.hours.map(([d,t])=>`<tr><td>${esc(d)}</td><td>${esc(t)}</td></tr>`).join("")}</table>${map()}</div>
+<table class="hrs">${C.hours.map(([d,t])=>`<tr><td>${esc(d)}</td><td>${esc(t)}</td></tr>`).join("")}</table>${X.maps ? gmap() : map()}</div>
 <form class="fm rv" id="fm"><h2>${esc(F.title)}</h2><div class="two"><label>Nom<input name="n" required placeholder="Votre nom"></label><label>Téléphone ou e-mail<input name="c" required placeholder="06 00 00 00 00"></label></div>
 <label>Votre demande<select name="o">${F.options.map(o=>`<option>${esc(o)}</option>`).join("")}</select></label>
 <label>Message<textarea name="m" rows="4" placeholder="${esc(F.placeholder||"Dites-nous en quelques mots…")}">${qv?esc("Bonjour, je suis intéressé(e) par : "+qv+"."):""}</textarea></label>
@@ -143,6 +175,21 @@ const cn=document.getElementById("catnav"); if(cn && "IntersectionObserver" in w
 /* comportements */
 const hd = document.getElementById("hd"); const sc = ()=>hd.classList.toggle("sc", scrollY>8); sc(); addEventListener("scroll",sc,{passive:true});
 document.getElementById("bg").onclick = ()=>document.getElementById("nl").classList.toggle("open");
+/* réservation : choix du jour / créneau / nombre, puis confirmation + notifications */
+const bk = document.getElementById("bk");
+if (bk){ const pick = sel => bk.querySelector(sel).addEventListener("click", e=>{ const b = e.target.closest("button"); if (!b || b.disabled) return; b.parentNode.querySelectorAll("button").forEach(x=>x.classList.remove("on")); b.classList.add("on"); });
+  pick(".bk-days"); pick(".bk-slots");
+  const st = bk.querySelector(".bk-step"); if (st) st.addEventListener("click", e=>{ const b = e.target.closest("button"); if (!b) return; const o = document.getElementById("bk-n"); o.textContent = Math.max(1, Math.min(12, +o.textContent + +b.dataset.s)); });
+  bk.addEventListener("submit", e=>{ e.preventDefault(); const day = bk.querySelector(".bk-days .on").dataset.d, slot = bk.querySelector(".bk-slots .on")?.textContent || "", n = document.getElementById("bk-n")?.textContent, sv = bk.querySelector("select")?.value;
+    const what = (sv ? sv + " · " : "") + (n ? n + " pers. · " : "") + day + " à " + slot;
+    const ok = document.getElementById("bk-ok"); ok.hidden = false; ok.innerHTML = `<b>✓ C'est réservé !</b><span>${esc(what)}</span>`; bk.querySelector(".bk-go").disabled = true;
+    if (X.notify) notify([
+      { who: S.name, ic: "🔔", t: (X.booking.notifTitle||"Nouvelle réservation"), x: what + " — " + (bk.n.value||"Client"), lab: "Reçu par le commerçant" },
+      { who: "SMS", ic: "💬", t: "Réservation confirmée", x: `${S.name} : merci ${bk.n.value||""} ! Rendez-vous ${day} à ${slot}. Un rappel vous sera envoyé la veille.`, lab: "Reçu par le client" } ]); }); }
+function notify(list){ let box = document.querySelector(".nt-box"); if (!box){ box = document.createElement("div"); box.className = "nt-box"; box.setAttribute("aria-live","polite"); document.body.appendChild(box); }
+  list.forEach((n,i)=>setTimeout(()=>{ const el = document.createElement("div"); el.className = "nt";
+    el.innerHTML = `<span class="nt-lab">${esc(n.lab)}</span><div class="nt-in"><span class="nt-ic">${n.ic}</span><div><small>${esc(n.who)} · maintenant</small><b>${esc(n.t)}</b><p>${esc(n.x)}</p></div></div>`;
+    box.appendChild(el); setTimeout(()=>{ el.classList.add("out"); setTimeout(()=>el.remove(), 500); }, 9000); }, 600 + i*1400)); }
 const fm = document.getElementById("fm"); if (fm) fm.addEventListener("submit",e=>{ e.preventDefault(); document.getElementById("ok").hidden=false; fm.querySelector("button").disabled=true; });
 /* photo introuvable : on retire la case (le site reste propre tant qu'il n'y a pas de photo) */
 const CLEAN = /[?&]clean/.test(location.search), PH = S.offers.placeholders !== false && !CLEAN;

@@ -238,3 +238,64 @@ em.a{font-style:normal;color:var(--acc)}
 
 .hero{position:relative}
 .L-B .hero,.hero{overflow:clip}
+
+/* ---------- options : Google Maps, réservation, notifications ---------- */
+.xtra .w{display:grid;gap:40px}
+.xtra-g{grid-template-columns:1.05fr 1fr;align-items:start}
+.gmap{position:relative;border:1px solid var(--line);border-radius:calc(var(--r) + 8px);overflow:hidden;background:var(--card);box-shadow:0 30px 60px -40px rgba(0,0,0,.6)}
+.gm-map{position:relative}
+.gm-map .map{border:0;border-radius:0;display:block;width:100%;height:auto}
+.gm-pin{position:absolute;left:50%;top:44%;width:46px;height:46px;margin:-46px 0 0 -23px;filter:drop-shadow(0 6px 6px rgba(0,0,0,.35));animation:pinDrop .9s cubic-bezier(.3,1.6,.5,1) both .3s;z-index:2}
+.gm-pin svg{width:100%;height:100%}
+@keyframes pinDrop{from{transform:translateY(-60px);opacity:0}to{transform:none;opacity:1}}
+.gm-pulse{position:absolute;left:50%;top:44%;width:16px;height:6px;margin:-3px 0 0 -8px;border-radius:50%;background:rgba(234,67,53,.35);animation:gmP 2s ease-out infinite 1.2s}
+@keyframes gmP{from{transform:scale(1);opacity:1}to{transform:scale(6);opacity:0}}
+.gm-ctrl{position:absolute;right:12px;bottom:12px;display:grid;background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.25);overflow:hidden}
+.gm-ctrl b{width:34px;height:32px;display:grid;place-items:center;color:#555;font:600 18px system-ui}.gm-ctrl b+b{border-top:1px solid #e5e5e5}
+.gm-brand{position:absolute;left:12px;top:12px;display:inline-flex;align-items:center;gap:6px;padding:6px 10px 6px 8px;border-radius:8px;background:#fff;color:#3c4043;font:600 12px system-ui;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.gm-brand svg{width:16px;height:16px}
+.gm-card{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px 20px;border-top:1px solid var(--line)}
+.gm-card strong{display:block;font-size:1.05rem}.gm-card span{font-size:.86rem;color:var(--mut)}
+.gm-btns{display:flex;gap:8px;flex-wrap:wrap}
+.gm-btns a{padding:9px 14px;border-radius:999px;border:1px solid var(--line);font:600 .84rem system-ui,sans-serif;color:var(--ink);text-decoration:none;transition:transform .2s,background .2s}
+.gm-btns a:hover{transform:translateY(-2px)}
+.gm-btns .gm-go{background:#1a73e8;border-color:#1a73e8;color:#fff}
+/* réservation */
+.bk{background:var(--card);border:1px solid var(--line);border-radius:calc(var(--r) + 8px);padding:30px;display:grid;gap:14px;box-shadow:0 30px 60px -40px rgba(0,0,0,.6)}
+.bk-h h2{margin:6px 0 6px}.bk-h p{color:var(--mut)}
+.bk-l{font:500 .72rem 'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
+.bk select,.bk input{width:100%;margin-top:6px;padding:12px 14px;border-radius:calc(var(--r) + 2px);border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+.bk-days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.bk-days button,.bk-slots button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:calc(var(--r) + 4px);cursor:pointer;font:inherit;transition:all .2s}
+.bk-days button{display:grid;gap:1px;padding:8px 0;text-align:center}.bk-days small{font-size:.66rem;color:var(--mut)}.bk-days b{font-size:1.15rem}
+.bk-slots{display:flex;flex-wrap:wrap;gap:6px}.bk-slots button{padding:8px 12px;font-size:.88rem}
+.bk-days button:hover,.bk-slots button:hover{border-color:var(--acc)}
+.bk-days .on,.bk-slots .on{background:var(--acc);border-color:var(--acc);color:var(--onacc)}.bk-days .on small{color:inherit;opacity:.8}
+.bk-slots .full{opacity:.35;text-decoration:line-through;cursor:not-allowed}
+.bk-row{display:flex;align-items:center;justify-content:space-between}
+.bk-step{display:flex;align-items:center;gap:14px}.bk-step button{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:1.1rem;cursor:pointer}
+.bk-step output{font-weight:700;font-size:1.1rem;min-width:1.4em;text-align:center}
+.bk-two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.bk-two input{margin-top:0}
+.bk-go{width:100%;justify-content:center}
+.bk-ok{display:grid;gap:2px;padding:14px 16px;border-radius:calc(var(--r) + 4px);background:color-mix(in srgb,var(--acc) 16%,transparent);border:1px solid var(--acc);animation:bkOk .5s cubic-bezier(.3,1.5,.5,1)}
+.bk-ok b{color:var(--acc)}.bk-ok span{font-size:.9rem}
+@keyframes bkOk{from{transform:scale(.9);opacity:0}}
+.bk-note{font-size:.74rem;color:var(--mut);text-align:center}
+/* notifications (façon téléphone) */
+.nt-box{position:fixed;right:18px;top:18px;z-index:200;display:grid;gap:10px;width:min(360px,calc(100vw - 36px))}
+.nt{animation:ntIn .6s cubic-bezier(.3,1.4,.5,1) both}
+.nt.out{animation:ntOut .5s ease forwards}
+@keyframes ntIn{from{transform:translateY(-30px) scale(.95);opacity:0}}
+@keyframes ntOut{to{transform:translateX(120%);opacity:0}}
+.nt-lab{display:inline-block;margin:0 0 5px 10px;padding:2px 9px;border-radius:999px;background:#111;color:#c8ff3e;font:600 10px 'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase}
+.nt-in{display:flex;gap:12px;padding:12px 14px;border-radius:18px;background:rgba(245,245,247,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#111;box-shadow:0 20px 40px -12px rgba(0,0,0,.45);font-family:system-ui,-apple-system,sans-serif}
+.nt-ic{flex:none;width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:#111;font-size:1.1rem}
+.nt-in small{color:#777;font-size:.72rem}.nt-in b{display:block;font-size:.92rem}.nt-in p{font-size:.84rem;color:#333;line-height:1.35;margin:2px 0 0}
+@media(max-width:900px){.xtra-g{grid-template-columns:1fr}}
+@media(max-width:560px){.bk{padding:20px}.bk-days{grid-template-columns:repeat(4,1fr)}.bk-two{grid-template-columns:1fr}.nt-box{top:auto;bottom:14px;right:12px}}
+@media(prefers-reduced-motion:reduce){.gm-pin,.gm-pulse,.nt,.bk-ok{animation:none}}
+/* carte façon Google Maps : couleurs claires, une seule épingle rouge */
+.gm-map .map{--bg2:#e8eaed;--bg:#fbfbfc;--line:#d5d8dc;--acc2:#6fa8f5}
+.gm-map .map .pin,.gm-map .map .ring{display:none}
+.gm-pin,.gm-pulse{left:41.4%;top:56%}
+.gm-ctrl b{background:#fff}
