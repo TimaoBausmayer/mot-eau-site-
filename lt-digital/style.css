@@ -711,3 +711,44 @@ body.has-mcta .totop{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 body.has-mcta .foot{padding-bottom:110px}
 @media(min-width:761px){.mcta{display:none!important}}
 @media(prefers-reduced-motion:reduce){.totop,.mcta{animation:none}}
+
+/* ---------- bandeau photos ---------- */
+.photo-cta{display:flex;align-items:center;gap:14px;width:100%;margin-top:22px;padding:14px 18px;border-radius:18px;border:1px solid color-mix(in srgb,var(--accent) 30%,var(--rule));background:linear-gradient(110deg,color-mix(in srgb,var(--accent) 9%,var(--panel)),var(--panel));color:var(--ink);font:500 .95rem var(--bf);text-align:left;cursor:pointer;transition:transform .25s,box-shadow .25s,border-color .25s}
+.photo-cta:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 18px 36px -24px color-mix(in srgb,var(--accent) 70%,transparent)}
+.pc-ic{display:grid;place-items:center;flex:none;width:42px;height:42px;border-radius:12px;background:var(--panel);font-size:1.3rem;box-shadow:0 6px 14px -8px rgba(10,15,31,.4);animation:pcBob 2.6s ease-in-out infinite}
+@keyframes pcBob{50%{transform:translateY(-3px) rotate(-6deg)}}
+.photo-cta b{margin-left:auto;white-space:nowrap;color:var(--accent);font-weight:700}
+@media(max-width:560px){.photo-cta{flex-wrap:wrap;font-size:.88rem}.photo-cta b{margin-left:56px}}
+/* ---------- animations supplémentaires ---------- */
+.sec-head h2 .w2{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.1em;margin-bottom:-.1em}
+.sec-head h2 .w2>span{display:inline-block;transform:translateY(105%);transition:transform .8s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i)*.05s + .1s)}
+.sec-head.in h2 .w2>span{transform:none}
+.eyebrow::before{transform:scaleX(0);transform-origin:left;transition:transform .7s cubic-bezier(.2,.8,.2,1) .2s}
+.sec-head.in .eyebrow::before{transform:scaleX(1)}
+/* cartes : inclinaison + reflet */
+.why,.svc,.step,.review,.g,.val,.founder{transform:var(--tilt,none);will-change:transform}
+.why.reveal:not(.in),.review.reveal:not(.in),.step.reveal:not(.in),.g.reveal:not(.in),.val.reveal:not(.in){transform:translateY(14px)}
+.why:hover,.step:hover,.review:hover,.founder:hover{transform:var(--tilt,none) translateY(-4px)}
+.svc:hover{transform:var(--tilt,none) translateY(-3px)}
+.why,.svc,.step,.review,.g,.val,.plan,.addon,.founder{position:relative}
+.why::after,.svc::after,.step::after,.review::after,.g::after,.val::after,.plan::after,.addon::after,.founder::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(260px circle at var(--sx,50%) var(--sy,50%),color-mix(in srgb,var(--accent) 12%,transparent),transparent 70%)}
+.svc::after,.plan.pop::after{background:radial-gradient(260px circle at var(--sx,50%) var(--sy,50%),rgba(255,255,255,.09),transparent 70%)}
+.why:hover::after,.svc:hover::after,.step:hover::after,.review:hover::after,.g:hover::after,.val:hover::after,.plan:hover::after,.addon:hover::after,.founder:hover::after{opacity:1}
+.step:not(:last-child)::after{opacity:1;background:linear-gradient(90deg,var(--accent),transparent);inset:auto;top:50px;right:-17px;width:18px;height:2px;border-radius:2px}
+/* bordure lumineuse qui tourne : offres « le plus choisi » */
+@property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
+.svc.pop,.plan.pop{isolation:isolate}
+.svc.pop::before,.plan.pop::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:2px;z-index:2;pointer-events:none;background:conic-gradient(from var(--ang),transparent 0 70%,#22b8ff 80%,#7a5cff 88%,var(--accent) 95%,transparent);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spinb 4s linear infinite}
+@keyframes spinb{to{--ang:360deg}}
+.svc.pop{box-shadow:none}
+/* onde au clic */
+.btn,.add-btn,.chip{position:relative;overflow:hidden}
+.ripple{position:absolute;border-radius:50%;background:currentColor;opacity:.25;transform:scale(0);animation:ripple .65s ease-out forwards;pointer-events:none}
+@keyframes ripple{to{transform:scale(1);opacity:0}}
+/* réalisations : balayage */
+.frame.wipe{clip-path:inset(0 100% 0 0 round 16px)}
+.frame.wipe.wiped{clip-path:inset(0 0 0 0 round 16px);transition:clip-path 1s cubic-bezier(.7,0,.2,1),transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s}
+.work:nth-child(3n+2) .frame.wiped{transition-delay:.12s,0s,0s,0s}.work:nth-child(3n) .frame.wiped{transition-delay:.24s,0s,0s,0s}
+@media(prefers-reduced-motion:reduce){.svc.pop::before,.plan.pop::before{animation:none}.frame.wipe{clip-path:none}.pc-ic{animation:none}}
+.g:hover,.val:hover{transform:var(--tilt,none) translateY(-3px)}.g,.val{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+@media(max-width:560px){.photo-cta b{margin-left:0;width:100%;padding-left:56px}}

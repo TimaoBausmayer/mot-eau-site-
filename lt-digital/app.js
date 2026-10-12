@@ -605,4 +605,33 @@ $("vat-note").textContent = vatNote;
       makesOffer: (C.plans||[]).filter(p=>p.price!=null).map(p=>({"@type":"Offer", name: p.name, price: p.price, priceCurrency: "EUR"})) };
     const sc = document.createElement("script"); sc.type = "application/ld+json"; sc.textContent = JSON.stringify(ld); document.head.appendChild(sc); } catch {}
 })();
+
+/* bandeau « Pas de belles photos ? » sous les tarifs → ouvre l'onglet Photos des services */
+(function(){ const T = C.texts||{}, b = $("photo-cta"); const g = SI.find(it=>/photo/i.test(aGroup(it))); if (!SV || !g || !T.photo_cta) return;
+  b.hidden = false; b.innerHTML = `<span class="pc-ic" aria-hidden="true">📸</span><span>${esc(T.photo_cta)}</span><b>${esc(T.photo_cta_btn||"Voir")} →</b>`;
+  b.onclick = ()=>{ svTab = aGroup(g); drawSvcs(); $("services").scrollIntoView({behavior:"smooth"}); }; })();
+
+/* ---------- animations supplémentaires ---------- */
+(function(){ if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  /* titres de section : les mots montent un par un quand la section arrive */
+  document.querySelectorAll("main .sec-head h2").forEach(h=>{ const t = h.textContent.trim(); if(!t) return; let i = 0;
+    h.innerHTML = t.split(/\s+/).map(w=>`<span class="w2"><span style="--i:${i++}">${esc(w)}</span></span>`).join(" "); });
+  /* cartes : légère inclinaison 3D + reflet lumineux qui suit la souris */
+  if (matchMedia("(hover:hover) and (pointer:fine)").matches){
+    document.addEventListener("pointermove", e=>{ const c = e.target.closest && e.target.closest(".why, .svc, .step, .review, .g, .val, .plan, .addon, .founder"); if(!c) return;
+      const r = c.getBoundingClientRect(), x = (e.clientX-r.left)/r.width, y = (e.clientY-r.top)/r.height;
+      c.style.setProperty("--sx", (x*100)+"%"); c.style.setProperty("--sy", (y*100)+"%");
+      if (!c.classList.contains("plan") && !c.classList.contains("addon")) c.style.setProperty("--tilt", `perspective(900px) rotateX(${(.5-y)*5}deg) rotateY(${(x-.5)*6}deg)`); }, {passive:true});
+    document.addEventListener("pointerout", e=>{ const c = e.target.closest && e.target.closest(".why, .svc, .step, .review, .g, .val, .founder"); if (c && !c.contains(e.relatedTarget)) c.style.removeProperty("--tilt"); }, {passive:true});
+  }
+  /* boutons : onde au clic */
+  document.addEventListener("pointerdown", e=>{ const b = e.target.closest && e.target.closest(".btn, .add-btn, .chip"); if(!b) return;
+    const r = b.getBoundingClientRect(), s = document.createElement("span"), d = Math.max(r.width, r.height)*2;
+    s.className = "ripple"; s.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX-r.left-d/2}px;top:${e.clientY-r.top-d/2}px`;
+    b.appendChild(s); setTimeout(()=>s.remove(), 650); });
+  /* réalisations : les captures se dévoilent en balayage */
+  if ("IntersectionObserver" in window){ const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ const f = e.target.querySelector(".frame"); if (f) f.classList.add("wiped"); io.unobserve(e.target); } }), {threshold:.2});
+    const watch = () => document.querySelectorAll(".work .frame:not(.wipe)").forEach(f=>{ f.classList.add("wipe"); io.observe(f.closest(".work")); });
+    watch(); new MutationObserver(watch).observe($("works"), {childList:true}); }
+})();
 })();

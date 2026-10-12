@@ -126,7 +126,7 @@ window.SITE_CONFIG = {
     tarifs:       { show: true, eyebrow: "Tarifs",       title: "", subtitle: "" },
     comparatif:   { show: true, eyebrow: "Comparatif",   title: "", subtitle: "" },
     options:      { show: true, eyebrow: "Options",      title: "", subtitle: "" },
-    services:     { show: true, eyebrow: "Logo, affiches & réseaux" },
+    services:     { show: true, eyebrow: "Photos, logo, affiches & réseaux" },
     process:      { show: true, eyebrow: "Processus",    title: "", subtitle: "" },
     realisations: { show: true, eyebrow: "Réalisations", title: "", subtitle: "" },
     pourquoi:     { show: true, eyebrow: "Pourquoi un vrai site" },
@@ -272,10 +272,17 @@ window.SITE_CONFIG = {
      qty     : true = le client choisit une quantité (max = maximum)
      popular : true = mise en avant · features : petites lignes « ce qui est inclus » */
   services: {
-    eyebrow: "Logo, affiches & réseaux",
+    eyebrow: "Photos, logo, affiches & réseaux",
     title: "Toute ton image, pas seulement ton site",
-    intro: "Logo, affiches, flyers et gestion de tes réseaux sociaux : avec ton site ou sans site, tu prends seulement ce dont tu as besoin.",
+    intro: "On équipe ton site avec de vraies photos, on crée ton logo, tes affiches et on gère tes réseaux : avec ton site ou sans site, tu prends seulement ce dont tu as besoin.",
     items: [
+      { id: "s-photo-integ", group: "Photos & vidéo", name: "Mise en place de tes photos", price: 39, desc: "Tu nous envoies tes photos (même prises au téléphone), on s'occupe du reste.", features: ["Tri, recadrage et luminosité", "Optimisées pour un site rapide", "Jusqu'à 30 photos"] },
+      { id: "s-shooting", group: "Photos & vidéo", name: "Shooting photo sur place", price: 190, from: true, popular: true, desc: "On vient dans ton commerce photographier tes produits, ton lieu et ton équipe.", features: ["1 h sur place", "20 photos retouchées", "Prêtes pour le site et les réseaux"] },
+      { id: "s-packshot", group: "Photos & vidéo", name: "Photos de produits", price: 9, qty: true, max: 100, desc: "Tes produits sur fond propre, comme dans les grandes boutiques.", features: ["Fond blanc ou en situation", "Idéal pour une boutique en ligne"] },
+      { id: "s-retouche", group: "Photos & vidéo", name: "Retouche photo", price: 5, qty: true, max: 200, desc: "On rend tes photos existantes plus belles et plus nettes.", features: ["Couleurs, lumière, netteté", "Détourage possible"] },
+      { id: "s-banque", group: "Photos & vidéo", name: "Pack photos pro libres de droits", price: 49, desc: "En attendant tes propres photos : une sélection d'images professionnelles adaptées à ton métier.", features: ["15 photos choisies pour toi", "Utilisation autorisée sur ton site"] },
+      { id: "s-video", group: "Photos & vidéo", name: "Vidéo de présentation", price: null, desc: "Une courte vidéo de ton commerce pour ton site et tes réseaux.", features: ["Tournage + montage", "Format site et format réseaux"] },
+
       { id: "s-logo", group: "Logo & identité", name: "Logo essentiel", price: 149, desc: "Un logo simple et lisible pour ton activité.", features: ["2 propositions", "2 retouches", "Fichiers PNG, JPG et PDF"] },
       { id: "s-logo-pro", group: "Logo & identité", name: "Logo + identité visuelle", price: 349, popular: true, desc: "Ton logo et tout ce qui va autour pour une image pro et cohérente.", features: ["3 propositions", "Retouches illimitées (raisonnables)", "Couleurs et typographies", "Versions claire / foncée / icône", "Mini charte graphique"] },
       { id: "s-refonte-logo", group: "Logo & identité", name: "Modernisation de logo", price: 99, from: true, desc: "On rafraîchit ton logo existant sans perdre ton identité.", features: ["Nettoyage et vectorisation", "Couleurs modernisées"] },
@@ -375,7 +382,7 @@ window.SITE_CONFIG = {
      Modifie le texte que tu veux. Tout se change aussi depuis admin.html ▸ Textes du site. */
   texts: {
     nav_tarifs: "Tarifs", nav_comparatif: "Comparatif", nav_process: "Méthode", nav_realisations: "Réalisations", nav_avis: "Avis", mcta_btn: "Commander mon site", nav_faq: "Questions", nav_histoire: "Notre histoire", nav_insta: "Instagram", nav_cta: "Commander",
-    badge_pop: "Le plus choisi", nav_services: "Logo & réseaux", pick_none: "Pas de site", pick_none_sub: "Services seuls", label_monthly: "Abonnement mensuel", label_monthly_note: "Payé chaque mois, sans engagement au-delà du 1er mois.", label_services: "Logo, affiches & réseaux", label_delivery: "Livraison :", label_from: "À partir de", label_delay_est: "Délai estimé :",
+    badge_pop: "Le plus choisi", nav_services: "Services", photo_cta: "Pas de belles photos ? On équipe ton site : shooting, retouche, photos de produits ou pack de photos pro.", photo_cta_btn: "Voir les offres photo", pick_none: "Pas de site", pick_none_sub: "Services seuls", label_monthly: "Abonnement mensuel", label_monthly_note: "Payé chaque mois, sans engagement au-delà du 1er mois.", label_services: "Photos, logo, affiches & réseaux", label_delivery: "Livraison :", label_from: "À partir de", label_delay_est: "Délai estimé :",
     order_plan: "Ta gamme", order_opts: "Tes options", order_info: "Tes informations",
     f_name: "Ton nom", f_biz: "Nom de ton activité", f_contact: "Ton Instagram ou e-mail", f_project: "Décris ton projet",
     sum_title: "Récapitulatif", promo_btn: "Appliquer", sum_total: "Total", copy_btn: "Copier ma commande", insta_btn: "Ouvrir Instagram", mail_btn: "Envoyer par e-mail", cart_btn: "Voir ma commande",
@@ -387,7 +394,8 @@ window.SITE_CONFIG = {
   faq: [
     { q: "Combien de temps pour recevoir mon site ?", a: "Ton site est livré en {delivery}, selon la gamme et la rapidité de tes retours." },
     { q: "Comment se passe le paiement ?", a: "Un acompte est demandé au démarrage, le solde à la validation du site. Les moyens de paiement te sont précisés lors de notre échange." },
-    { q: "Je n'ai pas besoin de site, juste d'un logo ou d'aide sur mes réseaux. C'est possible ?", a: "Oui. Dans la commande, choisis « Pas de site » puis les prestations voulues (logo, affiches, gestion des réseaux…). Les abonnements réseaux sont payés chaque mois." },
+    { q: "Je n'ai pas besoin de site, juste d'un logo ou d'aide sur mes réseaux. C'est possible ?", a: "Oui. Dans la commande, choisis « Pas de site » puis les prestations voulues (photos, logo, affiches, gestion des réseaux…). Les abonnements réseaux sont payés chaque mois." },
+    { q: "Je n'ai pas de belles photos, c'est un problème ?", a: "Non. On peut retoucher et mettre en place tes photos, venir faire un shooting dans ton commerce, ou t'équiper d'un pack de photos pro en attendant (voir « Photos & vidéo »)." },
     { q: "Puis-je demander des modifications ?", a: "Oui. Chaque gamme inclut des retouches, et l'option maintenance permet des changements après la livraison." },
     { q: "Je n'ai pas de logo ni de textes, c'est un problème ?", a: "Pas du tout. On peut créer ton logo et rédiger tes textes (voir les options et la partie « Logo, affiches & réseaux »)." },
     { q: "J'ai déjà un site, vous pouvez le moderniser ?", a: "Oui, c'est la gamme « Refonte de site » : nouveau design, mobile, vitesse, en gardant tes contenus." },
