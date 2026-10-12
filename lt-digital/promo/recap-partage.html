@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Récap — se partager 50/50</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Mono:wght@400;500&family=Hanken+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* Récap imprimable (1 page A4) : se partager l'argent à 50/50 quand un seul a sa micro-entreprise.
+   Exemple chiffré avec un taux de cotisations d'exemple (25 %) — le vrai taux est sur urssaf.fr. */
+:root{--ink:#14121c;--mut:#5b5868;--line:#e3e0ea;--paper:#fbfaf7;--lime:#b8f02a;--lime-d:#4d7c0f;--vio:#5b45d6;--red:#c2410c;--soft:#f2f0f7;
+  --hf:'Bricolage Grotesque',system-ui,sans-serif;--bf:'Hanken Grotesk',system-ui,sans-serif;--mono:'DM Mono',monospace;--serif:'Instrument Serif',Georgia,serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#888}
+body{display:flex;flex-direction:column;align-items:center;gap:30px;padding:30px 0;font-family:var(--bf);color:var(--ink)}
+.page{position:relative;width:794px;height:1123px;background:var(--paper);overflow:hidden;padding:36px 44px 30px;display:flex;flex-direction:column}
+.page>*{flex-shrink:0}
+.page::before{content:"";position:absolute;right:-120px;top:-140px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(184,240,42,.35),transparent 65%)}
+.hd{position:relative;display:flex;justify-content:space-between;align-items:center;font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.hd b{display:flex;align-items:center;gap:8px;color:var(--ink)}
+.hd b img{width:26px;height:26px;border-radius:50%}
+h1{position:relative;margin-top:16px;font:800 38px/1.02 var(--hf);letter-spacing:-.04em}
+h1 em{font:400 44px var(--serif);font-style:italic;color:var(--vio)}
+.sub{position:relative;margin-top:8px;font-size:13.2px;line-height:1.45;color:var(--mut);max-width:660px}
+h2{font:800 17px/1.1 var(--hf);letter-spacing:-.02em;margin:16px 0 8px;display:flex;align-items:center;gap:10px}
+h2 .k{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--ink);color:var(--lime);font:500 11px var(--mono)}
+p,li{font-size:11.8px;line-height:1.4}
+ul{list-style:none}
+.no{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.no div{padding:10px 12px;border-radius:12px;background:#fff8f4;border:1px solid #f3c9b3}
+.no b{display:block;font:700 12.6px var(--bf);color:var(--red);margin-bottom:2px}
+/* comparaison chiffrée */
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cs{padding:12px 14px;border-radius:14px;background:#fff;border:1px solid var(--line)}
+.cs.good{border:2px solid var(--lime-d);background:linear-gradient(180deg,rgba(184,240,42,.16),#fff 45%)}
+.cs h3{font:800 14px var(--hf);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.cs h3 span{font:600 10px var(--mono);letter-spacing:.04em;padding:3px 8px;border-radius:999px}
+.bad{background:#fde7d9;color:var(--red)}.ok{background:var(--lime);color:#1a2e00}
+.cs .how{font-size:11.5px;color:var(--mut);margin:4px 0 8px}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th,td{padding:5px 6px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left}
+th{font:500 10px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--mut)}
+tr.tot td{font-weight:800;border-bottom:0;font-size:12.5px}
+.res{margin-top:8px;padding:7px 10px;border-radius:10px;font-weight:700;font-size:11.8px}
+.res.r{background:#fff1e8;color:var(--red)}.res.g{background:rgba(184,240,42,.35);color:#1a2e00}
+.steps{display:grid;gap:6px}
+.st{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;padding:8px 12px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+.st span{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--lime);font:800 13px var(--hf)}
+.st b{display:block;font:700 12.6px var(--bf)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.box{padding:11px 13px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+.box h3{font:800 13.5px var(--hf);margin-bottom:5px}
+.box li{padding-left:13px;position:relative;margin-bottom:2px}
+.box li::before{content:"–";position:absolute;left:0;color:var(--lime-d);font-weight:700}
+.dark{background:var(--ink);color:#fff;border-color:var(--ink)}.dark h3{color:var(--lime)}.dark p,.dark li{color:#e4e1ef}
+.ft{margin-top:auto;padding-top:9px;border-top:1px solid var(--line);font:500 10.2px/1.45 var(--mono);color:var(--mut)}
+.ft b{color:var(--ink)}
+#p1 h2{margin-top:26px}#p1 .sub{font-size:14px}#p1 p,#p1 li,#p1 td{font-size:12.6px}#p1 .no div{padding:14px 14px}#p1 .cs{padding:16px 16px}#p1 th,#p1 td{padding:7px 6px}
+#p2 p,#p2 li{font-size:12.8px}#p2 .st{padding:12px 14px}#p2 .steps{gap:9px}#p2 .box{padding:14px 16px}#p2 .two{margin-top:16px!important}
+/* plus grand, plus lisible */
+#p1 h1{font-size:44px}#p1 h1 em{font-size:50px}
+#p1 .sub{font-size:15.5px;margin-top:12px}
+#p1 h2,#p2 h2{font-size:21px;margin-top:30px}
+#p1 p,#p1 li{font-size:14px}#p1 .no b{font-size:14.5px}#p1 .no div{padding:16px}
+#p1 .cs h3{font-size:16px}#p1 .cs .how{font-size:13px}#p1 td,#p1 th{font-size:13.5px;padding:9px 6px}#p1 tr.tot td{font-size:15px}#p1 .res{font-size:13.5px;padding:10px 12px}
+#p2 p,#p2 li{font-size:14.5px}#p2 .st b{font-size:15.5px}#p2 .st{padding:16px 18px}#p2 .steps{gap:12px}
+#p2 .box h3{font-size:17px}#p2 .box{padding:18px 20px}#p2 .two{margin-top:22px!important}#p2 .box li{margin-bottom:5px}
+#p2 table th,#p2 table td{font-size:13.5px;padding:7px 6px}#p2 tr.tot td{font-size:14.5px}
+#p2 p,#p2 li{font-size:13.6px}#p2 .st{padding:12px 16px}#p2 .steps{gap:9px}#p2 h2{margin-top:22px}#p2 .box{padding:15px 18px}#p2 .two{margin-top:16px!important}
+.cs h3 span{white-space:nowrap;flex:none}
+</style>
+</head>
+<body>
+<section class="page" id="p1">
+  <div class="hd"><b><img src="../images/logo-small.jpg" alt="">L&amp;T Digital</b><span>Récap · se partager 50/50 · 1 / 2</span></div>
+  <h1>Un seul a sa micro : <em>comment partager à&nbsp;50/50&nbsp;?</em></h1>
+  <p class="sub">C'est possible que l'un soit déclaré avant l'autre. Mais celui qui n'a pas de micro-entreprise <strong>ne peut pas être payé</strong>, et en micro-entreprise on ne se verse pas de « salaire » : chacun gagne ce qu'il facture, moins ses cotisations.</p>
+
+  <h2><span class="k">01</span>Ce qu'il ne faut pas faire</h2>
+  <div class="no">
+    <div><b>✕ Payer l'autre en liquide</b><p>Ou par virement «&nbsp;entre potes&nbsp;». C'est du travail non déclaré, et c'est celui qui a la micro qui est en tort.</p></div>
+    <div><b>✕ Le faire travailler « bénévolement »</b><p>Aider gratuitement une entreprise qui gagne de l'argent n'est pas du bénévolat (l'entraide n'est tolérée qu'en famille).</p></div>
+    <div><b>✕ L'embaucher comme salarié</b><p>Possible en théorie, mais très coûteux (charges, salaire minimum, contrat) : impossible de faire du 50/50.</p></div>
+  </div>
+
+  <h2><span class="k">02</span>Exemple : un site vendu 1 000 €</h2>
+  <div class="cmp">
+    <div class="cs"><h3>L'un facture, puis paie l'autre<span class="bad">Injuste</span></h3>
+      <p class="how">A facture 1 000 € au client. B facture sa moitié (500 €) à A (« sous-traitance »).</p>
+      <table><tr><th></th><th>A</th><th>B</th></tr>
+        <tr><td>Encaissé</td><td>1 000 €</td><td>500 €</td></tr>
+        <tr><td>Cotisations (25 %*)</td><td>− 250 €</td><td>− 125 €</td></tr>
+        <tr><td>Reversé à B</td><td>− 500 €</td><td></td></tr>
+        <tr class="tot"><td>Il reste</td><td>250 €</td><td>375 €</td></tr></table>
+      <div class="res r">A paie des cotisations sur l'argent qu'il reverse : en micro, on ne peut rien déduire.</div></div>
+    <div class="cs good"><h3>Chacun facture sa moitié au client<span class="ok">✓ 50/50</span></h3>
+      <p class="how">Le client reçoit deux factures de 500 € : une de A, une de B (« co-traitance »).</p>
+      <table><tr><th></th><th>A</th><th>B</th></tr>
+        <tr><td>Encaissé</td><td>500 €</td><td>500 €</td></tr>
+        <tr><td>Cotisations (25 %*)</td><td>− 125 €</td><td>− 125 €</td></tr>
+        <tr><td>Reversé</td><td>0 €</td><td>0 €</td></tr>
+        <tr class="tot"><td>Il reste</td><td>375 €</td><td>375 €</td></tr></table>
+      <div class="res g">Exactement 50/50, et personne ne paie de cotisations en trop.</div></div>
+  </div>
+
+  <div class="ft"><b>* 25 % est un taux d'exemple pour le calcul.</b> Le vrai taux dépend de votre activité (environ 21 à 26 % en 2026) : vérifiez-le sur urssaf.fr.</div>
+</section>
+
+<section class="page" id="p2">
+  <div class="hd"><b><img src="../images/logo-small.jpg" alt="">L&amp;T Digital</b><span>Récap · se partager 50/50 · 2 / 2</span></div>
+  <h2 style="margin-top:20px"><span class="k">03</span>Comment faire, concrètement</h2>
+  <div class="steps">
+    <div class="st"><span>1</span><div><b>Celui qui a 16 ans déclare sa micro maintenant</b><p>Il peut travailler et facturer seul tout de suite. L'autre ne touche rien tant qu'il n'est pas déclaré : il peut se former et préparer ses propres réalisations, mais il ne travaille pas sur les projets payés.</p></div></div>
+    <div class="st"><span>2</span><div><b>Le jour de ses 16 ans, le second déclare la sienne</b><p>Même démarche, avec l'autorisation de ses parents. Gratuit, sur le guichet unique officiel.</p></div></div>
+    <div class="st"><span>3</span><div><b>Un devis commun, deux factures</b><p>Pour chaque projet, un devis au nom de « L&amp;T Digital » qui précise la part de chacun, puis chacun envoie au client sa facture de 50 %.</p></div></div>
+    <div class="st"><span>4</span><div><b>Chacun déclare sa part à l'URSSAF</b><p>Chaque mois ou trimestre, chacun déclare ce qu'il a encaissé et paie ses propres cotisations. Ce qui reste est à lui.</p></div></div>
+  </div>
+
+  <div class="two" style="margin-top:10px">
+    <div class="box dark"><h3>Signez un accord entre vous deux</h3><ul>
+      <li>Partage : 50/50 sur chaque projet</li><li>Qui fait quoi (design, code, vidéo, clients)</li><li>La marque « L&amp;T Digital » appartient aux deux</li>
+      <li>Si l'un arrête : qui garde les clients, le site, le nom</li><li>Signé par vous deux et vos parents</li></ul></div>
+    <div class="box"><h3>Autre option simple</h3><p>Chacun prend ses propres clients en entier, à tour de rôle, et vous comptez à la fin du mois pour rester équilibrés. Moins pratique pour les gros projets, mais très simple à déclarer.</p>
+      <h3 style="margin-top:8px">Et plus tard ?</h3><p>À 18 ans, une <strong>société à deux (SAS)</strong> permet une seule entreprise, des parts à 50/50 et le versement de rémunérations.</p></div>
+  </div>
+
+  <div class="box" style="margin-top:16px;border:2px dashed var(--lime-d)"><h3>Et si un client ne veut qu'une seule facture ?</h3>
+    <p>Alors A facture tout le projet et B facture sa part à A. Comme A paie des cotisations sur la totalité, B facture un peu moins de la moitié pour que vous gardiez autant l'un que l'autre :</p>
+    <table style="margin-top:8px"><tr><th>Site à 1 000 € · cotisations 25 %*</th><th>A</th><th>B</th></tr>
+      <tr><td>Encaissé</td><td>1 000 €</td><td>430 €</td></tr>
+      <tr><td>Cotisations</td><td>− 250 €</td><td>− 107,50 €</td></tr>
+      <tr><td>Reversé à B</td><td>− 430 €</td><td></td></tr>
+      <tr class="tot"><td>Il reste à chacun</td><td>320 €</td><td>322,50 €</td></tr></table>
+    <p style="margin-top:6px;color:var(--mut)">C'est équitable, mais vous gagnez moins à deux que dans la solution « deux factures » (375 € chacun). À réserver aux cas où le client l'exige.</p></div>
+
+  <div class="ft">Ce récap résume des règles générales (octobre 2026) et ne remplace pas un conseil juridique : posez vos questions à votre CCI ou sur service-public.fr.</div>
+</section>
+</body>
+</html>
