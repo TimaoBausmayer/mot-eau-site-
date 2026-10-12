@@ -332,6 +332,12 @@ drawOpts(); render();
   $("founders").innerHTML = (st.founders||[]).map(f=>`<article class="founder">${f.photo?`<img src="${esc(f.photo)}" alt="${esc(f.name)}" width="88" height="88">`:`<span class="fi" aria-hidden="true">${esc(f.initial||(f.name||"?").trim()[0]||"?")}</span>`}<div><h3>${esc(f.name)}</h3><span class="role">${esc(f.role||"")}</span><p>${esc(f.text||"")}</p></div></article>`).join("");
   $("values").innerHTML = (st.values||[]).map(v=>`<div class="val"><h4>${esc(v.title)}</h4><p>${esc(v.text)}</p></div>`).join(""); })();
 
+/* e-mail : contact direct */
+(function(){ const em = (C.contact||{}).email; if(!em) return; const T = C.texts||{};
+  $("final-mail").href = "mailto:"+em; $("final-mail").hidden = false; $("final-mail").textContent = T.final_mail||"Nous écrire par e-mail";
+  const fa = $("final-addr"); if(fa){ fa.hidden = false; fa.innerHTML = `E-mail : <a href="mailto:${esc(em)}">${esc(em)}</a>`; }
+  $("f-mail").href = "mailto:"+em; $("f-mail").textContent = em; })();
+
 /* Instagram : partout où c'est utile */
 (function(){ const ct = C.contact||{}; if(!ct.instagram) return;
   const hi=$("h-insta"); hi.hidden=false; hi.innerHTML = `Une question ? Écris-moi sur Instagram : <a href="${esc(ct.instagram)}" target="_blank" rel="noopener">${esc(ct.instagramHandle||"Instagram")}</a>`;
@@ -382,5 +388,5 @@ $("vat-note").textContent = vatNote;
   set("#order-form > h3","order_plan",0); set("#order-form > h3","order_opts",1); set("#order-form > h3","order_info",2);
   lab(0,"f_name"); lab(1,"f_biz"); lab(2,"f_contact"); lab(3,"f_project");
   set(".summary > h3","sum_title"); set("#promo-btn","promo_btn"); set("#copy-btn","copy_btn"); set("#insta-btn","insta_btn"); set("#mail-btn","mail_btn"); set("#cartbar .btn","cart_btn");
-  set(".final h2","final_title"); set(".final p","final_text"); set(".final .btn-light","final_btn"); set("#final-insta","final_insta"); })();
+  set(".final h2","final_title"); set(".final p","final_text"); set(".final .btn-light","final_btn"); set("#final-insta","final_insta"); set("#final-mail","final_mail"); })();
 })();

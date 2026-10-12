@@ -53,3 +53,17 @@ Admin ▸ **Légal & TVA** : choisis le régime (TTC, HT ou « TVA non applicabl
 avec un rappel « [à compléter] » pour ce qui manque. La case « J'ai lu et j'accepte les CGV » est obligatoire avant de copier une commande.
 ⚠ Ce sont des modèles : à faire relire par un expert-comptable ou un juriste.
 Le délai de livraison se règle une seule fois (Admin ▸ Gammes & tarifs) ; écris `{delivery}` dans un texte pour l'y insérer.
+
+## Guide : comment modifier ton site toi-même (sans coder)
+**Méthode 1 — la plus simple : l'administration**
+1. Ouvre `admin.html` (adresse de ton site + `/admin.html`).
+2. Choisis une rubrique à gauche (Prix rapides, Options, Promos, Textes du site, Légal & TVA…), modifie. L'aperçu à droite se met à jour.
+3. Clique sur **Télécharger config.js**.
+4. Sur GitHub, ouvre le dossier `lt-digital`, clique **Add file ▸ Upload files**, glisse le `config.js` téléchargé, puis **Commit changes**.
+5. Ton site se met à jour en quelques minutes.
+
+**Méthode 2 — modifier un fichier directement sur GitHub**
+Ouvre le fichier (ex : `config.js`), clique sur le crayon ✏️, change le texte entre guillemets, puis **Commit changes**.
+
+**Maquettes (restaurant, pizzeria…)** : `demos/<métier>/site.js` (textes, prix, horaires, couleurs). Photos : `demos/photos.html`.
+**Images et logos** : dépose-les dans le dossier `images/` puis écris leur chemin dans l'admin.

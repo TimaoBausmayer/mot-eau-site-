@@ -311,7 +311,7 @@ window.SITE_CONFIG = {
     f_name: "Ton nom", f_biz: "Nom de ton activité", f_contact: "Ton Instagram ou e-mail", f_project: "Décris ton projet",
     sum_title: "Récapitulatif", promo_btn: "Appliquer", sum_total: "Total", copy_btn: "Copier ma commande", insta_btn: "Ouvrir Instagram", mail_btn: "Envoyer par e-mail", cart_btn: "Voir ma commande",
     cgv_pre: "J'ai lu et j'accepte les", cgv_link: "conditions générales de vente", legal_mentions: "Mentions légales", legal_cgv: "CGV", legal_privacy: "Confidentialité",
-    final_title: "Un site pour ton activité, livré en {delivery}.", final_text: "Commande en deux minutes. Je reviens vers toi dans la journée.", final_btn: "Commander", final_insta: "Écrire sur Instagram"
+    final_title: "Un site pour ton activité, livré en {delivery}.", final_text: "Commande en deux minutes. Je reviens vers toi dans la journée.", final_btn: "Commander", final_insta: "Écrire sur Instagram", final_mail: "Nous écrire par e-mail"
   },
 
   /* ---------- FAQ ---------- */
