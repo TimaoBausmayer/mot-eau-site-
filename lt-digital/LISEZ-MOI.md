@@ -72,6 +72,12 @@ Section sombre « Photos, logo, affiches & réseaux » (photos : on se déplace 
 - **`promo/index.html`** : la 1re pub en page web animée (bouton « Rejouer »). Les textes (prix, code promo, contacts…) se changent directement dans ce fichier.
 - Pour refaire la vidéo après une modification, il faut relancer l'enregistrement : demande-le-moi.
 
+## Pubs vidéo (services) et s'y retrouver sur le site
+
+- **Pubs vidéo** : un onglet « Pubs vidéo » dans la section Services (8 prestations : pub courte 149 €, longue 349 €, pack de 3 399 €, style portfolio 249 €, visuel animé 39 €, 5 stories 99 €, voix off 49 €, film sur mesure sur devis). Modifie noms, prix et textes dans **Admin → Services & pubs**. Chaque carte peut avoir un **aperçu vidéo** (chemin d'un mp4 dans `images/pubs/`, plus un `.webm` du même nom pour les vieux navigateurs).
+- **Recherche** : bouton « Rechercher » en haut (ou touche **/** ou **Ctrl+K**). Tape un mot (« logo », « pub », « délai »…) : prix, services, options, questions, maquettes, contacts. Un clic t'emmène au bon endroit, qui s'illumine.
+- **Plan de la page** : petits points à droite (ordinateur) : la section en cours s'allume, un survol affiche son nom.
+
 ## Google et partage du lien
 
 - Quand ton lien est partagé (WhatsApp, Instagram, Facebook…), l'image `images/og.jpg` s'affiche en aperçu. Remplace-la si tu veux (format 1200 × 630).

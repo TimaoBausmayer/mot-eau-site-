@@ -494,15 +494,19 @@ function drawSvcs(){
   const gs = groupsOf(SI);
   $("svc-tabs").innerHTML = gs.length>1 ? gs.map(g=>`<button class="chip ${g===svTab?"on":""}" role="tab" aria-selected="${g===svTab}" data-t="${esc(g)}">${esc(g)} <i>${SI.filter(it=>aGroup(it)===g).length}</i></button>`).join("") : "";
   $("svcs").innerHTML = SI.filter(it=>aGroup(it)===svTab).map((it,i)=>`
-  <article class="svc ${it.popular?"pop":""}" style="--d:${i*70}ms">
+  <article class="svc ${it.popular?"pop":""} ${it.video?"has-vid":""}" style="--d:${i*70}ms" data-sid="${esc(it.id)}">
+    ${it.video?`<div class="svc-vid"><video muted loop playsinline preload="metadata"><source src="${esc(it.video)}" type="video/mp4"><source src="${esc(String(it.video).replace(/\.mp4$/i,".webm"))}" type="video/webm"></video><span class="svc-play" aria-hidden="true">▶ Aperçu</span></div>`:""}
     ${it.unit?`<span class="svc-tag">${esc(T0.badge_monthly||"Abonnement")}</span>`:it.popular?`<span class="svc-tag hot">${esc(TX.badge_pop)}</span>`:""}
     <h3>${esc(it.name)}</h3><p>${esc(it.desc||"")}</p>
     <div class="svc-price">${it.price==null?"Sur devis":`${it.from?`<small>${esc(TX.label_from)}</small> `:""}<span class="num" data-n="${it.price}">${fmt(it.price)}</span>${it.unit?` <small>${esc(it.unit)}</small>`:""}${it.qty?` <small>/ unité</small>`:""}${vt}`}</div>
     ${(it.features||[]).length?`<ul>${it.features.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>`:""}
     <button type="button" class="btn btn-sm svc-add" data-svc="${esc(it.id)}"></button>
   </article>`).join("");
-  syncSvcButtons();
+  syncSvcButtons(); watchVids();
 }
+/* aperçus vidéo : ils se lancent seulement quand ils sont visibles à l'écran */
+const vidIO = "IntersectionObserver" in window ? new IntersectionObserver(es=>es.forEach(e=>{ const v = e.target; if (e.isIntersecting) { const p = v.play(); if (p && p.catch) p.catch(()=>{}); } else v.pause(); }), {threshold:.35}) : null;
+function watchVids(){ document.querySelectorAll(".svc-vid video").forEach(v=>{ if (v.dataset.w) return; v.dataset.w = 1; if (vidIO) vidIO.observe(v); else v.autoplay = true; }); }
 function syncSvcButtons(){ document.querySelectorAll("[data-svc]").forEach(b=>{ const on = !!svcSel[b.dataset.svc]; b.classList.toggle("on", on); b.textContent = on ? (T0.svc_remove||"✓ Ajouté — retirer") : (T0.svc_add||"Ajouter à ma commande"); }); }
 if (SV){
   const sec = $("services"), hd = sec.querySelector(".sec-head");
@@ -722,5 +726,79 @@ $("vat-note").textContent = vatNote;
   /* réalisations : les cartes arrivent en cascade à chaque filtre */
   const works = $("works"); const stag = () => [...works.children].forEach((w,i)=>{ if (!w.dataset.st){ w.dataset.st = 1; w.style.setProperty("--n", i % 6); } });
   new MutationObserver(stag).observe(works, {childList:true}); stag();
+})();
+
+/* ---------- bandeau « pubs vidéo » sous les tarifs ---------- */
+(function(){ const T = C.texts||{}, b = $("pub-cta"); const g = SI.find(it=>/pub/i.test(aGroup(it))); if (!SV || !g || !T.pub_cta) return;
+  b.hidden = false; b.innerHTML = `<span class="pc-ic" aria-hidden="true">🎬</span><span>${esc(T.pub_cta)}</span><b>${esc(T.pub_cta_btn||"Voir")} →</b>`;
+  b.onclick = ()=>{ svTab = aGroup(g); drawSvcs(); $("services").scrollIntoView({behavior:"smooth"}); }; })();
+
+/* ---------- s'y retrouver : recherche (touche « / ») + plan de la page ---------- */
+(function(){ const T = C.texts||{}, still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const norm = x => String(x||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+  const strip = x => String(x||"").replace(/<[^>]+>/g,"");
+  const price = p => p==null ? "Sur devis" : fmt(p);
+  const flash = el => { if(!el) return; el.classList.remove("flashed"); void el.offsetWidth; el.classList.add("flashed"); setTimeout(()=>el.classList.remove("flashed"), 2200); };
+  const go = (id, then) => { const el = $(id); if(!el || el.hidden) return; el.scrollIntoView({behavior: still?"auto":"smooth"}); if (then) setTimeout(then, still?0:450); };
+
+  /* sections de la page */
+  const SECS = [["top","Accueil","🏠"],["pourquoi","Pourquoi un vrai site","💡"],["tarifs","Tarifs des sites","💶"],["comparatif","Comparer les gammes","⇄"],["services","Services : photos, logo, pubs, réseaux","🎨"],["options","Options des sites","➕"],["process","La méthode en 4 étapes","🧭"],["realisations","Réalisations (maquettes)","🖼️"],["avis","Avis clients","⭐"],["commande","Commander","🛒"],["faq","Questions fréquentes","❓"],["histoire","Notre histoire","👥"]];
+  const IDX = [];
+  SECS.forEach(([id,t,ic])=>{ if ($(id) && !$(id).hidden) IDX.push({type:"Page", ic, t, s:"Aller à cette section", k:t+" "+id, run:()=>go(id)}); });
+  (C.plans||[]).forEach(p=>IDX.push({type:"Tarif", ic:"💶", t:p.name+" — "+price(p.price)+(p.from?" (dès)":""), s:p.tagline||"", k:[p.name,p.tagline,(p.features||[]).join(" ")].join(" "), run:()=>go("tarifs",()=>{ groupSel="Tous"; drawPlans(); flash([...document.querySelectorAll("#plans .plan")].find(c=>c.querySelector(`[data-plan="${p.id}"]`))); })}));
+  (C.addons||[]).forEach(a=>IDX.push({type:"Option", ic:"➕", t:a.name+" — "+(a.price==null?"Sur devis":"+ "+fmt(a.price)), s:a.desc||"", k:[a.name,a.desc,a.group].join(" "), run:()=>go("options",()=>{ addonSel = a.popular ? "Populaires" : aGroup(a); drawAddons(); flash($("addons")); })}));
+  (SI||[]).forEach(it=>IDX.push({type:"Service", ic: /pub/i.test(aGroup(it))?"🎬":/photo/i.test(aGroup(it))?"📸":/logo/i.test(aGroup(it))?"✏️":/print|affiche/i.test(aGroup(it))?"🖼️":"📱", t:it.name+" — "+price(it.price)+(it.unit?" "+it.unit:"")+(it.from?" (dès)":""), s:aGroup(it)+(it.desc?" · "+it.desc:""), k:[it.name,it.desc,aGroup(it),(it.features||[]).join(" ")].join(" "), run:()=>go("services",()=>{ svTab = aGroup(it); drawSvcs(); flash(document.querySelector(`.svc[data-sid="${it.id}"]`)); })}));
+  (C.faq||[]).forEach((f,i)=>IDX.push({type:"Question", ic:"❓", t:strip(f.q), s:strip(f.a).slice(0,90)+"…", k:f.q+" "+f.a, run:()=>go("faq",()=>{ const d = $("faq-list").children[i]; if (d){ d.open = true; flash(d); } })}));
+  (C.portfolio||[]).forEach((w,i)=>IDX.push({type:"Maquette", ic:"🖼️", t:w.name+" — "+String(w.category||"").split("·")[0].trim(), s:"Ouvrir l'aperçu en grand", k:[w.name,w.category,w.tag].join(" "), run:()=>openDemo(i)}));
+  [["Instagram","@l.t_digital",(C.contact||{}).instagram],["E-mail",(C.contact||{}).email,(C.contact||{}).email&&"mailto:"+C.contact.email]].forEach(([t,s,u])=>{ if(u) IDX.push({type:"Contact", ic:"💬", t:"Nous écrire : "+t, s:s, k:"contact ecrire message "+t+" "+s, run:()=>{ location.href = u; }}); });
+  [["Mentions légales","mentions-legales.html"],["Conditions générales de vente","cgv.html"],["Confidentialité","confidentialite.html"]].forEach(([t,u])=>IDX.push({type:"Légal", ic:"📄", t, s:"Page légale", k:t+" legal cgv rgpd", run:()=>{ location.href = u; }}));
+  const WORDS = {"pub":"pubs publicite video reel tiktok","prix":"tarif tarifs euros combien cout","logo":"identite marque","photo":"photos shooting produit equipe"};
+  IDX.forEach(x=>{ x.n = norm(x.k+" "+x.t+" "+x.type); });
+
+  /* interface */
+  const box = $("srch"), inp = $("srch-q"), res = $("srch-res"); let list = [], sel = 0;
+  inp.placeholder = T.search_ph || inp.placeholder;
+  const QUICK = [["💶","Voir les tarifs","tarif"],["🎬","Pubs vidéo","pub video"],["📸","Photos","photo"],["✏️","Logo","logo"],["📱","Réseaux sociaux","reseaux"],["🛒","Commander","commander"],["❓","Questions","question"]];
+  const SYN = {delai:["temps","jours","livre"],livraison:["livre","temps","jours"],livrer:["livre","temps"],rapide:["temps","jours","vite"],vite:["temps","jours"],paiement:["acompte","payer"],payer:["acompte","paiement"],acompte:["paiement"],retouche:["modification","modifier"],modification:["retouche"],reduction:["promo","code"],promo:["code","bienvenue"],remise:["promo","code"],site:["site"],boutique:["vente","catalogue"],reservation:["rendez","table"],prix:["tarif","euro"],tarif:["prix","euro"],video:["reel","tiktok","film"],reel:["video"],tiktok:["video"],film:["video"],reseaux:["instagram","facebook","tiktok"],contact:["mail","instagram","ecrire"],mail:["email","contact"],telephone:["mobile"],mobile:["telephone","smartphone"],google:["seo","reference"],seo:["google","reference"],aide:["contact","question"]};
+  function score(x, ws){ let s = 0; for (const w of ws){ const alts = [w].concat(SYN[w]||[]); const hit = alts.find(a=>x.n.includes(a)); if (!hit) return 0; s += norm(x.t).includes(hit) ? 3 : 1; if (norm(x.t).startsWith(hit)) s += 2; } if (x.type==="Page") s += 1; return s; }
+  function draw(){
+    const q = norm(inp.value).trim();
+    if (!q){ list = IDX.filter(x=>x.type==="Page"); res.innerHTML = `<div class="srch-quick">${QUICK.map(([ic,t,k])=>`<button type="button" data-q="${esc(k)}"><span>${ic}</span>${esc(t)}</button>`).join("")}</div><div class="srch-h">Aller à…</div>` + list.map((x,i)=>row(x,i)).join(""); }
+    else {
+      const STOP = new Set(["un","une","le","la","les","de","des","du","et","ou","pour","combien","coute","cout","couter","est","ce","que","qui","quoi","mon","ma","mes","ton","je","veux","voudrais","comment","quel","quelle","quels","a","au","aux","sur","en","il","y","faire","avoir","vous","on","peut","puis","ya","dans"]);
+      let ws = q.split(/[^a-z0-9€]+/).filter(Boolean).filter(w=>!STOP.has(w)).map(w=>w.replace(/s$/,"")).filter(Boolean);
+      if (!ws.length) ws = q.split(/\s+/).filter(Boolean);
+      const sc = IDX.map(x=>({x, s:score(x, ws)})).filter(r=>r.s>0), best = {};
+      sc.forEach(r=>{ best[r.x.type] = Math.max(best[r.x.type]||0, r.s); });
+      list = sc.sort((a,b)=>(best[b.x.type]-best[a.x.type]) || (a.x.type<b.x.type?-1:a.x.type>b.x.type?1:0) || (b.s-a.s)).slice(0,40).map(r=>r.x);
+      let last = ""; res.innerHTML = list.length ? list.map((x,i)=>{ const h = x.type!==last ? `<div class="srch-h">${esc(x.type)}</div>` : ""; last = x.type; return h + row(x,i); }).join("") : `<p class="srch-empty">${esc(T.search_empty||"Aucun résultat.")}</p>`;
+    }
+    sel = 0; mark();
+  }
+  const row = (x,i) => `<button type="button" class="srch-r" role="option" data-i="${i}"><span class="ic">${x.ic}</span><span class="tx"><b>${esc(x.t)}</b><small>${esc(x.s||"")}</small></span><em>${esc(x.type)}</em></button>`;
+  function mark(){ res.querySelectorAll(".srch-r").forEach(b=>{ const on = +b.dataset.i===sel; b.classList.toggle("on", on); b.setAttribute("aria-selected", on); if (on) b.scrollIntoView({block:"nearest"}); }); }
+  function open(q){ box.hidden = false; document.body.classList.add("srch-open"); inp.value = q||""; draw(); setTimeout(()=>inp.focus(), 30); }
+  function close(){ box.hidden = true; document.body.classList.remove("srch-open"); }
+  function pick(i){ const x = list[i]; if (!x) return; close(); setTimeout(x.run, 60); }
+  $("srch-btn").onclick = ()=>open(); $("srch-x").onclick = close;
+  box.addEventListener("mousedown", e=>{ if (e.target===box) close(); });
+  inp.addEventListener("input", draw);
+  res.addEventListener("click", e=>{ const q = e.target.closest("[data-q]"); if (q){ inp.value = q.dataset.q; draw(); inp.focus(); return; } const b = e.target.closest("[data-i]"); if (b) pick(+b.dataset.i); });
+  res.addEventListener("mousemove", e=>{ const b = e.target.closest("[data-i]"); if (b && +b.dataset.i!==sel){ sel = +b.dataset.i; mark(); } });
+  addEventListener("keydown", e=>{
+    const typing = /^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement||{}).tagName) || (document.activeElement||{}).isContentEditable;
+    if (box.hidden){ if ((e.key==="/" && !typing && !e.ctrlKey && !e.metaKey) || ((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==="k")){ e.preventDefault(); open(); } return; }
+    if (e.key==="Escape"){ e.preventDefault(); close(); }
+    else if (e.key==="ArrowDown"){ e.preventDefault(); sel = Math.min(list.length-1, sel+1); mark(); }
+    else if (e.key==="ArrowUp"){ e.preventDefault(); sel = Math.max(0, sel-1); mark(); }
+    else if (e.key==="Enter"){ e.preventDefault(); pick(sel); } });
+
+  /* plan de la page : points à droite, la section en cours s'allume */
+  const DOTS = SECS.filter(([id])=>["top","tarifs","services","realisations","avis","commande","faq","histoire"].includes(id) && $(id) && !$(id).hidden);
+  const dots = $("dots"); dots.innerHTML = DOTS.map(([id,t])=>`<a href="#${id}" data-id="${id}"><span>${esc(t.split(":")[0].replace("Tarifs des sites","Tarifs").replace("Réalisations (maquettes)","Réalisations"))}</span><i></i></a>`).join("");
+  if ("IntersectionObserver" in window){ const io = new IntersectionObserver(es=>es.forEach(e=>{ if (e.isIntersecting){ dots.querySelectorAll("a").forEach(a=>a.classList.toggle("on", a.dataset.id===e.target.id)); } }), {rootMargin:"-45% 0px -50% 0px"});
+    DOTS.forEach(([id])=>io.observe($(id))); }
+  const dotsVis = () => { const l = document.querySelector(".lb"); dots.classList.toggle("off", scrollY < 400 || !!(l && !l.hidden) || !box.hidden); };
+  addEventListener("scroll", dotsVis, {passive:true}); dotsVis();
 })();
 })();

@@ -126,7 +126,7 @@ window.SITE_CONFIG = {
     tarifs:       { show: true, eyebrow: "Tarifs",       title: "", subtitle: "" },
     comparatif:   { show: true, eyebrow: "Comparatif",   title: "", subtitle: "" },
     options:      { show: true, eyebrow: "Options",      title: "", subtitle: "" },
-    services:     { show: true, eyebrow: "Photos, logo, affiches & réseaux" },
+    services:     { show: true, eyebrow: "Photos, logo, pubs & réseaux" },
     process:      { show: true, eyebrow: "Processus",    title: "", subtitle: "" },
     realisations: { show: true, eyebrow: "Réalisations", title: "", subtitle: "" },
     pourquoi:     { show: true, eyebrow: "Pourquoi un vrai site" },
@@ -273,10 +273,18 @@ window.SITE_CONFIG = {
      qty     : true = le client choisit une quantité (max = maximum)
      popular : true = mise en avant · features : petites lignes « ce qui est inclus » */
   services: {
-    eyebrow: "Photos, logo, affiches & réseaux",
+    eyebrow: "Photos, logo, pubs & réseaux",
     title: "Toute ton image, pas seulement ton site",
-    intro: "On équipe ton site avec de vraies photos, on crée ton logo, tes affiches et on gère tes réseaux : avec ton site ou sans site, tu prends seulement ce dont tu as besoin.",
+    intro: "On équipe ton site avec de vraies photos, on crée ton logo, tes affiches, tes pubs vidéo et on gère tes réseaux : avec ton site ou sans site, tu prends seulement ce dont tu as besoin.",
     items: [
+      { id: "s-pubv-courte", group: "Pubs vidéo", name: "Pub vidéo courte (15 à 30 s)", price: 149, popular: true, video: "images/pubs/courte.mp4", desc: "Une pub animée, 100 % visuelle (sans voix), prête pour Reels, TikTok et stories.", features: ["Format vertical plein écran", "Animations + bruitages calés sur l'image", "Musique originale libre de droits", "1 retouche incluse"] },
+      { id: "s-pubv-longue", group: "Pubs vidéo", name: "Pub vidéo longue (1 min 30)", price: 349, video: "images/pubs/longue.mp4", desc: "Un vrai film de présentation de ton activité, en chapitres.", features: ["Jusqu'à 1 min 30", "Scénario et animations sur mesure", "Musique originale + bruitages", "2 retouches incluses"] },
+      { id: "s-pubv-pack", group: "Pubs vidéo", name: "Pack 3 pubs courtes", price: 399, video: "images/pubs/pack.mp4", desc: "3 pubs avec 3 styles différents, pour varier tes publications.", features: ["3 vidéos de 15 à 30 s", "Styles différents à alterner", "Le meilleur prix par pub"] },
+      { id: "s-pubv-portfolio", group: "Pubs vidéo", name: "Pub style « portfolio tech »", price: 249, video: "images/pubs/portfolio.mp4", desc: "Le style moderne des vidéos tendance : cartes lumineuses, panneaux 3D, drop musical.", features: ["30 s plein écran", "Texte et visuels à ton image", "Musique originale"] },
+      { id: "s-pubv-visuel", group: "Pubs vidéo", name: "Visuel animé (post ou bannière)", price: 39, qty: true, max: 30, desc: "Une image animée courte pour un post, une story ou une bannière.", features: ["Format carré ou vertical", "5 à 8 secondes", "Texte et couleurs de ta marque"] },
+      { id: "s-pubv-stories", group: "Pubs vidéo", name: "Série de 5 stories animées", price: 99, desc: "5 stories qui s'enchaînent pour annoncer une promo ou un événement.", features: ["5 stories de 8 s", "Stickers et boutons animés", "Prêtes à publier"] },
+      { id: "s-pubv-voix", group: "Pubs vidéo", name: "Voix off + sous-titres", price: 49, desc: "On ajoute un texte lu et des sous-titres à ta pub (voix à fournir ou voix de synthèse).", features: ["Texte écrit pour toi", "Sous-titres animés", "Mixage avec la musique"] },
+      { id: "s-pubv-devis", group: "Pubs vidéo", name: "Film de marque sur mesure", price: null, desc: "Un film plus long ou plus ambitieux : lancement, événement, présentation complète.", features: ["Scénario avec toi", "Durée libre", "Devis après échange"] },
       { id: "s-shoot-prod", group: "Photos & vidéo", name: "On vient photographier tes produits", price: 149, from: true, popular: true, desc: "On se déplace dans ton commerce pour photographier tes produits, plats ou créations.", features: ["Déplacement compris (au-delà : sur devis)", "1 h sur place", "20 photos de produits retouchées", "Prêtes pour le site et les réseaux"] },
       { id: "s-shoot-team", group: "Photos & vidéo", name: "Photos de ton équipe", price: 129, from: true, desc: "Portraits de toi et de ton équipe pour une page « Notre équipe » qui inspire confiance.", features: ["On se déplace chez toi", "Portrait de chaque personne", "Photo de groupe", "Retouche incluse"] },
       { id: "s-shoot-full", group: "Photos & vidéo", name: "Shooting complet : produits + lieu + équipe", price: 249, from: true, desc: "Tout en une seule visite : tes produits, ton lieu et ton équipe.", features: ["Demi-journée sur place", "40 photos retouchées", "Le meilleur prix par photo"] },
@@ -385,7 +393,7 @@ window.SITE_CONFIG = {
      Modifie le texte que tu veux. Tout se change aussi depuis admin.html ▸ Textes du site. */
   texts: {
     nav_tarifs: "Tarifs", nav_comparatif: "Comparatif", nav_process: "Méthode", nav_realisations: "Réalisations", nav_avis: "Avis", cmp_link: "Comparer les gammes côte à côte", cmp_pick: "Gammes à comparer", cmp_diff: "Seulement les différences", cmp_choose: "Choisir", mcta_btn: "Commander mon site", nav_faq: "Questions", nav_histoire: "Notre histoire", nav_insta: "Instagram", nav_cta: "Commander",
-    badge_pop: "Le plus choisi", nav_services: "Services", photo_cta: "Pas de belles photos ? On se déplace pour photographier tes produits et ton équipe, ou on retouche les tiennes.", photo_cta_btn: "Voir les offres photo", pick_none: "Pas de site", pick_none_sub: "Services seuls", label_monthly: "Abonnement mensuel", label_monthly_note: "Payé chaque mois, sans engagement au-delà du 1er mois.", label_services: "Photos, logo, affiches & réseaux", label_delivery: "Livraison :", label_from: "À partir de", label_delay_est: "Délai estimé :",
+    badge_pop: "Le plus choisi", nav_services: "Services", nav_search: "Rechercher", search_ph: "Cherche un prix, un service, une question…", search_empty: "Aucun résultat. Essaie « logo », « pub », « photo », « prix »…", pub_cta: "Envie d'une pub vidéo pour tes réseaux ? Animée, sans voix, avec musique : à partir de 149 €.", pub_cta_btn: "Voir les pubs vidéo", photo_cta: "Pas de belles photos ? On se déplace pour photographier tes produits et ton équipe, ou on retouche les tiennes.", photo_cta_btn: "Voir les offres photo", pick_none: "Pas de site", pick_none_sub: "Services seuls", label_monthly: "Abonnement mensuel", label_monthly_note: "Payé chaque mois, sans engagement au-delà du 1er mois.", label_services: "Photos, logo, affiches & réseaux", label_delivery: "Livraison :", label_from: "À partir de", label_delay_est: "Délai estimé :",
     order_plan: "Ta gamme", order_opts: "Tes options", order_info: "Tes informations",
     f_name: "Ton nom", f_biz: "Nom de ton activité", f_contact: "Ton Instagram ou e-mail", f_project: "Décris ton projet",
     sum_title: "Récapitulatif", promo_btn: "Appliquer", sum_total: "Total", copy_btn: "Copier ma commande", insta_btn: "Ouvrir Instagram", mail_btn: "Envoyer par e-mail", cart_btn: "Voir ma commande",

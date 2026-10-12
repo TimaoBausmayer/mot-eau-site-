@@ -40,6 +40,7 @@
       <a href="#histoire">Notre histoire</a>
       <a href="#" id="nav-insta" target="_blank" rel="noopener" hidden>Instagram</a>
     </nav>
+    <button type="button" class="srch-btn" id="srch-btn" aria-label="Rechercher sur le site"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg><span class="srch-t">Rechercher</span><kbd>/</kbd></button>
     <a href="#commande" class="btn btn-sm">Commander</a>
     <button class="burger" id="burger" aria-label="Menu">Menu</button>
   </div>
@@ -84,7 +85,7 @@
       <div class="plans-dots" id="plans-dots" aria-hidden="true"></div>
       <a href="#comparatif" class="cmp-link" id="cmp-link"><span aria-hidden="true">⇄</span> Comparer les gammes côte à côte</a>
       <p class="vat-note" id="vat-note"></p>
-      <button type="button" class="photo-cta" id="photo-cta" hidden></button>
+      <div class="cta-bands"><button type="button" class="photo-cta" id="photo-cta" hidden></button><button type="button" class="photo-cta pub-cta" id="pub-cta" hidden></button></div>
     </div>
   </section>
 
@@ -106,7 +107,7 @@
 
   <section id="services" class="sec svc-sec">
     <div class="wrap">
-      <div class="sec-head"><span class="eyebrow">Photos, logo, affiches &amp; réseaux</span><h2></h2><p></p></div>
+      <div class="sec-head"><span class="eyebrow">Photos, logo, pubs &amp; réseaux</span><h2></h2><p></p></div>
       <div class="filters svc-tabs" id="svc-tabs" role="tablist"></div>
       <div class="svcs" id="svcs"></div>
       <p class="vat-note" id="svc-note"></p>
@@ -234,6 +235,8 @@
 </dialog>
 
 <button type="button" class="totop" id="totop" aria-label="Revenir en haut de la page" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+<nav class="dots" id="dots" aria-label="Plan de la page"></nav>
+<div class="srch" id="srch" hidden role="dialog" aria-modal="true" aria-label="Recherche"><div class="srch-box"><div class="srch-in"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg><input id="srch-q" type="search" autocomplete="off" placeholder="Cherche un prix, un service, une question…" aria-label="Rechercher"><button type="button" id="srch-x" aria-label="Fermer">Échap</button></div><div class="srch-res" id="srch-res" role="listbox"></div><div class="srch-foot"><span><kbd>↑</kbd><kbd>↓</kbd> choisir</span><span><kbd>↵</kbd> ouvrir</span><span><kbd>Échap</kbd> fermer</span></div></div></div>
 <div class="mcta" id="mcta" hidden><a href="#commande" class="btn" id="mcta-order">Commander mon site</a><a class="mcta-ic" id="mcta-ig" target="_blank" rel="noopener" aria-label="Instagram" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" class="f"/></svg></a><a class="mcta-ic" id="mcta-mail" aria-label="E-mail" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg></a></div>
 
 <div class="cartbar" id="cartbar" hidden><span id="cart-text"></span><a class="btn btn-sm btn-light" href="#commande">Voir ma commande</a></div>
