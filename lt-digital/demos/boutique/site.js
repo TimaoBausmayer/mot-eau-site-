@@ -7,6 +7,8 @@
                     aperture, wine, mandala, barbell, rings, plate, candles
    - Dans un texte, {mot} met le mot en couleur (titre de l'accueil).
    - Un produit avec un "tag" est mis en avant sur l'accueil.
+   - Photos des produits : "img": "pizza-margherita" (illustration) ou "photo": "photos/ma-photo.jpg"
+     (ta vraie photo, placée dans le dossier de la maquette). La photo remplace l'illustration.
    ===================================================================== */
 window.SITE = {
   "name": "Maison Aurore",
@@ -75,6 +77,7 @@ window.SITE = {
     "label": "Boutique",
     "title": "Nos produits",
     "intro": "Toutes nos bougies sont coulées à la main, en petites séries, avec une mèche en coton.",
+    "images": false,
     "cats": [
       {
         "name": "Bougies parfumées",

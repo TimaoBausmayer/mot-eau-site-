@@ -7,6 +7,8 @@
                     aperture, wine, mandala, barbell, rings, plate, candles
    - Dans un texte, {mot} met le mot en couleur (titre de l'accueil).
    - Un produit avec un "tag" est mis en avant sur l'accueil.
+   - Photos des produits : "img": "pizza-margherita" (illustration) ou "photo": "photos/ma-photo.jpg"
+     (ta vraie photo, placée dans le dossier de la maquette). La photo remplace l'illustration.
    ===================================================================== */
 window.SITE = {
   "name": "La Fromagerie des Alpes",
@@ -75,6 +77,7 @@ window.SITE = {
     "label": "Nos fromages",
     "title": "Notre sélection",
     "intro": "Une quarantaine de fromages à la coupe, selon la saison et nos visites chez les producteurs.",
+    "images": true,
     "cats": [
       {
         "name": "Pâtes dures et pressées",
@@ -85,21 +88,24 @@ window.SITE = {
             "desc": "Fruité, noisette, cristaux de tyrosine",
             "price": "29 €/kg",
             "tag": "Coup de cœur",
-            "star": true
+            "star": true,
+            "img": "comte"
           },
           {
             "name": "Beaufort d'été",
             "desc": "Lait d'alpage, onctueux",
             "price": "34 €/kg",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "beaufort"
           },
           {
             "name": "Abondance fermier",
             "desc": "Lait cru, notes de noisette",
             "price": "27 €/kg",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "abondance"
           }
         ]
       },
@@ -112,28 +118,32 @@ window.SITE = {
             "desc": "Crémeux, au lait cru de Savoie",
             "price": "24 €/kg",
             "tag": "Local",
-            "star": true
+            "star": true,
+            "img": "reblochon"
           },
           {
             "name": "Brie de Meaux",
             "desc": "Onctueux, croûte fleurie",
             "price": "21 €/kg",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "brie"
           },
           {
             "name": "Chèvre cendré",
             "desc": "Frais et léger, affiné 3 semaines",
             "price": "7 €/pièce",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "chevre"
           },
           {
             "name": "Saint-Marcellin",
             "desc": "Coulant, à la cuillère",
             "price": "3,80 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "saint-marcellin"
           }
         ]
       },
@@ -146,28 +156,32 @@ window.SITE = {
             "desc": "5 fromages, confiture et noix",
             "price": "39 €",
             "tag": "Fête",
-            "star": true
+            "star": true,
+            "img": "plateau-6"
           },
           {
             "name": "Plateau 12 personnes",
             "desc": "8 fromages, pain et fruits secs",
             "price": "72 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "plateau-12"
           },
           {
             "name": "Kit raclette",
             "desc": "Fromage, charcuterie, pommes de terre",
             "price": "18 €/pers.",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "raclette"
           },
           {
             "name": "Fondue savoyarde",
             "desc": "Trois fromages, pain, vin blanc",
             "price": "16 €/pers.",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "fondue"
           }
         ]
       }

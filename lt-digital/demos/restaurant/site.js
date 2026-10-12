@@ -7,6 +7,8 @@
                     aperture, wine, mandala, barbell, rings, plate, candles
    - Dans un texte, {mot} met le mot en couleur (titre de l'accueil).
    - Un produit avec un "tag" est mis en avant sur l'accueil.
+   - Photos des produits : "img": "pizza-margherita" (illustration) ou "photo": "photos/ma-photo.jpg"
+     (ta vraie photo, placée dans le dossier de la maquette). La photo remplace l'illustration.
    ===================================================================== */
 window.SITE = {
   "name": "Le Comptoir",
@@ -75,6 +77,7 @@ window.SITE = {
     "label": "La carte",
     "title": "Une cuisine de saison",
     "intro": "La carte change chaque mois selon les arrivages. Les plats sont cuisinés sur place, tous les jours.",
+    "images": true,
     "cats": [
       {
         "name": "Entrées",
@@ -85,28 +88,32 @@ window.SITE = {
             "desc": "Éclats de noisette, crème fumée",
             "price": "9 €",
             "tag": "Saison",
-            "star": true
+            "star": true,
+            "img": "veloute"
           },
           {
             "name": "Œuf parfait",
             "desc": "Champignons des bois, jus de viande",
             "price": "11 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "oeuf"
           },
           {
             "name": "Terrine de campagne",
             "desc": "Cornichons, pain grillé",
             "price": "10 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "terrine"
           },
           {
             "name": "Salade de chèvre chaud",
             "desc": "Miel, noix, mesclun",
             "price": "11 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "salade-chevre"
           }
         ]
       },
@@ -119,28 +126,32 @@ window.SITE = {
             "desc": "Purée truffée, jus au miel",
             "price": "26 €",
             "tag": "Signature",
-            "star": true
+            "star": true,
+            "img": "magret"
           },
           {
             "name": "Pavé de cabillaud",
             "desc": "Risotto crémeux, beurre blanc",
             "price": "24 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "cabillaud"
           },
           {
             "name": "Burger du Comptoir",
             "desc": "Bœuf français, cheddar, frites maison",
             "price": "19 €",
             "tag": "Best-seller",
-            "star": true
+            "star": true,
+            "img": "burger"
           },
           {
             "name": "Risotto aux champignons",
             "desc": "Parmesan 24 mois (végétarien)",
             "price": "18 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "risotto"
           }
         ]
       },
@@ -153,21 +164,24 @@ window.SITE = {
             "desc": "Crème d'Isigny",
             "price": "9 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "tarte-tatin"
           },
           {
             "name": "Fondant au chocolat",
             "desc": "Cœur coulant, glace vanille",
             "price": "10 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "fondant"
           },
           {
             "name": "Café gourmand",
             "desc": "Trois mignardises",
             "price": "8 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "cafe-gourmand"
           }
         ]
       },
@@ -180,21 +194,24 @@ window.SITE = {
             "desc": "Rouge, blanc ou rosé du moment",
             "price": "6 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "vin-verre"
           },
           {
             "name": "Bière artisanale",
             "desc": "Pression 25 cl",
             "price": "5 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "biere"
           },
           {
             "name": "Café, thé, infusion",
             "desc": "",
             "price": "2,50 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "cafe"
           }
         ]
       }

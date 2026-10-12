@@ -7,6 +7,8 @@
                     aperture, wine, mandala, barbell, rings, plate, candles
    - Dans un texte, {mot} met le mot en couleur (titre de l'accueil).
    - Un produit avec un "tag" est mis en avant sur l'accueil.
+   - Photos des produits : "img": "pizza-margherita" (illustration) ou "photo": "photos/ma-photo.jpg"
+     (ta vraie photo, placée dans le dossier de la maquette). La photo remplace l'illustration.
    ===================================================================== */
 window.SITE = {
   "name": "Pizzeria Bella Napoli",
@@ -75,6 +77,7 @@ window.SITE = {
     "label": "La carte",
     "title": "Nos pizzas",
     "intro": "Une pâte légère, des produits italiens, une cuisson de 90 secondes à 450 °C.",
+    "images": true,
     "cats": [
       {
         "name": "Les classiques",
@@ -85,28 +88,32 @@ window.SITE = {
             "desc": "Tomate, mozzarella, basilic",
             "price": "9 €",
             "tag": "Classique",
-            "star": true
+            "star": true,
+            "img": "pizza-margherita"
           },
           {
             "name": "Regina",
             "desc": "Jambon, champignons, mozzarella",
             "price": "12 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "pizza-regina"
           },
           {
             "name": "Diavola",
             "desc": "Salami piquant, tomate, mozzarella",
             "price": "13 €",
             "tag": "Épicée",
-            "star": true
+            "star": true,
+            "img": "pizza-diavola"
           },
           {
             "name": "Napoli",
             "desc": "Anchois, câpres, olives",
             "price": "12 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "pizza-napoli"
           }
         ]
       },
@@ -119,28 +126,32 @@ window.SITE = {
             "desc": "Mozzarella, gorgonzola, parmesan, chèvre",
             "price": "14 €",
             "tag": "Best-seller",
-            "star": true
+            "star": true,
+            "img": "pizza-4fromages"
           },
           {
             "name": "Burrata",
             "desc": "Burrata, roquette, tomates cerises",
             "price": "15 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "pizza-burrata"
           },
           {
             "name": "Calzone",
             "desc": "Jambon, ricotta, mozzarella (pliée)",
             "price": "13 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "calzone"
           },
           {
             "name": "Végétarienne",
             "desc": "Légumes grillés, mozzarella, pesto",
             "price": "12 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "pizza-vege"
           }
         ]
       },
@@ -153,21 +164,24 @@ window.SITE = {
             "desc": "Recette traditionnelle",
             "price": "6 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "tiramisu"
           },
           {
             "name": "Panna cotta",
             "desc": "Coulis de fruits rouges",
             "price": "5 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "pannacotta"
           },
           {
             "name": "Boissons italiennes",
             "desc": "Limonade, Aperol sans alcool, café",
             "price": "dès 3 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "spritz"
           }
         ]
       }

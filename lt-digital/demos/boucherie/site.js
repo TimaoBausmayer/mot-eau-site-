@@ -7,6 +7,8 @@
                     aperture, wine, mandala, barbell, rings, plate, candles
    - Dans un texte, {mot} met le mot en couleur (titre de l'accueil).
    - Un produit avec un "tag" est mis en avant sur l'accueil.
+   - Photos des produits : "img": "pizza-margherita" (illustration) ou "photo": "photos/ma-photo.jpg"
+     (ta vraie photo, placée dans le dossier de la maquette). La photo remplace l'illustration.
    ===================================================================== */
 window.SITE = {
   "name": "Boucherie Maison Lefèvre",
@@ -75,6 +77,7 @@ window.SITE = {
     "label": "Au comptoir",
     "title": "Au comptoir",
     "intro": "Toute la viande est française et traçable. Dites-nous l'épaisseur, on découpe devant vous.",
+    "images": true,
     "cats": [
       {
         "name": "Bœuf & veau",
@@ -85,28 +88,32 @@ window.SITE = {
             "desc": "Persillée, tendre, à partager",
             "price": "36 €/kg",
             "tag": "Signature",
-            "star": true
+            "star": true,
+            "img": "cote-boeuf"
           },
           {
             "name": "Entrecôte",
             "desc": "Tendre et savoureuse",
             "price": "28 €/kg",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "entrecote"
           },
           {
             "name": "Rôti de veau",
             "desc": "Fermier, élevé sous la mère",
             "price": "26 €/kg",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "roti-veau"
           },
           {
             "name": "Steak haché pur bœuf",
             "desc": "Haché à la demande",
             "price": "16 €/kg",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "steak-hache"
           }
         ]
       },
@@ -119,28 +126,32 @@ window.SITE = {
             "desc": "Élevé en plein air",
             "price": "24 €/kg",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "gigot"
           },
           {
             "name": "Poulet fermier",
             "desc": "Label rouge, élevé à l'herbe",
             "price": "12 €/kg",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "poulet"
           },
           {
             "name": "Côtes de porc",
             "desc": "Porc fermier",
             "price": "14 €/kg",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "cotes-porc"
           },
           {
             "name": "Saucisses maison",
             "desc": "Recette de la maison, sans additifs",
             "price": "14 €/kg",
             "tag": "Fait maison",
-            "star": true
+            "star": true,
+            "img": "saucisses"
           }
         ]
       },
@@ -153,21 +164,24 @@ window.SITE = {
             "desc": "Brochettes, merguez, côtelettes (4 pers.)",
             "price": "29 €",
             "tag": "Été",
-            "star": true
+            "star": true,
+            "img": "panier-bbq"
           },
           {
             "name": "Plateau de charcuterie",
             "desc": "Pour 6 personnes",
             "price": "32 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "charcuterie"
           },
           {
             "name": "Plat du jour à emporter",
             "desc": "Cuisiné par notre traiteur",
             "price": "9 €",
             "tag": "",
-            "star": false
+            "star": false,
+            "img": "plat-jour"
           }
         ]
       }

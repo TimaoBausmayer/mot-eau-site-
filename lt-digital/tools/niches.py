@@ -5,8 +5,23 @@ en dossier demos/<slug>/ (site.js + 3 pages). Après génération, c'est site.js
 def pal(bg, bg2, ink, mut, acc, acc2, line, card, onacc="#ffffff"):
     return dict(bg=bg, bg2=bg2, ink=ink, mut=mut, acc=acc, acc2=acc2, line=line, card=card, onacc=onacc)
 
+IMG = {
+ # Restaurant
+ "Velouté de potimarron":"veloute","Œuf parfait":"oeuf","Terrine de campagne":"terrine","Salade de chèvre chaud":"salade-chevre",
+ "Magret de canard":"magret","Pavé de cabillaud":"cabillaud","Burger du Comptoir":"burger","Risotto aux champignons":"risotto",
+ "Tarte tatin":"tarte-tatin","Fondant au chocolat":"fondant","Café gourmand":"cafe-gourmand","Vin au verre":"vin-verre","Bière artisanale":"biere","Café, thé, infusion":"cafe",
+ # Pizzeria
+ "Margherita":"pizza-margherita","Regina":"pizza-regina","Diavola":"pizza-diavola","Napoli":"pizza-napoli","Quattro Formaggi":"pizza-4fromages","Burrata":"pizza-burrata","Calzone":"calzone","Végétarienne":"pizza-vege","Tiramisu maison":"tiramisu","Panna cotta":"pannacotta","Boissons italiennes":"spritz",
+ # Boucherie
+ "Côte de bœuf maturée":"cote-boeuf","Entrecôte":"entrecote","Rôti de veau":"roti-veau","Steak haché pur bœuf":"steak-hache","Gigot d'agneau":"gigot","Poulet fermier":"poulet","Côtes de porc":"cotes-porc","Saucisses maison":"saucisses","Panier barbecue":"panier-bbq","Plateau de charcuterie":"charcuterie","Plat du jour à emporter":"plat-jour",
+ # Fromagerie
+ "Comté 24 mois":"comte","Beaufort d'été":"beaufort","Abondance fermier":"abondance","Reblochon fermier":"reblochon","Brie de Meaux":"brie","Chèvre cendré":"chevre","Saint-Marcellin":"saint-marcellin","Plateau 6 personnes":"plateau-6","Plateau 12 personnes":"plateau-12","Kit raclette":"raclette","Fondue savoyarde":"fondue",
+}
+
 def I(name, desc, price, tag=""):
-    return dict(name=name, desc=desc, price=price, tag=tag, star=bool(tag))
+    d = dict(name=name, desc=desc, price=price, tag=tag, star=bool(tag))
+    if name in IMG: d["img"] = IMG[name]
+    return d
 
 NICHES = [
 dict(slug="restaurant", group="Restauration", name="Le Comptoir", short="Restaurant", visual="plate", layout="B", headFont="Playfair Display", bodyFont="Inter", upper=False, radius=2,

@@ -16,6 +16,10 @@ SHELL = """<!DOCTYPE html>
 <body data-page="{page}" style="background:{bg}">
 <script src="site.js"></script>
 <script src="../_visuals.js"></script>
+<script src="../_food.js"></script>
+<script src="../_food_meat.js"></script>
+<script src="../_food_cheese.js"></script>
+<script src="../_food_resto.js"></script>
 <script src="../_engine.js"></script>
 </body>
 </html>
@@ -29,6 +33,8 @@ HEADER = """/* =================================================================
                     aperture, wine, mandala, barbell, rings, plate, candles
    - Dans un texte, {{mot}} met le mot en couleur (titre de l'accueil).
    - Un produit avec un "tag" est mis en avant sur l'accueil.
+   - Photos des produits : "img": "pizza-margherita" (illustration) ou "photo": "photos/ma-photo.jpg"
+     (ta vraie photo, placée dans le dossier de la maquette). La photo remplace l'illustration.
    ===================================================================== */
 """
 
@@ -42,7 +48,7 @@ def site(n):
       home=dict(kicker=n["kicker"], title=n["title"], text=n["text"], cta=n["cta"], cta2=n["cta2"],
                 highlightsTitle=n["hl_title"], highlightsText=n["hl_text"], aboutTitle=n["about_title"], about=n["about"],
                 stats=[list(s) for s in n["stats"]], features=[list(f) for f in n["features"]], ctaTitle=n["ctatitle"], ctaText=n["ctatext"]),
-      offers=dict(label=n["label"], title=n["offers_title"], intro=n["offers_intro"],
+      offers=dict(label=n["label"], title=n["offers_title"], intro=n["offers_intro"], images=any("img" in it for c in n["cats"] for it in c[2]),
                   cats=[dict(name=c[0], note=c[1], items=[{k:v for k,v in it.items()} for it in c[2]]) for c in n["cats"]]),
       contact=dict(title="Contactez-nous", intro="Une question, un devis, une réservation ? Écrivez-nous ou appelez-nous : nous répondons rapidement.",
                    hours=[list(h) for h in n["hours"]], address=n["address"], phone=n["phone"], email=n["email"], note=n["note"],

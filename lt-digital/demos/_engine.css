@@ -36,8 +36,8 @@ em.a{font-style:normal;color:var(--acc)}
 .sh{max-width:640px;margin-bottom:46px}.sh h2{font-size:clamp(2rem,4vw,3.1rem)}.sh p{color:var(--mut);margin-top:12px}
 .rv{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}.rv.in{opacity:1;transform:none}
 @keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
-.hero .eb,.hero h1,.hero .lead,.hero .ctas,.hero .visbox{animation:up .9s cubic-bezier(.2,.7,.2,1) both}
-.hero h1{animation-delay:.07s}.hero .lead{animation-delay:.16s}.hero .ctas{animation-delay:.25s}.hero .visbox{animation-delay:.2s}
+.hero .eb,.hero h1,.hero .lead,.hero .ctas,.hero .visbox,.hero .mosaic{animation:up .9s cubic-bezier(.2,.7,.2,1) both}
+.hero h1{animation-delay:.07s}.hero .lead{animation-delay:.16s}.hero .ctas{animation-delay:.25s}.hero .visbox,.hero .mosaic{animation-delay:.2s}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin{transform-origin:50% 50%;animation:spin 90s linear infinite}
 
@@ -145,3 +145,32 @@ em.a{font-style:normal;color:var(--acc)}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}html{scroll-behavior:auto}}
 
 .embed .top{display:none}
+
+/* photos produits */
+.pic{aspect-ratio:4/3;overflow:hidden;border-radius:calc(var(--r) + 2px);background:var(--bg2);cursor:zoom-in;position:relative}
+.pic svg,.pic img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.has-pic:hover .pic svg,.has-pic:hover .pic img{transform:scale(1.06)}
+.card.has-pic{padding:14px 14px 24px}.card.has-pic .pic{margin-bottom:16px}.card.has-pic>:not(.pic){margin-inline:10px}
+.items.pics{grid-template-columns:repeat(3,1fr)}
+.it.has-pic{padding:14px 14px 20px}.it.has-pic .pic{grid-column:1/-1;margin-bottom:12px}.it.has-pic>:not(.pic){margin-inline:8px}.it.has-pic .p{grid-row:2}
+.L-B .items.pics{grid-template-columns:1fr 1fr}
+.L-B .it.has-pic,.L-B .card.has-pic{padding:14px 0;grid-template-columns:104px 1fr auto;gap:2px 18px;align-items:center}
+.L-B .it.has-pic>:not(.pic),.L-B .card.has-pic>:not(.pic){margin-inline:0}
+.L-B .it.has-pic .pic,.L-B .card.has-pic .pic{grid-column:1;grid-row:1/4;aspect-ratio:1;margin:0}
+.L-B .it.has-pic h3,.L-B .card.has-pic h3{grid-column:2}.L-B .it.has-pic .p,.L-B .card.has-pic .pr{grid-column:3;grid-row:1}.L-B .it.has-pic .d,.L-B .card.has-pic p{grid-column:2;grid-row:2}.L-B .it.has-pic .go{grid-column:2;grid-row:3}
+.zoom{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.86);display:grid;place-items:center;padding:20px;cursor:zoom-out;animation:up .3s both}
+.zoom-in{width:min(920px,100%);display:grid;gap:12px;justify-items:center}.zoom-in>svg,.zoom-in>img{width:100%;height:auto;max-height:78vh;aspect-ratio:4/3;object-fit:cover;border-radius:10px}
+.zoom-in p{color:#fff;font:600 1.1rem var(--hf),serif;text-transform:var(--hcase,none)}.zoom-in button{background:#fff;color:#111;border:0;border-radius:6px;padding:9px 20px;font:600 .9rem var(--bf);cursor:pointer}
+@media(max-width:960px){.items.pics{grid-template-columns:1fr 1fr}.L-B .items.pics{grid-template-columns:1fr}}
+@media(max-width:560px){.items.pics{grid-template-columns:1fr}.L-B .it.has-pic,.L-B .card.has-pic{grid-template-columns:84px 1fr auto}}
+
+.mosaic{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;max-width:540px;margin-left:auto;animation:up .9s .2s cubic-bezier(.2,.7,.2,1) both}
+.mosaic .mc{display:grid;gap:8px}.mosaic .mc:nth-child(even){margin-top:34px}.mosaic .mc:nth-child(odd){margin-bottom:34px}
+.mosaic .pic{aspect-ratio:1;border:1px solid var(--line);box-shadow:0 22px 40px -26px rgba(0,0,0,.6)}
+.mosaic .mc span{font:600 .84rem var(--bf);color:var(--mut)}
+.L-B .mosaic{grid-template-columns:repeat(4,1fr);max-width:980px;margin:56px auto 0;text-align:left}
+.L-B .mosaic .mc:nth-child(odd){margin-bottom:0}.L-B .mosaic .mc:nth-child(even){margin-top:30px}
+.L-C .mosaic .pic{border:2px solid var(--ink);box-shadow:7px 7px 0 var(--acc)}
+.L-B .it.has-pic,.L-B .card.has-pic{grid-template-columns:150px 1fr auto}
+@media(max-width:960px){.mosaic{margin:0 auto;max-width:420px}.L-B .mosaic{grid-template-columns:1fr 1fr;max-width:420px}.L-B .mosaic .mc:nth-child(even){margin-top:20px}}
+@media(max-width:560px){.L-B .it.has-pic,.L-B .card.has-pic{grid-template-columns:96px 1fr auto}}

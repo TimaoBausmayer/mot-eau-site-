@@ -7,6 +7,8 @@
                     aperture, wine, mandala, barbell, rings, plate, candles
    - Dans un texte, {mot} met le mot en couleur (titre de l'accueil).
    - Un produit avec un "tag" est mis en avant sur l'accueil.
+   - Photos des produits : "img": "pizza-margherita" (illustration) ou "photo": "photos/ma-photo.jpg"
+     (ta vraie photo, placée dans le dossier de la maquette). La photo remplace l'illustration.
    ===================================================================== */
 window.SITE = {
   "name": "Atelier Dubois",
@@ -75,6 +77,7 @@ window.SITE = {
     "label": "Nos services",
     "title": "Tout pour votre intérieur",
     "intro": "Chaque projet est dessiné, fabriqué dans l'atelier et posé par nos soins. Devis gratuit sous 48 h.",
+    "images": false,
     "cats": [
       {
         "name": "Agencement",

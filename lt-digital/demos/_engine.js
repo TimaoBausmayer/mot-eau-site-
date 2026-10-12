@@ -28,6 +28,9 @@ const header = `<header class="hd" id="hd"><div class="w nv"><a class="lg" href=
 <nav class="nl" id="nl"><a href="index.html" class="${page==="home"?"on":""}">Accueil</a><a href="offre.html" class="${page==="offre"?"on":""}">${esc(S.offers.label)}</a><a href="contact.html" class="${page==="contact"?"on":""}">Contact</a></nav>
 <a class="btn" href="${S.home.ctaHref||"contact.html"}">${esc(S.home.cta)}</a><button class="bg" id="bg" aria-label="Menu">Menu</button></div></header>`;
 
+const pic = it => it.photo ? `<div class="pic" tabindex="0" role="button" aria-label="Agrandir ${esc(it.name)}"><img src="${esc(it.photo)}" alt="${esc(it.name)}" loading="lazy"></div>` : (it.img && window.FOOD && window.FOOD[it.img]) ? `<div class="pic" tabindex="0" role="button" aria-label="Agrandir ${esc(it.name)}">${window.FOOD[it.img](window.__foodU())}</div>` : "";
+const hp = it => pic(it) ? " has-pic" : "";
+const heroVisual = () => { if(!S.offers.images) return visual(); const seen=[]; [...items.filter(i=>i.star), ...items].forEach(i=>{ if(seen.length<4 && pic(i) && !seen.includes(i)) seen.push(i); }); return `<div class="mosaic">${seen.map(i=>`<div class="mc has-pic">${pic(i)}<span>${esc(i.name)}</span></div>`).join("")}</div>`; };
 const visual = () => `<div class="visbox">${(V[T.visual]||V.plate)()}</div>`;
 const money = p => esc(p);
 
@@ -37,9 +40,9 @@ function home(){
   const want = L==="B"?4:3;
   if (feat.length<want) items.forEach(i=>{ if(feat.length<want && !feat.includes(i)) feat.push(i); });
   feat = feat.slice(0, want);
-  const hl = feat.map((it,i)=>`<a class="card rv" href="${q(it.name)}">${it.tag?`<span class="tagc">${esc(it.tag)}</span>`:`<span class="n">${String(i+1).padStart(2,"0")}</span>`}<h3>${esc(it.name)}</h3><p>${esc(it.desc)}</p><span class="pr">${money(it.price)}</span></a>`).join("");
+  const hl = feat.map((it,i)=>`<a class="card rv${hp(it)}" href="${q(it.name)}">${pic(it)}${it.tag?`<span class="tagc">${esc(it.tag)}</span>`:`<span class="n">${String(i+1).padStart(2,"0")}</span>`}<h3>${esc(it.name)}</h3><p>${esc(it.desc)}</p><span class="pr">${money(it.price)}</span></a>`).join("");
   const mq = L==="C" ? `<div class="mq"><div>${[...S.offers.cats.map(c=>c.name), ...items.slice(0,6).map(i=>i.name)].concat([...S.offers.cats.map(c=>c.name), ...items.slice(0,6).map(i=>i.name)]).map(t=>`<span>${esc(t)}</span>✦`).join("")}</div></div>` : "";
-  return `<section class="hero"><div class="w hero-in"><div><span class="eb">${esc(H.kicker)}</span><h1>${accent(H.title)}</h1><p class="lead">${esc(H.text)}</p><div class="ctas"><a class="btn" href="${H.ctaHref||"contact.html"}">${esc(H.cta)}</a><a class="btn o" href="offre.html">${esc(H.cta2)}</a></div></div>${visual()}</div>${mq}</section>
+  return `<section class="hero"><div class="w hero-in"><div><span class="eb">${esc(H.kicker)}</span><h1>${accent(H.title)}</h1><p class="lead">${esc(H.text)}</p><div class="ctas"><a class="btn" href="${H.ctaHref||"contact.html"}">${esc(H.cta)}</a><a class="btn o" href="offre.html">${esc(H.cta2)}</a></div></div>${heroVisual()}</div>${mq}</section>
 <div class="strip"><div class="w"><div><small>Horaires</small>${esc(S.contact.hours[0][0])} · ${esc(S.contact.hours[0][1])}</div><div><small>Adresse</small>${esc(S.contact.address)}</div><div><small>Contact</small>${esc(S.contact.phone)}</div></div></div>
 <section class="sec"><div class="w"><div class="sh rv"><span class="eb">${esc(H.highlightsKicker||S.offers.label)}</span><h2>${esc(H.highlightsTitle||S.offers.title)}</h2><p>${esc(H.highlightsText||"")}</p></div><div class="hl">${hl}</div><div class="ctas rv"><a class="btn o" href="offre.html">${esc(H.cta2)}</a></div></div></section>
 <section class="sec alt"><div class="w duo"><div class="rv">${visual()}</div><div class="rv"><span class="eb">${esc(H.aboutKicker||"À propos")}</span><h2>${esc(H.aboutTitle)}</h2><p>${esc(H.about)}</p><div class="stats">${H.stats.map(([v,l])=>`<div><strong>${esc(v)}</strong><span>${esc(l)}</span></div>`).join("")}</div></div></div></section>
@@ -50,7 +53,7 @@ function home(){
 function offre(){
   const O = S.offers;
   return `<div class="ph"><div class="w"><span class="eb">${esc(S.short)}</span><h1>${esc(O.title)}</h1><p class="lead">${esc(O.intro)}</p><nav class="catnav">${O.cats.map((c,i)=>`<a href="#c${i}">${esc(c.name)}</a>`).join("")}</nav></div></div>
-${O.cats.map((c,i)=>`<section class="cat" id="c${i}"><div class="w"><h2 class="rv">${esc(c.name)}${c.note?`<small>${esc(c.note)}</small>`:""}</h2><div class="items">${c.items.map(it=>`<article class="it rv"><h3>${esc(it.name)}${it.tag?` <span class="tagc" style="display:inline-block;margin:0 0 0 8px;vertical-align:middle">${esc(it.tag)}</span>`:""}</h3><span class="p">${money(it.price)}</span><p class="d">${esc(it.desc)}</p><a class="go" href="${q(it.name)}">${esc(S.contact.form.itemCta||"Choisir")} →</a></article>`).join("")}</div></div></section>`).join("")}`;
+${O.cats.map((c,i)=>`<section class="cat" id="c${i}"><div class="w"><h2 class="rv">${esc(c.name)}${c.note?`<small>${esc(c.note)}</small>`:""}</h2><div class="items${c.items.some(i=>pic(i))?" pics":""}">${c.items.map(it=>`<article class="it rv${hp(it)}">${pic(it)}<h3>${esc(it.name)}${it.tag?` <span class="tagc" style="display:inline-block;margin:0 0 0 8px;vertical-align:middle">${esc(it.tag)}</span>`:""}</h3><span class="p">${money(it.price)}</span><p class="d">${esc(it.desc)}</p><a class="go" href="${q(it.name)}">${esc(S.contact.form.itemCta||"Choisir")} →</a></article>`).join("")}</div></div></section>`).join("")}`;
 }
 
 function map(){
@@ -79,6 +82,13 @@ document.body.innerHTML = topbar + header + `<main>${{home,offre,contact}[page](
 const hd = document.getElementById("hd"); const sc = ()=>hd.classList.toggle("sc", scrollY>8); sc(); addEventListener("scroll",sc,{passive:true});
 document.getElementById("bg").onclick = ()=>document.getElementById("nl").classList.toggle("open");
 const fm = document.getElementById("fm"); if (fm) fm.addEventListener("submit",e=>{ e.preventDefault(); document.getElementById("ok").hidden=false; fm.querySelector("button").disabled=true; });
+/* agrandir une photo / illustration produit */
+document.addEventListener("click",ev=>{ const p=ev.target.closest(".pic"); if(!p||ev.target.closest("a.go")) return; ev.preventDefault();
+  const card=p.closest(".it,.card"), name=card&&card.querySelector("h3")?(card.querySelector("h3").firstChild.textContent||"").trim():"";
+  const ov=document.createElement("div"); ov.className="zoom"; ov.innerHTML=`<div class="zoom-in">${p.innerHTML}<p>${esc(name)}</p><button type="button">Fermer</button></div>`; document.body.appendChild(ov);
+  const close=()=>{ ov.remove(); document.removeEventListener("keydown",kd); }; const kd=e=>{ if(e.key==="Escape") close(); };
+  document.addEventListener("keydown",kd); ov.addEventListener("click",close); ov.querySelector("button").focus(); });
+document.addEventListener("keydown",ev=>{ if((ev.key==="Enter"||ev.key===" ")&&ev.target.classList&&ev.target.classList.contains("pic")){ ev.preventDefault(); ev.target.click(); } });
 const els = document.querySelectorAll(".rv");
 if ("IntersectionObserver" in window){ const io = new IntersectionObserver(es=>es.forEach(x=>{ if(x.isIntersecting){ x.target.classList.add("in"); io.unobserve(x.target);} }),{threshold:.1}); els.forEach((e,i)=>{ e.style.transitionDelay=Math.min(i%6,5)*60+"ms"; io.observe(e); }); } else els.forEach(e=>e.classList.add("in"));
 })();
