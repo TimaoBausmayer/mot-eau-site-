@@ -1260,3 +1260,40 @@ main .sec-head{translate:0 var(--py,0px);transition:translate .2s linear}
 .hero-bg::after{animation-duration:14s}
 .reveal{transform:translateY(24px);filter:blur(4px)}
 .why:hover,.addon:hover,.g:hover,.step:hover,.review:hover,.val:hover,.founder:hover{transform:translateY(-3px);box-shadow:0 24px 50px -30px rgba(0,0,0,.9)}
+
+/* ======================================================================
+   FINITIONS — passage complet sur tout le site
+   ====================================================================== */
+/* adresses dans les barres des maquettes : lisibles */
+.vf .url,.hero .vf .url{color:#566078;background:#fff;border-color:rgba(10,15,31,.1)}
+.fbar span{color:#7a8296}
+/* services : lueur violette (plus de bleu), tirets verts */
+.svc-sec::before{background:radial-gradient(circle,rgba(124,92,255,.28),transparent 65%)}
+.svc li::before{background:var(--lime)}
+/* tarifs : ce qui n'est pas inclus est plus discret */
+.plan li.no{color:rgba(220,225,250,.35)}
+.plan li.no::before{background-color:rgba(255,255,255,.06)!important;filter:invert(.6)}
+/* sans site / avec un site */
+.vs-i.ko{background:rgba(255,90,90,.12);color:#ff7a7a}
+.vs-i.ok{background:var(--lime);color:#0a0912}
+.vs-yes{box-shadow:0 30px 60px -34px rgba(124,92,255,.6)}
+.vs-no{background:rgba(255,255,255,.015)}
+/* garanties : coches vertes du site */
+.g-ic{background:rgba(200,255,62,.12)}
+.g-ic svg{stroke:var(--lime)}
+/* lisibilité : textes secondaires un peu plus clairs, lignes plus aérées */
+:root{--mut:rgba(220,225,250,.68)}
+.sec-head p{line-height:1.65}
+.why p,.svc p,.plan .tag,.step p{line-height:1.6}
+/* titres de section plus serrés et plus grands sur ordinateur */
+@media(min-width:961px){.sec-head h2{font-size:clamp(2.2rem,3.6vw,3.2rem);letter-spacing:-.035em}}
+/* séparation douce entre les sections au lieu de traits */
+.sec+.sec,.alt{border-top:0!important}
+.sec{position:relative}
+.sec+.sec::before{content:"";position:absolute;left:50%;top:0;width:min(1100px,90%);height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent)}
+/* champs du formulaire : focus vert */
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--lime)!important;box-shadow:0 0 0 4px rgba(200,255,62,.12)!important}
+/* barre de défilement assortie */
+html{scrollbar-color:rgba(255,255,255,.18) var(--bg)}
+::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:10px;border:2px solid var(--bg)}::-webkit-scrollbar-thumb:hover{background:var(--lime)}
+@media(max-width:560px){.hero .note{display:none}}
