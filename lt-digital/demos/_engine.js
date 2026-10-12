@@ -72,6 +72,7 @@ const footer = `<footer class="ft"><div class="w"><div class="g"><div><a class="
 <div><h4>Navigation</h4><ul><li><a href="index.html">Accueil</a></li><li><a href="offre.html">${esc(S.offers.label)}</a></li><li><a href="contact.html">Contact</a></li></ul></div></div>
 <div class="bt"><span>© ${new Date().getFullYear()} ${esc(S.name)} — ${esc(S.contact.address)}</span><span>Maquette de démonstration · site réalisé par LT Digital</span></div></div></footer>`;
 
+if (window.self !== window.top) document.documentElement.classList.add("embed");
 document.body.innerHTML = topbar + header + `<main>${{home,offre,contact}[page]()}</main>` + footer;
 
 /* comportements */

@@ -102,19 +102,19 @@ $("addons").innerHTML = C.addons.map(a=>{
 $("steps").innerHTML = C.process.map(s=>`<li class="step"><h4>${esc(s.title)}</h4><p>${esc(s.text)}</p></li>`).join("");
 
 /* réalisations : filtre par catégorie + "voir plus" */
-const LIMIT = 6; let tagSel = "Tous", showAll = false;
-const workHTML = w=>{
+const LIMIT = 6; let tagSel = "Tous", showAll = false, curList = [];
+const workHTML = (w,i)=>{
   const shot = w.image
     ? `<div class="shot"><img src="${esc(w.image)}" alt="Aperçu du site ${esc(w.name)}" loading="lazy">${w.mobile?`<div class="phone"><img src="${esc(w.mobile)}" alt="" loading="lazy"></div>`:""}</div>`
     : `<div class="shot s${esc(w.style||1)}"></div>`;
   const dom = (w.url||"").replace(/^https?:\/\//,"").replace(/^demos\//,"").replace(/\/?index\.html$/,"").replace(/\.html$/,"") || "ton-site.fr";
   const inner = `<div class="frame"><div class="fbar"><i></i><i></i><i></i><span>${esc(dom)}</span></div>${shot}</div><div class="work-in"><div><strong>${esc(w.name)}</strong><br><span>${esc(w.category)}</span></div>${w.url?"<em>Voir l'aperçu →</em>":""}</div>`;
-  return w.url ? `<a class="work" href="${esc(w.url)}" target="_blank" rel="noopener">${inner}</a>` : `<div class="work">${inner}</div>`;
+  return `<a class="work" data-i="${i}" href="${esc(w.url||w.image||"#")}" target="_blank" rel="noopener">${inner}</a>`;
 };
 function drawWorks(){
   const tags = ["Tous"].concat([...new Set(C.portfolio.map(w=>w.tag).filter(Boolean))]);
   $("filters").innerHTML = tags.length>2 ? tags.map(t=>`<button class="chip ${t===tagSel?"on":""}" data-t="${esc(t)}">${esc(t)}</button>`).join("") : "";
-  const list = C.portfolio.filter(w=>tagSel==="Tous"||w.tag===tagSel);
+  const list = curList = C.portfolio.filter(w=>tagSel==="Tous"||w.tag===tagSel);
   const shown = showAll||tagSel!=="Tous" ? list : list.slice(0,LIMIT);
   $("works").innerHTML = shown.map(workHTML).join("");
   $("more-btn").hidden = showAll || tagSel!=="Tous" || list.length<=LIMIT;
@@ -122,6 +122,44 @@ function drawWorks(){
 }
 $("filters").addEventListener("click",e=>{ const b=e.target.closest("[data-t]"); if(b){ tagSel=b.dataset.t; drawWorks(); } });
 $("more-btn").onclick = ()=>{ showAll=true; drawWorks(); };
+
+/* aperçu en grand : fenêtre avec le site complet (ordinateur / téléphone) */
+const lb = document.createElement("div"); lb.className = "lb"; lb.hidden = true; lb.setAttribute("role","dialog"); lb.setAttribute("aria-modal","true"); lb.setAttribute("aria-label","Aperçu du site");
+lb.innerHTML = `<div class="lb-bar"><div class="lb-title"><strong id="lb-name"></strong><span id="lb-cat"></span></div>
+  <div class="lb-dev" role="group" aria-label="Appareil"><button type="button" data-dev="desk" class="on">Ordinateur</button><button type="button" data-dev="mob">Téléphone</button></div>
+  <div class="lb-act"><a id="lb-open" target="_blank" rel="noopener">Ouvrir dans un onglet ↗</a><a id="lb-order" class="btn btn-sm" href="#commande">Commander un site comme celui-ci</a><button type="button" id="lb-x" class="lb-x">Fermer</button></div></div>
+  <div class="lb-stage"><button type="button" class="lb-nav" id="lb-prev" aria-label="Site précédent">‹</button><div class="lb-view" id="lb-view"></div><button type="button" class="lb-nav" id="lb-next" aria-label="Site suivant">›</button></div>`;
+document.body.appendChild(lb);
+let lbIdx = 0, lbDev = innerWidth<760 ? "mob" : "desk", lbOpener = null;
+const lbView = lb.querySelector("#lb-view");
+function lbFit(){
+  const box = lbView.querySelector(".lb-box"); if(!box) return;
+  const vw = lbView.clientWidth, vh = lbView.clientHeight;
+  if (lbDev==="desk"){ const k = Math.min(1, vw/1280); box.style.cssText = `width:1280px;height:${Math.round(vh/k)}px;transform:scale(${k});transform-origin:top left`; lbView.querySelector(".lb-wrap").style.cssText = `width:${Math.round(1280*k)}px;height:${vh}px`; }
+  else { const H = 780, k = Math.min(1, (vh-8)/(H+36), (vw-20)/414); box.style.cssText = `width:390px;height:${H}px;transform:scale(${k});transform-origin:top left`; lbView.querySelector(".lb-wrap").style.cssText = `width:${Math.round(390*k)+16}px;height:${Math.round(H*k)+16}px`; }
+}
+function lbShow(i){
+  const n = curList.length; if(!n) return; lbIdx = (i+n)%n; const w = curList[lbIdx];
+  lb.querySelector("#lb-name").textContent = w.name; lb.querySelector("#lb-cat").textContent = w.category||"";
+  const open = lb.querySelector("#lb-open"); open.hidden = !w.url; if (w.url) open.href = w.url;
+  lbView.className = "lb-view "+lbDev;
+  const inner = w.url ? `<iframe src="${esc(w.url)}" title="Aperçu de ${esc(w.name)}" loading="eager"></iframe>` : `<img src="${esc(w.image||"")}" alt="Aperçu de ${esc(w.name)}">`;
+  lbView.innerHTML = `<div class="lb-wrap"><div class="lb-box">${inner}</div></div>`; lbFit();
+  lb.querySelectorAll("[data-dev]").forEach(b=>b.classList.toggle("on", b.dataset.dev===lbDev));
+  lb.querySelector("#lb-prev").hidden = lb.querySelector("#lb-next").hidden = n<2;
+}
+function lbOpen(i){ lbOpener = document.activeElement; lb.hidden = false; document.body.style.overflow = "hidden"; lbShow(i); lb.querySelector("#lb-x").focus(); }
+function lbClose(){ lb.hidden = true; document.body.style.overflow = ""; lbView.innerHTML = ""; if (lbOpener && lbOpener.focus) lbOpener.focus(); }
+$("works").addEventListener("click", e=>{ const c = e.target.closest(".work"); if(!c || e.metaKey || e.ctrlKey || e.shiftKey || e.button===1) return; e.preventDefault(); lbOpen(+c.dataset.i); });
+lb.addEventListener("click", e=>{
+  if (e.target.closest("#lb-x")) return lbClose();
+  if (e.target.closest("#lb-prev")) return lbShow(lbIdx-1);
+  if (e.target.closest("#lb-next")) return lbShow(lbIdx+1);
+  if (e.target.closest("#lb-order")) return lbClose();
+  const d = e.target.closest("[data-dev]"); if (d){ lbDev = d.dataset.dev; lbShow(lbIdx); }
+});
+addEventListener("keydown", e=>{ if (lb.hidden) return; if (e.key==="Escape") lbClose(); else if (e.key==="ArrowLeft") lbShow(lbIdx-1); else if (e.key==="ArrowRight") lbShow(lbIdx+1); });
+addEventListener("resize", ()=>{ if(!lb.hidden) lbFit(); });
 drawWorks();
 
 /* avis (affichés seulement s'il y en a) */

@@ -143,3 +143,5 @@ em.a{font-style:normal;color:var(--acc)}
 }
 @media(max-width:560px){.w{padding:0 18px}.hl,.feat{grid-template-columns:1fr}.fm{padding:22px}.fm .two{grid-template-columns:1fr}.lg{font-size:1.02rem}.mk{width:34px;height:34px}.top .w{justify-content:center;text-align:center}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}html{scroll-behavior:auto}}
+
+.embed .top{display:none}
