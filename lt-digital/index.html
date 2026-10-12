@@ -118,7 +118,9 @@
           <div class="promo"><input id="promo" placeholder="Code promo"><button type="button" class="btn btn-sm btn-ghost" id="promo-btn">Appliquer</button></div>
           <p class="promo-msg" id="promo-msg"></p>
           <div class="total"><span>Total</span><strong id="total">0</strong></div>
+          <p class="dep" id="sum-dep"></p>
           <p class="small" id="sum-delay"></p>
+          <p class="small" id="sum-note" hidden></p>
           <button type="button" class="btn full-w" id="copy-btn">Copier ma commande</button>
           <a class="btn btn-ghost full-w" id="insta-btn" target="_blank" rel="noopener">Ouvrir Instagram</a>
           <a class="btn btn-ghost full-w" id="mail-btn">Envoyer par e-mail</a>
@@ -143,6 +145,8 @@
     </div></div>
   </section>
 </main>
+
+<div class="cartbar" id="cartbar" hidden><span id="cart-text"></span><a class="btn btn-sm btn-light" href="#commande">Voir ma commande</a></div>
 
 <footer class="foot"><div class="wrap">
   <div class="fb"><img id="f-logo" alt="" width="56" height="56"><div><strong id="f-brand"></strong><span id="f-text"></span></div></div>

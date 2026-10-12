@@ -30,6 +30,6 @@ Les images d'aperçu sont dans `images/portfolio/`.
 Mets une capture PC (et téléphone) dans `images/portfolio/`, puis renseigne-la dans `admin.html` ▸ Réalisations.
 
 ## Dans l'administration
-Démarrer · Prix rapides (tous les prix au même endroit) · Gammes · Options · Comparatif · Réalisations ·
+Démarrer · Prix rapides (tous les prix au même endroit) · Gammes · Options (par gamme : réservées, incluses, quantité) · Promos (codes ou automatiques, % ou montant, dates, minimum) · Commande (acompte, note, champs demandés) · Comparatif · Réalisations ·
 Accueil · Identité (couleurs, logo) · Sections (afficher/masquer/renommer) · Processus · Avis · Garanties · FAQ · Contact.
 Prix vide = « Sur devis ».

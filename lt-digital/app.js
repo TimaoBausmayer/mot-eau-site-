@@ -31,8 +31,42 @@ $("stats").innerHTML = C.stats.map(s=>`<div class="stat"><dt data-v="${esc(s.val
 (function(){ const v = C.hero.visual || {}; const fr = (cls, src)=> src ? `<div class="vf ${cls}"><div class="bar"><i></i><i></i><i></i></div><div class="crop"><img src="${esc(src)}" alt=""></div></div>` : "";
   $("hero-vis").innerHTML = fr("a", v.a) + fr("b", v.b) + (v.phone ? `<div class="vp"><img src="${esc(v.phone)}" alt=""></div>` : ""); $("hero-vis").hidden = !(v.a||v.b); })();
 
+/* promotions : liste config.promos (l'ancien format config.promoCodes reste lu) */
+const frDate = d => String(d).split("-").reverse().join("/");
+function promos(){
+  const out = (C.promos||[]).map(p=>({...p}));
+  Object.entries(C.promoCodes||{}).forEach(([k,v])=>{ if(!out.some(p=>(p.code||"").toUpperCase()===k.toUpperCase())) out.push({code:k,type:"percent",value:v}); });
+  return out;
+}
+function promoErr(p, planId, sub){
+  const t = new Date().toISOString().slice(0,10);
+  if (p.active===false) return "Ce code n'est plus actif.";
+  if (p.start && t<p.start) return "Ce code sera valable à partir du "+frDate(p.start)+".";
+  if (p.end && t>p.end) return "Ce code a expiré.";
+  if (p.plans && p.plans.length && !p.plans.includes(planId)) return "Ce code ne s'applique pas à cette gamme.";
+  if (p.minTotal && sub<p.minTotal) return "Commande minimale pour ce code : "+fmt(p.minTotal)+".";
+  return "";
+}
+function promoAmount(p, planPrice, sub){
+  const base = p.on==="plan" ? planPrice : sub;
+  return Math.max(0, p.type==="amount" ? Math.min(+p.value||0, base) : base*(+p.value||0)/100);
+}
+const promoLabel = p => p.type==="amount" ? "-"+fmt(p.value) : "-"+p.value+" %";
+const isAuto = p => p.auto===true || !p.code;
+function autoPromoFor(plan){
+  if (plan.price==null) return null; let best=null, bd=0;
+  promos().forEach(p=>{ if(!isAuto(p)||promoErr(p,plan.id,plan.price)) return; const d=promoAmount(p,plan.price,plan.price); if(d>bd){bd=d;best=p;} });
+  return best ? {p:best, d:bd} : null;
+}
+
 /* gammes (avec filtre par groupe si plusieurs groupes) */
-const priceHTML = p => p.price==null ? `<div class="price">Sur devis</div>` : `<div class="price">${p.from?"<small>À partir de</small> ":""}${fmt(p.price)}${p.unit?` <small>${esc(p.unit)}</small>`:""}</div>`;
+const unitHTML = p => p.unit ? ` <small>${esc(p.unit)}</small>` : "";
+function priceHTML(p){
+  if (p.price==null) return `<div class="price">Sur devis</div>`;
+  const from = p.from ? "<small>À partir de</small> " : "", ap = autoPromoFor(p);
+  if (ap && ap.d>0) return `<div class="price">${from}<s class="old">${fmt(p.price)}</s> ${fmt(p.price-ap.d)}${unitHTML(p)}</div><div class="promo-tag">${esc(ap.p.label||"Promo")} (${promoLabel(ap.p)})</div>`;
+  return `<div class="price">${from}${fmt(p.price)}${unitHTML(p)}</div>`;
+}
 let groupSel = "Tous";
 function drawPlans(){
   const groups = [...new Set(C.plans.map(p=>p.group).filter(Boolean))];
@@ -47,7 +81,7 @@ function drawPlans(){
   </article>`).join("");
 }
 $("plan-filters").addEventListener("click",e=>{ const b=e.target.closest("[data-g]"); if(b){ groupSel=b.dataset.g; drawPlans(); } });
-$("plans").addEventListener("click",e=>{ const b=e.target.closest("[data-plan]"); if(b){ const r=form.querySelector(`input[name=plan][value="${b.dataset.plan}"]`); if(r){ r.checked=true; render(); } } });
+$("plans").addEventListener("click",e=>{ const b=e.target.closest("[data-plan]"); if(b){ const r=form.querySelector(`input[name=plan][value="${b.dataset.plan}"]`); if(r){ r.checked=true; drawOpts(); render(); } } });
 drawPlans();
 
 /* comparatif */
@@ -58,7 +92,11 @@ $("cmp").innerHTML = `<thead><tr><th></th>${C.plans.map(p=>`<th class="${p.popul
 <tr><td>Prix</td>${C.plans.map(p=>`<td class="${p.popular?"pop-col":""}"><b>${p.price==null?"Sur devis":(p.from?"dès ":"")+fmt(p.price)+(p.unit?" "+esc(p.unit):"")}</b></td>`).join("")}</tr></tbody>`;
 
 /* options */
-$("addons").innerHTML = C.addons.map(a=>`<div class="addon"><h4>${esc(a.name)}</h4><p>${esc(a.desc)}</p><strong>${a.price==null?"Sur devis":"+ "+fmt(a.price)+(a.qty?" / unité":"")}</strong></div>`).join("");
+$("addons").innerHTML = C.addons.map(a=>{
+  const names = ids => ids.map(id=>(C.plans.find(p=>p.id===id)||{}).name).filter(Boolean).join(", ");
+  const note = [a.plans&&a.plans.length?"Disponible avec : "+names(a.plans):"", a.included&&a.included.length?"Inclus dans : "+names(a.included):""].filter(Boolean).join(" · ");
+  return `<div class="addon"><h4>${esc(a.name)}${a.tag?` <em class="otag">${esc(a.tag)}</em>`:""}</h4><p>${esc(a.desc)}${note?`<span class="avail">${esc(note)}</span>`:""}</p><div class="aprice"><strong>${a.price==null?"Sur devis":"+ "+fmt(a.price)+(a.qty?" / unité":"")}</strong><button type="button" class="add-btn" data-add="${esc(a.id)}">Ajouter</button></div></div>`;
+}).join("");
 
 /* processus */
 $("steps").innerHTML = C.process.map(s=>`<li class="step"><h4>${esc(s.title)}</h4><p>${esc(s.text)}</p></li>`).join("");
@@ -95,65 +133,124 @@ $("guar").innerHTML = C.guarantees.map(g=>`<div class="g"><h4>${esc(g.title)}</h
 $("faq-list").innerHTML = C.faq.map(f=>`<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join("");
 
 /* ---------- COMMANDE ---------- */
-$("pick").innerHTML = C.plans.map((p,i)=>`<label><input type="radio" name="plan" value="${esc(p.id)}" ${p.popular||(!C.plans.some(x=>x.popular)&&i===0)?"checked":""}><span><b>${esc(p.name)}</b><small>${p.price==null?"Sur devis":(p.from?"dès ":"")+fmt(p.price)}</small></span></label>`).join("");
-$("opts").innerHTML = C.addons.map(a=>`<label class="opt"><input type="checkbox" data-a="${esc(a.id)}"><div><b>${esc(a.name)}</b><br><small>${a.price==null?"Sur devis":"+ "+fmt(a.price)+(a.qty?" / unité":"")}</small></div>${a.qty?`<input type="number" min="1" max="50" value="1" data-q="${esc(a.id)}" aria-label="Quantité">`:""}</label>`).join("");
-
-let promo = 0, promoCode = "";
+const O = C.order || {};
 const form = $("order-form");
-function state(){
-  const plan = C.plans.find(p=>p.id===form.plan.value) || C.plans[0];
-  const lines = []; let devis = false;
-  if (plan.price!=null) lines.push([plan.name+(plan.from?" (dès)":""), plan.price]); else lines.push([plan.name+" (devis)", 0]);
-  C.addons.forEach(a=>{
-    const cb = form.querySelector(`[data-a="${a.id}"]`);
-    if (cb && cb.checked) {
-      const q = a.qty ? Math.max(1, Math.min(50, parseInt(form.querySelector(`[data-q="${a.id}"]`).value)||1)) : 1;
-      lines.push([a.name+(q>1?" ×"+q:"")+(a.price==null?" (devis)":""), (a.price||0)*q]); if(a.price==null) devis=true;
-    }
-  });
-  const sub = lines.reduce((s,l)=>s+l[1],0);
-  const disc = sub*promo/100;
-  return {plan, lines, sub, disc, total: sub-disc, devis};
+const sel = {};            /* options choisies : id -> quantité */
+let applied = "";          /* code promo tapé par le client */
+function curPlan(){ return C.plans.find(p=>p.id===form.plan.value) || C.plans[0]; }
+const allowed = (a,plan) => !(a.plans&&a.plans.length) || a.plans.includes(plan.id);
+const included = (a,plan) => !!(a.included&&a.included.includes(plan.id));
+const clamp = (n,lo,hi) => Math.max(lo, Math.min(hi, n));
+
+$("pick").innerHTML = C.plans.map((p,i)=>`<label><input type="radio" name="plan" value="${esc(p.id)}" ${p.popular||(!C.plans.some(x=>x.popular)&&i===0)?"checked":""}><span><b>${esc(p.name)}</b><small>${p.price==null?"Sur devis":(p.from?"dès ":"")+fmt(p.price)}</small></span></label>`).join("");
+if (O.askBusiness===false) form.biz.closest("label").hidden = true;
+if (O.askProject===false) form.desc.closest("label").hidden = true;
+
+function drawOpts(){
+  const plan = curPlan(), list = C.addons.filter(a=>allowed(a,plan));
+  $("opts").innerHTML = list.length ? list.map(a=>{
+    const inc = included(a,plan), on = inc || sel[a.id]>0;
+    const price = inc ? "Inclus avec "+esc(plan.name) : a.price==null ? "Sur devis" : "+ "+fmt(a.price)+(a.qty?" / unité":"");
+    return `<label class="opt ${inc?"inc":""}"><input type="checkbox" data-a="${esc(a.id)}" ${on?"checked":""} ${inc?"disabled":""}><div><b>${esc(a.name)}</b>${a.tag?` <em class="otag">${esc(a.tag)}</em>`:""}<br><small>${price}</small></div>${a.qty&&!inc?`<input type="number" min="1" max="${a.max||50}" value="${sel[a.id]||1}" data-q="${esc(a.id)}" aria-label="Quantité">`:""}</label>`;
+  }).join("") : `<p class="small">Aucune option disponible pour cette gamme.</p>`;
 }
+function readSel(){
+  $("opts").querySelectorAll("[data-a]").forEach(cb=>{
+    if (cb.disabled) return; const id = cb.dataset.a, a = C.addons.find(x=>x.id===id);
+    if (cb.checked){ const q = $("opts").querySelector(`[data-q="${id}"]`); sel[id] = a.qty ? clamp(parseInt(q&&q.value)||1, 1, a.max||50) : 1; } else delete sel[id];
+  });
+}
+
+function state(){
+  const plan = curPlan(), lines = []; let devis = plan.price==null;
+  lines.push({label: plan.name+(plan.from?" (dès)":""), amount: plan.price||0, devis: plan.price==null});
+  C.addons.forEach(a=>{
+    if (!allowed(a,plan)) return;
+    if (included(a,plan)){ lines.push({label:a.name, amount:0, inc:true}); return; }
+    const q = sel[a.id]; if (!q) return;
+    lines.push({label: a.name+(q>1?" ×"+q:""), amount:(a.price||0)*q, devis: a.price==null}); if (a.price==null) devis = true;
+  });
+  const sub = lines.reduce((s,l)=>s+l.amount,0);
+  let best = null, bd = 0, err = "", typedOK = false;
+  promos().forEach(p=>{
+    const typed = !isAuto(p) && applied && p.code.toUpperCase()===applied;
+    if (!isAuto(p) && !typed) return;
+    const e = promoErr(p, plan.id, sub); if (e){ if (typed) err = e; return; }
+    if (typed) typedOK = true;
+    const d = promoAmount(p, plan.price||0, sub); if (d>bd){ bd=d; best=p; }
+  });
+  return {plan, lines, sub, promo:best, disc:bd, total:Math.max(0,sub-bd), devis, err, typedOK};
+}
+const totalText = s => s.plan.price==null ? (s.total ? fmt(s.total)+" + devis" : "Sur devis") : fmt(s.total)+(s.devis?" + devis":"");
+
 function render(){
-  const s = state();
-  $("sum-lines").innerHTML = s.lines.map(l=>`<div class="sl"><span>${esc(l[0])}</span><span>${l[1]?fmt(l[1]):"à définir"}</span></div>`).join("")
-    + (promo?`<div class="sl"><span>Code ${esc(promoCode)} (-${promo}%)</span><span>-${fmt(s.disc)}</span></div>`:"");
-  $("total").textContent = s.plan.price==null ? (s.total? fmt(s.total)+" + devis":"Sur devis") : fmt(s.total)+(s.devis?" + devis":"");
-  $("sum-delay").textContent = "Délai estimé : " + s.plan.delay;
-  const msg = message();
+  const s = state(), plan = s.plan;
+  $("sum-lines").innerHTML = s.lines.map(l=>`<div class="sl"><span>${esc(l.label)}</span><span>${l.inc?"Inclus":l.devis?"à définir":fmt(l.amount)}</span></div>`).join("")
+    + (s.promo ? `<div class="sl promo-line"><span>${esc(s.promo.label||(s.promo.code?"Code "+s.promo.code:"Promotion"))} (${promoLabel(s.promo)})</span><span>-${fmt(s.disc)}</span></div>` : "");
+  $("total").textContent = totalText(s);
+  const dp = +O.depositPercent||0;
+  $("sum-dep").textContent = dp>0 && s.total>0 && plan.price!=null ? "Acompte à la commande ("+dp+" %) : "+fmt(s.total*dp/100) : "";
+  $("sum-delay").textContent = "Délai estimé : " + plan.delay;
+  $("sum-note").textContent = O.note || ""; $("sum-note").hidden = !O.note;
+  const m = $("promo-msg");
+  if (!applied){ m.textContent=""; m.className="promo-msg"; }
+  else if (s.typedOK){ m.className="promo-msg"; m.textContent = s.promo && s.promo.code && s.promo.code.toUpperCase()===applied ? "Code "+applied+" appliqué ("+promoLabel(s.promo)+")." : "Code valable, mais une réduction plus avantageuse est déjà appliquée."; }
+  else { m.className="promo-msg err"; m.textContent = s.err || "Code invalide."; }
   const ct = C.contact;
   $("insta-btn").hidden = !ct.instagram; if (ct.instagram) $("insta-btn").href = ct.instagram;
   $("mail-btn").hidden = !ct.email;
-  if (ct.email) $("mail-btn").href = "mailto:"+ct.email+"?subject="+encodeURIComponent("Commande — "+s.plan.name)+"&body="+encodeURIComponent(msg);
+  if (ct.email) $("mail-btn").href = "mailto:"+ct.email+"?subject="+encodeURIComponent("Commande — "+plan.name)+"&body="+encodeURIComponent(message());
   $("contact-line").textContent = [ct.instagramHandle&&"Instagram : "+ct.instagramHandle, ct.email].filter(Boolean).join(" · ");
+  syncAddButtons(s); updateCartbar(s);
 }
 function message(){
-  const s = state(), d = new FormData(form);
-  return ["🛒 NOUVELLE COMMANDE — "+C.brand, "",
-    "Nom : "+(d.get("pseudo")||"—"), "Contact : "+(d.get("contact")||"—"), "Activité : "+(d.get("biz")||"—"), "",
-    "Gamme : "+s.plan.name, ...s.lines.slice(1).map(l=>"+ "+l[0]),
-    promo?"Code promo : "+promoCode+" (-"+promo+"%)":"",
-    "TOTAL : "+(s.plan.price==null?"à définir (devis)":fmt(s.total)), "",
-    "Projet : "+(d.get("desc")||"—")].filter((l,i,a)=>l!==""||a[i-1]!=="").join("\n");
+  const s = state(), d = new FormData(form), dp = +O.depositPercent||0;
+  return [(O.intro||"NOUVELLE COMMANDE")+" — "+C.brand, "",
+    "Nom : "+(d.get("pseudo")||"—"), "Contact : "+(d.get("contact")||"—"), O.askBusiness===false?"":"Activité : "+(d.get("biz")||"—"), "",
+    "Gamme : "+s.plan.name, ...s.lines.slice(1).map(l=>"+ "+l.label+(l.inc?" (inclus)":"")),
+    s.promo?"Promo : "+(s.promo.code||s.promo.label||"")+" ("+promoLabel(s.promo)+")":"",
+    "TOTAL : "+(s.plan.price==null?"à définir (devis)":totalText(s)),
+    dp>0&&s.total>0&&s.plan.price!=null?"Acompte ("+dp+" %) : "+fmt(s.total*dp/100):"", "",
+    O.askProject===false?"":"Projet : "+(d.get("desc")||"—")].filter((l,i,arr)=>l!==""||(arr[i-1]!==""&&i>0)).join("\n");
 }
 function toast(t){ $("toast").textContent=t; setTimeout(()=>$("toast").textContent="",3500); }
-form.addEventListener("input", render);
+
+/* boutons "Ajouter" de la section Options + barre de commande flottante */
+function syncAddButtons(s){
+  document.querySelectorAll("[data-add]").forEach(b=>{
+    const a = C.addons.find(x=>x.id===b.dataset.add), plan = s.plan;
+    b.disabled = false; b.classList.remove("on");
+    if (!allowed(a,plan)){ b.textContent = "Indisponible"; b.disabled = true; }
+    else if (included(a,plan)){ b.textContent = "Inclus"; b.disabled = true; }
+    else if (sel[a.id]){ b.textContent = "Retirer"; b.classList.add("on"); }
+    else b.textContent = "Ajouter";
+  });
+}
+$("addons").addEventListener("click",e=>{
+  const b = e.target.closest("[data-add]"); if(!b||b.disabled) return;
+  const id = b.dataset.add; if (sel[id]) delete sel[id]; else sel[id] = 1;
+  drawOpts(); render();
+});
+let commandeVisible = false;
+function updateCartbar(s){
+  const n = s.lines.filter(l=>!l.inc).length-1, show = n>0 && !commandeVisible;
+  $("cartbar").hidden = !show;
+  if (show) $("cart-text").textContent = s.plan.name+" + "+n+" option"+(n>1?"s":"")+" · "+totalText(s);
+}
+if ("IntersectionObserver" in window) new IntersectionObserver(es=>{ commandeVisible = es[0].isIntersecting; render(); },{threshold:.05}).observe($("commande"));
+
+form.addEventListener("input", ()=>{ readSel(); render(); });
+form.addEventListener("change", e=>{ readSel(); if (e.target.name==="plan") drawOpts(); render(); });
 form.addEventListener("submit", e=>e.preventDefault());
-$("promo-btn").onclick = ()=>{
-  const code = $("promo").value.trim().toUpperCase();
-  const m = $("promo-msg");
-  if (C.promoCodes[code]) { promo=C.promoCodes[code]; promoCode=code; m.className="promo-msg"; m.textContent="Code appliqué : -"+promo+"%"; }
-  else { promo=0; promoCode=""; m.className="promo-msg err"; m.textContent=code?"Code invalide.":""; }
-  render();
-};
+$("promo-btn").onclick = ()=>{ applied = $("promo").value.trim().toUpperCase(); render(); };
+$("promo").addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); $("promo-btn").click(); } });
 $("copy-btn").onclick = async ()=>{
   if (!form.reportValidity()) return;
   const t = message();
-  try { await navigator.clipboard.writeText(t); toast("✅ Commande copiée ! Envoie-la-moi en message privé sur Instagram."); }
-  catch { const ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); toast("✅ Commande copiée !"); }
+  try { await navigator.clipboard.writeText(t); toast("Commande copiée. Envoie-la-moi en message privé sur Instagram."); }
+  catch { const ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); toast("Commande copiée."); }
 };
-render();
+drawOpts(); render();
 
 /* sections : afficher / masquer / renommer (config.sections) */
 Object.entries(C.sections||{}).forEach(([id,s])=>{

@@ -68,9 +68,13 @@ function list(arr, makeNew, titleOf, body, rerender, o={}){
   arr.forEach((it,i)=>{
     const move = d => e => { e.preventDefault(); const j=i+d; if(j<0||j>=arr.length) return; [arr[i],arr[j]]=[arr[j],arr[i]]; changed(); rerender(); };
     const del = e => { e.preventDefault(); if(confirm("Supprimer cet élément ?")){ arr.splice(i,1); changed(); rerender(); } };
+    const t = h("span",{class:"t"}, titleOf(it,i)||"(sans titre)");
+    const bd = h("div",{class:"body"}, body(it,i));
+    const upd = ()=>{ t.textContent = titleOf(it,i)||"(sans titre)"; };
+    bd.addEventListener("input", upd); bd.addEventListener("change", upd);
     wrap.append(h("details",{class:"item", ...(arr.length<=3||o.open?{open:""}:{})},
-      h("summary",{}, h("span",{class:"t"}, titleOf(it,i)||"(sans titre)"), h("button",{on:{click:move(-1)},title:"Monter"},"↑"), h("button",{on:{click:move(1)},title:"Descendre"},"↓"), h("button",{on:{click:del},title:"Supprimer"},"✕")),
-      h("div",{class:"body"}, body(it,i))));
+      h("summary",{}, t, h("button",{on:{click:move(-1)},title:"Monter"},"↑"), h("button",{on:{click:move(1)},title:"Descendre"},"↓"), h("button",{on:{click:del},title:"Supprimer"},"✕")),
+      bd));
   });
   wrap.append(h("button",{class:"add",on:{click:()=>{ arr.push(makeNew()); changed(); rerender(); }}}, "＋ "+(o.addLabel||"Ajouter")));
   return wrap;
@@ -102,7 +106,7 @@ S["Démarrer"] = () => [
      ["3","Publie","Sur GitHub, ouvre le dossier lt-digital et remplace le fichier config.js par celui que tu viens de télécharger."]].map(([n,t,x])=>
     h("div",{class:"item",style:"padding:16px 18px;display:flex;gap:14px;align-items:center"}, h("b",{style:"font-size:1.6rem;color:var(--acc);min-width:26px;text-align:center"},n), h("div",{}, h("b",{},t), h("div",{style:"color:var(--mut);font-size:.9rem"},x)))),
   h("h3",{style:"margin:22px 0 10px"},"Raccourcis"),
-  h("div",{style:"display:flex;gap:10px;flex-wrap:wrap"}, ["Prix rapides","Gammes & tarifs","Options","Réalisations","Contact"].map(n=>h("button",{on:{click:()=>show(n)}},"→ "+n))),
+  h("div",{style:"display:flex;gap:10px;flex-wrap:wrap"}, ["Prix rapides","Promos","Options","Commande","Réalisations"].map(n=>h("button",{on:{click:()=>show(n)}},"→ "+n))),
   h("p",{class:"sub",style:"margin-top:22px"},"💡 Astuce : « sur devis » = laisse simplement le prix vide. Tu peux masquer n'importe quelle partie du site dans « Sections ». Ton brouillon est gardé dans ce navigateur tant que tu ne l'effaces pas.")
 ];
 S["Prix rapides"] = () => {
@@ -160,29 +164,58 @@ S["Comparatif"] = () => {
   return [h("p",{class:"sub"},"Écris « oui » (✔), « non » (✘) ou n'importe quel texte (ex : 5 pages)."), h("div",{class:"tbl"},tbl),
     h("button",{class:"add",style:"margin-top:12px",on:{click:()=>{ cfg.compare.push({label:"Nouvelle ligne",values:{}}); changed(); show("Comparatif"); }}},"＋ Ajouter une ligne")];
 };
-S["Options"] = () => [
-  h("p",{class:"sub"},"Suppléments que le client peut ajouter à sa commande."),
-  list(cfg.addons, ()=>({id:"o"+Date.now().toString(36), name:"Nouvelle option", price:50, qty:false, desc:""}),
-    a=>a.name+" — "+(a.price==null?"Sur devis":a.price+" "+cfg.currency.symbol),
-    a=>[text("Nom", a, "name"), field("Prix", ()=>a.price==null?"":a.price, v=>a.price = v===""?null:Number(v), {type:"number",min:0,placeholder:"vide = sur devis"}), text("Description", a, "desc"),
-        check("Le client peut choisir une quantité (ex : pages en plus)", ()=>a.qty, v=>a.qty=v)],
-    ()=>show("Options"), {addLabel:"Ajouter une option"}),
-  h("h3",{style:"margin:10px 0"},"Codes promo"),
-  promoEditor()
-];
-function promoEditor(){
-  const box = h("div"); const draw = () => { box.innerHTML = "";
-    Object.keys(cfg.promoCodes).forEach(code=>{
-      box.append(h("div",{class:"row",style:"margin-bottom:10px;align-items:end"},
-        h("label",{class:"f"}, h("span",{},"Code"), h("input",{value:code,readonly:""})),
-        field("Réduction (%)", ()=>cfg.promoCodes[code], v=>cfg.promoCodes[code]=Math.max(0,Math.min(100,Number(v)||0)), {type:"number",min:0}),
-        h("button",{style:"margin-bottom:14px",on:{click:()=>{ delete cfg.promoCodes[code]; changed(); draw(); }}},"Supprimer")));
-    });
-    const c = h("input",{placeholder:"NOUVEAUCODE"}), p = h("input",{type:"number",placeholder:"%",min:0,max:100});
-    box.append(h("div",{class:"row",style:"align-items:end"}, h("label",{class:"f"},h("span",{},"Nouveau code"),c), h("label",{class:"f"},h("span",{},"Réduction (%)"),p),
-      h("button",{style:"margin-bottom:14px",on:{click:()=>{ const k=c.value.trim().toUpperCase(); if(!k) return; cfg.promoCodes[k]=Math.max(0,Math.min(100,Number(p.value)||0)); changed(); draw(); }}},"＋ Ajouter")));
-  }; draw(); return box;
+function choose(label, get, set, opts){
+  const s = h("select",{}, opts.map(([v,t])=>h("option",{value:v},t))); s.value = get();
+  s.addEventListener("change", ()=>{ set(s.value); changed(); });
+  return h("label",{class:"f"}, h("span",{},label), s);
 }
+function planChecks(label, arr, hint){
+  return h("div",{class:"f"}, h("span",{},label), h("div",{style:"display:flex;gap:6px 18px;flex-wrap:wrap;padding-top:2px"},
+    cfg.plans.map(p=>{ const c = h("input",{type:"checkbox"}); c.checked = arr.includes(p.id);
+      c.addEventListener("change", ()=>{ const k = arr.indexOf(p.id); if(c.checked && k<0) arr.push(p.id); if(!c.checked && k>=0) arr.splice(k,1); changed(); });
+      return h("label",{class:"chk",style:"margin:0"}, c, p.name); })), hint ? h("small",{},hint) : null);
+}
+S["Options"] = () => [
+  h("p",{class:"sub"},"Suppléments que le client peut ajouter à sa commande. Tu peux les réserver à certaines gammes ou les offrir dans une gamme."),
+  list(cfg.addons, ()=>({id:"o"+Date.now().toString(36), name:"Nouvelle option", price:50, qty:false, max:20, plans:[], included:[], tag:"", desc:""}),
+    a=>a.name+" — "+(a.price==null?"Sur devis":a.price+" "+cfg.currency.symbol),
+    a=>{ a.plans = a.plans||[]; a.included = a.included||[]; return [
+      text("Nom", a, "name"), text("Description", a, "desc"),
+      h("div",{class:"row"}, field("Prix", ()=>a.price==null?"":a.price, v=>a.price = v===""?null:Number(v), {type:"number",min:0,placeholder:"vide = sur devis"}), text("Badge (ex : Populaire)", a, "tag")),
+      check("Le client peut choisir une quantité (ex : pages en plus)", ()=>a.qty, v=>{ a.qty=v; changed(); show("Options"); }),
+      a.qty ? field("Quantité maximum", ()=>a.max||20, v=>a.max=Math.max(1,Number(v)||1), {type:"number",min:1}) : null,
+      planChecks("Disponible avec ces gammes", a.plans, "Aucune case cochée = disponible avec toutes les gammes."),
+      planChecks("Déjà incluse (gratuite) dans ces gammes", a.included)]; },
+    ()=>show("Options"), {addLabel:"Ajouter une option"})
+];
+const todayStr = () => new Date().toISOString().slice(0,10);
+function promoStatus(p){ const t = todayStr(); if(p.active===false) return "En pause"; if(p.start && t<p.start) return "À venir"; if(p.end && t>p.end) return "Expirée"; return "Active"; }
+S["Promos"] = () => { cfg.promos = cfg.promos || []; return [
+  h("p",{class:"sub"},"Crée des codes promo ou des promotions automatiques (sans code) : en % ou en montant, avec dates, gammes concernées et commande minimale. Une promo automatique apparaît directement sur les prix."),
+  list(cfg.promos, ()=>({code:"NOUVEAU", label:"", type:"percent", value:10, on:"all", active:true, start:"", end:"", plans:[], minTotal:0, auto:false}),
+    p=>(p.auto||!p.code ? "AUTO" : p.code)+" — "+(p.type==="amount" ? p.value+" "+cfg.currency.symbol : p.value+" %")+" — "+promoStatus(p),
+    p=>{ p.plans = p.plans||[]; return [
+      check("Promo active (décoche pour la mettre en pause)", ()=>p.active!==false, v=>{ p.active=v; changed(); show("Promos"); }),
+      check("Appliquer automatiquement, sans code", ()=>p.auto===true, v=>{ p.auto=v; changed(); show("Promos"); }),
+      p.auto ? null : field("Code que le client tape", ()=>p.code||"", v=>p.code=v.trim().toUpperCase(), {placeholder:"BIENVENUE"}),
+      text("Nom affiché (ex : Offre de lancement)", p, "label"),
+      h("div",{class:"row"},
+        choose("Type de réduction", ()=>p.type||"percent", v=>{ p.type=v; show("Promos"); }, [["percent","Pourcentage (%)"],["amount","Montant fixe ("+cfg.currency.symbol+")"]]),
+        field("Valeur", ()=>p.value, v=>p.value=Number(v)||0, {type:"number",min:0}),
+        choose("S'applique sur", ()=>p.on||"all", v=>p.on=v, [["all","Toute la commande"],["plan","La gamme seulement"]])),
+      h("div",{class:"row"}, text("Valable à partir du", p, "start", {type:"date"}), text("Jusqu'au (inclus)", p, "end", {type:"date"})),
+      field("Commande minimale ("+cfg.currency.symbol+")", ()=>p.minTotal||0, v=>p.minTotal=Math.max(0,Number(v)||0), {type:"number",min:0,hint:"0 = aucun minimum."}),
+      planChecks("Valable seulement pour ces gammes", p.plans, "Aucune case cochée = toutes les gammes.")]; },
+    ()=>show("Promos"), {addLabel:"Ajouter une promo", open:true})
+]; };
+S["Commande"] = () => { cfg.order = cfg.order || {depositPercent:0,note:"",intro:"NOUVELLE COMMANDE",askBusiness:true,askProject:true}; const o = cfg.order; return [
+  h("p",{class:"sub"},"Réglages du formulaire de commande vu par le client."),
+  field("Acompte demandé (%)", ()=>o.depositPercent||0, v=>o.depositPercent=Math.max(0,Math.min(100,Number(v)||0)), {type:"number",min:0,hint:"0 = ne pas afficher d'acompte. Sinon le montant est calculé et montré au client."}),
+  text("Note sous le total", o, "note", {area:true,rows:2,hint:"Ex : conditions de paiement, TVA, délais…"}),
+  text("Titre du message de commande copié", o, "intro"),
+  check("Demander le nom de l'activité", ()=>o.askBusiness!==false, v=>o.askBusiness=v),
+  check("Demander la description du projet", ()=>o.askProject!==false, v=>o.askProject=v)
+]; };
 S["Processus"] = () => [list(cfg.process, ()=>({title:"Étape",text:""}), s=>s.title, s=>[text("Titre", s, "title"), text("Texte", s, "text", {area:true})], ()=>show("Processus"), {addLabel:"Ajouter une étape"})];
 S["Réalisations"] = () => [
   h("p",{class:"sub"},"Mets tes vrais projets. Pour une capture : place le fichier dans le dossier images/portfolio/ sur GitHub et écris son chemin (ex : images/portfolio/monsite.jpg). Le lien peut être le vrai site ou une page de démo."),
@@ -209,7 +242,7 @@ S["Contact"] = () => [
 ];
 
 /* ---- navigation ---- */
-const ORDER = ["Démarrer","Prix rapides","Gammes & tarifs","Options","Comparatif","Réalisations","Accueil","Identité","Sections","Processus","Avis clients","Garanties","FAQ","Contact"];
+const ORDER = ["Démarrer","Prix rapides","Gammes & tarifs","Options","Promos","Commande","Comparatif","Réalisations","Accueil","Identité","Sections","Processus","Avis clients","Garanties","FAQ","Contact"];
 let current = "Démarrer";
 function show(name){
   current = name; const st = $("edit").scrollTop;

@@ -139,19 +139,48 @@ window.SITE_CONFIG = {
     { label: "Support après livraison", values: { express: "—", vitrine: "7 jours", complet: "30 jours", refonte: "7 jours", surmesure: "Au choix" } }
   ],
 
-  /* ---------- OPTIONS / SUPPLÉMENTS (qty:true => quantité au choix ; price:null => sur devis) ---------- */
+  /* ---------- OPTIONS / SUPPLÉMENTS ----------
+     price    : prix (null => sur devis)
+     qty      : true => le client choisit une quantité (max = plafond)
+     plans    : liste d'id de gammes pour lesquelles l'option existe ([] = toutes)
+     included : liste d'id de gammes où l'option est déjà incluse (gratuite)
+     tag      : petit badge facultatif (ex : "Populaire") */
   addons: [
-    { id: "page",   name: "Page supplémentaire",      price: 40,  qty: true,  desc: "Ajoute autant de pages que nécessaire." },
-    { id: "logo",   name: "Création de logo",         price: 80,  qty: false, desc: "Un logo propre à ton activité." },
-    { id: "urgent", name: "Livraison express",        price: 100, qty: false, desc: "Ton projet passe en priorité." },
-    { id: "domain", name: "Nom de domaine + hébergement (1 an)", price: 60, qty: false, desc: "Je m'occupe de la mise en ligne." },
-    { id: "texte",  name: "Rédaction des textes",     price: 70,  qty: false, desc: "Des contenus clairs et percutants." },
-    { id: "maint",  name: "Maintenance (1 mois)",     price: 30,  qty: false, desc: "Mises à jour et modifications." },
-    { id: "spec",   name: "Fonctionnalité spéciale",  price: null, qty: false, desc: "Réservation, espace client… sur devis." }
+    { id: "page",   name: "Page supplémentaire",      price: 40,  qty: true,  max: 20, plans: ["vitrine","complet","refonte"], included: [], tag: "", desc: "Ajoute autant de pages que nécessaire." },
+    { id: "logo",   name: "Création de logo",         price: 80,  qty: false, plans: [], included: ["complet"], tag: "", desc: "Un logo propre à ton activité." },
+    { id: "urgent", name: "Livraison express",        price: 100, qty: false, plans: [], included: [], tag: "", desc: "Ton projet passe en priorité." },
+    { id: "domain", name: "Nom de domaine + hébergement (1 an)", price: 60, qty: false, plans: [], included: [], tag: "Populaire", desc: "Je m'occupe de la mise en ligne." },
+    { id: "texte",  name: "Rédaction des textes",     price: 70,  qty: false, plans: [], included: [], tag: "", desc: "Des contenus clairs et percutants." },
+    { id: "maint",  name: "Maintenance (1 mois)",     price: 30,  qty: false, plans: [], included: [], tag: "", desc: "Mises à jour et modifications." },
+    { id: "spec",   name: "Fonctionnalité spéciale",  price: null, qty: false, plans: [], included: [], tag: "", desc: "Réservation, espace client… sur devis." }
   ],
 
-  /* ---------- CODES PROMO (en %) ---------- */
-  promoCodes: { "BIENVENUE": 10 },
+
+
+  /* ---------- PROMOTIONS ----------
+     code     : le code que tape le client ("" => promo automatique, sans code)
+     label    : nom affiché (ex : "Offre de lancement")
+     type     : "percent" (%) ou "amount" (montant fixe)
+     value    : valeur de la réduction
+     on       : "all" (sur toute la commande) ou "plan" (sur la gamme seulement)
+     active   : false => en pause
+     start/end: dates "AAAA-MM-JJ" (vide = pas de limite)
+     plans    : ids de gammes concernées ([] = toutes)
+     minTotal : commande minimale pour que la promo marche (0 = aucun)
+     auto     : true => s'applique toute seule, sans code */
+  promos: [
+    { code: "BIENVENUE", label: "Offre de lancement", type: "percent", value: 10, on: "all", active: true,  start: "", end: "", plans: [], minTotal: 0,   auto: false },
+    { code: "PRO50",     label: "Commande pro",       type: "amount",  value: 50, on: "all", active: false, start: "", end: "", plans: [], minTotal: 500, auto: false }
+  ],
+
+  /* ---------- RÉGLAGES DE LA COMMANDE ---------- */
+  order: {
+    depositPercent: 30,    /* acompte demandé à la commande, en % (0 = ne pas afficher) */
+    note: "Un acompte est demandé au démarrage, le solde à la validation du site.",
+    intro: "NOUVELLE COMMANDE",
+    askBusiness: true,     /* demander le nom de l'activité */
+    askProject: true       /* demander la description du projet */
+  },
 
   /* ---------- PROCESSUS ---------- */
   process: [
