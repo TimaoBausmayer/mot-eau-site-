@@ -310,3 +310,37 @@ em.a{font-style:normal;color:var(--acc)}
 .feat h4{font-size:1.25rem;letter-spacing:-.01em}
 body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.05;mix-blend-mode:multiply;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ---------- fiche pratique du haut de page (remplace l'illustration tant qu'il n'y a pas de photo) ---------- */
+.fiche{background:var(--card);border:1px solid var(--line);border-radius:calc(var(--r) + 6px);padding:26px 28px 22px;box-shadow:0 30px 60px -45px rgba(0,0,0,.55);text-align:left;position:relative}
+.fiche::before{content:"";position:absolute;left:28px;right:28px;top:0;height:3px;background:var(--acc);border-radius:0 0 3px 3px}
+.fi-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.fi-name{font:var(--hw,600) 1.25rem var(--hf),serif;text-transform:var(--hcase,none)}
+.fiche .open{margin:0}
+.fiche dl{display:grid;gap:0}
+.fiche dl>div{padding:14px 0;border-bottom:1px dashed var(--line)}
+.fiche dt{font:500 .7rem 'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin-bottom:4px}
+.fiche dd{font-size:1rem;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline}
+.fiche dd a{color:var(--acc);text-decoration:none;font-weight:600;font-size:.9rem}
+.fiche dd a:hover{text-decoration:underline}
+.fi-star dd{justify-content:space-between}
+.fi-star b{font:var(--hw,600) 1.35rem var(--hf),serif;text-transform:var(--hcase,none)}
+.fi-star dd span{font:600 1.05rem var(--hf),serif;color:var(--acc)}
+.fi-star p{font-size:.88rem;color:var(--mut);margin-top:2px}
+.fi-all{display:inline-block;margin-top:16px;font:600 .9rem system-ui,sans-serif;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--acc);padding-bottom:2px}
+.fi-all:hover{color:var(--acc)}
+.L-B .fiche{max-width:880px;margin:56px auto 72px}
+.L-B .fiche dl{grid-template-columns:repeat(3,1fr);column-gap:28px}
+.L-B .fiche .fi-star{grid-column:1/-1;border-bottom:0}
+.L-C .fiche{border-width:2px;border-color:var(--ink);border-radius:var(--r);box-shadow:8px 8px 0 var(--acc)}
+.L-C .fiche::before{display:none}
+/* citation du gérant (à la place de l'illustration) */
+.qt{margin:0;padding:8px 0 0}
+.qt blockquote{font:var(--hw,600) clamp(1.6rem,2.8vw,2.3rem)/1.18 var(--hf),serif;text-transform:none;letter-spacing:-.01em;position:relative;padding-top:54px}
+.qt blockquote::before{content:"“";position:absolute;left:-4px;top:-18px;font:400 7rem/1 Georgia,serif;color:var(--acc);opacity:.85}
+.qt figcaption{margin-top:18px;font:500 .78rem 'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.L-B .qt{max-width:720px;margin:0 auto}.L-B .qt blockquote::before{left:50%;transform:translateX(-50%)}
+.L-B .duo .rv:has(.qt){display:block}
+@media(max-width:900px){.L-B .fiche dl{grid-template-columns:1fr}}
+@media(max-width:560px){.fiche{padding:20px 18px 18px}.fiche::before{left:18px;right:18px}}
+.L-C .mq{display:none}

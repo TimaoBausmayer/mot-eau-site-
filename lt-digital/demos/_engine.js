@@ -33,7 +33,19 @@ const pic = it => {
   if (S.offers.illustrations && it.img && window.FOOD && window.FOOD[it.img]) return `<div class="pic" tabindex="0" role="button" aria-label="Agrandir ${esc(it.name)}">${window.FOOD[it.img](window.__foodU())}</div>`;
   return ""; };
 const hp = it => pic(it) ? " has-pic" : "";
-const heroVisual = () => { if(!S.offers.images) return visual(); const seen=[]; [...items.filter(i=>i.star), ...items].forEach(i=>{ if(seen.length<4 && pic(i) && !seen.includes(i)) seen.push(i); }); return `<div class="mosaic">${seen.map(i=>`<div class="mc has-pic">${pic(i)}<span>${esc(i.name)}</span></div>`).join("")}</div>`; };
+const heroVisual = () => { if(!S.offers.images || !items.some(i=>i.photo && !CLEAN_NOPHOTO)) return infoCard(); const seen=[]; [...items.filter(i=>i.star), ...items].forEach(i=>{ if(seen.length<4 && pic(i) && !seen.includes(i)) seen.push(i); }); return `<div class="mosaic">${seen.map(i=>`<div class="mc has-pic">${pic(i)}<span>${esc(i.name)}</span></div>`).join("")}</div>`; };
+const CLEAN_NOPHOTO = !S.offers.hasPhotos; /* tant qu'aucune vraie photo n'est fournie, on montre la fiche pratique */
+function todayHours(){ try { const d = new Date().getDay(); for (const [days,times] of S.contact.hours){ const ds = dayset(days); if (ds && ds.includes(d)) return times; } return "Fermé"; } catch(e){ return S.contact.hours[0][1]; } }
+function infoCard(){
+  const C = S.contact, a = encodeURIComponent(S.name+" "+C.address), star = items.find(i=>i.star) || items[0], J = ["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"][new Date().getDay()];
+  return `<aside class="fiche rv"><div class="fi-top"><span class="fi-name">${esc(S.name)}</span>${openBadge()}</div>
+  <dl><div><dt>Aujourd'hui, ${J}</dt><dd>${esc(todayHours())}</dd></div>
+  <div><dt>Adresse</dt><dd>${esc(C.address)} <a href="https://www.google.com/maps/dir/?api=1&destination=${a}" target="_blank" rel="noopener">Itinéraire ↗</a></dd></div>
+  <div><dt>Téléphone</dt><dd><a href="tel:${esc(C.phone.replace(/\s/g,""))}">${esc(C.phone)}</a></dd></div>
+  ${star?`<div class="fi-star"><dt>${esc(S.home.starLabel||"La spécialité de la maison")}</dt><dd><b>${esc(star.name)}</b><span>${esc(star.price||"")}</span></dd>${star.desc?`<p>${esc(star.desc)}</p>`:""}</div>`:""}</dl>
+  <a class="fi-all" href="offre.html">${esc(S.offers.label)} complète →</a></aside>`; }
+function quote(){ const H = S.home, q = H.quote || S.tagline; if (!q) return "";
+  return `<figure class="qt"><blockquote>${esc(q)}</blockquote><figcaption>— ${esc(H.signature || "L'équipe " + S.name)}</figcaption></figure>`; }
 const visual = () => `<div class="visbox">${(V[T.visual]||V.plate)()}</div>`;
 const money = p => esc(p);
 
@@ -78,9 +90,9 @@ function home(){
   const mq = L==="C" ? `<div class="mq"><div>${[...S.offers.cats.map(c=>c.name), ...items.slice(0,6).map(i=>i.name)].concat([...S.offers.cats.map(c=>c.name), ...items.slice(0,6).map(i=>i.name)]).map(t=>`<span>${esc(t)}</span>✦`).join("")}</div></div>` : "";
   const mqA = L==="A" ? `<div class="mqA" aria-hidden="true"><div>${Array(2).fill([...S.offers.cats.map(c=>c.name), ...items.slice(0,5).map(i=>i.name)]).flat().map(t=>`<span>${esc(t)}</span><b>✦</b>`).join("")}</div></div>` : "";
   return `<section class="hero">${L==="C"?`<div class="wm" aria-hidden="true">${esc(S.short)}</div>`:""}<div class="w hero-in"><div>${openBadge()}<span class="eb">${esc(H.kicker)}</span><h1>${accent(H.title)}</h1><p class="lead">${esc(H.text)}</p><div class="ctas"><a class="btn" href="${H.ctaHref||"contact.html"}">${esc(H.cta)}</a><a class="btn o" href="offre.html">${esc(H.cta2)}</a></div></div>${heroVisual()}</div>${mq}</section>${mqA}
-<div class="strip"><div class="w"><div><small>Horaires</small>${esc(S.contact.hours[0][0])} · ${esc(S.contact.hours[0][1])}</div><div><small>Adresse</small>${esc(S.contact.address)}</div><div><small>Contact</small>${esc(S.contact.phone)}</div></div></div>
+${CLEAN_NOPHOTO?"":`<div class="strip"><div class="w"><div><small>Horaires</small>${esc(S.contact.hours[0][0])} · ${esc(S.contact.hours[0][1])}</div><div><small>Adresse</small>${esc(S.contact.address)}</div><div><small>Contact</small>${esc(S.contact.phone)}</div></div></div>`}
 <section class="sec"><div class="w"><div class="sh rv"><span class="eb">${esc(H.highlightsKicker||S.offers.label)}</span><h2>${esc(H.highlightsTitle||S.offers.title)}</h2><p>${esc(H.highlightsText||"")}</p></div><div class="hl">${hl}</div><div class="ctas rv"><a class="btn o" href="offre.html">${esc(H.cta2)}</a></div></div></section>
-<section class="sec alt"><div class="w duo"><div class="rv">${visual()}</div><div class="rv"><span class="eb">${esc(H.aboutKicker||"À propos")}</span><h2>${esc(H.aboutTitle)}</h2><p>${esc(H.about)}</p><div class="stats">${H.stats.map(([v,l])=>`<div><strong>${esc(v)}</strong><span>${esc(l)}</span></div>`).join("")}</div></div></div></section>
+<section class="sec alt"><div class="w duo"><div class="rv">${quote()}</div><div class="rv"><span class="eb">${esc(H.aboutKicker||"À propos")}</span><h2>${esc(H.aboutTitle)}</h2><p>${esc(H.about)}</p><div class="stats">${H.stats.map(([v,l])=>`<div><strong>${esc(v)}</strong><span>${esc(l)}</span></div>`).join("")}</div></div></div></section>
 <section class="sec"><div class="w"><div class="feat">${H.features.map(([t,x])=>`<div class="rv"><span class="ico">${icon(t+" "+x)}</span><h4>${esc(t)}</h4><p>${esc(x)}</p></div>`).join("")}</div></div></section>
 ${extrasHome()}<section class="cta"><div class="w"><div><h2>${esc(H.ctaTitle||"Une question ? Parlons-en.")}</h2><p>${esc(H.ctaText||"")}</p></div><a class="btn" href="contact.html">${esc(H.cta)}</a></div></section>`;
 }
