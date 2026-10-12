@@ -6,12 +6,25 @@
 <title>L&amp;T Digital — Création &amp; modernisation de sites web</title>
 <meta name="description" content="L&amp;T Digital crée et modernise des sites web sur mesure : sites vitrines, boutiques en ligne, refonte. Tarifs clairs, livraison rapide.">
 <link rel="icon" href="images/logo-small.jpg">
+<link rel="apple-touch-icon" href="images/logo-small.jpg">
+<meta name="theme-color" content="#0a0f1f">
+<!-- aperçu quand on partage le lien (WhatsApp, Instagram, Facebook…) -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="L&amp;T Digital">
+<meta property="og:title" content="L&amp;T Digital — Création &amp; modernisation de sites web">
+<meta property="og:description" content="Sites vitrines, boutiques en ligne, refonte, logo et réseaux sociaux pour commerçants, artisans et indépendants. Prix annoncés, livraison rapide.">
+<meta property="og:image" content="images/og.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=DM+Mono:wght@400;500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a class="skip" href="#top">Aller au contenu</a>
+<div class="progress" id="progress" aria-hidden="true"></div>
 <div class="topbar" id="topbar" hidden><div class="wrap tb-in" id="tb-in"></div></div>
 
 <header class="nav" id="nav">
@@ -208,6 +221,9 @@
     <p class="toast" id="rv-toast" role="status"></p>
   </form>
 </dialog>
+
+<button type="button" class="totop" id="totop" aria-label="Revenir en haut de la page" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+<div class="mcta" id="mcta" hidden><a href="#commande" class="btn" id="mcta-order">Commander mon site</a><a class="mcta-ic" id="mcta-ig" target="_blank" rel="noopener" aria-label="Instagram" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" class="f"/></svg></a><a class="mcta-ic" id="mcta-mail" aria-label="E-mail" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg></a></div>
 
 <div class="cartbar" id="cartbar" hidden><span id="cart-text"></span><a class="btn btn-sm btn-light" href="#commande">Voir ma commande</a></div>
 

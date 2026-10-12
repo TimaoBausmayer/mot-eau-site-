@@ -59,6 +59,12 @@ Section sombre « Logo, affiches & réseaux » (logo, identité visuelle, cartes
 - Le client peut commander **sans site** (choix « Pas de site » dans la commande).
 - Les prix sont des exemples : change-les dans **Prix rapides** (tout en bas).
 
+## Google et partage du lien
+
+- Quand ton lien est partagé (WhatsApp, Instagram, Facebook…), l'image `images/og.jpg` s'affiche en aperçu. Remplace-la si tu veux (format 1200 × 630).
+- Quand tu auras ton nom de domaine, mets l'adresse complète de l'image dans `index.html` (ligne `og:image`, ex : `https://www.lt-digital.fr/images/og.jpg`) : certains réseaux l'exigent.
+- La page d'administration n'est pas indexée par Google (`robots.txt`).
+
 ## TVA et pages légales
 Admin ▸ **Légal & TVA** : choisis le régime (TTC, HT ou « TVA non applicable art. 293 B »), le taux, et renseigne ton entreprise
 (SIRET, adresse, hébergeur, médiateur…). Les pages `mentions-legales.html`, `cgv.html` et `confidentialite.html` se remplissent toutes seules,

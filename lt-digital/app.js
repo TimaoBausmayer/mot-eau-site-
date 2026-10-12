@@ -576,4 +576,33 @@ $("vat-note").textContent = vatNote;
   lab(0,"f_name"); lab(1,"f_biz"); lab(2,"f_contact"); lab(3,"f_project");
   set(".summary > h3","sum_title"); set("#promo-btn","promo_btn"); set("#copy-btn","copy_btn"); set("#insta-btn","insta_btn"); set("#mail-btn","mail_btn"); set("#cartbar .btn","cart_btn");
   set(".final h2","final_title"); set(".final p","final_text"); set(".final .btn-light","final_btn"); set("#final-insta","final_insta"); set("#final-mail","final_mail"); })();
+/* ---------- confort de navigation ---------- */
+(function(){ const ct = C.contact||{}, T = C.texts||{};
+  /* barre de progression de lecture + bouton « haut de page » */
+  const bar = $("progress"), top = $("totop");
+  /* barre « Commander » en bas sur téléphone (cachée près de la commande ou quand le panier s'affiche) */
+  const m = $("mcta"); $("mcta-order").textContent = T.mcta_btn||"Commander mon site";
+  if (ct.instagram){ $("mcta-ig").href = ct.instagram; $("mcta-ig").hidden = false; }
+  if (ct.email){ $("mcta-mail").href = "mailto:"+ct.email; $("mcta-mail").hidden = false; }
+  const lbIsOpen = () => { const l = document.querySelector(".lb"); return !!(l && !l.hidden); };
+  const heroEnd = () => { const h = document.querySelector(".hero .cta-row"); return h ? h.getBoundingClientRect().bottom + scrollY : 600; };
+  let t = 0; const tick = () => { t = 0; const y = scrollY, H = document.documentElement.scrollHeight - innerHeight;
+    bar.style.transform = `scaleX(${H>0 ? Math.min(1, y/H) : 0})`;
+    top.hidden = y < innerHeight*1.5;
+    const cmd = $("commande").getBoundingClientRect(), nearCmd = cmd.top < innerHeight && cmd.bottom > 0;
+    m.hidden = !(innerWidth <= 760 && y > heroEnd() && !nearCmd && $("cartbar").hidden && !lbIsOpen());
+    document.body.classList.toggle("has-mcta", !m.hidden); };
+  addEventListener("scroll", ()=>{ if(!t) t = requestAnimationFrame(tick); }, {passive:true}); addEventListener("resize", tick); tick();
+  top.onclick = ()=>scrollTo({top:0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
+  /* menu : la rubrique en cours s'allume */
+  const links = [...document.querySelectorAll('.links a[href^="#"]')], map = new Map();
+  links.forEach(a=>{ const s = document.querySelector(a.getAttribute("href")); if (s) map.set(s, a); });
+  if ("IntersectionObserver" in window) { const io = new IntersectionObserver(es=>es.forEach(e=>{ const a = map.get(e.target); if (a && e.isIntersecting){ links.forEach(l=>l.classList.remove("on")); a.classList.add("on"); } }), {rootMargin:"-45% 0px -50% 0px"});
+    map.forEach((a,s)=>io.observe(s)); }
+  /* fiche pour Google (données structurées), tirée de config.js */
+  try { const ld = {"@context":"https://schema.org","@type":"ProfessionalService", name: C.brand, description: C.tagline, image: new URL("images/og.jpg", location.href).href, logo: new URL(C.logoBig||C.logo, location.href).href,
+      email: ct.email||undefined, sameAs: ct.instagram ? [ct.instagram] : undefined, areaServed: "FR", priceRange: "€€",
+      makesOffer: (C.plans||[]).filter(p=>p.price!=null).map(p=>({"@type":"Offer", name: p.name, price: p.price, priceCurrency: "EUR"})) };
+    const sc = document.createElement("script"); sc.type = "application/ld+json"; sc.textContent = JSON.stringify(ld); document.head.appendChild(sc); } catch {}
+})();
 })();

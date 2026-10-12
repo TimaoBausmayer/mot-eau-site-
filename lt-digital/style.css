@@ -689,3 +689,25 @@ p,li,dd{text-wrap:pretty}
 .trust+.h-rv{display:inline-flex}
 @media(prefers-reduced-motion:reduce){.rv-lines i{animation:none}.h-rv{animation:none}}
 .links a,.logo b{white-space:nowrap}.links{gap:22px}
+
+/* ---------- confort de navigation ---------- */
+.skip{position:absolute;left:12px;top:-60px;z-index:200;padding:10px 16px;border-radius:999px;background:var(--ink);color:#fff;font-weight:600;transition:top .2s}
+.skip:focus{top:12px}
+.progress{position:fixed;left:0;top:0;right:0;height:3px;z-index:120;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,var(--accent),#7a5cff,#22b8ff);pointer-events:none}
+.links a{position:relative;transition:color .2s}
+.links a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:var(--accent);transform:scaleX(0);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.links a:hover,.links a.on{color:var(--ink)}
+.links a:hover::after,.links a.on::after{transform:scaleX(1)}
+@media(max-width:960px){.links a::after{display:none}.links a.on{color:var(--accent);font-weight:600}}
+.totop{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:55;width:46px;height:46px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--rule);background:color-mix(in srgb,var(--panel) 85%,transparent);backdrop-filter:blur(8px);cursor:pointer;box-shadow:0 12px 28px -14px rgba(10,15,31,.5);animation:up .35s cubic-bezier(.2,.8,.2,1);transition:transform .2s,border-color .2s}
+.totop:hover{transform:translateY(-3px);border-color:var(--accent)}
+.totop svg{width:20px;height:20px;fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mcta{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:58;display:flex;gap:8px;padding:8px;border-radius:999px;background:color-mix(in srgb,var(--dark) 92%,transparent);backdrop-filter:blur(10px);box-shadow:0 18px 40px -16px rgba(10,15,31,.6);animation:mctaIn .4s cubic-bezier(.2,.8,.2,1)}
+@keyframes mctaIn{from{opacity:0;transform:translateY(24px)}}
+.mcta .btn{flex:1;background:var(--accent);border-color:var(--accent);color:#fff;padding:12px 18px}
+.mcta-ic{display:grid;place-items:center;width:46px;flex:none;border-radius:50%;background:rgba(255,255,255,.1);color:#fff}
+.mcta-ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.mcta-ic svg .f{fill:currentColor;stroke:none}
+body.has-mcta .totop{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+body.has-mcta .foot{padding-bottom:110px}
+@media(min-width:761px){.mcta{display:none!important}}
+@media(prefers-reduced-motion:reduce){.totop,.mcta{animation:none}}
