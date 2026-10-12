@@ -747,6 +747,66 @@ body.results-hidden #resultsHiddenMsg{display:block;}
 #previewBanner{display:none; position:fixed; left:50%; bottom:18px; transform:translateX(-50%); z-index:9999; background:var(--orange); color:#000; padding:10px 18px; font-weight:600; box-shadow:0 4px 20px rgba(0,0,0,0.5); align-items:center; gap:12px;}
 #previewBanner button{background:#000; color:#fff; border:0; padding:6px 12px; cursor:pointer; font-family:inherit;}
 body.preview-visitor #previewBanner{display:flex;}
+/* ---------- PROSPECTION SPONSORS (admin) ---------- */
+.pros-pipe{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:22px;}
+.pros-stat{display:flex; align-items:center; gap:7px; border:1px solid var(--line); background:var(--surface);
+  padding:9px 14px; font-size:0.78rem; cursor:pointer; color:var(--grey); font-family:inherit;}
+.pros-stat i{width:8px; height:8px; border-radius:50%; background:currentColor; display:block;}
+.pros-stat b{color:var(--cream);}
+.pros-stat[aria-pressed="true"]{border-color:currentColor;}
+.pros-day{margin-left:auto; border:1px solid var(--line); padding:9px 14px; font-size:0.78rem; color:var(--grey);}
+.pros-day b{color:var(--cream);}
+.pros-day.warn b{color:var(--orange);}
+.pros-tplrow{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;}
+.pros-tpl{border:1px solid var(--line); background:var(--surface); color:var(--grey); font-family:inherit;
+  font-size:0.78rem; padding:8px 14px; cursor:pointer;}
+.pros-tpl[aria-pressed="true"]{border-color:var(--orange); color:var(--orange);}
+.pros-msg{width:100%; min-height:210px; background:var(--surface); border:1px solid var(--line); color:var(--cream);
+  font-family:inherit; font-size:0.9rem; line-height:1.6; padding:16px; resize:vertical;}
+.pros-msg:focus{outline:1px solid var(--orange);}
+.pros-len{font-size:0.76rem; color:var(--grey);}
+.pros-len.warn{color:var(--orange);}
+.pros-add{display:flex; gap:10px; flex-wrap:wrap; margin:14px 0 10px;}
+.pros-add input{flex:1 1 200px; background:var(--surface); border:1px solid var(--line); color:var(--cream);
+  font-family:inherit; font-size:0.88rem; padding:11px 14px;}
+.pros-add input:focus{outline:1px solid var(--orange);}
+.pros-cats{display:flex; gap:7px; flex-wrap:wrap; margin-bottom:18px;}
+.pros-cat{border:1px dashed var(--line); background:none; color:var(--grey); font-family:inherit;
+  font-size:0.74rem; padding:6px 11px; cursor:pointer;}
+.pros-cat[aria-pressed="true"]{border-style:solid; border-color:var(--orange); color:var(--orange);}
+.pros-card{border:1px solid var(--line); border-left:3px solid var(--sc,var(--grey)); background:var(--surface);
+  margin-bottom:14px;}
+.pros-head{display:flex; align-items:flex-start; gap:12px; padding:16px 16px 12px;}
+.pros-who{flex:1; min-width:0;}
+.pros-who .nm{font-family:'Anton',sans-serif; text-transform:uppercase; letter-spacing:0.02em;
+  font-size:1.15rem; display:block; word-break:break-word;}
+.pros-who .hd{font-size:0.82rem; color:var(--orange); word-break:break-all;}
+.pros-who .ct{font-size:0.72rem; color:var(--grey); text-transform:uppercase; letter-spacing:0.06em;}
+.pros-badge{border:1px solid var(--sc,var(--grey)); color:var(--sc,var(--grey)); font-size:0.7rem;
+  padding:5px 11px; white-space:nowrap; text-transform:uppercase; letter-spacing:0.05em;}
+.pros-sbar{display:flex; gap:7px; flex-wrap:wrap; padding:0 16px 12px;}
+.pros-sbar button{flex:1 1 auto; display:flex; align-items:center; justify-content:center; gap:7px;
+  border:1px solid var(--line); background:var(--surface-2); color:var(--grey); font-family:inherit;
+  font-size:0.74rem; padding:11px 8px; cursor:pointer; text-transform:uppercase; letter-spacing:0.05em;}
+.pros-sbar button i{width:13px; height:13px; border:1.5px solid currentColor; flex:0 0 auto; position:relative; display:block;}
+.pros-sbar button[aria-pressed="true"]{border-color:currentColor;}
+.pros-sbar button[aria-pressed="true"] i{background:currentColor;}
+.pros-sbar button[aria-pressed="true"] i::after{content:""; position:absolute; inset:0; background:var(--surface);
+  clip-path:polygon(19% 48%,38% 68%,81% 24%,90% 34%,38% 86%,10% 58%);}
+.pros-hook{display:block; width:calc(100% - 32px); margin:0 16px 12px; background:var(--surface-2);
+  border:1px solid var(--line); color:var(--cream); font-family:inherit; font-size:0.85rem; padding:11px 13px;
+  min-height:56px; resize:vertical;}
+.pros-hook:focus{outline:1px solid var(--orange);}
+.pros-act{display:flex; gap:9px; flex-wrap:wrap; padding:0 16px 16px;}
+.pros-act .go{flex:1 1 200px; text-align:center; background:var(--orange); color:var(--black);
+  font-weight:600; font-size:0.86rem; padding:12px 16px; border:0; font-family:inherit; cursor:pointer;}
+.pros-act .ghost{border:1px solid var(--line); background:none; color:var(--cream); font-family:inherit;
+  font-size:0.86rem; padding:12px 16px; cursor:pointer;}
+.pros-act .ghost:hover{border-color:var(--orange); color:var(--orange);}
+.pros-del{background:none; border:1px solid var(--line); color:var(--grey); cursor:pointer;
+  width:30px; height:30px; flex:0 0 auto; font-size:0.8rem;}
+.pros-del:hover{border-color:#8a5b52; color:#8a5b52;}
+@media(max-width:560px){ .pros-sbar button{flex:1 1 calc(50% - 4px);} .pros-head{flex-wrap:wrap;} }
 .edit-only{display:none;}
 body.edit-mode .edit-only{display:flex;}
 body.edit-mode .edit-only.block{display:block;}
@@ -906,6 +966,7 @@ body.edit-mode .view-only{display:none;}
         </div>
       </div>
       <a href="#dashboard" class="edit-only inline">Tableau de bord</a>
+      <a href="#prospection" class="edit-only inline">Démarchage</a>
       <a href="#dons" class="nav-cta">Faire un don</a>
     </nav>
     <div style="display:flex; align-items:center; gap:12px;">
@@ -1442,6 +1503,37 @@ body.edit-mode .view-only{display:none;}
   </div>
 </section>
 
+<section id="prospection" class="edit-only block">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="display">Démarchage sponsors</h2>
+      <p class="sub">Privé — visible uniquement en mode édition. Les marques à contacter sur Instagram, le message à envoyer, et où tu en es avec chacune.</p>
+    </div>
+
+    <div class="pros-pipe" id="prosPipe"></div>
+
+    <h3 class="subhead" style="margin-top:0;">Le message</h3>
+    <div class="pros-tplrow" id="prosTplRow"></div>
+    <textarea class="pros-msg" id="prosMsg" spellcheck="false" aria-label="Texte du message"></textarea>
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin:8px 0 34px;">
+      <span class="pros-len" id="prosLen"></span>
+      <button class="small-btn" type="button" id="prosReset">Remettre le texte d'origine</button>
+    </div>
+
+    <h3 class="subhead">Ajouter une marque</h3>
+    <div class="pros-add">
+      <input type="text" id="prosName" placeholder="Nom de la marque">
+      <input type="text" id="prosHandle" placeholder="@compte_insta">
+      <button class="small-btn" type="button" id="prosAdd">Ajouter</button>
+    </div>
+    <div class="pros-cats" id="prosCats"></div>
+
+    <h3 class="subhead">Ma liste <span class="hint-text" id="prosCount" style="font-weight:400;"></span></h3>
+    <div id="prosList"></div>
+    <p class="hint-text" style="margin-top:18px;">Envoie-en 15 à 20 par jour maximum, espacés dans la journée. Instagram restreint les comptes qui envoient en rafale.</p>
+  </div>
+</section>
+
 <section id="galerie">
   <div class="wrap">
     <div class="sec-head"><h2 class="display">Photos & vidéos</h2><p class="sub">Les meilleurs moments des entraînements et des essais.</p></div>
@@ -1770,6 +1862,21 @@ const DEFAULTS = {
   pilotProfiles: {},
   productCosts: {},
   i18nEn: {},
+    prospection: {
+    tpl: "complet",
+    edits: {},
+    brands: [
+      { id: "b01", name: "Furygan", handle: "furyganofficiel", cat: "Vêtements", line: "", status: "sent", sentAt: "2026-10-12" },
+      { id: "b02", name: "Picture Organic Clothing", handle: "pictureorganiclothing", cat: "Combinaisons", line: "", status: "todo" },
+      { id: "b03", name: "Manera", handle: "manerawatermen", cat: "Combinaisons", line: "", status: "todo" },
+      { id: "b04", name: "Aquaman", handle: "aquamanwetsuits", cat: "Combinaisons", line: "", status: "todo" },
+      { id: "b05", name: "Nomads Surfing", handle: "nomads_surfing", cat: "Accessoires d'eau", line: "", status: "todo" },
+      { id: "b06", name: "Ker Sun", handle: "kersun.france", cat: "Lycra / anti-UV", line: "", status: "todo" },
+      { id: "b07", name: "Beuchat", handle: "beuchat_diving", cat: "Combinaisons", line: "", status: "todo" },
+      { id: "b08", name: "Kiteshop.fr", handle: "kiteshop.fr", cat: "Boutique glisse", line: "", status: "todo" },
+      { id: "b11", name: "Cabaïa", handle: "cabaia", cat: "Accessoires d'eau", line: "", status: "todo" }
+    ]
+  },
   expenses: [],
   loyaltyConfig: { enabled:true, perEuro:1, rewards:[] },
   pushState: { init:false, auto:true, sent:{} }, // réservé à l'admin : nouveautés déjà notifiées
@@ -2129,7 +2236,7 @@ async function fetchGiftCard(code){
   catch(err){ return null; }
 }
 /* Données réservées à l'admin : inutile (et refusé) de les demander aux visiteurs */
-const PRIVATE_KEYS = ['passwords','memberships','registrations','notifications','waivers','equipmentLoans','donationRecords','orders','referralRewards','giftCards','pushState','productCosts','expenses'];
+const PRIVATE_KEYS = ['passwords','memberships','registrations','notifications','waivers','equipmentLoans','donationRecords','orders','referralRewards','giftCards','pushState','productCosts','expenses','prospection'];
 async function loadAll(){
   const keys = Object.keys(DEFAULTS).filter(k => isAdmin() || !PRIVATE_KEYS.includes(k));
   await Promise.all(keys.map(loadSection));
@@ -6218,6 +6325,7 @@ const ADMIN_TABS = [
   { id:'loyalty', label:'⭐ Fidélité' },
   { id:'votes', label:'🗳️ Votes' },
   { id:'i18n', label:'🇬🇧 Anglais' },
+  { id:'prospection', label:'🤝 Sponsors' },
   { id:'waivers', label:'Attestations' },
   { id:'push', label:'🔔 Notifications téléphone' },
   { id:'notifications', label:'Abonnés e-mail/SMS' }
@@ -6378,6 +6486,9 @@ function renderAdminPanel(){
         ${pollResultsHtml(p.id, concept)}</div>`;
     }).join('') : '<p style="color:var(--grey);">Aucun sondage pour le moment. En mode édition, dans la Boutique : mettez une pièce en « Pièce concept » ou cochez « Activer un sondage ».</p>')
       + '<button class="small-btn solid" data-agoto="boutique" style="margin-top:8px;">✏️ Gérer la boutique</button>';
+  } else if(adminTab === 'prospection'){
+    const pb = (STATE.prospection && STATE.prospection.brands) || [];
+    body.innerHTML = `<div class="admin-card"><h4>Démarchage sponsors</h4><div class="muted">${pb.length} marque${pb.length>1?'s':''} dans votre liste · ${pb.filter(b => b.status && b.status !== 'todo').length} contactée${pb.filter(b => b.status && b.status !== 'todo').length>1?'s':''}</div><button class="small-btn solid" data-agoto="prospection" style="margin-top:10px;">Ouvrir le démarchage</button></div>`;
   } else if(adminTab === 'i18n'){
     renderAdminI18n(body);
   } else if(adminTab === 'finance'){
@@ -7633,6 +7744,255 @@ async function recomputeAllLoyalty(){
   return n;
 }
 
+/* ============================================================
+   DÉMARCHAGE SPONSORS (admin) — messages, marques, suivi
+   ============================================================ */
+const PROS_SITE = "mot-eau-site.vercel.app";
+const PROS_TPLS = [
+  {id:"mini", label:"Mini (220)", text:
+`Bonjour ! Timao, ex-compétiteur en voile à haut niveau. Je crée mon propre sport nautique, le Mot'eau : ${PROS_SITE}
+
+Je cherche quelques lots pour mes premiers pilotes, votre logo en échange. On en parle ?`},
+  {id:"court", label:"Court (300)", text:
+`Bonjour ! Timao, ex-compétiteur en voile à haut niveau. Je crée un nouveau sport nautique : le Mot'eau. Une machine, un décollage, un chrono. Vrai règlement de championnat, site en ligne : ${PROS_SITE}
+
+Je cherche quelques lots pour mes premiers pilotes. Votre logo en échange. On en parle ?`},
+  {id:"lots", label:"Dotation (450)", text:
+`Bonjour ! Je m'appelle Timao, ex-compétiteur en voile à haut niveau. Je crée mon propre sport nautique : le Mot'eau. Une machine lancée sur une cale de mise à l'eau, un décollage, un chrono à chaque passage.
+
+Le club démarre, le site est en ligne : ${PROS_SITE}
+
+Je ne demande pas d'argent : juste quelques produits à offrir aux pilotes des premières étapes. Votre marque sur le site, dans nos vidéos et sur les podiums.
+
+On en parle ?`},
+  {id:"complet", label:"Complet (800)", text:
+`Bonjour ! Je m'appelle Timao. J'ai fait de la voile en compétition à haut niveau pendant des années, et aujourd'hui je crée mon propre sport nautique : le Mot'eau.
+
+Le principe : le pilote arrive lancé sur une cale de mise à l'eau, décolle, retombe dans l'eau, et son temps est chronométré. Avec un vrai règlement de championnat en 6 étapes, sur deux machines identiques pour que personne ne soit avantagé.
+
+Le club démarre et le site est déjà en ligne — planning, inscriptions, classements en direct : ${PROS_SITE}
+
+Je ne vous demande pas d'argent : juste quelques produits à offrir aux pilotes des premières étapes. Même deux ou trois pièces feraient la différence.
+
+En échange, votre marque sur le site, dans nos vidéos et sur les photos de remise des prix — parmi les tout premiers partenaires d'un sport qui n'existait pas l'an dernier.
+
+Ça vous dirait qu'on en parle ?`},
+  {id:"duo", label:"En 2 messages", text:
+`[MESSAGE 1 — envoie-le seul, attends qu'il passe]
+Bonjour ! Timao, ex-compétiteur en voile à haut niveau. Je crée mon propre sport nautique, le Mot'eau : ${PROS_SITE}
+
+[MESSAGE 2 — envoie-le juste après]
+Je cherche quelques lots pour les pilotes de mes premières étapes. En échange, votre logo sur le site, dans nos vidéos et sur les photos des podiums. On en parle ?`},
+  {id:"relance", label:"Relance", text:
+`Bonjour ! Je reviens vers vous au cas où mon message soit passé inaperçu.
+
+Je crée le Mot'eau, un nouveau sport nautique chronométré : ${PROS_SITE}
+
+Quelques lots suffisent. Si ce n'est pas le moment, dites-le-moi, je ne relancerai plus !`},
+  {id:"infos", label:"Ils veulent plus d'infos", text:
+`Merci pour votre réponse !
+
+Le sport : le pilote arrive lancé sur une cale de mise à l'eau avec sa Mot'eau, décolle, et retombe dans l'eau. Vitesse, distance et temps mesurés à chaque passage.
+
+Le championnat : 6 étapes, 20 pilotes au départ, puis 15, 10, 5, 3 et 2 en finale, sur deux Mot'eau identiques. À chaque étape on retire les plus mauvais temps, mais une étape ratée ne s'efface jamais. La finale finit par une descente côte à côte qui compte triple.
+
+Moi : voile en compétition à haut niveau avant de me lancer là-dedans.
+
+Le site (planning, inscriptions, classements en direct) : ${PROS_SITE}
+
+Trois formules :
+• Partenaire — logo sur le site et dans les vidéos
+• Officiel — en plus, maillots et banderoles
+• Principal — en plus, les machines et votre nom sur une étape
+
+J'ai une vidéo de présentation de 2 min si ça vous intéresse. Dites-moi ce qui vous arrange !`}
+];
+const PROS_STATUS = [
+  {id:"todo",    label:"À contacter", c:"#948e83"},
+  {id:"sent",    label:"Envoyé",      c:"#4ea8de"},
+  {id:"relance", label:"Relancé",     c:"#e8c93a"},
+  {id:"reply",   label:"Réponse",     c:"#4bd37b"},
+  {id:"no",      label:"Refus",       c:"#8a5b52"}
+];
+const PROS_CATS = ["Combinaisons","Lycra / anti-UV","Accessoires d'eau","Boutique glisse","Base nautique","Vêtements","Boisson","Commerce local","Média local"];
+let prosFilter = null, prosPendingCat = "";
+
+function prosEsc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function prosStatus(id){ return PROS_STATUS.find(s => s.id === id) || PROS_STATUS[0]; }
+function prosHandleOf(v){ return String(v || "").trim().replace(/^@+/, "").replace(/^https?:\/\/(www\.)?instagram\.com\//i, "").replace(/[\/?#].*$/, ""); }
+function prosToday(){ const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0"); }
+function prosTplText(id){
+  const P = STATE.prospection;
+  return (P.edits && P.edits[id]) || (PROS_TPLS.find(t => t.id === id) || PROS_TPLS[0]).text;
+}
+function prosMessage(b){
+  const body = prosTplText(STATE.prospection.tpl);
+  const hook = (b.line || "").trim();
+  return hook ? hook + "\n\n" + body : body;
+}
+function prosCopy(text){
+  const done = () => showToast("Message copié");
+  try{
+    navigator.clipboard.writeText(text).then(done, () => prosCopyFallback(text));
+  }catch(err){ prosCopyFallback(text); }
+}
+function prosCopyFallback(text){
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); showToast("Message copié"); }
+  catch(err){ showToast("Copie refusée — sélectionne le texte à la main."); }
+  document.body.removeChild(ta);
+}
+function prosSetLen(n){
+  const el = document.getElementById('prosLen');
+  el.textContent = n + " caractères" + (n > 1000 ? " — trop long pour Instagram" : n > 800 ? " — proche de la limite" : " — ça passe");
+  el.classList.toggle('warn', n > 800);
+}
+function renderProspection(){
+  const P = STATE.prospection;
+  const list = P.brands || [];
+
+  document.getElementById('prosPipe').innerHTML = PROS_STATUS.map(s => {
+    const n = list.filter(b => (b.status || "todo") === s.id).length;
+    return `<button class="pros-stat" type="button" data-pfilter="${s.id}" aria-pressed="${prosFilter===s.id}"
+      style="color:${s.c}"><i></i>${s.label} <b>${n}</b></button>`;
+  }).join("") + (() => {
+    const today = list.filter(b => b.sentAt === prosToday()).length;
+    return `<span class="pros-day${today >= 15 ? ' warn' : ''}">Aujourd'hui <b>${today}</b>/20</span>`;
+  })();
+
+  document.getElementById('prosTplRow').innerHTML = PROS_TPLS.map(t =>
+    `<button class="pros-tpl" type="button" data-ptpl="${t.id}" aria-pressed="${P.tpl===t.id}">${t.label}</button>`).join("");
+  const ta = document.getElementById('prosMsg');
+  if(document.activeElement !== ta) ta.value = prosTplText(P.tpl);
+  prosSetLen(ta.value.length);
+
+  document.getElementById('prosCats').innerHTML = PROS_CATS.map(c =>
+    `<button class="pros-cat" type="button" data-pcat="${c}" aria-pressed="${prosPendingCat===c}">${c}</button>`).join("");
+
+  const shown = prosFilter ? list.filter(b => (b.status || "todo") === prosFilter) : list;
+  document.getElementById('prosCount').textContent = list.length ? "— " + shown.length + " / " + list.length : "";
+  const box = document.getElementById('prosList');
+  if(!list.length){
+    box.innerHTML = `<p class="hint-text">Aucune marque pour l'instant. Ajoute-en une au-dessus avec son nom et son compte Instagram.</p>`;
+    return;
+  }
+  if(!shown.length){
+    box.innerHTML = `<p class="hint-text">Rien dans ce filtre. Retape sur le filtre en haut pour revoir toute la liste.</p>`;
+    return;
+  }
+  box.innerHTML = shown.map((b) => {
+    const st = prosStatus(b.status || "todo");
+    const h = prosHandleOf(b.handle);
+    const link = h ? "https://ig.me/m/" + encodeURIComponent(h) : "";
+    const date = b.sentAt ? " · " + b.sentAt.slice(8) + "/" + b.sentAt.slice(5,7) : "";
+    return `<article class="pros-card" data-pid="${b.id}" style="--sc:${st.c}">
+      <div class="pros-head">
+        <div class="pros-who">
+          <span class="nm">${prosEsc(b.name || "Sans nom")}</span>
+          ${h ? `<span class="hd">@${prosEsc(h)}</span>` : `<span class="hd" style="color:var(--grey)">compte à renseigner</span>`}
+          ${b.cat ? `<span class="ct"> · ${prosEsc(b.cat)}</span>` : ""}
+        </div>
+        <span class="pros-badge">${st.label}${date}</span>
+        <button class="pros-del" type="button" data-pact="del" aria-label="Supprimer">✕</button>
+      </div>
+      <div class="pros-sbar">${PROS_STATUS.filter(s => s.id !== "todo").map(s =>
+        `<button type="button" data-pset="${s.id}" style="color:${s.c}"
+          aria-pressed="${(b.status||"todo") === s.id}"><i></i>${s.label}</button>`).join("")}</div>
+      <textarea class="pros-hook" data-pact="hook" placeholder="Première phrase personnalisée pour cette marque (facultatif)">${prosEsc(b.line || "")}</textarea>
+      <div class="pros-act">
+        ${link
+          ? `<a class="go" href="${link}" target="_blank" rel="noopener" data-pact="go">Copier + ouvrir le DM</a>`
+          : `<button class="go" type="button" data-pact="copy">Copier le message</button>`}
+        <button class="ghost" type="button" data-pact="copy">Copier</button>
+      </div>
+    </article>`;
+  }).join("");
+}
+function prosBrand(id){ return (STATE.prospection.brands || []).find(b => b.id === id); }
+
+document.getElementById('prosPipe').addEventListener('click', e => {
+  const btn = e.target.closest('[data-pfilter]'); if(!btn) return;
+  prosFilter = (prosFilter === btn.dataset.pfilter) ? null : btn.dataset.pfilter;
+  renderProspection();
+});
+document.getElementById('prosTplRow').addEventListener('click', e => {
+  const btn = e.target.closest('[data-ptpl]'); if(!btn) return;
+  STATE.prospection.tpl = btn.dataset.ptpl;
+  saveSection('prospection'); renderProspection();
+});
+document.getElementById('prosMsg').addEventListener('input', e => {
+  const P = STATE.prospection;
+  P.edits = P.edits || {};
+  P.edits[P.tpl] = e.target.value;
+  prosSetLen(e.target.value.length);
+  clearTimeout(window._prosT); window._prosT = setTimeout(() => saveSection('prospection'), 700);
+});
+document.getElementById('prosReset').addEventListener('click', () => {
+  const P = STATE.prospection;
+  if(P.edits) delete P.edits[P.tpl];
+  saveSection('prospection'); renderProspection(); showToast("Texte d'origine remis");
+});
+document.getElementById('prosCats').addEventListener('click', e => {
+  const btn = e.target.closest('[data-pcat]'); if(!btn) return;
+  prosPendingCat = (prosPendingCat === btn.dataset.pcat) ? "" : btn.dataset.pcat;
+  renderProspection();
+});
+function prosAddBrand(){
+  const name = document.getElementById('prosName').value.trim();
+  const handle = prosHandleOf(document.getElementById('prosHandle').value);
+  if(!name && !handle){ showToast("Donne au moins un nom."); return; }
+  STATE.prospection.brands = STATE.prospection.brands || [];
+  STATE.prospection.brands.push({
+    id: 'b' + Date.now().toString(36) + Math.random().toString(36).slice(2,6),
+    name: name || "@" + handle, handle, cat: prosPendingCat, line: "", status: "todo"
+  });
+  document.getElementById('prosName').value = "";
+  document.getElementById('prosHandle').value = "";
+  saveSection('prospection'); renderProspection(); showToast("Marque ajoutée");
+}
+document.getElementById('prosAdd').addEventListener('click', prosAddBrand);
+document.getElementById('prosHandle').addEventListener('keydown', e => { if(e.key === 'Enter') prosAddBrand(); });
+document.getElementById('prosName').addEventListener('keydown', e => { if(e.key === 'Enter') document.getElementById('prosHandle').focus(); });
+
+document.getElementById('prosList').addEventListener('click', e => {
+  const card = e.target.closest('[data-pid]'); if(!card) return;
+  const b = prosBrand(card.dataset.pid); if(!b) return;
+  const set = e.target.closest('[data-pset]')?.dataset.pset;
+  if(set){
+    const was = b.status || "todo";
+    b.status = (was === set) ? "todo" : set;
+    if(b.status === "todo") delete b.sentAt;
+    else if(!b.sentAt || b.status === "relance") b.sentAt = prosToday();
+    saveSection('prospection'); renderProspection();
+    showToast(b.status === "todo" ? "Remis à contacter" : prosStatus(b.status).label);
+    return;
+  }
+  const act = e.target.closest('[data-pact]')?.dataset.pact;
+  if(act === 'del'){
+    STATE.prospection.brands = STATE.prospection.brands.filter(x => x.id !== b.id);
+    saveSection('prospection'); renderProspection(); showToast("Marque supprimée");
+    return;
+  }
+  if(act === 'copy'){ prosCopy(prosMessage(b)); return; }
+  if(act === 'go'){
+    prosCopy(prosMessage(b));
+    if((b.status || "todo") === "todo"){
+      b.status = "sent"; b.sentAt = prosToday();
+      saveSection('prospection'); setTimeout(renderProspection, 60);
+    }
+  }
+});
+document.getElementById('prosList').addEventListener('input', e => {
+  if(e.target.dataset.pact !== 'hook') return;
+  const card = e.target.closest('[data-pid]');
+  const b = prosBrand(card.dataset.pid); if(!b) return;
+  b.line = e.target.value;
+  clearTimeout(window._prosHookT); window._prosHookT = setTimeout(() => saveSection('prospection'), 800);
+});
+
+
 async function init(){
   await restoreAdminSession();
   await loadAll();
@@ -7662,7 +8022,7 @@ async function init(){
   renderHistory();
   renderGallery();
   renderTutorials();
-  renderNews(); renderCountdown(); renderLoyalty(); renderRuns(); renderPilotDirectory(); applyResultsHidden();
+  renderNews(); renderCountdown(); renderLoyalty(); renderRuns(); renderPilotDirectory(); applyResultsHidden(); renderProspection();
   await Promise.all([loadPolls(), loadVotes()]);
   renderContests();
   renderProducts();
