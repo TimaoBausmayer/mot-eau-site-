@@ -1441,3 +1441,12 @@ body::after{content:"";position:fixed;inset:0;z-index:300;pointer-events:none;op
 .vz video{max-height:82vh;max-width:92vw;border-radius:16px;box-shadow:0 40px 80px -30px rgba(0,0,0,.9);background:#000;animation:lgImg .5s var(--ex,ease)}
 .vz figcaption{margin-top:12px;color:#fff;font-weight:600}
 .vz button{position:absolute;top:18px;right:18px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:none;color:#fff;font-size:1.1rem;cursor:pointer}
+/* menu : vignettes + liens directs Logos / Pubs / Photos */
+.dd-menu i.th{padding:0;overflow:hidden;width:44px;height:44px;border-radius:10px;border:1px solid rgba(255,255,255,.1)}
+.dd-menu i.th img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ex,ease)}
+.dd-menu button:hover i.th img{transform:scale(1.12)}
+.dd-menu{width:360px}
+@media(min-width:961px){.links .nav-x{display:none!important}}
+.links{gap:20px}
+.dd-menu i{width:44px;height:44px}
+@media(max-width:1260px) and (min-width:961px){.links{gap:14px;font-size:.88rem}.srch-t,.srch-btn kbd{display:none}.srch-btn{padding:10px 12px}.nav-in{gap:18px}}

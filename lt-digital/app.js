@@ -790,14 +790,15 @@ $("vat-note").textContent = vatNote;
 
 /* ---------- menu « Services » déroulant : logos, pubs, réseaux & boost, affiches, photos… ---------- */
 (function(){ const menu = $("dd-menu"), dd = $("dd-svc"), tg = $("dd-tg"); if (!menu) return;
-  const INFO = { "Pubs vidéo":["🎬","Pubs vidéo","Pubs animées, stories, visuels"], "Réseaux sociaux":["🚀","Réseaux sociaux & boost","Gestion, boost de publications"],
-    "Affiches & print":["🖨️","Affiches & print","Affiches, flyers, cartes de visite"], "Photos & vidéo":["📸","Photos & vidéo","Séance photo, retouche, vidéo"], "Logo & identité":["✒️","Logo & identité","Création de logo sur mesure"] };
+  const INFO = { "Pubs vidéo":["🎬","Pubs vidéo","Pubs animées, stories, visuels","images/menu/pubs.jpg"], "Réseaux sociaux":["🚀","Réseaux sociaux & boost","Gestion, boost de publications","images/menu/reseaux.jpg"],
+    "Affiches & print":["🖨️","Affiches & print","Affiches, flyers, cartes de visite","images/menu/affiches.jpg"], "Photos & vidéo":["📸","Photos & vidéo","Séance photo, retouche, vidéo",""], "Logo & identité":["✒️","Logo & identité","Création de logo sur mesure","images/menu/logo.jpg"] };
+  const ico = (e, img) => img ? `<i class="th"><img src="${esc(img)}" alt="" loading="lazy"></i>` : `<i>${e}</i>`;
   const groups = SV ? [...new Set(SI.map(aGroup))] : [];
   const order = ["Pubs vidéo","Réseaux sociaux","Affiches & print","Photos & vidéo","Logo & identité"]; groups.sort((a,b)=>(order.indexOf(a)+99)%99 - (order.indexOf(b)+99)%99);
   const rows = [];
-  if (!$("logos").hidden || ((C.logos||{}).items||[]).length) rows.push(`<button type="button" role="menuitem" data-go="logos"><i>🎨</i><span><b>Nos logos</b><small>Nos designs à découvrir</small></span></button>`);
-  groups.forEach(g=>{ const [ic,t,d] = INFO[g] || ["✦", g, ""]; const n = SI.filter(it=>aGroup(it)===g).length;
-    rows.push(`<button type="button" role="menuitem" data-g="${esc(g)}"><i>${ic}</i><span><b>${esc(t)}</b><small>${esc(d || (n+" prestations"))}</small></span></button>`); });
+  if (!$("logos").hidden || ((C.logos||{}).items||[]).length) rows.push(`<button type="button" role="menuitem" data-go="logos">${ico("🎨","images/menu/logos.jpg")}<span><b>Nos logos</b><small>Nos designs à découvrir</small></span></button>`);
+  groups.forEach(g=>{ const [ic,t,d,img] = INFO[g] || ["✦", g, "", ""]; const n = SI.filter(it=>aGroup(it)===g).length;
+    rows.push(`<button type="button" role="menuitem" data-g="${esc(g)}">${ico(ic,img)}<span><b>${esc(t)}</b><small>${esc(d || (n+" prestations"))}</small></span></button>`); });
   menu.innerHTML = rows.join("") + `<a class="dd-all" href="#services">Tous les services et prix →</a>`;
   const close = () => { dd.classList.remove("open"); tg.setAttribute("aria-expanded","false"); };
   tg.addEventListener("click", e=>{ e.stopPropagation(); const o = dd.classList.toggle("open"); tg.setAttribute("aria-expanded", o); });
@@ -806,6 +807,7 @@ $("vat-note").textContent = vatNote;
   menu.addEventListener("click", e=>{ const b = e.target.closest("button,a"); if (!b) return; close(); $("links").classList.remove("open");
     if (b.dataset.go){ e.preventDefault(); $(b.dataset.go).scrollIntoView({behavior:"smooth"}); }
     else if (b.dataset.g){ svTab = b.dataset.g; drawSvcs(); $("services").scrollIntoView({behavior:"smooth"}); } }); })();
+document.querySelectorAll(".links a.nq[data-g]").forEach(a=>a.addEventListener("click", e=>{ const g = a.dataset.g; if (!SV || !SI.some(it=>aGroup(it)===g)) return; e.preventDefault(); $("links").classList.remove("open"); svTab = g; drawSvcs(); $("services").scrollIntoView({behavior:"smooth"}); }));
 
 /* ---------- nos designs de logos ---------- */
 (function(){ const L = C.logos || {}, list = (L.items||[]).filter(x=>x && x.image); if (!list.length) return;
