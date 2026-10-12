@@ -178,10 +178,12 @@ function planChecks(label, arr, hint){
 S["Options"] = () => [
   h("p",{class:"sub"},"Suppléments que le client peut ajouter à sa commande. Tu peux les réserver à certaines gammes ou les offrir dans une gamme."),
   list(cfg.addons, ()=>({id:"o"+Date.now().toString(36), name:"Nouvelle option", price:50, qty:false, max:20, plans:[], included:[], tag:"", desc:""}),
-    a=>a.name+" — "+(a.price==null?"Sur devis":a.price+" "+cfg.currency.symbol),
+    a=>(a.popular?"⭐ ":"")+a.name+" — "+(a.price==null?"Sur devis":a.price+" "+cfg.currency.symbol)+" · "+(a.group||"Autres"),
     a=>{ a.plans = a.plans||[]; a.included = a.included||[]; return [
       text("Nom", a, "name"), text("Description", a, "desc"),
-      h("div",{class:"row"}, field("Prix", ()=>a.price==null?"":a.price, v=>a.price = v===""?null:Number(v), {type:"number",min:0,placeholder:"vide = sur devis"}), text("Badge (ex : Populaire)", a, "tag")),
+      h("div",{class:"row"}, field("Prix", ()=>a.price==null?"":a.price, v=>a.price = v===""?null:Number(v), {type:"number",min:0,placeholder:"vide = sur devis"}), text("Rubrique (pour les ranger)", a, "group", {placeholder:"Fonctionnalités"}), text("Badge (facultatif)", a, "tag")),
+      check("⭐ Option populaire (affichée en premier)", ()=>a.popular, v=>{ a.popular=v; changed(); }),
+      check("Afficher « dès » devant le prix", ()=>a.from, v=>a.from=v),
       check("Le client peut choisir une quantité (ex : pages en plus)", ()=>a.qty, v=>{ a.qty=v; changed(); show("Options"); }),
       a.qty ? field("Quantité maximum", ()=>a.max||20, v=>a.max=Math.max(1,Number(v)||1), {type:"number",min:1}) : null,
       planChecks("Disponible avec ces gammes", a.plans, "Aucune case cochée = disponible avec toutes les gammes."),

@@ -91,12 +91,25 @@ $("cmp").innerHTML = `<thead><tr><th></th>${C.plans.map(p=>`<th class="${p.popul
   return `<td class="${c}">${v===true?'<span class="yes">✔</span>':v===false?'<span class="no">✕</span>':esc(v)}</td>`;}).join("")}</tr>`).join("")}
 <tr><td>Prix</td>${C.plans.map(p=>`<td class="${p.popular?"pop-col":""}"><b>${p.price==null?"Sur devis":(p.from?"dès ":"")+fmt(p.price)+(p.unit?" "+esc(p.unit):"")}</b></td>`).join("")}</tr></tbody>`;
 
-/* options */
-$("addons").innerHTML = C.addons.map(a=>{
+/* options : rangées par rubrique (Populaires d'abord) */
+const aTag = a => a.tag || (a.popular ? "Populaire" : "");
+const aGroup = a => a.group || "Autres";
+const groupsOf = list => { const out=[]; list.forEach(a=>{ if(!out.includes(aGroup(a))) out.push(aGroup(a)); }); return out; };
+const aPrice = a => a.price==null ? "Sur devis" : "+ "+(a.from?"dès ":"")+fmt(a.price)+(a.qty?" / unité":"");
+const hasPop = C.addons.some(a=>a.popular);
+let addonSel = hasPop ? "Populaires" : groupsOf(C.addons)[0];
+function drawAddons(){
+  const gs = (hasPop?["Populaires"]:[]).concat(groupsOf(C.addons));
+  $("addon-filters").innerHTML = gs.length>1 ? gs.map(g=>`<button class="chip ${g===addonSel?"on":""}" data-ag="${esc(g)}">${esc(g)}</button>`).join("") : "";
   const names = ids => ids.map(id=>(C.plans.find(p=>p.id===id)||{}).name).filter(Boolean).join(", ");
-  const note = [a.plans&&a.plans.length?"Disponible avec : "+names(a.plans):"", a.included&&a.included.length?"Inclus dans : "+names(a.included):""].filter(Boolean).join(" · ");
-  return `<div class="addon"><h4>${esc(a.name)}${a.tag?` <em class="otag">${esc(a.tag)}</em>`:""}</h4><p>${esc(a.desc)}${note?`<span class="avail">${esc(note)}</span>`:""}</p><div class="aprice"><strong>${a.price==null?"Sur devis":"+ "+fmt(a.price)+(a.qty?" / unité":"")}</strong><button type="button" class="add-btn" data-add="${esc(a.id)}">Ajouter</button></div></div>`;
-}).join("");
+  $("addons").innerHTML = C.addons.filter(a=>addonSel==="Populaires" ? a.popular : aGroup(a)===addonSel).map(a=>{
+    const exc = (a.plans&&a.plans.length) ? C.plans.filter(p=>!a.plans.includes(p.id)).map(p=>p.id) : [];
+    const note = [a.plans&&a.plans.length ? (exc.length<=a.plans.length ? "Pas avec : "+names(exc) : "Disponible avec : "+names(a.plans)) : "", a.included&&a.included.length?"Inclus dans : "+names(a.included):""].filter(Boolean).join(" · ");
+    return `<div class="addon"><h4>${esc(a.name)}${aTag(a)?` <em class="otag">${esc(aTag(a))}</em>`:""}</h4><p>${esc(a.desc)}${note?`<span class="avail">${esc(note)}</span>`:""}</p><div class="aprice"><strong>${aPrice(a)}</strong><button type="button" class="add-btn" data-add="${esc(a.id)}">Ajouter</button></div></div>`; }).join("");
+  try { syncAddButtons(state()); } catch(e) {}
+}
+$("addon-filters").addEventListener("click",e=>{ const b=e.target.closest("[data-ag]"); if(b){ addonSel=b.dataset.ag; drawAddons(); } });
+drawAddons();
 
 /* processus */
 $("steps").innerHTML = C.process.map(s=>`<li class="step"><h4>${esc(s.title)}</h4><p>${esc(s.text)}</p></li>`).join("");
@@ -184,14 +197,23 @@ $("pick").innerHTML = C.plans.map((p,i)=>`<label><input type="radio" name="plan"
 if (O.askBusiness===false) form.biz.closest("label").hidden = true;
 if (O.askProject===false) form.desc.closest("label").hidden = true;
 
+const openG = new Set(); let gTouched = false;
+function optHTML(a, plan){
+  const inc = included(a,plan), on = inc || sel[a.id]>0;
+  const price = inc ? "Inclus avec "+esc(plan.name) : aPrice(a);
+  return `<label class="opt ${inc?"inc":""}"><input type="checkbox" data-a="${esc(a.id)}" ${on?"checked":""} ${inc?"disabled":""}><div><b>${esc(a.name)}</b>${aTag(a)?` <em class="otag">${esc(aTag(a))}</em>`:""}<br><small>${price}</small></div>${a.qty&&!inc?`<input type="number" min="1" max="${a.max||50}" value="${sel[a.id]||1}" data-q="${esc(a.id)}" aria-label="Quantité">`:""}</label>`;
+}
+function groupCounts(){ document.querySelectorAll("#opts details.og").forEach(d=>{ const n = d.querySelectorAll("input[data-a]:checked:not(:disabled)").length; const c = d.querySelector("[data-cnt]"); if(c) c.textContent = n ? n+(n>1?" choisies":" choisie") : ""; }); }
 function drawOpts(){
   const plan = curPlan(), list = C.addons.filter(a=>allowed(a,plan));
-  $("opts").innerHTML = list.length ? list.map(a=>{
-    const inc = included(a,plan), on = inc || sel[a.id]>0;
-    const price = inc ? "Inclus avec "+esc(plan.name) : a.price==null ? "Sur devis" : "+ "+fmt(a.price)+(a.qty?" / unité":"");
-    return `<label class="opt ${inc?"inc":""}"><input type="checkbox" data-a="${esc(a.id)}" ${on?"checked":""} ${inc?"disabled":""}><div><b>${esc(a.name)}</b>${a.tag?` <em class="otag">${esc(a.tag)}</em>`:""}<br><small>${price}</small></div>${a.qty&&!inc?`<input type="number" min="1" max="${a.max||50}" value="${sel[a.id]||1}" data-q="${esc(a.id)}" aria-label="Quantité">`:""}</label>`;
-  }).join("") : `<p class="small">Aucune option disponible pour cette gamme.</p>`;
+  const pop = list.filter(a=>a.popular), rest = list.filter(a=>!a.popular), groups = [];
+  if (pop.length) groups.push(["Populaires", pop]); groupsOf(rest).forEach(g=>groups.push([g, rest.filter(a=>aGroup(a)===g)]));
+  if (!gTouched && groups.length) openG.add(groups[0][0]);
+  $("opts").innerHTML = groups.length ? groups.map(([g,arr])=>{ const open = openG.has(g) || arr.some(a=>sel[a.id]>0);
+    return `<details class="og" data-g="${esc(g)}" ${open?"open":""}><summary><span>${esc(g)} <i>${arr.length}</i></span><small data-cnt></small></summary><div class="ogl">${arr.map(a=>optHTML(a,plan)).join("")}</div></details>`; }).join("") : `<p class="small">Aucune option disponible pour cette gamme.</p>`;
+  groupCounts();
 }
+$("opts").addEventListener("toggle", e=>{ const d = e.target; if (d.classList && d.classList.contains("og")){ gTouched = true; d.open ? openG.add(d.dataset.g) : openG.delete(d.dataset.g); } }, true);
 function readSel(){
   $("opts").querySelectorAll("[data-a]").forEach(cb=>{
     if (cb.disabled) return; const id = cb.dataset.a, a = C.addons.find(x=>x.id===id);
@@ -239,7 +261,7 @@ function render(){
   $("mail-btn").hidden = !ct.email;
   if (ct.email) $("mail-btn").href = "mailto:"+ct.email+"?subject="+encodeURIComponent("Commande — "+plan.name)+"&body="+encodeURIComponent(message());
   $("contact-line").textContent = [ct.instagramHandle&&"Instagram : "+ct.instagramHandle, ct.email].filter(Boolean).join(" · ");
-  syncAddButtons(s); updateCartbar(s);
+  syncAddButtons(s); updateCartbar(s); groupCounts();
 }
 function message(){
   const s = state(), d = new FormData(form), dp = +O.depositPercent||0;

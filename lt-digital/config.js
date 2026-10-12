@@ -163,20 +163,46 @@ window.SITE_CONFIG = {
   ],
 
   /* ---------- OPTIONS / SUPPLÉMENTS ----------
-     price    : prix (null => sur devis)
+     price    : prix (null => sur devis) ; from:true => affiché "dès"
+     group    : rubrique (les options sont rangées par rubrique pour rester lisibles)
+     popular  : true => mise en avant dans "Populaires" (affichée en premier)
      qty      : true => le client choisit une quantité (max = plafond)
      plans    : liste d'id de gammes pour lesquelles l'option existe ([] = toutes)
      included : liste d'id de gammes où l'option est déjà incluse (gratuite)
-     tag      : petit badge facultatif (ex : "Populaire") */
+     tag      : badge facultatif (sinon "Populaire" si popular) */
   addons: [
-    { id: "page",   name: "Page supplémentaire",      price: 40,  qty: true,  max: 20, plans: ["vitrine","complet","refonte"], included: [], tag: "", desc: "Ajoute autant de pages que nécessaire." },
-    { id: "logo",   name: "Création de logo",         price: 80,  qty: false, plans: [], included: ["complet"], tag: "", desc: "Un logo propre à ton activité." },
-    { id: "urgent", name: "Livraison express",        price: 100, qty: false, plans: [], included: [], tag: "", desc: "Ton projet passe en priorité." },
-    { id: "domain", name: "Nom de domaine + hébergement (1 an)", price: 60, qty: false, plans: [], included: [], tag: "Populaire", desc: "Je m'occupe de la mise en ligne." },
-    { id: "texte",  name: "Rédaction des textes",     price: 70,  qty: false, plans: [], included: [], tag: "", desc: "Des contenus clairs et percutants." },
-    { id: "maint",  name: "Maintenance (1 mois)",     price: 30,  qty: false, plans: [], included: [], tag: "", desc: "Mises à jour et modifications." },
-    { id: "spec",   name: "Fonctionnalité spéciale",  price: null, qty: false, plans: [], included: [], tag: "", desc: "Réservation, espace client… sur devis." }
+    { id: "reservation", name: "Réservation en ligne", price: 140, from: true, group: "Fonctionnalités", popular: true, qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Rendez-vous ou tables réservés directement sur le site." },
+    { id: "boutique", name: "Boutique en ligne / catalogue", price: 150, from: true, group: "Fonctionnalités", popular: true, qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Présente et vends tes produits en ligne." },
+    { id: "domain", name: "Nom de domaine + hébergement (1 an)", price: 60, group: "Mise en ligne & visibilité", popular: true, qty: false, plans: [], included: [], tag: "", desc: "Je m'occupe de la mise en ligne." },
+    { id: "seo", name: "Optimisation Google (SEO)", price: 70, group: "Mise en ligne & visibilité", popular: true, qty: false, plans: [], included: [], tag: "", desc: "Pour mieux apparaître dans les recherches." },
+    { id: "maint", name: "Maintenance (1 mois)", price: 30, group: "Service & rapidité", popular: true, qty: false, plans: [], included: [], tag: "", desc: "Mises à jour et petites modifications." },
+    { id: "page", name: "Page supplémentaire", price: 40, group: "Contenu & visuel", qty: true, max: 20, plans: ["vitrine","complet","refonte"], included: [], tag: "", desc: "Ajoute autant de pages que nécessaire." },
+    { id: "logo", name: "Création de logo", price: 80, group: "Contenu & visuel", qty: false, plans: [], included: ["complet"], tag: "", desc: "Un logo propre à ton activité." },
+    { id: "texte", name: "Rédaction des textes", price: 70, group: "Contenu & visuel", qty: false, plans: [], included: [], tag: "", desc: "Des contenus clairs et percutants." },
+    { id: "photos", name: "Séance photo ou retouche des photos", price: 120, group: "Contenu & visuel", qty: false, plans: [], included: [], tag: "", desc: "Des photos soignées pour ton site." },
+    { id: "galerie", name: "Galerie photo / portfolio", price: 60, group: "Contenu & visuel", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Montre tes réalisations en images." },
+    { id: "traduction", name: "Traduction du site (anglais)", price: 90, group: "Contenu & visuel", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Ton site dans une deuxième langue." },
+    { id: "video", name: "Vidéo de présentation intégrée", price: null, group: "Contenu & visuel", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Une vidéo mise en valeur sur ton site." },
+    { id: "paiement", name: "Paiement en ligne", price: null, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Encaisse tes clients directement sur le site." },
+    { id: "devisform", name: "Formulaire de devis / commande avancé", price: 60, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Reçois des demandes complètes et bien ordonnées." },
+    { id: "whatsapp", name: "Bouton WhatsApp / Instagram", price: 30, group: "Fonctionnalités", qty: false, plans: [], included: [], tag: "", desc: "Un contact direct en un clic." },
+    { id: "newsletter", name: "Inscription à la newsletter", price: 60, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Récupère les e-mails de tes visiteurs." },
+    { id: "avis", name: "Affichage des avis clients", price: 45, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Mets en avant les retours de tes clients." },
+    { id: "carte", name: "Carte interactive + « ouvert maintenant »", price: 30, group: "Fonctionnalités", qty: false, plans: [], included: [], tag: "", desc: "Plan, horaires et statut ouvert/fermé en direct." },
+    { id: "blog", name: "Blog / actualités modifiable", price: 90, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Publie des nouvelles facilement." },
+    { id: "espace", name: "Espace client / connexion", price: null, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Un espace privé pour tes clients." },
+    { id: "spec", name: "Fonctionnalité spéciale", price: null, group: "Fonctionnalités", qty: false, plans: [], included: [], tag: "", desc: "Un besoin particulier ? On chiffre ensemble." },
+    { id: "email", name: "Adresse e-mail professionnelle", price: 45, group: "Mise en ligne & visibilité", qty: false, plans: [], included: [], tag: "", desc: "contact@tonsite avec ton nom de domaine." },
+    { id: "gbp", name: "Fiche Google Business Profile", price: 60, group: "Mise en ligne & visibilité", qty: false, plans: [], included: [], tag: "", desc: "Ta fiche Google soignée (Maps et recherches)." },
+    { id: "reseaux", name: "Création des comptes réseaux sociaux", price: 60, group: "Mise en ligne & visibilité", qty: false, plans: [], included: [], tag: "", desc: "Instagram, Facebook… prêts à l'emploi." },
+    { id: "analytics", name: "Statistiques de visites", price: 30, group: "Mise en ligne & visibilité", qty: false, plans: [], included: [], tag: "", desc: "Sais combien de personnes visitent ton site." },
+    { id: "urgent", name: "Livraison express", price: 100, group: "Service & rapidité", qty: false, plans: [], included: [], tag: "", desc: "Ton projet passe en priorité." },
+    { id: "modifs", name: "Modifications illimitées (1 mois)", price: 45, group: "Service & rapidité", qty: false, plans: [], included: [], tag: "", desc: "Change ce que tu veux après la livraison." },
+    { id: "formation", name: "Formation (30 min en visio)", price: 45, group: "Service & rapidité", qty: false, plans: [], included: [], tag: "", desc: "Je t'apprends à modifier ton site toi-même." },
+    { id: "secu", name: "Sauvegardes + sécurité (1 mois)", price: 15, group: "Service & rapidité", qty: false, plans: [], included: [], tag: "", desc: "Ton site protégé et sauvegardé." },
+    { id: "evol", name: "Pack d'évolution annuel", price: null, group: "Service & rapidité", qty: false, plans: [], included: [], tag: "", desc: "De nouvelles fonctionnalités chaque année." }
   ],
+
 
 
 
