@@ -53,7 +53,7 @@ Admin → **Accueil** : badge, titre (les mots apparaissent un par un, la partie
 
 ## Logo, affiches & réseaux sociaux
 
-Section sombre « Photos, logo, affiches & réseaux » (photos : mise en place, shooting, retouche, photos de produits, pack photos pro, vidéo ; logo, identité visuelle, cartes de visite, affiches, flyers, menus, kit réseaux, gestion des réseaux sociaux au mois, montage vidéo, pub…).
+Section sombre « Photos, logo, affiches & réseaux » (photos : on se déplace pour les produits (149 €), photos d'équipe (129 €), shooting complet (249 €), mise en place, retouche, pack photos pro, vidéo ; logo, identité visuelle, cartes de visite, affiches, flyers, menus, kit réseaux, gestion des réseaux sociaux au mois, montage vidéo, pub…).
 - **Admin → onglet « Logo & réseaux »** : nom, prix, description, ce qui est inclus, onglet de rangement, mise en avant, quantité.
 - **Prix vide = « Sur devis »**. **Unité « /mois » = abonnement** : affiché à part, pas compté dans le total payé tout de suite.
 - Le client peut commander **sans site** (choix « Pas de site » dans la commande).

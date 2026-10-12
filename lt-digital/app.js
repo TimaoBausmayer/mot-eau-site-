@@ -26,7 +26,7 @@ document.title = C.brand + " — " + C.tagline;
 
 $("logo").innerHTML = `<img src="${esc(C.logo)}" alt="" width="46" height="46"><b>${esc(C.brand)}</b>`;
 $("f-logo").src = C.logoBig; $("f-insta").href = C.contact.instagram; $("f-insta").textContent = C.contact.instagramHandle;
-$("f-brand").textContent = "© " + new Date().getFullYear() + " " + C.brand;
+$("f-brand").textContent = C.brand; $("f-copy").textContent = "© " + new Date().getFullYear() + " " + C.brand;
 $("f-text").textContent = C.footer;
 $("h-badge").textContent = C.hero.badge; $("h-badge-wrap").hidden = !C.hero.badge;
 /* titre : chaque mot apparaît l'un après l'autre */
@@ -133,7 +133,7 @@ function priceHTML(p){
   if (p.price==null) return `<div class="price">Sur devis</div>`;
   const from = p.from ? `<small>${esc(TX.label_from)}</small> ` : "", ap = autoPromoFor(p);
   if (ap && ap.d>0) return `<div class="price">${from}<s class="old">${fmt(p.price)}</s> ${fmt(p.price-ap.d)}${unitHTML(p)}${vt}</div><div class="promo-tag">${esc(ap.p.label||"Promo")} (${promoLabel(ap.p)})</div>`;
-  return `<div class="price">${from}${fmt(p.price)}${unitHTML(p)}${vt}</div>`;
+  return `<div class="price">${from}<span class="num" data-n="${p.price}">${fmt(p.price)}</span>${unitHTML(p)}${vt}</div>`;
 }
 let groupSel = "Tous";
 function drawPlans(){
@@ -497,7 +497,7 @@ function drawSvcs(){
   <article class="svc ${it.popular?"pop":""}" style="--d:${i*70}ms">
     ${it.unit?`<span class="svc-tag">${esc(T0.badge_monthly||"Abonnement")}</span>`:it.popular?`<span class="svc-tag hot">${esc(TX.badge_pop)}</span>`:""}
     <h3>${esc(it.name)}</h3><p>${esc(it.desc||"")}</p>
-    <div class="svc-price">${it.price==null?"Sur devis":`${it.from?`<small>${esc(TX.label_from)}</small> `:""}${fmt(it.price)}${it.unit?` <small>${esc(it.unit)}</small>`:""}${it.qty?` <small>/ unité</small>`:""}${vt}`}</div>
+    <div class="svc-price">${it.price==null?"Sur devis":`${it.from?`<small>${esc(TX.label_from)}</small> `:""}<span class="num" data-n="${it.price}">${fmt(it.price)}</span>${it.unit?` <small>${esc(it.unit)}</small>`:""}${it.qty?` <small>/ unité</small>`:""}${vt}`}</div>
     ${(it.features||[]).length?`<ul>${it.features.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>`:""}
     <button type="button" class="btn btn-sm svc-add" data-svc="${esc(it.id)}"></button>
   </article>`).join("");
@@ -659,5 +659,38 @@ $("vat-note").textContent = vatNote;
   if ("IntersectionObserver" in window){ const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ const f = e.target.querySelector(".frame"); if (f) f.classList.add("wiped"); io.unobserve(e.target); } }), {threshold:.2});
     const watch = () => document.querySelectorAll(".work .frame:not(.wipe)").forEach(f=>{ f.classList.add("wipe"); io.observe(f.closest(".work")); });
     watch(); new MutationObserver(watch).observe($("works"), {childList:true}); }
+})();
+
+/* ---------- bas du site ---------- */
+(function(){ const T = C.texts||{}, still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* grande bande de mots qui défile (accélère quand on fait défiler la page) */
+  const words = (T.mega_words || "Sites web · Photos · Logos · Affiches · Réseaux sociaux · Boutiques en ligne").split("·").map(w=>w.trim()).filter(Boolean);
+  const row = words.map((w,i)=>`<span class="${i%2?"o":""}">${esc(w)}</span><i>✦</i>`).join("");
+  $("mega-track").innerHTML = row + row;
+  if (!still){ const tr = $("mega-track"); let x = 0, v = 0, last = scrollY, w = 0, vis = false;
+    if ("IntersectionObserver" in window) new IntersectionObserver(es=>{ vis = es[0].isIntersecting; }).observe($("mega")); else vis = true;
+    addEventListener("scroll", ()=>{ v += Math.abs(scrollY-last)*.15; last = scrollY; }, {passive:true});
+    (function loop(){ if (vis){ w = w || tr.scrollWidth/2; x -= .6 + v; v *= .9; if (-x >= w) x += w; tr.style.transform = `translate3d(${x}px,0,0) skewX(${-Math.min(v,12)}deg)`; } requestAnimationFrame(loop); })(); }
+  /* appel final : coches + étincelles */
+  $("final-checks").innerHTML = ((C.hero||{}).trust||[]).map((t,i)=>`<li style="--k:${i}"><span aria-hidden="true">✓</span>${esc(t)}</li>`).join("");
+  if (T.final_kicker) $("final-kicker").lastChild.textContent = T.final_kicker;
+  const fin = $("final"); if (!still && matchMedia("(hover:hover) and (pointer:fine)").matches) fin.addEventListener("pointermove", e=>{ const r = fin.getBoundingClientRect(); fin.style.setProperty("--fx", (e.clientX-r.left)+"px"); fin.style.setProperty("--fy", (e.clientY-r.top)+"px"); });
+  /* pied de page : colonnes de liens */
+  $("f-nav").innerHTML = [...document.querySelectorAll('.links a[href^="#"]')].filter(a=>!a.hidden).map(a=>`<a href="${a.getAttribute("href")}">${esc(a.textContent)}</a>`).join("");
+  const sv = [`<a href="#tarifs">${esc(T.f_sites||"Sites internet")}</a>`, `<a href="#tarifs" data-cmp>${esc(T.f_refonte||"Refonte de site")}</a>`].concat(SV ? groupsOf(SI).map(g=>`<a href="#services" data-g="${esc(g)}">${esc(g)}</a>`) : []);
+  $("f-svc").innerHTML = sv.join("");
+  $("f-svc").addEventListener("click", e=>{ const a = e.target.closest("[data-g]"); if (a){ svTab = a.dataset.g; drawSvcs(); } });
+  ["f_h1","f_h2","f_h3"].forEach((k,i)=>{ if (T[k]) $("f-h"+(i+1)).textContent = T[k]; }); if (T.f_note) $("f-note").textContent = T.f_note; if (T.mcta_btn) $("f-cta").textContent = T.mcta_btn;
+  /* le grand nom en bas : lettres qui montent une à une */
+  $("foot-word").innerHTML = [...String(C.brand)].map((c,i)=>`<span style="--i:${i}">${c===" "?"&nbsp;":esc(c)}</span>`).join("");
+  document.querySelectorAll(".foot-grid > *").forEach((el,i)=>{ el.classList.add("reveal"); el.style.setProperty("--d", (i*90)+"ms"); });
+  if ("IntersectionObserver" in window){ const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }), {threshold:.15});
+    [$("foot-word"), $("final"), ...document.querySelectorAll(".foot-grid > *")].forEach(el=>io.observe(el)); }
+  else [$("foot-word"), $("final")].forEach(el=>el.classList.add("in"));
+  /* prix qui défilent jusqu'au bon montant quand ils apparaissent */
+  if (!still && "IntersectionObserver" in window){ const po = new IntersectionObserver(es=>es.forEach(e=>{ if(!e.isIntersecting) return; po.unobserve(e.target); const el = e.target, n = +el.dataset.n; if(!(n>0)) return;
+      const t0 = performance.now(), d = 900; const step = t=>{ const k = Math.min(1,(t-t0)/d), ez = 1-Math.pow(1-k,3); el.textContent = fmt(Math.round(n*ez)); if (k<1) requestAnimationFrame(step); else el.textContent = fmt(n); }; requestAnimationFrame(step); }), {threshold:.6});
+    const watchN = () => document.querySelectorAll(".num[data-n]:not(.nw)").forEach(el=>{ el.classList.add("nw"); po.observe(el); });
+    watchN(); const mo = new MutationObserver(watchN); [$("plans"), $("svcs")].forEach(el=>el && mo.observe(el, {childList:true})); }
 })();
 })();
