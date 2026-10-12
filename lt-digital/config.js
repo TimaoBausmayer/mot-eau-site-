@@ -195,23 +195,24 @@ window.SITE_CONFIG = {
      vrais projets : tag = catégorie (sert au filtre), url = lien du site, image = capture d'écran PC,
      mobile = capture d'écran téléphone (facultatif). */
   portfolio: [
-    { name: "Le Comptoir", tag: "Restauration", category: "Restaurant · Site Vitrine", url: "demos/restaurant.html", image: "images/portfolio/restaurant.jpg", mobile: "images/portfolio/restaurant-mobile.jpg", style: 1 },
-    { name: "Maison Aurore", tag: "Commerces", category: "Boutique en ligne · Site Complet", url: "demos/boutique.html", image: "images/portfolio/boutique.jpg", mobile: "images/portfolio/boutique-mobile.jpg", style: 2 },
-    { name: "PEAK Coaching", tag: "Services", category: "Coach sportif · Site Vitrine", url: "demos/coach.html", image: "images/portfolio/coach.jpg", mobile: "images/portfolio/coach-mobile.jpg", style: 3 },
-    { name: "Atelier Dubois", tag: "Artisans", category: "Menuisier · Site Vitrine", url: "demos/artisan.html", image: "images/portfolio/artisan.jpg", mobile: "images/portfolio/artisan-mobile.jpg", style: 4 },
-    { name: "La Fromagerie des Alpes", tag: "Commerces", category: "Fromagerie · Maquette", url: "demos/fromagerie.html", image: "images/portfolio/fromagerie.jpg", mobile: "images/portfolio/fromagerie-mobile.jpg", style: 1 },
-    { name: "Boucherie Maison Lefèvre", tag: "Commerces", category: "Boucherie · Maquette", url: "demos/boucherie.html", image: "images/portfolio/boucherie.jpg", mobile: "images/portfolio/boucherie-mobile.jpg", style: 2 },
-    { name: "Pizzeria Bella Napoli", tag: "Restauration", category: "Pizzeria · Maquette", url: "demos/pizzeria.html", image: "images/portfolio/pizzeria.jpg", mobile: "images/portfolio/pizzeria-mobile.jpg", style: 3 },
-    { name: "Boulangerie Le Fournil", tag: "Commerces", category: "Boulangerie · Maquette", url: "demos/boulangerie.html", image: "images/portfolio/boulangerie.jpg", mobile: "images/portfolio/boulangerie-mobile.jpg", style: 4 },
-    { name: "Atelier Floral Camélia", tag: "Commerces", category: "Fleuriste · Maquette", url: "demos/fleuriste.html", image: "images/portfolio/fleuriste.jpg", mobile: "images/portfolio/fleuriste-mobile.jpg", style: 1 },
-    { name: "Barber Club 1925", tag: "Beauté & bien-être", category: "Barbier · Maquette", url: "demos/barbier.html", image: "images/portfolio/barbier.jpg", mobile: "images/portfolio/barbier-mobile.jpg", style: 2 },
-    { name: "Garage Auto Performance", tag: "Services", category: "Garage auto · Maquette", url: "demos/garage.html", image: "images/portfolio/garage.jpg", mobile: "images/portfolio/garage-mobile.jpg", style: 3 },
-    { name: "Duval Plomberie & Chauffage", tag: "Artisans", category: "Plombier · Maquette", url: "demos/plombier.html", image: "images/portfolio/plombier.jpg", mobile: "images/portfolio/plombier-mobile.jpg", style: 4 },
-    { name: "Institut Éclat", tag: "Beauté & bien-être", category: "Institut de beauté · Maquette", url: "demos/esthetique.html", image: "images/portfolio/esthetique.jpg", mobile: "images/portfolio/esthetique-mobile.jpg", style: 1 },
-    { name: "Studio Lumière Photographie", tag: "Services", category: "Photographe · Maquette", url: "demos/photographe.html", image: "images/portfolio/photographe.jpg", mobile: "images/portfolio/photographe-mobile.jpg", style: 2 },
-    { name: "La Cave du Sommelier", tag: "Commerces", category: "Caviste · Maquette", url: "demos/cave.html", image: "images/portfolio/cave.jpg", mobile: "images/portfolio/cave-mobile.jpg", style: 3 },
-    { name: "Ink & Soul Tattoo", tag: "Beauté & bien-être", category: "Tatoueur · Maquette", url: "demos/tatoueur.html", image: "images/portfolio/tatoueur.jpg", mobile: "images/portfolio/tatoueur-mobile.jpg", style: 4 }
+    { name: "Le Comptoir", tag: "Restauration", category: "Restaurant · site de 3 pages", url: "demos/restaurant/index.html", image: "images/portfolio/restaurant.jpg", mobile: "images/portfolio/restaurant-mobile.jpg", style: 1 },
+    { name: "Maison Aurore", tag: "Commerces", category: "Boutique · site de 3 pages", url: "demos/boutique/index.html", image: "images/portfolio/boutique.jpg", mobile: "images/portfolio/boutique-mobile.jpg", style: 2 },
+    { name: "PEAK Coaching", tag: "Services", category: "Coach sportif · site de 3 pages", url: "demos/coach/index.html", image: "images/portfolio/coach.jpg", mobile: "images/portfolio/coach-mobile.jpg", style: 3 },
+    { name: "Atelier Dubois", tag: "Artisans", category: "Menuiserie · site de 3 pages", url: "demos/artisan/index.html", image: "images/portfolio/artisan.jpg", mobile: "images/portfolio/artisan-mobile.jpg", style: 4 },
+    { name: "La Fromagerie des Alpes", tag: "Commerces", category: "Fromagerie · site de 3 pages", url: "demos/fromagerie/index.html", image: "images/portfolio/fromagerie.jpg", mobile: "images/portfolio/fromagerie-mobile.jpg", style: 1 },
+    { name: "Boucherie Maison Lefèvre", tag: "Commerces", category: "Boucherie · site de 3 pages", url: "demos/boucherie/index.html", image: "images/portfolio/boucherie.jpg", mobile: "images/portfolio/boucherie-mobile.jpg", style: 2 },
+    { name: "Pizzeria Bella Napoli", tag: "Restauration", category: "Pizzeria · site de 3 pages", url: "demos/pizzeria/index.html", image: "images/portfolio/pizzeria.jpg", mobile: "images/portfolio/pizzeria-mobile.jpg", style: 3 },
+    { name: "Boulangerie Le Fournil", tag: "Commerces", category: "Boulangerie · site de 3 pages", url: "demos/boulangerie/index.html", image: "images/portfolio/boulangerie.jpg", mobile: "images/portfolio/boulangerie-mobile.jpg", style: 4 },
+    { name: "Atelier Floral Camélia", tag: "Commerces", category: "Fleuriste · site de 3 pages", url: "demos/fleuriste/index.html", image: "images/portfolio/fleuriste.jpg", mobile: "images/portfolio/fleuriste-mobile.jpg", style: 1 },
+    { name: "Barber Club 1925", tag: "Beauté & bien-être", category: "Barbier · site de 3 pages", url: "demos/barbier/index.html", image: "images/portfolio/barbier.jpg", mobile: "images/portfolio/barbier-mobile.jpg", style: 2 },
+    { name: "Garage Auto Performance", tag: "Services", category: "Garage auto · site de 3 pages", url: "demos/garage/index.html", image: "images/portfolio/garage.jpg", mobile: "images/portfolio/garage-mobile.jpg", style: 3 },
+    { name: "Duval Plomberie & Chauffage", tag: "Artisans", category: "Plombier · site de 3 pages", url: "demos/plombier/index.html", image: "images/portfolio/plombier.jpg", mobile: "images/portfolio/plombier-mobile.jpg", style: 4 },
+    { name: "Institut Éclat", tag: "Beauté & bien-être", category: "Institut de beauté · site de 3 pages", url: "demos/esthetique/index.html", image: "images/portfolio/esthetique.jpg", mobile: "images/portfolio/esthetique-mobile.jpg", style: 1 },
+    { name: "Studio Lumière", tag: "Services", category: "Photographe · site de 3 pages", url: "demos/photographe/index.html", image: "images/portfolio/photographe.jpg", mobile: "images/portfolio/photographe-mobile.jpg", style: 2 },
+    { name: "La Cave du Sommelier", tag: "Commerces", category: "Caviste · site de 3 pages", url: "demos/cave/index.html", image: "images/portfolio/cave.jpg", mobile: "images/portfolio/cave-mobile.jpg", style: 3 },
+    { name: "Ink & Soul Tattoo", tag: "Beauté & bien-être", category: "Tatoueur · site de 3 pages", url: "demos/tatoueur/index.html", image: "images/portfolio/tatoueur.jpg", mobile: "images/portfolio/tatoueur-mobile.jpg", style: 4 }
   ],
+
 
 
 

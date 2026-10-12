@@ -16,15 +16,20 @@ Tout le contenu est dans `config.js` (texte simple, commenté).
 ## Mettre en ligne
 Site statique (HTML/CSS/JS) : héberge le dossier `lt-digital` sur Vercel, Netlify ou GitHub Pages.
 
-## Maquettes de démonstration (16 métiers)
-Dossier `demos/` : restaurant, boutique, coach, artisan, fromagerie, boucherie, pizzeria, boulangerie,
-fleuriste, barbier, garage, plombier, institut de beauté, photographe, caviste, tatoueur.
-Elles s'affichent dans « Réalisations » avec un filtre par catégorie et s'ouvrent en grand au clic.
+## Maquettes de démonstration (16 vrais mini-sites)
+Chaque métier a son propre site de 3 pages (Accueil, Carte/Catalogue, Contact), ouvert depuis « Réalisations » :
+restaurant, boutique, coach, menuisier, fromagerie, boucherie, pizzeria, boulangerie, fleuriste, barbier,
+garage, plombier, institut de beauté, photographe, caviste, tatoueur.
+
+### Tout modifier dans une maquette
+Ouvre `demos/<métier>/site.js` : textes, produits, prix, horaires, couleurs, polices, style (A/B/C) et
+illustration. Enregistre, recharge : c'est à jour. Aucune autre ligne de code à toucher.
+Pour livrer un site à un client : copie le dossier, change `site.js`, et c'est son site.
 
 ### Ajouter un nouveau métier (ex : poissonnerie)
-Les maquettes sont fabriquées automatiquement depuis `tools/niches.py` : copie une entrée, change les
-textes/prix/couleurs, puis lance `python3 tools/generate_demos.py`. (Ou demande-moi : je m'en charge.)
-Les images d'aperçu sont dans `images/portfolio/`.
+Copie un dossier de `demos/`, renomme-le et modifie son `site.js`. (Ou ajoute une entrée dans `tools/niches.py`
+puis lance `python3 tools/build_sites.py` — attention : ça réécrit tous les `site.js`.)
+Les images d'aperçu du portfolio sont dans `images/portfolio/`.
 
 ### Tes vrais projets
 Mets une capture PC (et téléphone) dans `images/portfolio/`, puis renseigne-la dans `admin.html` ▸ Réalisations.
