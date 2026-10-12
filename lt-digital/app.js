@@ -297,7 +297,7 @@ const stars = n => { const r = Math.max(0, Math.min(5, Math.round(+n||0))); retu
   $("rv-copy").onclick = async ()=>{ if(!f.reportValidity()) return; try { await navigator.clipboard.writeText(msg()); } catch { const ta=document.createElement("textarea"); ta.value=msg(); document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
     toastR("Avis copié ! Colle-le en message privé sur Instagram "+(ct.instagramHandle||"")+", avec ton logo."); if (ct.instagram) window.open(ct.instagram, "_blank", "noopener"); };
 })();
-$("guar").innerHTML = C.guarantees.map(g=>`<div class="g"><h4>${esc(g.title)}</h4><p>${esc(g.text)}</p></div>`).join("");
+$("guar").innerHTML = C.guarantees.map(g=>`<div class="g"><span class="g-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span><h4>${esc(g.title)}</h4><p>${esc(g.text)}</p></div>`).join("");
 $("faq-list").innerHTML = C.faq.map(f=>`<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join("");
 
 /* ---------- COMMANDE ---------- */
@@ -547,6 +547,9 @@ $("burger").onclick = ()=>$("links").classList.toggle("open");
 $("links").addEventListener("click",()=>$("links").classList.remove("open"));
 
 /* apparition au scroll */
+/* apparition douce des blocs de chaque section (cascade sur les éléments d'une grille) */
+document.querySelectorAll("main .sec-head, .table-wrap, .addons, .works, .order, .faq, .story, .final, .svcs, .rv-top").forEach(el=>el.classList.add("reveal"));
+document.querySelectorAll(".steps > .step, .guar > .g, .values > .val, .plans > .plan").forEach((el,i,all)=>{ el.classList.add("reveal"); el.style.setProperty("--d", (Array.prototype.indexOf.call(el.parentNode.children, el)*90)+"ms"); });
 const els = document.querySelectorAll(".reveal");
 if ("IntersectionObserver" in window) {
   const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} }),{threshold:.12});
