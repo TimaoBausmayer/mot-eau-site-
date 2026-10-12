@@ -163,7 +163,7 @@ if(!reduce && matchMedia("(pointer:fine)").matches){
   document.querySelectorAll(".card,.it").forEach(c=>c.addEventListener("pointermove",ev=>{ const r=c.getBoundingClientRect(); c.style.setProperty("--mx",((ev.clientX-r.left)/r.width*100)+"%"); c.style.setProperty("--my",((ev.clientY-r.top)/r.height*100)+"%"); }));
 }
 /* chiffres qui défilent */
-document.querySelectorAll(".stats strong").forEach(el=>{ const m=el.textContent.match(/^(\D*)(\d+)(.*)$/); if(!m||reduce||/[?&]clean/.test(location.search)) return; const end=+m[2]; if(end<2) return; el.dataset.t=el.textContent; el.textContent=m[1]+"0"+m[3];
+/* (les chiffres s'affichent directement : pas de compteur qui part de zéro) */ if (false) document.querySelectorAll(".stats strong").forEach(el=>{ const m=el.textContent.match(/^(\D*)(\d+)(.*)$/); if(!m||reduce||/[?&]clean/.test(location.search)) return; const end=+m[2]; if(end<2) return; el.dataset.t=el.textContent; el.textContent=m[1]+"0"+m[3];
   const io=new IntersectionObserver(es=>es.forEach(x=>{ if(!x.isIntersecting) return; io.disconnect(); const t0=performance.now(); const step=t=>{ const k=Math.min(1,(t-t0)/1300), v=Math.round(end*(1-Math.pow(1-k,3))); el.textContent=m[1]+v+m[3]; if(k<1) requestAnimationFrame(step); }; requestAnimationFrame(step); }),{threshold:.6}); io.observe(el); });
 /* page offre : recherche + catégorie active */
 const se=document.getElementById("search"); if(se){ se.addEventListener("input",()=>{ const t=norm(se.value.trim()); let any=false;

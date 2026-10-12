@@ -79,7 +79,7 @@ window.SITE = {
     "intro": "Une pâte légère, des produits italiens, une cuisson de 90 secondes à 450 °C.",
     "images": true,
     "illustrations": false,
-    "placeholders": true,
+    "placeholders": false,
     "cats": [
       {
         "name": "Les classiques",

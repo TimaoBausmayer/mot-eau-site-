@@ -79,7 +79,7 @@ window.SITE = {
     "intro": "Toute la viande est française et traçable. Dites-nous l'épaisseur, on découpe devant vous.",
     "images": true,
     "illustrations": false,
-    "placeholders": true,
+    "placeholders": false,
     "cats": [
       {
         "name": "Bœuf & veau",
