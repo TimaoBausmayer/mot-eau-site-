@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L&amp;T Digital — Publicité 4 plein écran (style cinéma)</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../images/logo-small.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Mono:wght@400;500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Publicité « cinéma orange » en plein écran vertical 1080 × 1920 (TikTok / Reels / Stories), sans voix.
+   30 s, coupes calées sur un tempo de 120 BPM (un temps toutes les 0,5 s à partir de 0,87 s). */
+:root{
+  --or:#ff6a1a; --or2:#ff9a3c; --red:#ff3b1f;
+  --hf:'Bricolage Grotesque',system-ui,sans-serif; --bf:'Hanken Grotesk',system-ui,sans-serif; --mono:'DM Mono',ui-monospace,monospace;
+  --e:cubic-bezier(.2,.8,.2,1); --e2:cubic-bezier(.7,0,.2,1); --bo:cubic-bezier(.34,1.56,.64,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;overflow:hidden}
+body{display:grid;place-items:center;font-family:var(--bf);color:#fff}
+.viewport{position:relative;width:1080px;height:1920px;transform-origin:center;flex:none;overflow:hidden;background:#0b0605}
+
+.sc{position:absolute;inset:0;opacity:0;overflow:hidden;animation:on .01s linear forwards,off .01s linear forwards;animation-delay:var(--a),var(--b)}
+@keyframes on{to{opacity:1}}
+@keyframes off{to{opacity:0}}
+.fx-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 55% at 50% 52%,#4a1606 0%,#1c0805 48%,#090404 82%)}
+.bokeh i{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,120,40,.55),transparent 65%);animation:bk 6s ease-in-out infinite alternate}
+@keyframes bk{to{transform:translate(50px,-40px) scale(1.2)}}
+.vign{position:absolute;inset:0;pointer-events:none;z-index:8;background:radial-gradient(ellipse 85% 70% at 50% 50%,transparent 55%,rgba(0,0,0,.65) 100%)}
+.grain{position:absolute;inset:0;z-index:9;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.flashcut{position:absolute;inset:0;z-index:7;background:#ffb27a;opacity:0;pointer-events:none;animation:fc .25s ease-out forwards;animation-delay:var(--t)}
+@keyframes fc{0%{opacity:.55}100%{opacity:0}}
+
+/* 1. le message */
+.p1 .wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:zoom 2.37s cubic-bezier(.6,0,.4,1) both}
+@keyframes zoom{0%,72%{transform:scale(1)}100%{transform:scale(2.1) translate(-150px,0)}}
+.hint{font:500 34px var(--mono);letter-spacing:.24em;text-transform:uppercase;color:rgba(255,190,150,.75);margin-bottom:60px}
+.prompt{display:flex;align-items:center;gap:22px;width:980px;padding:30px 28px 30px 40px;border-radius:999px;background:rgba(20,8,6,.78);border:3px solid rgba(255,106,26,.8);box-shadow:0 0 70px rgba(255,106,26,.4),inset 0 0 30px rgba(255,106,26,.15)}
+.prompt .chev{font:700 50px var(--mono);color:var(--or)}
+.prompt .txt{flex:1;font:500 44px var(--bf);color:#f6e8de;white-space:nowrap;overflow:hidden;width:0;max-width:30ch;border-right:4px solid var(--or);animation:type 1.2s steps(35) forwards,caret .6s step-end infinite;animation-delay:.25s,0s}
+@keyframes type{to{width:30ch}}
+@keyframes caret{50%{border-color:transparent}}
+.prompt .go{display:grid;place-items:center;flex:none;width:100px;height:100px;border-radius:50%;background:var(--or);font:700 54px var(--bf);color:#fff;box-shadow:0 0 40px rgba(255,106,26,.8);animation:press .35s ease both;animation-delay:1.87s}
+@keyframes press{50%{transform:scale(.8);box-shadow:0 0 110px rgba(255,140,60,1)}100%{transform:scale(1.06)}}
+.p1 .q{margin-top:70px;font:700 64px/1.1 var(--hf);letter-spacing:-.03em;text-align:center;opacity:0;animation:up .6s var(--e) forwards;animation-delay:.9s}
+.p1 .q b{color:var(--or)}
+@keyframes up{from{opacity:0;transform:translateY(50px)}to{opacity:1;transform:none}}
+
+/* 2. le couloir de sites */
+.p2 .cor{position:absolute;inset:0;perspective:620px;perspective-origin:50% 50%}
+.p2 .move{position:absolute;inset:0;transform-style:preserve-3d;animation:dolly 3s linear both;animation-delay:2.37s}
+@keyframes dolly{from{transform:translateZ(-260px)}to{transform:translateZ(560px)}}
+.wallL,.wallR{position:absolute;top:240px;width:2600px;height:1440px;display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(3,1fr);gap:24px;transform-style:preserve-3d}
+.wallL{left:50%;margin-left:-2700px;transform-origin:right center;transform:translateX(-100px) rotateY(80deg)}
+.wallR{left:50%;margin-left:100px;transform-origin:left center;transform:translateX(100px) rotateY(-80deg)}
+.wallL i,.wallR i{border-radius:12px;background-size:cover;background-position:top;box-shadow:0 0 0 2px rgba(255,106,26,.4),0 0 34px rgba(255,106,26,.3);filter:saturate(.85) brightness(.85) sepia(.35) hue-rotate(-12deg)}
+.floorline{position:absolute;left:50%;bottom:0;width:8px;height:760px;margin-left:-4px;background:linear-gradient(transparent,var(--or));box-shadow:0 0 40px var(--or);transform:perspective(600px) rotateX(70deg);transform-origin:bottom}
+@property --num{syntax:"<integer>";inherits:false;initial-value:0}
+.counter{position:absolute;left:50%;top:50%;width:820px;transform:translate(-50%,-50%);padding:40px 56px;border-radius:30px;background:rgba(12,6,5,.85);border:3px solid rgba(255,106,26,.8);box-shadow:0 0 90px rgba(255,106,26,.5);text-align:left;opacity:0;animation:cIn .4s var(--bo) forwards;animation-delay:2.87s;z-index:2}
+@keyframes cIn{from{opacity:0;transform:translate(-50%,-50%) scale(.6)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.counter b{font:800 200px/1 var(--hf);letter-spacing:-.04em;color:#fff;counter-reset:n var(--num);animation:count 1.9s cubic-bezier(.3,0,.2,1) forwards;animation-delay:2.95s}
+.counter b::before{content:counter(n)}
+@keyframes count{to{--num:16}}
+.counter span{display:block;margin-top:10px;font:700 52px var(--hf);color:var(--or2)}
+.counter small{display:block;margin-top:12px;font:500 30px/1.4 var(--mono);color:rgba(255,220,200,.65)}
+
+/* 3. cartes en perspective (défilement vertical) */
+.p3 .plane{position:absolute;left:50%;top:0;width:760px;margin-left:-380px;display:grid;gap:40px;transform:perspective(1600px) rotateX(16deg) rotateY(-14deg) rotateZ(-4deg);transform-origin:50% 0;animation:pan 3s cubic-bezier(.45,0,.3,1) both;animation-delay:5.37s}
+@keyframes pan{from{translate:0 520px}to{translate:0 -2760px}}
+.card{position:relative;height:640px;border-radius:40px;background:linear-gradient(160deg,#2a1410,#120806);border:2px solid rgba(255,140,80,.35);box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 60px rgba(255,106,26,.22);overflow:hidden}
+.card .img{position:absolute;left:30px;right:30px;top:30px;height:440px;border-radius:24px;background-size:cover;background-position:top}
+.card .big{position:absolute;left:44px;top:70px;font:800 230px/1 var(--hf);letter-spacing:-.05em}
+.card .big small{display:block;font:600 46px var(--bf);letter-spacing:0;color:var(--or2);margin-top:18px}
+.card .lab{position:absolute;left:30px;bottom:34px;display:flex;align-items:center;gap:20px;padding:18px 32px;border-radius:20px;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.14);font:700 48px var(--hf)}
+.card .lab em{font:600 32px var(--mono);font-style:normal;background:var(--or);padding:6px 14px;border-radius:12px}
+.card .ic{position:absolute;left:50%;top:120px;width:300px;height:300px;margin-left:-150px;border-radius:50%;display:grid;place-items:center;font-size:150px;background:radial-gradient(circle,rgba(255,106,26,.5),transparent 70%)}
+.card.hot{border-color:var(--or);box-shadow:0 0 0 4px var(--or),0 0 110px rgba(255,106,26,.6)}
+
+/* 4. mur de sites */
+.p4 .wallg{position:absolute;left:50%;top:50%;width:1900px;height:2600px;margin:-1300px 0 0 -950px;display:grid;grid-template-columns:repeat(4,1fr);gap:22px;align-content:start;transform:perspective(1600px) rotateX(24deg) rotateY(-14deg) rotateZ(8deg) scale(.9);animation:wdrift 2s linear both;animation-delay:11.37s}
+@keyframes wdrift{to{transform:perspective(1600px) rotateX(24deg) rotateY(-14deg) rotateZ(8deg) scale(1.05) translateY(-140px)}}
+.wallg i{aspect-ratio:9/14;border-radius:16px;background-size:cover;background-position:top;box-shadow:0 0 0 2px rgba(255,106,26,.45);filter:brightness(.92)}
+.wallg i:nth-child(5n+2){box-shadow:0 0 0 4px var(--or),0 0 50px rgba(255,106,26,.65)}
+.pill{position:absolute;left:50%;top:50%;z-index:3;transform:translate(-50%,-50%) rotate(-4deg);padding:30px 54px;border-radius:26px;background:rgba(12,6,5,.9);border:3px solid rgba(255,106,26,.8);box-shadow:0 0 80px rgba(255,106,26,.45);font:800 76px/1.05 var(--hf);letter-spacing:-.03em;text-align:center;white-space:nowrap;opacity:0;animation:pIn .35s var(--bo) forwards;animation-delay:11.87s}
+@keyframes pIn{from{opacity:0;transform:translate(-50%,-50%) rotate(-4deg) scale(.6)}to{opacity:1;transform:translate(-50%,-50%) rotate(-4deg) scale(1)}}
+
+/* 5. les chiffres */
+.p5 .stagecards{position:absolute;inset:0;perspective:1500px}
+.nc{position:absolute;left:50%;top:50%;width:700px;height:1040px;margin:-520px 0 0 -350px;border-radius:56px;background:linear-gradient(160deg,#2b120c,#110706);border:3px solid rgba(255,106,26,.6);box-shadow:0 0 100px rgba(255,106,26,.32);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0}
+.nc b{font:800 560px/.9 var(--hf);letter-spacing:-.06em;background:linear-gradient(#ffb070,#ff5a14);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nc span{margin-top:20px;font:700 76px/1.05 var(--hf);color:#ffe2cc;transform:rotate(-4deg)}
+.nc.solo{animation:solo .45s var(--e) both,soloOut .01s linear forwards;animation-delay:var(--a),var(--b)}
+@keyframes solo{from{opacity:0;transform:rotateY(-40deg) translateX(260px) scale(.9)}to{opacity:1;transform:rotateY(-10deg)}}
+@keyframes soloOut{to{opacity:0}}
+.trio{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:30px;opacity:0;animation:on .01s linear forwards;animation-delay:21.37s}
+.trio .nc{position:relative;left:auto;top:auto;margin:0;width:880px;height:360px;flex-direction:row;gap:44px;opacity:1;animation:tri .4s var(--bo) both;animation-delay:var(--d)}
+.trio .nc b{font-size:300px}.trio .nc span{font-size:62px;margin:0;text-align:left}
+@keyframes tri{from{opacity:0;transform:translateX(160px) scale(.9)}to{opacity:1;transform:none}}
+
+/* 6. flash blanc */
+.p6{background:#f4ede6}
+.p6 .col{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;transform:perspective(1300px) rotateX(8deg) rotateY(-12deg)}
+.p6 .col span{padding:40px 70px;border-radius:26px;background:#fff;color:#2a1a12;font:800 76px var(--hf);letter-spacing:-.02em;box-shadow:0 30px 70px -20px rgba(80,30,10,.35);animation:act .3s ease forwards;animation-delay:var(--d)}
+@keyframes act{to{background:var(--or);color:#fff;box-shadow:0 0 0 5px #ffb27a,0 40px 90px -10px rgba(255,106,26,.85)}}
+.p6 .col i{font:700 70px var(--bf);color:#c9a58e;font-style:normal}
+.p6 .dot{position:absolute;left:150px;top:640px;width:56px;height:56px;border-radius:50%;background:var(--red);box-shadow:0 0 40px var(--red);z-index:2;animation:hop .9s cubic-bezier(.5,0,.5,1) both;animation-delay:24.45s}
+@keyframes hop{0%{transform:translate(0,0)}30%{transform:translate(-40px,300px)}50%{transform:translate(0,320px)}80%{transform:translate(-40px,620px)}100%{transform:translate(0,640px)}}
+
+/* 7. la marque */
+.p7 .fx-bg{background:radial-gradient(ellipse 80% 60% at 50% 42%,#3d1406 0%,#150705 52%,#060303 88%)}
+.p7 .in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 70px}
+.p7 .orb{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,#ffb070,#ff5a14 60%);box-shadow:0 0 120px 30px rgba(255,90,20,.7);animation:orb .7s var(--e) both;animation-delay:25.37s}
+@keyframes orb{from{transform:scale(3);filter:blur(30px);opacity:0}to{transform:none;filter:none;opacity:1}}
+.p7 h1{margin-top:80px;font:800 170px/1 var(--hf);letter-spacing:-.05em;clip-path:inset(0 100% 0 0);animation:reveal .6s var(--e) forwards;animation-delay:25.65s}
+@keyframes reveal{to{clip-path:inset(0 0 0 0)}}
+.p7 p{margin-top:40px;font:600 64px/1.2 var(--bf);color:#ffe2cc;opacity:0;animation:fade .5s ease forwards;animation-delay:26.05s}
+.p7 .tag{margin-top:70px;display:flex;gap:24px;opacity:0;animation:fade .5s ease forwards;animation-delay:26.45s}
+.p7 .tag span{padding:20px 36px;border-radius:999px;border:3px solid rgba(255,140,80,.6);font:600 44px var(--mono);color:#ffc9a3}
+.p7 .tag span.ig{background:var(--or);border-color:var(--or);color:#fff}
+@keyframes fade{to{opacity:1}}
+
+/* A. avant / après (8,37 → 11,37 s) */
+.pa .in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.pa h2,.pb h2,.pcn h2{font:800 104px/1 var(--hf);letter-spacing:-.045em;text-align:center}
+.pa h2 b,.pb h2 b,.pcn h2 b,.pd h2 b{color:var(--or)}
+.pa h2{margin-bottom:60px}
+.brw{width:900px;border-radius:30px;overflow:hidden;background:#fff;box-shadow:0 50px 110px -30px rgba(0,0,0,.85),0 0 0 3px rgba(255,106,26,.5)}
+.brw .bar{display:flex;align-items:center;gap:10px;padding:18px 24px;background:#f2f3f7}
+.brw .bar i{width:18px;height:18px;border-radius:50%;background:#ff5f57}.brw .bar i:nth-child(2){background:#febc2e}.brw .bar i:nth-child(3){background:#28c840}
+.brw .bar span{margin-left:16px;flex:1;padding:6px 20px;border-radius:999px;background:#fff;font:500 26px var(--mono);color:#8a93a8}
+.brw .view{position:relative;height:1000px;overflow:hidden}
+.old{position:absolute;inset:0;padding:30px;background:#c9c9c9;font-family:"Times New Roman",serif;color:#000;animation:glitch .4s steps(2) 2;animation-delay:9.3s}
+.old .tt{background:#000080;color:#ff0;font:bold 50px "Comic Sans MS",serif;text-align:center;padding:16px;border:6px outset #9999ff}
+.old p{margin-top:22px;font-size:36px;background:#fff;padding:18px;border:3px solid #000}.old a{color:#00e;text-decoration:underline}
+.old .uc{margin-top:22px;padding:18px;text-align:center;font:bold 36px "Courier New",monospace;background:repeating-linear-gradient(45deg,#ffd400 0 30px,#000 30px 60px);color:#fff;text-shadow:0 0 6px #000}
+@keyframes glitch{25%{transform:translate(-14px,6px) skewX(5deg);filter:hue-rotate(90deg)}50%{transform:translate(12px,-5px)}75%{transform:translate(-8px,0) skewX(-3deg)}100%{transform:none}}
+.neu{position:absolute;inset:0;clip-path:inset(0 100% 0 0);animation:wipeR .5s cubic-bezier(.7,0,.2,1) forwards;animation-delay:9.87s}
+@keyframes wipeR{to{clip-path:inset(0 0 0 0)}}
+.neu img{display:block;width:100%;animation:scr 1.4s ease-in-out both;animation-delay:10.3s}
+@keyframes scr{to{transform:translateY(-34%)}}
+.stamp{position:absolute;right:110px;top:640px;z-index:2;transform:rotate(12deg);padding:16px 34px;border:8px solid #ff3d6e;border-radius:18px;color:#ff3d6e;font:800 70px var(--hf);background:rgba(255,255,255,.9);animation:stamp .4s var(--bo) both,gone .01s linear forwards;animation-delay:8.87s,9.87s}
+@keyframes stamp{from{opacity:0;transform:rotate(12deg) scale(2.4)}to{opacity:1;transform:rotate(12deg) scale(1)}}
+@keyframes gone{to{opacity:0}}
+.stamp2{position:absolute;left:110px;top:640px;z-index:2;transform:rotate(-8deg);padding:16px 34px;border-radius:18px;background:var(--or);color:#fff;font:800 70px var(--hf);box-shadow:0 0 70px rgba(255,106,26,.8);animation:stamp2 .4s var(--bo) both;animation-delay:10.37s}
+@keyframes stamp2{from{opacity:0;transform:rotate(-8deg) scale(2.4)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
+/* B. photos (13,37 → 16,37 s) */
+.pb .in,.pcn .in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.pola{position:relative;width:1000px;height:1000px;margin-top:40px}
+.pc{position:absolute;width:400px;padding:22px 22px 76px;background:#fff6ee;border-radius:12px;box-shadow:0 40px 90px -30px rgba(0,0,0,.9),0 0 50px rgba(255,106,26,.25);animation:drop .5s var(--bo) both;animation-delay:var(--d)}
+.pc .ph{height:370px;overflow:hidden;border-radius:6px;background:#ddd}
+.pc img{width:100%;height:100%;object-fit:cover;object-position:top}
+.pc em{position:absolute;left:0;right:0;bottom:18px;text-align:center;font:700 40px var(--hf);font-style:normal;color:#3a2016}
+@keyframes drop{from{opacity:0;transform:translateY(-700px) rotate(calc(var(--r) * -3))}to{opacity:1;transform:rotate(var(--r))}}
+.camflash{position:absolute;inset:0;background:#fff;opacity:0;z-index:6;animation:cf .35s ease-out forwards;animation-delay:var(--t)}
+@keyframes cf{0%{opacity:.9}100%{opacity:0}}
+.pricerow{display:flex;gap:18px;margin-top:20px;flex-wrap:wrap;justify-content:center}
+.pricerow span{padding:20px 32px;border-radius:999px;background:rgba(12,6,5,.85);border:3px solid rgba(255,106,26,.7);font:600 40px var(--bf);animation:pIn2 .35s var(--bo) both;animation-delay:var(--d)}
+.pricerow b{font:800 48px var(--hf);color:var(--or2)}
+@keyframes pIn2{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+/* C. réseaux (16,37 → 19,37 s) */
+.pcn h2{margin-bottom:56px}
+.phone{position:relative;width:600px;height:1140px;border-radius:84px;border:16px solid #1c120e;background:#fff;overflow:hidden;box-shadow:0 60px 140px -40px rgba(0,0,0,.9),0 0 90px rgba(255,106,26,.35);animation:phIn .5s var(--e) both;animation-delay:16.37s}
+@keyframes phIn{from{opacity:0;transform:perspective(1400px) rotateY(-40deg) translateX(300px)}to{opacity:1;transform:perspective(1400px) rotateY(-12deg) rotateX(5deg)}}
+.phone .hd{display:flex;align-items:center;gap:20px;padding:64px 30px 24px;border-bottom:2px solid #eee;color:#0b1020;text-align:left}
+.phone .hd img{width:120px;height:120px;border-radius:50%;padding:6px;background:linear-gradient(45deg,#f58529,#dd2a7b,#515bd4)}
+.phone .hd b{display:block;font:700 38px var(--hf)}.phone .hd span{font:500 28px var(--bf);color:#6b7286}
+.feed{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:6px}
+.feed i{aspect-ratio:1;border-radius:6px;background-size:cover;background-position:top;animation:pIn2 .3s var(--bo) both;animation-delay:var(--d)}
+.heart{position:absolute;font-size:110px;font-style:normal;opacity:0;z-index:3;animation:heart 1.8s ease-out both;animation-delay:var(--d)}
+@keyframes heart{0%{opacity:0;transform:scale(.4)}20%{opacity:1;transform:translateY(-80px) scale(1.15)}100%{opacity:0;transform:translateY(-700px) scale(.9)}}
+.notif{position:absolute;left:50%;top:1340px;width:860px;margin-left:-430px;z-index:4;display:flex;align-items:center;gap:26px;padding:30px 36px;border-radius:36px;background:rgba(255,248,242,.96);color:#1c120e;text-align:left;box-shadow:0 40px 80px -20px rgba(0,0,0,.7);animation:notif 1.6s var(--e) both;animation-delay:17.6s}
+.notif .ic{display:grid;place-items:center;flex:none;width:90px;height:90px;border-radius:26px;background:linear-gradient(45deg,#f58529,#dd2a7b,#515bd4);font-size:50px}
+.notif b{display:block;font:800 42px var(--hf)}.notif span{font:500 34px var(--bf);color:#6b5a50}
+@keyframes notif{0%{opacity:0;transform:translateY(80px)}25%,85%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-40px)}}
+/* D. les prix (21,87 → 24,37 s) */
+.pd .in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px}
+.pd h2{font:800 110px/1 var(--hf);letter-spacing:-.045em;margin-bottom:20px}
+.pr{display:flex;align-items:center;justify-content:space-between;width:900px;padding:40px 54px;border-radius:40px;background:linear-gradient(160deg,#2b120c,#110706);border:3px solid rgba(255,106,26,.55);box-shadow:0 0 70px rgba(255,106,26,.25);text-align:left;animation:slam .35s var(--bo) both;animation-delay:var(--d)}
+.pr span{font:700 54px var(--hf)}.pr small{display:block;font:500 30px var(--mono);color:rgba(255,220,200,.6)}
+.pr b{font:800 110px/1 var(--hf);letter-spacing:-.04em;background:linear-gradient(#ffb070,#ff5a14);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pr b small{display:inline;font:700 40px var(--bf);-webkit-text-fill-color:#ffb070;margin-right:10px}
+.pr.hot{border-color:var(--or);box-shadow:0 0 0 4px var(--or),0 0 110px rgba(255,106,26,.55)}
+@keyframes slam{from{opacity:0;transform:scale(1.6) translateY(-30px)}to{opacity:1;transform:none}}
+/* ticket final */
+.ticket{position:relative;margin-top:60px;display:flex;align-items:center;gap:34px;padding:34px 52px;border-radius:40px;background:linear-gradient(120deg,#ff6a1a,#ff3b1f);box-shadow:0 40px 100px -30px rgba(255,90,20,.9);overflow:hidden;opacity:0;animation:pIn2 .45s var(--bo) forwards;animation-delay:26.87s}
+.ticket::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.45) 50%,transparent 65%);transform:translateX(-120%);animation:shine 1.2s ease-in-out forwards;animation-delay:27.6s}
+@keyframes shine{to{transform:translateX(120%)}}
+.ticket .pct{font:800 110px/1 var(--hf);letter-spacing:-.05em}
+.ticket .code{text-align:left;font:500 34px var(--bf)}.ticket .code b{display:inline-block;margin-top:10px;padding:8px 24px;border-radius:14px;background:#fff;color:#2a1208;font:700 44px var(--mono);letter-spacing:.08em}
+
+.ui{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:10px;z-index:30}
+.ui button,.ui a{font:600 14px var(--bf);padding:10px 18px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(20,10,8,.7);color:#fff;cursor:pointer;text-decoration:none}
+.capture .ui{display:none}
+</style>
+</head>
+<body>
+<div class="viewport" id="vp">
+
+  <!-- 1. Le message (0 → 2,37 s) -->
+  <section class="sc p1" style="--a:0s;--b:2.37s"><div class="fx-bg"></div>
+    <div class="bokeh"><i style="left:80px;top:260px;width:380px;height:380px"></i><i style="right:60px;top:1240px;width:460px;height:460px;animation-delay:-2s"></i><i style="left:520px;top:1500px;width:260px;height:260px;animation-delay:-4s"></i></div>
+    <div class="wrap"><div class="hint">L&amp;T Digital</div>
+      <div class="prompt"><span class="chev">›</span><span class="txt">Fais-moi le site de ma boulangerie…</span><span class="go">→</span></div>
+      <p class="q">Un message.<br><b>Ton site.</b></p></div>
+  </section>
+
+  <!-- 2. Le couloir de sites (2,37 → 5,37 s) -->
+  <section class="sc p2" style="--a:2.37s;--b:5.37s"><div class="fx-bg"></div>
+    <div class="cor"><div class="move">
+      <div class="wallL">
+        <i style="background-image:url(../images/portfolio/restaurant-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/boutique-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/coach-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/artisan-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/fromagerie-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/boucherie-mobile.jpg)"></i>
+        <i style="background-image:url(../images/portfolio/pizzeria-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/boulangerie-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/fleuriste-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/barbier-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/garage-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/plombier-mobile.jpg)"></i>
+        <i style="background-image:url(../images/portfolio/esthetique-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/photographe-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/cave-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/tatoueur-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/restaurant-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/boulangerie-mobile.jpg)"></i>
+      </div>
+      <div class="wallR">
+        <i style="background-image:url(../images/portfolio/cave-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/tatoueur-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/garage-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/esthetique-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/boulangerie-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/restaurant-mobile.jpg)"></i>
+        <i style="background-image:url(../images/portfolio/fleuriste-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/coach-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/pizzeria-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/boutique-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/photographe-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/fromagerie-mobile.jpg)"></i>
+        <i style="background-image:url(../images/portfolio/barbier-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/artisan-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/boucherie-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/plombier-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/fleuriste-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/garage-mobile.jpg)"></i>
+      </div>
+    </div></div>
+    <span class="floorline"></span>
+    <div class="counter"><b></b><span>métiers, un site chacun</span><small>restaurant · boulangerie · garage<br>fleuriste · barbier · pizzeria…</small></div>
+  </section>
+
+  <!-- 3. Cartes (5,37 → 8,37 s) -->
+  <section class="sc p3" style="--a:5.37s;--b:8.37s"><div class="fx-bg"></div>
+    <div class="plane">
+      <div class="card hot"><div class="img" style="background-image:url(../images/portfolio/boulangerie.jpg)"></div><div class="lab"><em>01</em>Site vitrine</div></div>
+      <div class="card"><div class="big">290 €<small>Site vitrine · 5 pages</small></div><div class="lab"><em>02</em>Prix annoncé</div></div>
+      <div class="card"><div class="ic">📸</div><div class="lab"><em>03</em>Photos sur place</div></div>
+      <div class="card"><div class="ic">✏️</div><div class="lab"><em>04</em>Logo &amp; affiches</div></div>
+      <div class="card hot"><div class="ic">📱</div><div class="lab"><em>05</em>Réseaux sociaux</div></div>
+      <div class="card"><div class="big">48 h<small>à 72 h, c'est livré</small></div><div class="lab"><em>06</em>Livraison</div></div>
+    </div>
+  </section>
+
+  <!-- A. Avant / après (8,37 → 11,37 s) -->
+  <section class="sc pa" style="--a:8.37s;--b:11.37s"><div class="fx-bg"></div>
+    <div class="in"><h2>Ton site actuel<br><b>mérite mieux.</b></h2>
+      <div class="brw"><div class="bar"><i></i><i></i><i></i><span>ton-commerce.fr</span></div>
+        <div class="view">
+          <div class="old"><div class="tt">BIENVENUE SUR MON SITE !!!</div><p>Pour les horaires, appelez-nous. Cliquez <a>ici</a> pour voir les photos (bientôt).</p><div class="uc">🚧 EN CONSTRUCTION 🚧</div><p>Site mis à jour en 2009.</p></div>
+          <div class="neu"><img src="../images/portfolio/boulangerie.jpg" alt=""></div>
+        </div></div>
+      <span class="stamp">AVANT</span><span class="stamp2">APRÈS</span>
+    </div>
+  </section>
+
+  <!-- 4. Mur de sites (8,37 → 10,37 s) -->
+  <section class="sc p4" style="--a:11.37s;--b:13.37s"><div class="fx-bg"></div>
+    <div class="wallg">
+      <i style="background-image:url(../images/portfolio/restaurant-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/boutique-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/coach-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/artisan-mobile.jpg)"></i>
+      <i style="background-image:url(../images/portfolio/fromagerie-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/boucherie-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/pizzeria-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/boulangerie-mobile.jpg)"></i>
+      <i style="background-image:url(../images/portfolio/fleuriste-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/barbier-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/garage-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/plombier-mobile.jpg)"></i>
+      <i style="background-image:url(../images/portfolio/esthetique-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/photographe-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/cave-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/tatoueur-mobile.jpg)"></i>
+      <i style="background-image:url(../images/portfolio/restaurant-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/garage-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/fleuriste-mobile.jpg)"></i><i style="background-image:url(../images/portfolio/boulangerie-mobile.jpg)"></i>
+    </div>
+    <div class="pill">Tous faits<br>sur mesure.</div>
+  </section>
+
+  <!-- B. Photos (13,37 → 16,37 s) -->
+  <section class="sc pb" style="--a:13.37s;--b:16.37s"><div class="fx-bg"></div>
+    <div class="in"><h2>On vient<br><b>photographier.</b></h2>
+      <div class="pola">
+        <div class="pc" style="left:40px;top:20px;--r:-8deg;--d:13.87s"><div class="ph"><img src="../images/portfolio/pizzeria.jpg" alt=""></div><em>Tes produits</em></div>
+        <div class="pc" style="right:40px;top:60px;--r:7deg;--d:14.37s"><div class="ph"><img src="../images/portfolio/coach.jpg" alt=""></div><em>Ton équipe</em></div>
+        <div class="pc" style="left:300px;top:540px;--r:-2deg;--d:14.87s;z-index:2"><div class="ph"><img src="../images/portfolio/fromagerie.jpg" alt=""></div><em>Ton lieu</em></div>
+      </div>
+      <div class="pricerow"><span style="--d:15.37s">Produits <b>dès 149 €</b></span><span style="--d:15.62s">Équipe <b>dès 129 €</b></span></div>
+    </div>
+    <i class="camflash" style="--t:13.87s"></i><i class="camflash" style="--t:14.37s"></i><i class="camflash" style="--t:14.87s"></i>
+  </section>
+
+  <!-- C. Réseaux (16,37 → 19,37 s) -->
+  <section class="sc pcn" style="--a:16.37s;--b:19.37s"><div class="fx-bg"></div>
+    <div class="in"><h2>Tes réseaux,<br><b>gérés.</b></h2>
+      <div class="phone">
+        <div class="hd"><img src="../images/logo-small.jpg" alt=""><div><b>ton_commerce</b><span>Posts · Stories · Reels</span></div></div>
+        <div class="feed">
+          <i style="--d:16.87s;background-image:url(../images/portfolio/restaurant-mobile.jpg)"></i><i style="--d:16.95s;background:linear-gradient(135deg,#ffb070,#ff3b1f)"></i><i style="--d:17.03s;background-image:url(../images/portfolio/fleuriste-mobile.jpg)"></i>
+          <i style="--d:17.11s;background:linear-gradient(135deg,#ff6a1a,#7a2a10)"></i><i style="--d:17.19s;background-image:url(../images/portfolio/boulangerie-mobile.jpg)"></i><i style="--d:17.27s;background:linear-gradient(135deg,#ffd0a8,#ff6a1a)"></i>
+          <i style="--d:17.35s;background-image:url(../images/portfolio/barbier-mobile.jpg)"></i><i style="--d:17.43s;background:linear-gradient(135deg,#ff3b1f,#4a1606)"></i><i style="--d:17.51s;background-image:url(../images/portfolio/pizzeria-mobile.jpg)"></i>
+        </div>
+      </div>
+    </div>
+    <i class="heart" style="left:110px;top:1300px;--d:17.37s">🧡</i><i class="heart" style="left:820px;top:1360px;--d:17.87s">❤️</i><i class="heart" style="left:460px;top:1500px;--d:18.37s">🔥</i>
+    <div class="notif"><span class="ic">💬</span><div><b>Nouveau message</b><span>« Vous êtes ouverts dimanche ? »</span></div></div>
+  </section>
+
+  <!-- 5. Les chiffres (10,37 → 12,87 s) -->
+  <section class="sc p5" style="--a:19.37s;--b:21.87s"><div class="fx-bg"></div>
+    <div class="stagecards">
+      <div class="nc solo" style="--a:19.37s;--b:20.37s"><b>0</b><span>modèle<br>tout fait</span></div>
+      <div class="nc solo" style="--a:20.37s;--b:20.87s"><b>0</b><span>frais<br>caché</span></div>
+      <div class="nc solo" style="--a:20.87s;--b:21.37s"><b>1</b><span>seul<br>message</span></div>
+      <div class="trio"><div class="nc" style="--d:21.37s"><b>0</b><span>modèle<br>tout fait</span></div><div class="nc" style="--d:21.45s"><b>0</b><span>frais<br>caché</span></div><div class="nc" style="--d:21.53s"><b>1</b><span>seul<br>message</span></div></div>
+    </div>
+  </section>
+
+  <!-- D. Les prix (21,87 → 24,37 s) -->
+  <section class="sc pd" style="--a:21.87s;--b:24.37s"><div class="fx-bg"></div>
+    <div class="in"><h2>Des prix <b>clairs.</b></h2>
+      <div class="pr" style="--d:22.37s"><span>Page Express<small>1 page</small></span><b>99 €</b></div>
+      <div class="pr hot" style="--d:22.87s"><span>Site Vitrine<small>le plus choisi</small></span><b>290 €</b></div>
+      <div class="pr" style="--d:23.37s"><span>Site Complet<small>boutique · réservation</small></span><b><small>dès</small>690 €</b></div>
+    </div>
+  </section>
+
+  <!-- 6. Flash blanc (12,87 → 13,87 s) -->
+  <section class="sc p6" style="--a:24.37s;--b:25.37s">
+    <span class="dot"></span>
+    <div class="col"><span style="--d:24.37s">Ton message</span><i>↓</i><span style="--d:24.7s">L&amp;T Digital</span><i>↓</i><span style="--d:25.05s">Ton site</span></div>
+  </section>
+
+  <!-- 7. La marque (13,87 → fin) -->
+  <section class="sc p7" style="--a:25.37s;--b:99s"><div class="fx-bg"></div>
+    <div class="in">
+      <span class="orb"></span>
+      <h1>L&amp;T Digital</h1>
+      <p>Ton site, livré en 48 à 72 h.<br>Pensé pour ton commerce.</p>
+      <div class="tag"><span class="ig">@l.t_digital</span><span>dès 99 €</span></div>
+      <div class="ticket"><span class="pct">-10 %</span><span class="code">Offre de lancement<br><b>BIENVENUE</b></span></div>
+    </div>
+  </section>
+
+  <!-- éclairs orange sur chaque coupe + vignettage + grain -->
+  <i class="flashcut" style="--t:2.37s"></i><i class="flashcut" style="--t:5.37s"></i><i class="flashcut" style="--t:8.37s"></i><i class="flashcut" style="--t:11.37s"></i><i class="flashcut" style="--t:13.37s"></i><i class="flashcut" style="--t:16.37s"></i><i class="flashcut" style="--t:19.37s"></i><i class="flashcut" style="--t:21.87s"></i><i class="flashcut" style="--t:25.37s"></i>
+  <div class="vign"></div><div class="grain"></div>
+</div>
+
+<div class="ui"><button type="button" id="replay">↺ Rejouer</button><a href="lt-digital-pub-4.mp4" download>⬇ Vidéo MP4</a></div>
+
+<script>
+const vp = document.getElementById("vp");
+const fit = () => { const k = Math.min(innerWidth/1080, innerHeight/1920); vp.style.transform = `scale(${k})`; vp.style.margin = `${(1920*k-1920)/2}px ${(1080*k-1080)/2}px`; };
+addEventListener("resize", fit); fit();
+const DUR = 30000;
+const all = () => document.getAnimations();
+const restart = () => all().forEach(a => { a.currentTime = 0; a.play(); });
+document.getElementById("replay").onclick = restart;
+setInterval(() => { if (!document.body.classList.contains("capture")) restart(); }, DUR);
+if (/[?&]capture/.test(location.search)) {
+  document.body.classList.add("capture");
+  window.seek = t => { all().forEach(a => { a.pause(); a.currentTime = t; }); };
+}
+</script>
+</body>
+</html>
