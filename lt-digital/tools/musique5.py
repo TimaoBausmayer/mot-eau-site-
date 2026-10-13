@@ -52,6 +52,12 @@ def mixs(*sigs):
     return o
 def glass(): return mixs((bell(hz(96), 1.2), .8), (bell(hz(103), 1.0), .4))
 def heart(): return mixs((pop(), .6), (blip(2600), .3))
+def roll(sec=1.0):
+    x = np.zeros(n(sec) + n(0.3)); t = 0.0; k = 0
+    while t < sec:
+        g = 0.25 + 0.75 * t / sec; add(x, t, clap(), g * 0.5); add(x, t, m.click(), g * 0.3)
+        t += 0.25 if t < sec / 2 else 0.125; k += 1
+    return x
 def rumble(sec=1.0):
     x = band(noise(sec), 30, 160); t = np.arange(len(x)) / SR
     return x * np.minimum(1, t / (sec * .6)) * 3
@@ -85,6 +91,9 @@ def sfx(name, buf, t, g=1.0):
     elif nm == "bloop": add(buf, t, bloop(), .5 * g)
     elif nm == "snap": add(buf, t, m.click(), .9 * g); add(buf, t, m.hit(), .3 * g)
     elif nm == "chime": add(buf, t, chime(), .25 * g)
+    elif nm == "roll": add(buf, t, roll(a or 1.0), .55 * g)
+    elif nm == "kick": add(buf, t, kick(), .9 * g)
+    elif nm == "clap": add(buf, t, clap(), .6 * g)
     else: raise ValueError("son inconnu : " + name)
 
 def build(cfg):
