@@ -31,7 +31,24 @@ module.exports = async (req, res) => {
     res.setHeader("Content-Type", "text/plain; charset=utf-8");
     return res.end("Connexion requise.");
   }
-  res.statusCode = 200;
-  res.setHeader("Content-Type", "text/html; charset=utf-8");
-  res.end(fs.readFileSync(path.join(process.cwd(), "admin.html"), "utf8"));
+  /* admin.html peut se trouver à des endroits différents selon la configuration du projet : on essaie plusieurs chemins */
+  const cands = [
+    path.join(process.cwd(), "admin.html"),
+    path.join(__dirname, "..", "admin.html"),
+    path.join(__dirname, "admin.html"),
+    path.join(process.cwd(), "lt-digital", "admin.html"),
+    "/var/task/admin.html",
+    "/var/task/lt-digital/admin.html"
+  ];
+  for (const f of cands) {
+    try {
+      const html = fs.readFileSync(f, "utf8");
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "text/html; charset=utf-8");
+      return res.end(html);
+    } catch (e) { /* on essaie le chemin suivant */ }
+  }
+  res.statusCode = 500;
+  res.setHeader("Content-Type", "text/plain; charset=utf-8");
+  res.end("Connexion réussie, mais le fichier admin.html est introuvable sur le serveur.\nChemins essayés :\n" + cands.join("\n"));
 };
