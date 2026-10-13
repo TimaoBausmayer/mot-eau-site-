@@ -1,6 +1,7 @@
 {
   "routes": [
     { "src": "/admin/", "status": 308, "headers": { "Location": "/admin" } },
+    { "src": "/admin-avance(?:\\.html)?", "status": 308, "headers": { "Location": "/admin?avance=1" } },
     { "src": "/admin(?:\\.html)?", "dest": "/api/admin" },
     { "handle": "filesystem" }
   ]

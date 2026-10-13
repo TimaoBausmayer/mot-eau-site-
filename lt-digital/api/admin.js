@@ -4,8 +4,9 @@
    (Project → Settings → Environment Variables) : ADMIN_EMAIL et ADMIN_PASSWORD, puis « Redeploy ».
    La page d'admin est intégrée dans api/_admin_page.js (généré par tools/build-admin.py). */
 const crypto = require("crypto");
-let PAGE = "";
+let PAGE = "", ADV = "";
 try { PAGE = require("./_admin_page.js"); } catch (e) { PAGE = ""; }
+try { ADV = require("./_admin_adv.js"); } catch (e) { ADV = ""; }
 
 const COOKIE = "ltd_admin", DURATION = 8 * 3600;
 const sha = s => crypto.createHash("sha256").update(String(s)).digest();
@@ -36,6 +37,50 @@ async function readForm(req) {
   const o = {}; new URLSearchParams(b).forEach((v, k) => { o[k] = v; });
   return o;
 }
+async function readJson(req) {
+  let b = req.body;
+  if (b && typeof b === "object" && !Buffer.isBuffer(b)) return b;
+  if (Buffer.isBuffer(b)) b = b.toString("utf8");
+  if (typeof b !== "string") {
+    b = await new Promise(r => { let d = ""; req.on("data", c => d += c); req.on("end", () => r(d)); req.on("error", () => r("")); });
+  }
+  try { return JSON.parse(b); } catch (e) { return null; }
+}
+const jsonOut = (res, code, o) => send(res, code, "application/json; charset=utf-8", JSON.stringify(o));
+
+/* Publication : on enregistre le nouveau config.js dans GitHub, et Vercel remet le site à jour tout seul. */
+async function publish(req, res) {
+  const token = process.env.GITHUB_TOKEN;
+  if (!token) return jsonOut(res, 501, { ok: false, error: "not-configured" });
+  const body = await readJson(req), c = body && body.config;
+  const okShape = c && typeof c === "object" && Array.isArray(c.plans) && c.plans.length && Array.isArray(c.addons)
+    && c.services && Array.isArray(c.services.items) && c.hero && typeof c.hero === "object" && typeof c.brand === "string";
+  if (!okShape) return jsonOut(res, 400, { ok: false, message: "Les données reçues ne sont pas valides." });
+  const text = "/* Fichier généré par la page d'administration — tu peux aussi le modifier à la main. */\nwindow.SITE_CONFIG = " + JSON.stringify(c, null, 2) + ";\n";
+  if (text.length > 800000) return jsonOut(res, 400, { ok: false, message: "Le fichier est trop gros." });
+  try {
+    const ctx = { window: {} }; require("vm").runInNewContext(text, ctx, { timeout: 1000 });
+    if (!ctx.window.SITE_CONFIG) throw new Error("vide");
+  } catch (e) { return jsonOut(res, 400, { ok: false, message: "Le fichier généré est invalide, rien n'a été publié." }); }
+  const repo = process.env.GITHUB_REPO || "TimaoBausmayer/mot-eau-site-", branch = process.env.GITHUB_BRANCH || "main",
+        file = process.env.GITHUB_PATH || "lt-digital/config.js";
+  const api = "https://api.github.com/repos/" + repo + "/contents/" + file.split("/").map(encodeURIComponent).join("/");
+  const hd = { Authorization: "Bearer " + token, Accept: "application/vnd.github+json", "User-Agent": "lt-digital-admin", "Content-Type": "application/json" };
+  try {
+    for (let k = 0; k < 2; k++) {
+      const g = await fetch(api + "?ref=" + encodeURIComponent(branch), { headers: hd });
+      if (g.status === 401 || g.status === 403) return jsonOut(res, 502, { ok: false, message: "GitHub refuse le jeton (GITHUB_TOKEN). Vérifie qu'il est valide et autorisé à écrire." });
+      const sha = g.ok ? (await g.json()).sha : undefined;
+      const put = await fetch(api, { method: "PUT", headers: hd, body: JSON.stringify({
+        message: "Mise à jour depuis l'administration", branch, content: Buffer.from(text, "utf8").toString("base64"), sha }) });
+      if (put.ok) return jsonOut(res, 200, { ok: true });
+      if ((put.status === 409 || put.status === 422) && k === 0) continue;
+      if (put.status === 401 || put.status === 403 || put.status === 404) return jsonOut(res, 502, { ok: false, message: "GitHub refuse l'écriture (jeton ou dépôt incorrect)." });
+      return jsonOut(res, 502, { ok: false, message: "GitHub a répondu : erreur " + put.status + "." });
+    }
+  } catch (e) { return jsonOut(res, 502, { ok: false, message: "Impossible de joindre GitHub." }); }
+}
+
 function send(res, code, type, body, extra) {
   res.statusCode = code;
   res.setHeader("Content-Type", type);
@@ -65,13 +110,17 @@ module.exports = async (req, res) => {
   const url = new URL(req.url || "/", "http://x");
   if (url.searchParams.has("diag")) { /* diagnostic sans aucun secret */
     return send(res, 200, "application/json; charset=utf-8", JSON.stringify({
-      emailConfigured: !!email, passwordConfigured: !!pass, pageBundled: PAGE.length > 1000, pageBytes: PAGE.length, node: process.version }));
+      emailConfigured: !!email, passwordConfigured: !!pass, pageBundled: PAGE.length > 1000, pageBytes: PAGE.length, advancedBundled: ADV.length > 1000, publishConfigured: !!process.env.GITHUB_TOKEN, node: process.version }));
   }
   if (!email || !pass) {
     return send(res, 503, "text/plain; charset=utf-8", "Admin non configuré : ajoute ADMIN_EMAIL et ADMIN_PASSWORD dans les réglages Vercel (Environment Variables), puis fais « Redeploy ».");
   }
   if (url.searchParams.has("logout")) {
     return send(res, 303, "text/plain; charset=utf-8", "", { Location: "/admin", "Set-Cookie": COOKIE + "=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Strict" });
+  }
+  if (req.method === "POST" && url.searchParams.has("publish")) {
+    if (!validCookie(req, email, pass)) return jsonOut(res, 401, { ok: false, message: "Non connecté." });
+    return publish(req, res);
   }
   if (req.method === "POST") {
     const f = await readForm(req);
@@ -85,6 +134,10 @@ module.exports = async (req, res) => {
       "Set-Cookie": COOKIE + "=" + makeCookie(email, pass) + "; Path=/; Max-Age=" + DURATION + "; HttpOnly; Secure; SameSite=Strict" });
   }
   if (!validCookie(req, email, pass)) return send(res, 200, "text/html; charset=utf-8", loginPage(""));
+  if (url.searchParams.has("avance")) {
+    if (!ADV) return send(res, 500, "text/plain; charset=utf-8", "Réglages avancés non intégrés : lance « python3 tools/build-admin.py ».");
+    return send(res, 200, "text/html; charset=utf-8", ADV);
+  }
   if (!PAGE) return send(res, 500, "text/plain; charset=utf-8", "Connexion réussie, mais la page d'admin n'est pas intégrée : lance « python3 tools/build-admin.py » puis publie api/_admin_page.js.");
   return send(res, 200, "text/html; charset=utf-8", PAGE);
 };
