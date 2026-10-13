@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L&amp;T Digital — Publicité 2 (avant / après)</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../images/logo-small.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Mono:wght@400;500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Publicité n°2 L&T Digital — style clair « avant / après », vertical 1080 × 1920, sans voix, 25,5 s en boucle.
+   Les textes se changent directement plus bas dans le HTML. */
+:root{
+  --bg:#f3f1ec; --ink:#0b1020; --mut:#5b6478; --acc:#2750ff; --vio:#7a5cff; --cy:#22b8ff; --ok:#16a34a; --pk:#ff5c8a; --ye:#ffc93c;
+  --hf:'Bricolage Grotesque',system-ui,sans-serif; --bf:'Hanken Grotesk',system-ui,sans-serif; --mono:'DM Mono',ui-monospace,monospace;
+  --e:cubic-bezier(.2,.8,.2,1); --e2:cubic-bezier(.7,0,.2,1); --bo:cubic-bezier(.34,1.56,.64,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#d9d6cf;overflow:hidden}
+body{display:grid;place-items:center;font-family:var(--bf);color:var(--ink)}
+.viewport{position:relative;width:1080px;height:1920px;transform-origin:center;flex:none}
+.stage{position:absolute;inset:0;overflow:hidden;background:var(--bg)}
+
+/* ---------- fond clair animé ---------- */
+.bg{position:absolute;inset:0}
+.blob{position:absolute;border-radius:50%;opacity:.55;animation:drift 12s ease-in-out infinite alternate}
+.b1{width:900px;height:900px;left:-360px;top:-300px;background:radial-gradient(circle,rgba(122,92,255,.45),transparent 65%)}
+.b2{width:1000px;height:1000px;right:-460px;top:700px;background:radial-gradient(circle,rgba(34,184,255,.4),transparent 65%);animation-duration:15s;animation-delay:-4s}
+.b3{width:800px;height:800px;left:-200px;bottom:-360px;background:radial-gradient(circle,rgba(255,201,60,.45),transparent 65%);animation-duration:13s;animation-delay:-8s}
+@keyframes drift{50%{transform:translate(140px,110px) scale(1.12)}100%{transform:translate(-60px,220px) scale(.95)}}
+.dots{position:absolute;inset:0;background-image:radial-gradient(rgba(11,16,32,.14) 2px,transparent 2.5px);background-size:46px 46px;-webkit-mask-image:radial-gradient(ellipse 75% 55% at 50% 50%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse 75% 55% at 50% 50%,#000 20%,transparent 75%);animation:dotsm 25.5s linear infinite}
+@keyframes dotsm{to{background-position:0 460px}}
+.shape{position:absolute;opacity:0;animation:float 6s ease-in-out infinite alternate,fadeS 1s ease both}
+@keyframes float{to{transform:translateY(-40px) rotate(20deg)}}
+@keyframes fadeS{to{opacity:1}}
+
+/* ---------- scènes ---------- */
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 80px;opacity:0;
+  animation:sIn .6s var(--e) both, sOut .5s var(--e2) forwards;animation-delay:var(--a),var(--b)}
+@keyframes sIn{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
+@keyframes sOut{to{opacity:0;transform:translateY(-80px) scale(.96)}}
+.last{animation:sIn .6s var(--e) both;animation-delay:var(--a)}
+.up{animation:up .8s var(--e) both;animation-delay:var(--d)}
+@keyframes up{from{opacity:0;transform:translateY(70px)}to{opacity:1;transform:none}}
+.pop{animation:pop .7s var(--bo) both;animation-delay:var(--d)}
+@keyframes pop{from{opacity:0;transform:scale(.2) rotate(-8deg)}to{opacity:1;transform:none}}
+.mask{display:inline-block;overflow:hidden;vertical-align:bottom;padding:0 .04em .12em;margin-bottom:-.12em}
+.mask>span{display:inline-block;animation:rise .8s var(--e) both;animation-delay:var(--d)}
+@keyframes rise{from{transform:translateY(110%)}to{transform:none}}
+.hl{position:relative;display:inline-block}
+.hl::after{content:"";position:absolute;left:-.06em;right:-.06em;bottom:.08em;height:.36em;z-index:-1;border-radius:.1em;background:var(--ye);transform:scaleX(0);transform-origin:left;animation:hl .6s var(--e) forwards;animation-delay:var(--h)}
+@keyframes hl{to{transform:scaleX(1)}}
+.blue{color:var(--acc)}
+h2.t{font:800 118px/1 var(--hf);letter-spacing:-.05em;position:relative;z-index:1}
+.sub{margin-top:36px;font:500 44px/1.3 var(--bf);color:var(--mut)}
+
+/* navigateur */
+.br{width:900px;border-radius:34px;background:#fff;box-shadow:0 60px 120px -40px rgba(11,16,32,.45),0 0 0 2px rgba(11,16,32,.06);overflow:hidden;text-align:left}
+.br .bar{display:flex;align-items:center;gap:12px;padding:22px 26px;background:#f2f3f7;border-bottom:2px solid #e6e8ef}
+.br .bar i{width:20px;height:20px;border-radius:50%;background:#ff5f57}.br .bar i:nth-child(2){background:#febc2e}.br .bar i:nth-child(3){background:#28c840}
+.br .bar span{margin-left:20px;flex:1;padding:8px 22px;border-radius:999px;background:#fff;font:500 26px var(--mono);color:#8a93a8}
+
+/* scène 1 : le vieux site */
+.s1 h2{margin-bottom:70px}
+.old{height:900px;padding:30px;background:#c9c9c9;font-family:"Times New Roman",Times,serif;color:#000;animation:glitch .5s steps(2) 3;animation-delay:3.1s}
+.old .tt{background:#000080;color:#ff0;font:bold 54px "Comic Sans MS","Times New Roman",serif;text-align:center;padding:16px;border:6px outset #9999ff}
+.old .mq{margin:18px 0;background:#fff;border:3px inset #888;font:30px "Times New Roman",serif;color:#c00;white-space:nowrap;overflow:hidden}
+.old .mq span{display:inline-block;padding:8px 0;animation:mq 4s linear infinite}
+@keyframes mq{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+.old table{width:100%;border:3px solid #000;border-collapse:collapse;font-size:30px;background:#fff}
+.old td{border:2px solid #000;padding:14px;vertical-align:top}
+.old a{color:#00e;text-decoration:underline}
+.old .uc{margin-top:22px;padding:16px;text-align:center;font:bold 32px "Courier New",monospace;background:repeating-linear-gradient(45deg,#ffd400 0 30px,#000 30px 60px);color:#fff;text-shadow:0 0 6px #000}
+.old .cnt{margin-top:16px;text-align:center;font:26px "Courier New",monospace}.old .cnt b{background:#000;color:#0f0;padding:4px 12px;letter-spacing:6px}
+@keyframes glitch{0%{transform:translate(0)}25%{transform:translate(-14px,6px) skewX(4deg);filter:hue-rotate(90deg)}50%{transform:translate(12px,-4px)}75%{transform:translate(-8px,0) skewX(-3deg);filter:invert(.1)}100%{transform:none}}
+.verdict{position:absolute;right:60px;top:560px;transform:rotate(12deg);padding:18px 34px;border:8px solid #e11d48;border-radius:18px;color:#e11d48;font:800 64px var(--hf);letter-spacing:.02em;background:rgba(255,255,255,.85);animation:stamp .5s var(--bo) both;animation-delay:2.2s}
+@keyframes stamp{from{opacity:0;transform:rotate(12deg) scale(2.4)}to{opacity:1;transform:rotate(12deg) scale(1)}}
+
+/* transition : cercle bleu qui avale l'écran */
+.wipe{position:absolute;left:50%;top:50%;width:200px;height:200px;margin:-100px 0 0 -100px;border-radius:50%;background:var(--acc);z-index:20;transform:scale(0);animation:wipe 1s var(--e2) both;animation-delay:3.7s}
+@keyframes wipe{0%{transform:scale(0)}55%{transform:scale(22)}100%{transform:scale(22);opacity:0}}
+.flash{position:absolute;inset:0;background:#fff;z-index:20;opacity:0;animation:flash .5s ease-out both;animation-delay:8s}
+@keyframes flash{0%{opacity:0}15%{opacity:1}100%{opacity:0}}
+
+/* scène 2 : le nouveau site */
+.s2 h2{margin-bottom:60px}
+.new .shot{height:860px;overflow:hidden}
+.new img{display:block;width:100%;animation:scr 3.2s ease-in-out both;animation-delay:5s}
+@keyframes scr{0%{transform:none}100%{transform:translateY(calc(-100% + 860px))}}
+.badges{display:flex;gap:18px;justify-content:center;margin-top:46px}
+.badges span{padding:18px 30px;border-radius:999px;background:#fff;box-shadow:0 20px 40px -20px rgba(11,16,32,.4);font:700 40px var(--hf)}
+.badges span b{color:var(--ok)}
+
+/* scène 3 : photos */
+.s3 h2{margin-bottom:30px}
+.pola{position:relative;width:1000px;height:1080px;margin-top:30px}
+.pc{position:absolute;width:430px;padding:22px 22px 70px;background:#fff;border-radius:10px;box-shadow:0 40px 80px -30px rgba(11,16,32,.55);animation:drop .9s var(--bo) both;animation-delay:var(--d)}
+.pc .ph{height:420px;overflow:hidden;background:#ddd;border-radius:4px}
+.pc img{width:100%;height:100%;object-fit:cover;object-position:top}
+.pc em{position:absolute;left:0;right:0;bottom:16px;font:600 34px var(--hf);font-style:normal;text-align:center;color:#333}
+@keyframes drop{from{opacity:0;transform:translateY(-500px) rotate(calc(var(--r) * -3))}to{opacity:1;transform:rotate(var(--r))}}
+.cam{position:absolute;right:30px;top:-40px;font-size:120px;animation:pop .7s var(--bo) both,shake .3s ease-in-out 2;animation-delay:8.1s,8.8s}
+@keyframes shake{50%{transform:rotate(-12deg) scale(1.1)}}
+
+/* scène 4 : logo dessiné */
+.s4 h2{margin-bottom:70px}
+.draw{width:640px;height:640px}
+.draw .c{fill:none;stroke:var(--ink);stroke-width:10;stroke-dasharray:1800;stroke-dashoffset:1800;animation:dash 1.4s var(--e2) forwards;animation-delay:12.6s}
+.draw .m{fill:transparent;stroke:var(--acc);stroke-width:5;stroke-dasharray:900;stroke-dashoffset:900;font:800 230px var(--hf);letter-spacing:-12px;animation:dash 1.5s var(--e2) forwards,fillIn .6s ease forwards;animation-delay:12.9s,14.2s}
+.draw .s{fill:var(--mut);font:600 46px var(--mono);letter-spacing:10px;opacity:0;animation:fadeS .6s ease forwards;animation-delay:14.4s}
+@keyframes dash{to{stroke-dashoffset:0}}
+@keyframes fillIn{to{fill:var(--acc)}}
+.pencil{position:absolute;font-size:110px;left:50%;top:50%;animation:pen 2.4s ease-in-out both;animation-delay:12.6s}
+@keyframes pen{0%{opacity:0;transform:translate(220px,-180px)}10%{opacity:1}30%{transform:translate(260px,140px) rotate(-10deg)}55%{transform:translate(-280px,120px)}80%{transform:translate(-160px,-220px) rotate(8deg);opacity:1}100%{opacity:0;transform:translate(260px,-300px)}}
+
+/* scène 5 : réseaux sociaux */
+.s5 h2{margin-bottom:60px}
+.phone{position:relative;width:520px;height:1000px;border-radius:70px;border:16px solid var(--ink);background:#fff;overflow:hidden;box-shadow:0 60px 120px -40px rgba(11,16,32,.55)}
+.phone .hd{display:flex;align-items:center;gap:20px;padding:56px 30px 24px;border-bottom:2px solid #eee}
+.phone .hd img{width:110px;height:110px;border-radius:50%;padding:5px;background:linear-gradient(45deg,#f58529,#dd2a7b,#515bd4)}
+.phone .hd b{display:block;font:700 34px var(--hf);text-align:left}.phone .hd span{font:500 26px var(--bf);color:var(--mut)}
+.feed{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:6px}
+.feed i{aspect-ratio:1;border-radius:6px;animation:pop .55s var(--bo) both;animation-delay:var(--d);background-size:cover;background-position:top}
+.heart{position:absolute;font-size:80px;opacity:0;animation:heart 2.2s ease-out both;animation-delay:var(--d)}
+@keyframes heart{0%{opacity:0;transform:translateY(0) scale(.4)}20%{opacity:1;transform:translateY(-60px) scale(1.1)}100%{opacity:0;transform:translateY(-520px) scale(.9) rotate(var(--r))}}
+.notif{position:absolute;left:50%;top:880px;width:620px;margin-left:-310px;display:flex;align-items:center;gap:22px;padding:24px 30px;border-radius:30px;background:rgba(255,255,255,.95);box-shadow:0 30px 60px -20px rgba(11,16,32,.5);text-align:left;z-index:3;animation:notif 2.6s var(--e) both;animation-delay:17.3s}
+.notif .ic{display:grid;place-items:center;flex:none;width:76px;height:76px;border-radius:22px;background:linear-gradient(45deg,#f58529,#dd2a7b,#515bd4);font-size:42px}
+.notif b{display:block;font:700 34px var(--hf)}.notif span{font:500 28px var(--bf);color:var(--mut)}
+@keyframes notif{0%{opacity:0;transform:translateY(-120px)}20%,80%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-120px)}}
+
+/* scène 6 : offre */
+.ringw{position:relative;width:560px;height:560px}
+.ringw svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ringw .tr{fill:none;stroke:#e3e0d8;stroke-width:34}
+.ringw .pr{fill:none;stroke:url(#gr);stroke-width:34;stroke-linecap:round;stroke-dasharray:1508;stroke-dashoffset:1508;animation:ringp 1.6s var(--e) forwards;animation-delay:19.4s}
+@keyframes ringp{to{stroke-dashoffset:0}}
+.ringw .in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ringw .in b{font:800 150px/.9 var(--hf);letter-spacing:-.05em}.ringw .in span{font:600 44px var(--bf);color:var(--mut)}
+.s6 h2{margin-bottom:60px;font-size:100px}
+.deals{display:flex;gap:26px;margin-top:70px}
+.deal{padding:30px 40px;border-radius:34px;background:#fff;box-shadow:0 30px 60px -30px rgba(11,16,32,.45);font:600 38px var(--bf);text-align:left}
+.deal b{display:block;font:800 74px/1 var(--hf);letter-spacing:-.04em;margin-top:6px}
+.deal.promo{background:var(--ink);color:#fff}.deal.promo b{color:var(--ye)}
+.deal.promo code{display:inline-block;margin-top:12px;padding:6px 16px;border-radius:12px;background:#fff;color:var(--ink);font:700 34px var(--mono);letter-spacing:.08em}
+
+/* scène 7 : contact */
+.s7 .logo{width:230px;height:230px;border-radius:50%;box-shadow:0 30px 70px -20px rgba(11,16,32,.6)}
+.s7 h2{margin-top:60px}
+.pill{display:inline-flex;align-items:center;gap:22px;margin-top:60px;padding:32px 54px;border-radius:999px;color:#fff;font:700 54px var(--bf);background:linear-gradient(120deg,#f58529,#dd2a7b 45%,#8134af 75%,#515bd4);box-shadow:0 40px 80px -30px rgba(221,42,123,.8);animation:pop .7s var(--bo) both,breathe 1.6s ease-in-out infinite;animation-delay:var(--d),23.6s}
+@keyframes breathe{50%{transform:scale(1.05)}}
+.pill svg{width:60px;height:60px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.pill svg .f{fill:currentColor;stroke:none}
+.mail{margin-top:30px;font:500 40px var(--mono);color:var(--ink);padding:22px 40px;border-radius:999px;background:#fff;box-shadow:0 20px 40px -24px rgba(11,16,32,.5)}
+.s7 .note{margin-top:46px;font:600 38px var(--bf);color:var(--mut)}
+
+.ui{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:10px;z-index:30}
+.ui button,.ui a{font:600 14px var(--bf);padding:10px 18px;border-radius:999px;border:1px solid rgba(0,0,0,.2);background:rgba(255,255,255,.8);color:#111;cursor:pointer;text-decoration:none}
+.capture .ui{display:none}
+</style>
+</head>
+<body>
+<div class="viewport" id="vp"><div class="stage" id="stage">
+  <div class="bg"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><span class="dots"></span>
+    <svg class="shape" style="left:70px;top:230px;width:110px;animation-delay:0s,.2s" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#2750ff" stroke-width="10"/></svg>
+    <svg class="shape" style="right:90px;top:1420px;width:140px;animation-delay:-2s,.4s" viewBox="0 0 100 100"><path d="M10 60 Q 30 20 50 60 T 90 60" fill="none" stroke="#ff5c8a" stroke-width="10" stroke-linecap="round"/></svg>
+    <svg class="shape" style="right:120px;top:180px;width:90px;animation-delay:-4s,.6s" viewBox="0 0 100 100"><rect x="15" y="15" width="70" height="70" rx="16" fill="#ffc93c"/></svg>
+    <svg class="shape" style="left:110px;top:1620px;width:80px;animation-delay:-1s,.8s" viewBox="0 0 100 100"><path d="M50 8 L61 39 L94 39 L67 59 L77 91 L50 71 L23 91 L33 59 L6 39 L39 39 Z" fill="#7a5cff"/></svg>
+  </div>
+  <svg width="0" height="0" style="position:absolute"><defs><linearGradient id="gr" x1="0" x2="1"><stop offset="0" stop-color="#2750ff"/><stop offset=".5" stop-color="#7a5cff"/><stop offset="1" stop-color="#22b8ff"/></linearGradient></defs></svg>
+
+  <!-- 1. Le vieux site (0 → 4,2 s) -->
+  <section class="scene s1" style="--a:0s;--b:4s">
+    <h2 class="t"><span class="mask"><span style="--d:.2s">Ton site</span></span><br><span class="mask"><span style="--d:.35s">ressemble</span></span> <span class="mask"><span style="--d:.5s">encore</span></span><br><span class="mask"><span style="--d:.65s"><span class="hl" style="--h:1.3s">à ça&nbsp;?</span></span></span></h2>
+    <div class="br pop" style="--d:.9s"><div class="bar"><i></i><i></i><i></i><span>www.mon-commerce.free.fr/index2.htm</span></div>
+      <div class="old">
+        <div class="tt">BIENVENUE SUR MON SITE !!!</div>
+        <div class="mq"><span>*** Promo du mois *** Venez nous voir *** Site mis à jour en 2009 ***</span></div>
+        <table><tr><td style="width:36%"><a>Accueil</a><br><a>Nos produits</a><br><a>Contact</a><br><a>Livre d'or</a></td><td>Ici vous trouverez tous nos produits. Pour les horaires, appelez-nous. Cliquez <a>ici</a> pour voir les photos (bientôt).</td></tr></table>
+        <div class="uc">🚧 EN CONSTRUCTION 🚧</div>
+        <div class="cnt">Visiteurs : <b>000127</b></div>
+      </div>
+    </div>
+    <div class="verdict">BOF…</div>
+  </section>
+  <div class="wipe"></div>
+
+  <!-- 2. Le nouveau site (4,2 → 8 s) -->
+  <section class="scene s2" style="--a:4.2s;--b:7.8s">
+    <h2 class="t"><span class="mask"><span style="--d:4.4s">On le</span></span> <span class="mask"><span class="blue" style="--d:4.55s">transforme.</span></span></h2>
+    <div class="br new up" style="--d:4.6s"><div class="bar"><i></i><i></i><i></i><span>ton-commerce.fr</span></div><div class="shot"><img src="../images/portfolio/boulangerie.jpg" alt=""></div></div>
+    <div class="badges"><span class="pop" style="--d:6.2s"><b>✓</b> Moderne</span><span class="pop" style="--d:6.4s"><b>✓</b> Rapide</span><span class="pop" style="--d:6.6s"><b>✓</b> Mobile</span></div>
+  </section>
+  <div class="flash"></div>
+
+  <!-- 3. Photos (8 → 12,2 s) -->
+  <section class="scene s3" style="--a:8s;--b:12s">
+    <h2 class="t"><span class="mask"><span style="--d:8.2s">On vient</span></span><br><span class="mask"><span style="--d:8.35s"><span class="hl" style="--h:9s">photographier</span></span></span><br><span class="mask"><span style="--d:8.5s">tes produits.</span></span></h2>
+    <div class="pola">
+      <span class="cam">📸</span>
+      <div class="pc" style="left:40px;top:20px;--r:-8deg;--d:8.9s"><div class="ph"><img src="../images/portfolio/pizzeria.jpg" alt=""></div><em>Tes plats</em></div>
+      <div class="pc" style="right:40px;top:60px;--r:7deg;--d:9.2s"><div class="ph"><img src="../images/portfolio/fromagerie.jpg" alt=""></div><em>Tes produits</em></div>
+      <div class="pc" style="left:285px;top:560px;--r:-2deg;--d:9.6s;z-index:2"><div class="ph"><img src="../images/portfolio/coach.jpg" alt=""></div><em>Ton équipe</em></div>
+    </div>
+  </section>
+
+  <!-- 4. Logo (12,2 → 15,6 s) -->
+  <section class="scene s4" style="--a:12.2s;--b:15.4s">
+    <h2 class="t"><span class="mask"><span style="--d:12.3s">Ton logo,</span></span><br><span class="mask"><span class="blue" style="--d:12.45s">dessiné pour toi.</span></span></h2>
+    <div style="position:relative">
+      <svg class="draw" viewBox="0 0 640 640"><circle class="c" cx="320" cy="320" r="280"/><text class="m" x="320" y="378" text-anchor="middle">TA</text><text class="s" x="320" y="470" text-anchor="middle">MARQUE</text></svg>
+      <span class="pencil">✏️</span>
+    </div>
+  </section>
+
+  <!-- 5. Réseaux (15,6 → 19,2 s) -->
+  <section class="scene s5" style="--a:15.6s;--b:19s">
+    <h2 class="t"><span class="mask"><span style="--d:15.7s">Tes réseaux,</span></span> <span class="mask"><span style="--d:15.85s"><span class="hl" style="--h:16.4s">gérés.</span></span></span></h2>
+    <div class="phone up" style="--d:15.9s">
+      <div class="hd"><img src="../images/logo-small.jpg" alt=""><div><b>ton_commerce</b><span>Publications · Stories · Reels</span></div></div>
+      <div class="feed">
+        <i style="--d:16.3s;background-image:url(../images/portfolio/restaurant-mobile.jpg)"></i><i style="--d:16.4s;background:linear-gradient(135deg,#ffc93c,#ff5c8a)"></i><i style="--d:16.5s;background-image:url(../images/portfolio/fleuriste-mobile.jpg)"></i>
+        <i style="--d:16.6s;background:linear-gradient(135deg,#2750ff,#7a5cff)"></i><i style="--d:16.7s;background-image:url(../images/portfolio/boulangerie-mobile.jpg)"></i><i style="--d:16.8s;background:linear-gradient(135deg,#22b8ff,#16a34a)"></i>
+        <i style="--d:16.9s;background-image:url(../images/portfolio/barbier-mobile.jpg)"></i><i style="--d:17s;background:linear-gradient(135deg,#ff5c8a,#7a5cff)"></i><i style="--d:17.1s;background-image:url(../images/portfolio/pizzeria-mobile.jpg)"></i>
+      </div>
+      <span class="heart" style="left:70px;bottom:40px;--d:17.2s;--r:-20deg">❤️</span><span class="heart" style="left:220px;bottom:20px;--d:17.6s;--r:15deg">❤️</span><span class="heart" style="right:60px;bottom:50px;--d:18s;--r:-10deg">💬</span>
+    </div>
+    <div class="notif"><span class="ic">💬</span><div><b>Nouveau message</b><span>« Vous êtes ouverts dimanche ? »</span></div></div>
+  </section>
+
+  <!-- 6. Offre (19,2 → 22,4 s) -->
+  <section class="scene s6" style="--a:19.2s;--b:22.2s">
+    <h2 class="t"><span class="mask"><span style="--d:19.3s">Et c'est rapide.</span></span></h2>
+    <div class="ringw pop" style="--d:19.3s"><svg viewBox="0 0 560 560"><circle class="tr" cx="280" cy="280" r="240"/><circle class="pr" cx="280" cy="280" r="240"/></svg><div class="in"><span>livré en</span><b>48 à 72 h</b></div></div>
+    <div class="deals"><div class="deal pop" style="--d:20.4s">Sites<b>dès 99 €</b></div><div class="deal promo pop" style="--d:20.7s">Lancement<b>-10 %</b><code>BIENVENUE</code></div></div>
+  </section>
+
+  <!-- 7. Contact (22,4 s → fin) -->
+  <section class="scene s7 last" style="--a:22.4s">
+    <img class="logo pop" src="../images/logo.jpg" alt="" style="--d:22.5s">
+    <h2 class="t"><span class="mask"><span style="--d:22.8s">On s'occupe</span></span><br><span class="mask"><span class="blue" style="--d:22.95s">de tout.</span></span></h2>
+    <span class="pill" style="--d:23.3s"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" class="f"/></svg>@l.t_digital</span>
+    <span class="mail pop" style="--d:23.6s">l.t.digital.rb@gmail.com</span>
+    <p class="note up" style="--d:23.9s">Sites · Photos · Logos · Réseaux</p>
+  </section>
+</div></div>
+
+<div class="ui"><button type="button" id="replay">↺ Rejouer</button><a href="lt-digital-pub-2.mp4" download>⬇ Vidéo MP4</a></div>
+
+<script>
+const vp = document.getElementById("vp");
+const fit = () => { const k = Math.min(innerWidth/1080, innerHeight/1920); vp.style.transform = `scale(${k})`; vp.style.margin = `${(1920*k-1920)/2}px ${(1080*k-1080)/2}px`; };
+addEventListener("resize", fit); fit();
+const DUR = 25500;
+const all = () => document.getAnimations();
+const restart = () => all().forEach(a => { a.currentTime = 0; a.play(); });
+document.getElementById("replay").onclick = restart;
+setInterval(() => { if (!document.body.classList.contains("capture")) restart(); }, DUR);
+if (/[?&]capture/.test(location.search)) {
+  document.body.classList.add("capture");
+  window.seek = t => { all().forEach(a => { a.pause(); a.currentTime = t; }); };
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "functions": { "api/admin.js": { "includeFiles": "admin.html" } },
+  "routes": [
+    { "src": "/admin(?:\\.html)?/?", "dest": "/api/admin" },
+    { "handle": "filesystem" }
+  ]
+}

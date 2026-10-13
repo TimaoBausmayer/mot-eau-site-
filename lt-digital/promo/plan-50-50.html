@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan d'action + exemple 50/50</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Mono:wght@400;500&family=Hanken+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* Récap imprimable (1 page A4) : se partager l'argent à 50/50 quand un seul a sa micro-entreprise.
+   Exemple chiffré avec un taux de cotisations d'exemple (25 %) — le vrai taux est sur urssaf.fr. */
+:root{--ink:#14121c;--mut:#5b5868;--line:#e3e0ea;--paper:#fbfaf7;--lime:#b8f02a;--lime-d:#4d7c0f;--vio:#5b45d6;--red:#c2410c;--soft:#f2f0f7;
+  --hf:'Bricolage Grotesque',system-ui,sans-serif;--bf:'Hanken Grotesk',system-ui,sans-serif;--mono:'DM Mono',monospace;--serif:'Instrument Serif',Georgia,serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#888}
+body{display:flex;flex-direction:column;align-items:center;gap:30px;padding:30px 0;font-family:var(--bf);color:var(--ink)}
+.page{position:relative;width:794px;height:1123px;background:var(--paper);overflow:hidden;padding:36px 44px 30px;display:flex;flex-direction:column}
+.page>*{flex-shrink:0}
+.page::before{content:"";position:absolute;right:-120px;top:-140px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(184,240,42,.35),transparent 65%)}
+.hd{position:relative;display:flex;justify-content:space-between;align-items:center;font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.hd b{display:flex;align-items:center;gap:8px;color:var(--ink)}
+.hd b img{width:26px;height:26px;border-radius:50%}
+h1{position:relative;margin-top:16px;font:800 38px/1.02 var(--hf);letter-spacing:-.04em}
+h1 em{font:400 44px var(--serif);font-style:italic;color:var(--vio)}
+.sub{position:relative;margin-top:8px;font-size:13.2px;line-height:1.45;color:var(--mut);max-width:660px}
+h2{font:800 17px/1.1 var(--hf);letter-spacing:-.02em;margin:16px 0 8px;display:flex;align-items:center;gap:10px}
+h2 .k{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--ink);color:var(--lime);font:500 11px var(--mono)}
+p,li{font-size:11.8px;line-height:1.4}
+ul{list-style:none}
+.no{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.no div{padding:10px 12px;border-radius:12px;background:#fff8f4;border:1px solid #f3c9b3}
+.no b{display:block;font:700 12.6px var(--bf);color:var(--red);margin-bottom:2px}
+/* comparaison chiffrée */
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cs{padding:12px 14px;border-radius:14px;background:#fff;border:1px solid var(--line)}
+.cs.good{border:2px solid var(--lime-d);background:linear-gradient(180deg,rgba(184,240,42,.16),#fff 45%)}
+.cs h3{font:800 14px var(--hf);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.cs h3 span{font:600 10px var(--mono);letter-spacing:.04em;padding:3px 8px;border-radius:999px}
+.bad{background:#fde7d9;color:var(--red)}.ok{background:var(--lime);color:#1a2e00}
+.cs .how{font-size:11.5px;color:var(--mut);margin:4px 0 8px}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th,td{padding:5px 6px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left}
+th{font:500 10px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--mut)}
+tr.tot td{font-weight:800;border-bottom:0;font-size:12.5px}
+.res{margin-top:8px;padding:7px 10px;border-radius:10px;font-weight:700;font-size:11.8px}
+.res.r{background:#fff1e8;color:var(--red)}.res.g{background:rgba(184,240,42,.35);color:#1a2e00}
+.steps{display:grid;gap:6px}
+.st{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;padding:8px 12px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+.st span{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--lime);font:800 13px var(--hf)}
+.st b{display:block;font:700 12.6px var(--bf)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.box{padding:11px 13px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+.box h3{font:800 13.5px var(--hf);margin-bottom:5px}
+.box li{padding-left:13px;position:relative;margin-bottom:2px}
+.box li::before{content:"–";position:absolute;left:0;color:var(--lime-d);font-weight:700}
+.dark{background:var(--ink);color:#fff;border-color:var(--ink)}.dark h3{color:var(--lime)}.dark p,.dark li{color:#e4e1ef}
+.ft{margin-top:auto;padding-top:9px;border-top:1px solid var(--line);font:500 10.2px/1.45 var(--mono);color:var(--mut)}
+.ft b{color:var(--ink)}
+#p1 h2{margin-top:26px}#p1 .sub{font-size:14px}#p1 p,#p1 li,#p1 td{font-size:12.6px}#p1 .no div{padding:14px 14px}#p1 .cs{padding:16px 16px}#p1 th,#p1 td{padding:7px 6px}
+#p2 p,#p2 li{font-size:12.8px}#p2 .st{padding:12px 14px}#p2 .steps{gap:9px}#p2 .box{padding:14px 16px}#p2 .two{margin-top:16px!important}
+/* plus grand, plus lisible */
+#p1 h1{font-size:44px}#p1 h1 em{font-size:50px}
+#p1 .sub{font-size:15.5px;margin-top:12px}
+#p1 h2,#p2 h2{font-size:21px;margin-top:30px}
+#p1 p,#p1 li{font-size:14px}#p1 .no b{font-size:14.5px}#p1 .no div{padding:16px}
+#p1 .cs h3{font-size:16px}#p1 .cs .how{font-size:13px}#p1 td,#p1 th{font-size:13.5px;padding:9px 6px}#p1 tr.tot td{font-size:15px}#p1 .res{font-size:13.5px;padding:10px 12px}
+#p2 p,#p2 li{font-size:14.5px}#p2 .st b{font-size:15.5px}#p2 .st{padding:16px 18px}#p2 .steps{gap:12px}
+#p2 .box h3{font-size:17px}#p2 .box{padding:18px 20px}#p2 .two{margin-top:22px!important}#p2 .box li{margin-bottom:5px}
+#p2 table th,#p2 table td{font-size:13.5px;padding:7px 6px}#p2 tr.tot td{font-size:14.5px}
+#p2 p,#p2 li{font-size:13.6px}#p2 .st{padding:12px 16px}#p2 .steps{gap:9px}#p2 h2{margin-top:22px}#p2 .box{padding:15px 18px}#p2 .two{margin-top:16px!important}
+.cs h3 span{white-space:nowrap;flex:none}
+
+/* --- pages « plan » et « exemple » --- */
+.page{padding:38px 44px 30px}
+h1{font-size:40px}h1 em{font-size:46px}
+.sub{font-size:14px}
+h2{font-size:19px;margin-top:22px}
+p,li,td{font-size:13px}
+.phase{display:grid;grid-template-columns:150px 1fr;gap:14px;padding:14px 16px;border-radius:16px;background:#fff;border:1px solid var(--line);margin-bottom:10px}
+.phase.now{border:2px solid var(--lime-d);background:linear-gradient(90deg,rgba(184,240,42,.18),#fff 45%)}
+.phase .when{font:500 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.phase .when b{display:block;margin-top:4px;font:800 18px/1.05 var(--hf);letter-spacing:-.02em;color:var(--ink);text-transform:none}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.who{padding:10px 12px;border-radius:12px;background:var(--soft)}
+.who h4{font:800 13.5px var(--hf);margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.who h4 i{font-style:normal;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--lime);font:600 11px var(--mono)}
+.who li{padding-left:15px;position:relative;margin-bottom:3px}
+.who li::before{content:"✓";position:absolute;left:0;color:var(--lime-d);font-weight:800;font-size:11px;top:1px}
+.who li.x::before{content:"✕";color:var(--red)}
+.alert{margin-top:6px;padding:9px 12px;border-radius:10px;background:#fff1e8;color:var(--red);font-weight:700;font-size:12.4px}
+/* exemple */
+.proj{display:grid;grid-template-columns:1.05fr 1fr;gap:12px}
+.devis{padding:14px 16px;border-radius:14px;background:#fff;border:1px solid var(--line)}
+.devis h3{font:800 15px var(--hf);display:flex;justify-content:space-between}
+.devis h3 small{font:500 10.5px var(--mono);color:var(--mut)}
+.devis table td,.devis table th{font-size:12.4px;padding:6px 5px}
+.lot{display:inline-block;padding:2px 7px;border-radius:6px;font:600 10px var(--mono);margin-right:6px}
+.la{background:var(--ink);color:var(--lime)}.lb{background:var(--vio);color:#fff}
+.flow{display:grid;gap:7px}
+.fl{display:grid;grid-template-columns:26px 1fr auto;gap:10px;align-items:center;padding:8px 12px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+.fl span{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--lime);font:800 12px var(--hf)}
+.fl b{font-size:12.8px}.fl small{display:block;color:var(--mut);font-size:11.5px}
+.fl em{font-style:normal;font:700 12.5px var(--mono);white-space:nowrap}
+.invs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.inv{position:relative;padding:14px 16px 12px;border-radius:12px;background:#fff;border:1px solid var(--line);box-shadow:0 10px 24px -18px rgba(20,18,28,.45)}
+.inv::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:12px 0 0 12px}
+.inv.a::before{background:var(--ink)}.inv.b::before{background:var(--vio)}
+.inv h4{font:800 14px var(--hf);display:flex;justify-content:space-between;align-items:baseline}
+.inv h4 small{font:500 10.5px var(--mono);color:var(--mut)}
+.inv .meta{font:500 10.5px/1.45 var(--mono);color:var(--mut);margin:5px 0 7px}
+.inv table td{font-size:12px;padding:4px 3px}
+.inv .tva{margin-top:6px;font:500 10.5px var(--mono);color:var(--mut)}
+.res2{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.res2 div{padding:10px 12px;border-radius:12px;background:var(--ink);color:#fff}
+.res2 b{display:block;font:800 19px var(--hf);color:var(--lime)}
+.res2 span{display:block;font-size:11px;line-height:1.35;color:#d8d5e6;margin-top:2px}
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.why div{padding:10px 12px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+.why b{display:block;font:800 13px var(--hf);margin-bottom:2px}
+/* ajustements pour tenir sur A4 */
+.page{padding:32px 40px 26px}
+h1{font-size:36px;margin-top:12px}h1 em{font-size:42px}
+.sub{font-size:13px;margin-top:6px}
+h2{font-size:17px;margin:14px 0 7px}
+p,li,td{font-size:12px;line-height:1.38}
+.phase{padding:10px 13px;margin-bottom:7px;grid-template-columns:130px 1fr}
+.phase .when b{font-size:16px}
+.who{padding:8px 10px}.who li{margin-bottom:2px}
+.box{padding:9px 12px}.box h3{font-size:13px;margin-bottom:3px}
+.two{gap:8px}
+.devis{padding:11px 13px}.devis table td,.devis table th{padding:4px 5px;font-size:11.8px}
+.fl{padding:6px 10px}.flow{gap:5px}
+.inv{padding:10px 13px 9px}.inv .meta{margin:3px 0 5px}
+.res2 div{padding:8px 10px}.res2 b{font-size:17px}
+.why div{padding:8px 10px}
+.ft{padding-top:8px}
+#p1 h1{margin-top:8px}#p1 h2{margin-top:12px}.res2{gap:6px}
+#p2 h2{margin:11px 0 6px}#p2 .sub{font-size:12.6px}#p2 .why p,#p2 .inv td{font-size:11.6px}#p2 h1{margin-top:8px}
+.inv td:last-child,.devis td:last-child{white-space:nowrap}
+#p1 .sub{font-size:12.4px}#p1 .phase{padding:9px 12px;margin-bottom:6px}#p1 .alert{margin-top:6px;padding:7px 10px;font-size:11.8px}#p1 p,#p1 li{font-size:12.9px}#p1 .box{padding:12px 14px}#p1 .box h3{font-size:14px}#p1 h2{margin-top:18px}
+</style>
+</head>
+<body>
+
+<!-- =============== PAGE 1 : LE PLAN =============== -->
+<section class="page" id="p1">
+  <div class="hd"><b><img src="../images/logo-small.jpg" alt="">L&amp;T Digital</b><span>Notre plan · à garder</span></div>
+  <h1>50/50 dès le <em>premier euro.</em></h1>
+  <p class="sub"><strong>A</strong> a 16 ans, <strong>B</strong> aura 16 ans dans environ 2 mois. Tant que B a 15 ans, il ne peut pas être payé. Pour que vous gagniez <strong>tous les deux 50 % dès le début</strong>, vous préparez pendant 2 mois et vous lancez les ventes ensemble le jour J (les 16 ans de B).</p>
+
+  <h2><span class="k">01</span>Le plan en 3 étapes</h2>
+  <div class="phase now"><div class="when">Étape 1<b>Les 2 mois avant J</b><span class="lot la" style="margin-top:8px;display:inline-block">On prépare</span></div>
+    <div class="cols">
+      <div class="who"><h4><i>A</i>16 ans</h4><ul>
+        <li>Montre les maquettes, trouve les premiers clients</li>
+        <li>Fait signer des devis « L&amp;T Digital » qui <strong>démarrent après J</strong></li>
+        <li>Déclare sa micro-entreprise <strong>3 à 4 semaines avant J</strong>, pour avoir son SIRET à temps</li></ul></div>
+      <div class="who"><h4><i>B</i>15 ans</h4><ul>
+        <li>Se forme et prépare ses propres réalisations</li>
+        <li>Prépare son dossier : pièces, autorisation parentale signée</li>
+        <li>Prépare avec A les modèles de devis et de facture</li>
+        <li class="x">Ne travaille sur aucun projet client avant J</li></ul></div>
+    </div>
+    <div class="alert" style="grid-column:1/-1;background:rgba(184,240,42,.25);color:#1a2e00">Pendant ces 2 mois, personne ne facture de projet commun : vous construisez la liste des clients qui démarrent à J.</div></div>
+  <div class="phase"><div class="when">Étape 2<b>Le jour J</b><span class="lot lb" style="margin-top:8px;display:inline-block">16 ans de B</span></div>
+    <div><ul class="who" style="background:none;padding:0">
+      <li>B déclare sa micro-entreprise le jour même (gratuit, sur le guichet unique officiel)</li>
+      <li>Vous signez votre <strong>accord de partenariat</strong> : 50/50, rôles, marque, départ (avec vos parents)</li>
+      <li>B attend son numéro SIRET (1 à 4 semaines) : les projets signés peuvent commencer dès qu'il l'a</li></ul></div></div>
+  <div class="phase"><div class="when">Étape 3<b>Les SIRET reçus : on lance</b></div>
+    <div><ul class="who" style="background:none;padding:0">
+      <li>Chaque projet est découpé en <strong>deux lots de même valeur</strong> : un pour A, un pour B</li>
+      <li>Chacun facture son lot au client et déclare ce qu'il encaisse : <strong>50 % chacun dès le premier projet</strong></li>
+      <li>Le détail chiffré est sur la fiche « Exemple type »</li></ul></div></div>
+
+  <h2><span class="k">02</span>Les bonnes réponses</h2>
+  <div class="two">
+    <div class="box"><h3>Un client veut un site tout de suite ?</h3><p>Proposez-lui de démarrer à J. S'il ne peut pas attendre, A le fait seul et le facture seul : ce projet ne compte pas dans le 50/50.</p></div>
+    <div class="box"><h3>Et l'argent d'un projet fait seul par A ?</h3><p>Il est à A, il ne peut pas le reverser à B. Mais A peut choisir de le <strong>réinvestir dans la marque commune</strong> : publicité, nom de domaine, logiciels.</p></div>
+    <div class="box"><h3>Pourquoi B ne peut pas être payé avant ?</h3><p>Avant 16 ans, on ne peut pas avoir de micro-entreprise, et le travail des moins de 16 ans est très limité. Le payer « en liquide » serait du travail non déclaré.</p></div>
+    <div class="box dark"><h3>Calendrier type</h3><ul>
+      <li>J − 2 mois : on prépare, on signe des devis</li><li>J − 4 semaines : A déclare sa micro</li><li>J : B déclare, accord signé</li><li>SIRET reçus : premiers projets à 50/50</li></ul></div>
+  </div>
+
+  <div class="ft"><b>Informations générales (octobre 2026)</b>, pas un conseil juridique. Vérifiez les démarches sur service-public.fr ou avec votre CCI avant de déclarer.</div>
+</section>
+
+<!-- =============== PAGE 2 : EXEMPLE TYPE =============== -->
+<section class="page" id="p2">
+  <div class="hd"><b><img src="../images/logo-small.jpg" alt="">L&amp;T Digital</b><span>Exemple type · 50/50</span></div>
+  <h1>Exemple type : <em>un projet à 50/50.</em></h1>
+  <p class="sub">Une boulangerie veut un site vitrine, un logo et sa carte Google Maps. Voici le parcours complet, du devis jusqu'à ce qui reste dans la poche de chacun.</p>
+
+  <h2><span class="k">01</span>Le devis : deux lots de même valeur</h2>
+  <div class="proj">
+    <div class="devis"><h3>Devis L&amp;T Digital<small>n° D-2026-012</small></h3>
+      <table><tr><th>Prestation</th><th>Prix</th></tr>
+        <tr><td>Site vitrine (5 pages)</td><td>239,00 €</td></tr>
+        <tr><td>Création de logo</td><td>65,00 €</td></tr>
+        <tr><td>Google Maps + bouton itinéraire</td><td>25,00 €</td></tr>
+        <tr class="tot"><td>Total (TVA non applicable)</td><td>329,00 €</td></tr></table>
+      <p style="margin-top:8px;font-size:12px"><span class="lot la">Lot A</span>Design du site et du logo : <b>164,50 €</b><br><span class="lot lb" style="margin-top:5px">Lot B</span>Intégration, Google Maps, mise en ligne : <b>164,50 €</b></p></div>
+    <div class="flow">
+      <div class="fl"><span>1</span><div><b>Le client signe le devis</b><small>un seul document, au nom de L&amp;T Digital</small></div><em>329 €</em></div>
+      <div class="fl"><span>2</span><div><b>Acompte de 30 %</b><small>A et B facturent chacun 30 % de leur lot</small></div><em>2 × 49,35 €</em></div>
+      <div class="fl"><span>3</span><div><b>Création, validation, mise en ligne</b><small>A fait son lot, B fait le sien · retouches incluses</small></div><em>48–72 h</em></div>
+      <div class="fl"><span>4</span><div><b>Solde de 70 %</b><small>A et B facturent chacun le reste de leur lot</small></div><em>2 × 115,15 €</em></div>
+      <div class="fl"><span>5</span><div><b>Chacun déclare à l'URSSAF</b><small>ce qu'il a encaissé : 164,50 €</small></div><em>chacun</em></div>
+    </div>
+  </div>
+
+  <h2><span class="k">02</span>Les factures du solde (exemple)</h2>
+  <div class="invs">
+    <div class="inv a"><h4>Facture n° A-2026-007<small>Associé A</small></h4>
+      <div class="meta">Nom, adresse et SIRET de A · Client : Boulangerie Le Fournil · Réf. devis D-2026-012</div>
+      <table><tr><td>Lot A : design du site et du logo, solde de 70 %</td><td style="text-align:right">115,15 €</td></tr>
+        <tr class="tot"><td>Total à payer</td><td style="text-align:right">115,15 €</td></tr></table>
+      <div class="tva">TVA non applicable, art. 293 B du CGI</div></div>
+    <div class="inv b"><h4>Facture n° B-2026-002<small>Associé B</small></h4>
+      <div class="meta">Nom, adresse et SIRET de B · Client : Boulangerie Le Fournil · Réf. devis D-2026-012</div>
+      <table><tr><td>Lot B : intégration, Google Maps et mise en ligne, solde de 70 %</td><td style="text-align:right">115,15 €</td></tr>
+        <tr class="tot"><td>Total à payer</td><td style="text-align:right">115,15 €</td></tr></table>
+      <div class="tva">TVA non applicable, art. 293 B du CGI</div></div>
+  </div>
+
+  <h2><span class="k">03</span>Ce qui reste à chacun</h2>
+  <div class="res2">
+    <div><b>164,50 €</b><span>encaissés par A, et autant par B</span></div>
+    <div><b>− 41,12 €</b><span>de cotisations chacun (taux d'exemple : 25 %*)</span></div>
+    <div><b>123,38 €</b><span>restent à A</span></div>
+    <div><b>123,38 €</b><span>restent à B : exactement 50/50</span></div>
+  </div>
+
+  <h2><span class="k">04</span>Les cotisations, ça sert à quoi ?</h2>
+  <div class="why">
+    <div><b>Votre retraite</b><p>Chaque euro déclaré compte pour votre future retraite : vous validez des trimestres dès 16 ans.</p></div>
+    <div><b>Santé et solidarité</b><p>Sécurité sociale (maladie, invalidité), allocations familiales, CSG / CRDS : comme tous les travailleurs.</p></div>
+    <div><b>Et si on ne gagne rien ?</b><p>Vous payez <strong>seulement sur ce que vous encaissez</strong> : 0 € de chiffre d'affaires = 0 € de cotisations.</p></div>
+  </div>
+
+  <div class="ft"><b>* 25 % est un taux d'exemple.</b> Le vrai taux dépend de votre activité (environ 21 à 26 % en 2026) : vérifiez-le sur urssaf.fr. Exemple fictif à but pédagogique (octobre 2026), pas un conseil juridique.</div>
+</section>
+</body>
+</html>

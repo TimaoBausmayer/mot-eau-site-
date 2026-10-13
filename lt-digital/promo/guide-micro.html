@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide — créer sa micro-entreprise de A à Z</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Mono:wght@400;500&family=Hanken+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* Récap imprimable (1 page A4) : se partager l'argent à 50/50 quand un seul a sa micro-entreprise.
+   Exemple chiffré avec un taux de cotisations d'exemple (25 %) — le vrai taux est sur urssaf.fr. */
+:root{--ink:#14121c;--mut:#5b5868;--line:#e3e0ea;--paper:#fbfaf7;--lime:#b8f02a;--lime-d:#4d7c0f;--vio:#5b45d6;--red:#c2410c;--soft:#f2f0f7;
+  --hf:'Bricolage Grotesque',system-ui,sans-serif;--bf:'Hanken Grotesk',system-ui,sans-serif;--mono:'DM Mono',monospace;--serif:'Instrument Serif',Georgia,serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#888}
+body{display:flex;flex-direction:column;align-items:center;gap:30px;padding:30px 0;font-family:var(--bf);color:var(--ink)}
+.page{position:relative;width:794px;height:1123px;background:var(--paper);overflow:hidden;padding:36px 44px 30px;display:flex;flex-direction:column}
+.page>*{flex-shrink:0}
+.page::before{content:"";position:absolute;right:-120px;top:-140px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(184,240,42,.35),transparent 65%)}
+.hd{position:relative;display:flex;justify-content:space-between;align-items:center;font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.hd b{display:flex;align-items:center;gap:8px;color:var(--ink)}
+.hd b img{width:26px;height:26px;border-radius:50%}
+h1{position:relative;margin-top:16px;font:800 38px/1.02 var(--hf);letter-spacing:-.04em}
+h1 em{font:400 44px var(--serif);font-style:italic;color:var(--vio)}
+.sub{position:relative;margin-top:8px;font-size:13.2px;line-height:1.45;color:var(--mut);max-width:660px}
+h2{font:800 17px/1.1 var(--hf);letter-spacing:-.02em;margin:16px 0 8px;display:flex;align-items:center;gap:10px}
+h2 .k{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--ink);color:var(--lime);font:500 11px var(--mono)}
+p,li{font-size:11.8px;line-height:1.4}
+ul{list-style:none}
+.no{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.no div{padding:10px 12px;border-radius:12px;background:#fff8f4;border:1px solid #f3c9b3}
+.no b{display:block;font:700 12.6px var(--bf);color:var(--red);margin-bottom:2px}
+/* comparaison chiffrée */
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cs{padding:12px 14px;border-radius:14px;background:#fff;border:1px solid var(--line)}
+.cs.good{border:2px solid var(--lime-d);background:linear-gradient(180deg,rgba(184,240,42,.16),#fff 45%)}
+.cs h3{font:800 14px var(--hf);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.cs h3 span{font:600 10px var(--mono);letter-spacing:.04em;padding:3px 8px;border-radius:999px}
+.bad{background:#fde7d9;color:var(--red)}.ok{background:var(--lime);color:#1a2e00}
+.cs .how{font-size:11.5px;color:var(--mut);margin:4px 0 8px}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th,td{padding:5px 6px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left}
+th{font:500 10px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--mut)}
+tr.tot td{font-weight:800;border-bottom:0;font-size:12.5px}
+.res{margin-top:8px;padding:7px 10px;border-radius:10px;font-weight:700;font-size:11.8px}
+.res.r{background:#fff1e8;color:var(--red)}.res.g{background:rgba(184,240,42,.35);color:#1a2e00}
+.steps{display:grid;gap:6px}
+.st{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;padding:8px 12px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+.st span{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--lime);font:800 13px var(--hf)}
+.st b{display:block;font:700 12.6px var(--bf)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.box{padding:11px 13px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+.box h3{font:800 13.5px var(--hf);margin-bottom:5px}
+.box li{padding-left:13px;position:relative;margin-bottom:2px}
+.box li::before{content:"–";position:absolute;left:0;color:var(--lime-d);font-weight:700}
+.dark{background:var(--ink);color:#fff;border-color:var(--ink)}.dark h3{color:var(--lime)}.dark p,.dark li{color:#e4e1ef}
+.ft{margin-top:auto;padding-top:9px;border-top:1px solid var(--line);font:500 10.2px/1.45 var(--mono);color:var(--mut)}
+.ft b{color:var(--ink)}
+#p1 h2{margin-top:26px}#p1 .sub{font-size:14px}#p1 p,#p1 li,#p1 td{font-size:12.6px}#p1 .no div{padding:14px 14px}#p1 .cs{padding:16px 16px}#p1 th,#p1 td{padding:7px 6px}
+#p2 p,#p2 li{font-size:12.8px}#p2 .st{padding:12px 14px}#p2 .steps{gap:9px}#p2 .box{padding:14px 16px}#p2 .two{margin-top:16px!important}
+/* plus grand, plus lisible */
+#p1 h1{font-size:44px}#p1 h1 em{font-size:50px}
+#p1 .sub{font-size:15.5px;margin-top:12px}
+#p1 h2,#p2 h2{font-size:21px;margin-top:30px}
+#p1 p,#p1 li{font-size:14px}#p1 .no b{font-size:14.5px}#p1 .no div{padding:16px}
+#p1 .cs h3{font-size:16px}#p1 .cs .how{font-size:13px}#p1 td,#p1 th{font-size:13.5px;padding:9px 6px}#p1 tr.tot td{font-size:15px}#p1 .res{font-size:13.5px;padding:10px 12px}
+#p2 p,#p2 li{font-size:14.5px}#p2 .st b{font-size:15.5px}#p2 .st{padding:16px 18px}#p2 .steps{gap:12px}
+#p2 .box h3{font-size:17px}#p2 .box{padding:18px 20px}#p2 .two{margin-top:22px!important}#p2 .box li{margin-bottom:5px}
+#p2 table th,#p2 table td{font-size:13.5px;padding:7px 6px}#p2 tr.tot td{font-size:14.5px}
+#p2 p,#p2 li{font-size:13.6px}#p2 .st{padding:12px 16px}#p2 .steps{gap:9px}#p2 h2{margin-top:22px}#p2 .box{padding:15px 18px}#p2 .two{margin-top:16px!important}
+.cs h3 span{white-space:nowrap;flex:none}
+
+/* --- pages « plan » et « exemple » --- */
+.page{padding:38px 44px 30px}
+h1{font-size:40px}h1 em{font-size:46px}
+.sub{font-size:14px}
+h2{font-size:19px;margin-top:22px}
+p,li,td{font-size:13px}
+.phase{display:grid;grid-template-columns:150px 1fr;gap:14px;padding:14px 16px;border-radius:16px;background:#fff;border:1px solid var(--line);margin-bottom:10px}
+.phase.now{border:2px solid var(--lime-d);background:linear-gradient(90deg,rgba(184,240,42,.18),#fff 45%)}
+.phase .when{font:500 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.phase .when b{display:block;margin-top:4px;font:800 18px/1.05 var(--hf);letter-spacing:-.02em;color:var(--ink);text-transform:none}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.who{padding:10px 12px;border-radius:12px;background:var(--soft)}
+.who h4{font:800 13.5px var(--hf);margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.who h4 i{font-style:normal;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--lime);font:600 11px var(--mono)}
+.who li{padding-left:15px;position:relative;margin-bottom:3px}
+.who li::before{content:"✓";position:absolute;left:0;color:var(--lime-d);font-weight:800;font-size:11px;top:1px}
+.who li.x::before{content:"✕";color:var(--red)}
+.alert{margin-top:6px;padding:9px 12px;border-radius:10px;background:#fff1e8;color:var(--red);font-weight:700;font-size:12.4px}
+/* exemple */
+.proj{display:grid;grid-template-columns:1.05fr 1fr;gap:12px}
+.devis{padding:14px 16px;border-radius:14px;background:#fff;border:1px solid var(--line)}
+.devis h3{font:800 15px var(--hf);display:flex;justify-content:space-between}
+.devis h3 small{font:500 10.5px var(--mono);color:var(--mut)}
+.devis table td,.devis table th{font-size:12.4px;padding:6px 5px}
+.lot{display:inline-block;padding:2px 7px;border-radius:6px;font:600 10px var(--mono);margin-right:6px}
+.la{background:var(--ink);color:var(--lime)}.lb{background:var(--vio);color:#fff}
+.flow{display:grid;gap:7px}
+.fl{display:grid;grid-template-columns:26px 1fr auto;gap:10px;align-items:center;padding:8px 12px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+.fl span{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--lime);font:800 12px var(--hf)}
+.fl b{font-size:12.8px}.fl small{display:block;color:var(--mut);font-size:11.5px}
+.fl em{font-style:normal;font:700 12.5px var(--mono);white-space:nowrap}
+.invs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.inv{position:relative;padding:14px 16px 12px;border-radius:12px;background:#fff;border:1px solid var(--line);box-shadow:0 10px 24px -18px rgba(20,18,28,.45)}
+.inv::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:12px 0 0 12px}
+.inv.a::before{background:var(--ink)}.inv.b::before{background:var(--vio)}
+.inv h4{font:800 14px var(--hf);display:flex;justify-content:space-between;align-items:baseline}
+.inv h4 small{font:500 10.5px var(--mono);color:var(--mut)}
+.inv .meta{font:500 10.5px/1.45 var(--mono);color:var(--mut);margin:5px 0 7px}
+.inv table td{font-size:12px;padding:4px 3px}
+.inv .tva{margin-top:6px;font:500 10.5px var(--mono);color:var(--mut)}
+.res2{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.res2 div{padding:10px 12px;border-radius:12px;background:var(--ink);color:#fff}
+.res2 b{display:block;font:800 19px var(--hf);color:var(--lime)}
+.res2 span{display:block;font-size:11px;line-height:1.35;color:#d8d5e6;margin-top:2px}
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.why div{padding:10px 12px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+.why b{display:block;font:800 13px var(--hf);margin-bottom:2px}
+/* ajustements pour tenir sur A4 */
+.page{padding:32px 40px 26px}
+h1{font-size:36px;margin-top:12px}h1 em{font-size:42px}
+.sub{font-size:13px;margin-top:6px}
+h2{font-size:17px;margin:14px 0 7px}
+p,li,td{font-size:12px;line-height:1.38}
+.phase{padding:10px 13px;margin-bottom:7px;grid-template-columns:130px 1fr}
+.phase .when b{font-size:16px}
+.who{padding:8px 10px}.who li{margin-bottom:2px}
+.box{padding:9px 12px}.box h3{font-size:13px;margin-bottom:3px}
+.two{gap:8px}
+.devis{padding:11px 13px}.devis table td,.devis table th{padding:4px 5px;font-size:11.8px}
+.fl{padding:6px 10px}.flow{gap:5px}
+.inv{padding:10px 13px 9px}.inv .meta{margin:3px 0 5px}
+.res2 div{padding:8px 10px}.res2 b{font-size:17px}
+.why div{padding:8px 10px}
+.ft{padding-top:8px}
+#p1 h1{margin-top:8px}#p1 h2{margin-top:12px}.res2{gap:6px}
+#p2 h2{margin:11px 0 6px}#p2 .sub{font-size:12.6px}#p2 .why p,#p2 .inv td{font-size:11.6px}#p2 h1{margin-top:8px}
+.inv td:last-child,.devis td:last-child{white-space:nowrap}
+#p1 .sub{font-size:12.4px}#p1 .phase{padding:9px 12px;margin-bottom:6px}#p1 .alert{margin-top:6px;padding:7px 10px;font-size:11.8px}#p1 p,#p1 li{font-size:12.9px}#p1 .box{padding:12px 14px}#p1 .box h3{font-size:14px}#p1 h2{margin-top:18px}
+
+.must{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.must div{padding:10px 12px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+.must b{display:block;font:700 13px var(--bf);margin-bottom:2px}
+.must i{font-style:normal;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--lime);font-size:11px;margin-right:6px;vertical-align:-3px}
+.check2{display:grid;gap:6px}
+.check2 label{display:flex;gap:10px;align-items:center;padding:8px 12px;border-radius:10px;background:#fff;border:1px solid var(--line);font-size:12.4px}
+.check2 i{flex:none;width:18px;height:18px;border-radius:5px;border:2px solid var(--ink)}
+.note{margin-top:10px;padding:10px 13px;border-radius:12px;background:var(--ink);color:#fff}.note b{color:var(--lime)}.note p{font-size:12px}
+.steps.big .st{padding:11px 14px}.steps.big{gap:8px}
+.st code,.links code,.box code{font:500 11.5px var(--mono);background:var(--soft);padding:1px 6px;border-radius:5px;color:var(--vio)}
+.key{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.key div{padding:11px 12px;border-radius:12px;background:var(--ink);color:#fff}
+.key b{display:block;font:800 17px var(--hf);color:var(--lime)}
+.key span{font-size:11px;line-height:1.35;display:block;margin-top:3px;color:#d8d5e6}
+.cal{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cal div{padding:10px 12px;border-radius:12px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--lime-d)}
+.cal b{font:800 13.5px var(--hf)}
+.letter{padding:16px 20px;border-radius:12px;background:#fff;border:1px dashed var(--mut);font-family:Georgia,serif}
+.letter p{font:13px/1.9 Georgia,serif;margin-bottom:4px}
+.ln{display:inline-block;width:150px;border-bottom:1px solid #999;height:14px;vertical-align:-2px}.ln.w{width:240px}.ln.s{width:90px}
+.sig{display:flex;justify-content:space-between;gap:12px;margin-top:10px}.sig>span{font:12px var(--bf);color:var(--mut)}
+.links{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.links div{padding:9px 12px;border-radius:10px;background:#fff;border:1px solid var(--line)}
+.links span{display:block;font-size:11.6px;color:var(--mut);margin-top:3px}
+#p3 p{font-size:12.8px}#p3 .steps.big .st{padding:12px 15px}#p3 .devis td,#p3 .devis th{font-size:12px;padding:5px 6px}#p3 .devis td:last-child,#p3 .devis th:last-child{text-align:right}
+#p3 .devis td,#p3 .devis th{text-align:left}#p3 .devis td:last-child,#p3 .devis th:last-child{text-align:right}
+</style>
+</head>
+<body>
+<!-- ====== PAGE 1 ====== -->
+<section class="page" id="p1">
+  <div class="hd"><b><img src="../images/logo-small.jpg" alt="">L&amp;T Digital</b><span>Guide · 1 / 4</span></div>
+  <h1>Créer sa micro-entreprise <em>de A à Z.</em></h1>
+  <p class="sub">Le guide pas à pas pour un jeune de 16 ans qui crée son activité de création de sites internet, de logos et de vidéos. À suivre dans l'ordre, avec vos parents.</p>
+
+  <h2><span class="k">A</span>Les 4 conditions à remplir</h2>
+  <div class="must">
+    <div><b><i>1</i>Avoir 16 ans révolus</b><p>La déclaration se fait au plus tôt le jour de ses 16 ans.</p></div>
+    <div><b><i>2</i>L'accord écrit des parents</b><p>Une autorisation signée par les deux parents s'ils ont l'autorité parentale (ou être émancipé).</p></div>
+    <div><b><i>3</i>Une activité de services</b><p>Sans émancipation, l'activité doit être non commerciale : création de sites, design graphique, montage vidéo, conseil.</p></div>
+    <div><b><i>4</i>Rester scolarisé</b><p>La formation est obligatoire jusqu'à 18 ans : l'entreprise se fait en plus des cours.</p></div>
+  </div>
+
+  <h2><span class="k">B</span>Ce qu'est une micro-entreprise</h2>
+  <div class="two">
+    <div class="box"><h3>En bref</h3><ul>
+      <li>Une entreprise <strong>à votre nom</strong>, pour une seule personne</li>
+      <li>Création <strong>gratuite</strong> et en ligne</li>
+      <li>Cotisations calculées sur ce que vous encaissez : 0 € encaissé = 0 € à payer</li>
+      <li>Pas de TVA à facturer sous le seuil de franchise</li>
+      <li>Une comptabilité très simple : un registre de vos recettes</li></ul></div>
+    <div class="box"><h3>Ce que vous devrez faire</h3><ul>
+      <li>Déclarer votre chiffre d'affaires chaque mois ou trimestre</li>
+      <li>Faire un devis et une facture pour chaque client</li>
+      <li>Noter chaque paiement reçu dans votre registre</li>
+      <li>Garder vos factures pendant 10 ans</li>
+      <li>Ne pas dépasser le plafond de chiffre d'affaires</li></ul></div>
+  </div>
+
+  <h2><span class="k">C</span>La liste de documents à préparer</h2>
+  <div class="check2">
+    <label><i></i><span><b>Votre pièce d'identité</b> (carte d'identité ou passeport), scannée recto-verso</span></label>
+    <label><i></i><span><b>L'autorisation parentale signée</b> (modèle en page 4)</span></label>
+    <label><i></i><span><b>Les pièces d'identité de vos parents</b>, scannées</span></label>
+    <label><i></i><span><b>Un justificatif de domicile</b> des parents + une attestation d'hébergement signée</span></label>
+    <label><i></i><span><b>Une adresse e-mail</b> et un numéro de téléphone que vous consultez</span></label>
+    <label><i></i><span><b>La description de l'activité</b> : « Création de sites internet, design graphique, montage vidéo »</span></label>
+    <label><i></i><span><b>La date de début d'activité</b> que vous choisissez</span></label>
+  </div>
+
+  <div class="note"><p><b>Bon à savoir :</b> la création est <strong>100 % gratuite</strong> sur le site officiel. Des sites privés font payer cette démarche (parfois plus de 50 €) : vous n'en avez pas besoin.</p></div>
+  <div class="ft"><b>Informations générales, octobre 2026.</b> Ce guide ne remplace pas un conseil juridique : vérifiez sur service-public.fr ou auprès de votre CCI.</div>
+</section>
+
+<!-- ====== PAGE 2 ====== -->
+<section class="page" id="p2">
+  <div class="hd"><b><img src="../images/logo-small.jpg" alt="">L&amp;T Digital</b><span>Guide · 2 / 4</span></div>
+  <h1>La déclaration, <em>étape par étape.</em></h1>
+  <p class="sub">Comptez 30 à 45 minutes, sur un ordinateur, avec vos documents scannés à côté de vous et un parent présent.</p>
+
+  <div class="steps big">
+    <div class="st"><span>1</span><div><b>Aller sur le guichet unique officiel</b><p>Site <code>formalites.entreprises.gouv.fr</code>. Créez votre compte avec votre e-mail, puis validez le lien reçu.</p></div></div>
+    <div class="st"><span>2</span><div><b>Choisir « Créer une entreprise »</b><p>Puis : entreprise individuelle, et cochez le régime <strong>micro-entrepreneur</strong>.</p></div></div>
+    <div class="st"><span>3</span><div><b>Remplir votre identité</b><p>Nom, prénoms, date et lieu de naissance, nationalité. Indiquez que vous êtes mineur : on vous demandera l'autorisation des parents.</p></div></div>
+    <div class="st"><span>4</span><div><b>L'adresse de l'entreprise</b><p>L'adresse de vos parents (votre domicile). L'activité s'exerce « à domicile ».</p></div></div>
+    <div class="st"><span>5</span><div><b>Décrire l'activité</b><p>Écrivez clairement : « Création de sites internet, design graphique et montage vidéo ». Le site vous oriente vers une <strong>activité libérale</strong> (prestations intellectuelles). Le code APE est attribué ensuite par l'INSEE.</p></div></div>
+    <div class="st"><span>6</span><div><b>Les options sociales et fiscales</b><p>Choisissez une déclaration <strong>mensuelle ou trimestrielle</strong> (trimestrielle = 4 fois par an, plus simple). Le versement libératoire de l'impôt : en général « non » (vos revenus vont dans la déclaration de vos parents).</p></div></div>
+    <div class="st"><span>7</span><div><b>Ajouter les pièces justificatives</b><p>Pièce d'identité, autorisation parentale, pièces des parents, justificatif de domicile. L'attestation de non-condamnation se remplit directement sur le site.</p></div></div>
+    <div class="st"><span>8</span><div><b>Vérifier, signer et envoyer</b><p>Relisez tout, signez électroniquement et validez. Vous recevez un e-mail de confirmation : gardez-le.</p></div></div>
+  </div>
+
+  <div class="two" style="margin-top:12px">
+    <div class="box dark"><h3>Et ensuite ?</h3><ul>
+      <li>1 à 4 semaines : l'INSEE vous envoie votre <strong>numéro SIRET</strong></li>
+      <li>L'URSSAF vous écrit pour créer votre espace</li>
+      <li>Vous pouvez facturer dès que vous avez votre SIRET</li></ul></div>
+    <div class="box"><h3>Un blocage ?</h3><p>Le site du guichet unique a une aide en ligne. Votre CCI peut aussi vous recevoir gratuitement pour vous aider à remplir le dossier.</p></div>
+  </div>
+  <div class="ft"><b>Les intitulés exacts des écrans peuvent changer</b> : suivez les questions du site, l'ordre reste le même.</div>
+</section>
+
+<!-- ====== PAGE 3 ====== -->
+<section class="page" id="p3">
+  <div class="hd"><b><img src="../images/logo-small.jpg" alt="">L&amp;T Digital</b><span>Guide · 3 / 4</span></div>
+  <h1>Après la création : <em>se mettre en règle.</em></h1>
+  <p class="sub">Votre SIRET est arrivé ? Voici ce qu'il faut faire dans les semaines qui suivent, dans l'ordre.</p>
+
+  <div class="steps big">
+    <div class="st"><span>1</span><div><b>Activer votre espace URSSAF</b><p>Sur <code>autoentrepreneur.urssaf.fr</code>, avec votre SIRET. C'est là que vous déclarerez votre chiffre d'affaires et paierez vos cotisations.</p></div></div>
+    <div class="st"><span>2</span><div><b>Créer votre espace professionnel des impôts</b><p>Sur <code>impots.gouv.fr</code>, rubrique « professionnel ». Il sert notamment pour la CFE (voir ci-dessous).</p></div></div>
+    <div class="st"><span>3</span><div><b>Ouvrir un compte bancaire</b><p>Avec un parent, pour un mineur. Un compte réservé à l'activité est conseillé dès le début (il devient obligatoire si le chiffre d'affaires dépasse 10 000 € deux années de suite).</p></div></div>
+    <div class="st"><span>4</span><div><b>Mettre votre site en règle</b><p>Mentions légales avec votre nom, la mention « EI », votre SIRET et votre adresse ; conditions générales de vente ; politique de confidentialité.</p></div></div>
+    <div class="st"><span>5</span><div><b>Préparer vos modèles de devis et de factures</b><p>Avec toutes les mentions obligatoires (page 4). Numérotez vos factures dans l'ordre, sans trou : 2026-001, 2026-002…</p></div></div>
+    <div class="st"><span>6</span><div><b>Ouvrir votre registre des recettes</b><p>Un simple tableau : date, client, n° de facture, montant, moyen de paiement. C'est obligatoire et c'est toute votre comptabilité.</p></div></div>
+    <div class="st"><span>7</span><div><b>Penser à l'assurance</b><p>Une assurance responsabilité civile professionnelle n'est pas obligatoire pour cette activité, mais elle est conseillée (quelques euros par mois).</p></div></div>
+  </div>
+
+  <h2><span class="k">✎</span>Exemple de registre des recettes</h2>
+  <div class="devis" style="padding:10px 14px"><table>
+    <tr><th>Date</th><th>Client</th><th>Facture</th><th>Paiement</th><th>Montant</th></tr>
+    <tr><td>04/01/2027</td><td>Boulangerie Le Fournil</td><td>2027-001 (acompte)</td><td>Virement</td><td>49,35 €</td></tr>
+    <tr><td>15/01/2027</td><td>Boulangerie Le Fournil</td><td>2027-002 (solde)</td><td>Virement</td><td>115,15 €</td></tr>
+    <tr><td>22/01/2027</td><td>Garage Martin</td><td>2027-003</td><td>Chèque</td><td>65,00 €</td></tr>
+    <tr class="tot"><td colspan="4">Total du trimestre à déclarer à l'URSSAF</td><td>229,50 €</td></tr></table></div>
+
+  <h2><span class="k">€</span>Les chiffres à connaître <span style="font:500 11px var(--mono);color:var(--mut);margin-left:6px">(à vérifier chaque année)</span></h2>
+  <div class="key">
+    <div><b>≈ 21 à 26 %</b><span>de cotisations sur le chiffre d'affaires, selon l'activité</span></div>
+    <div><b>0 € de TVA</b><span>sous le seuil de franchise (≈ 37 500 € par an pour les services)</span></div>
+    <div><b>≈ 77 700 €</b><span>de chiffre d'affaires maximum par an en micro (services)</span></div>
+    <div><b>CFE</b><span>impôt local : exonéré la 1re année, puis tant que le CA reste sous 5 000 € par an</span></div>
+  </div>
+  <div class="ft"><b>Montants indicatifs</b> (octobre 2026) : ils changent régulièrement, vérifiez-les sur urssaf.fr et impots.gouv.fr.</div>
+</section>
+
+<!-- ====== PAGE 4 ====== -->
+<section class="page" id="p4">
+  <div class="hd"><b><img src="../images/logo-small.jpg" alt="">L&amp;T Digital</b><span>Guide · 4 / 4</span></div>
+  <h1>Au quotidien, <em>et les modèles.</em></h1>
+
+  <h2><span class="k">1</span>Le calendrier type</h2>
+  <div class="cal">
+    <div><b>À chaque projet</b><p>Devis signé → acompte (facture) → travail → solde (facture) → noter les paiements dans le registre</p></div>
+    <div><b>Chaque trimestre</b><p>Déclarer son chiffre d'affaires sur l'URSSAF (même à 0 €) et payer les cotisations</p></div>
+    <div><b>Chaque printemps</b><p>Ajouter son chiffre d'affaires à la déclaration d'impôts des parents (partie « micro-entrepreneur »)</p></div>
+    <div><b>Chaque fin d'année</b><p>Vérifier la CFE sur l'espace pro des impôts, et que le CA reste sous les plafonds</p></div>
+  </div>
+
+  <h2><span class="k">2</span>Les mentions obligatoires sur une facture</h2>
+  <div class="two">
+    <div class="box"><ul>
+      <li>Le mot « Facture », un numéro unique et la date</li>
+      <li>Votre nom + « EI », votre adresse et votre SIRET</li>
+      <li>Le nom et l'adresse du client</li>
+      <li>Le détail de la prestation, le prix, le total</li></ul></div>
+    <div class="box"><ul>
+      <li>« TVA non applicable, art. 293 B du CGI »</li>
+      <li>La date ou le délai de paiement</li>
+      <li>Pour un client professionnel : les pénalités de retard et l'indemnité forfaitaire de 40 €</li></ul></div>
+  </div>
+
+  <h2><span class="k">3</span>Modèle d'autorisation parentale</h2>
+  <div class="letter">
+    <p>Nous soussignés <span class="ln"></span> et <span class="ln"></span>, demeurant <span class="ln w"></span>,</p>
+    <p>agissant en qualité de représentants légaux de notre enfant mineur <span class="ln"></span>, né(e) le <span class="ln s"></span> à <span class="ln"></span>,</p>
+    <p>l'autorisons à accomplir seul(e) les actes d'administration nécessaires à la création et à la gestion de son entreprise individuelle (micro-entreprise), ayant pour activité : création de sites internet, design graphique et montage vidéo, conformément à l'article 388-1-2 du Code civil.</p>
+    <p class="sig"><span>Fait à <span class="ln"></span>, le <span class="ln s"></span></span><span>Signature du parent 1</span><span>Signature du parent 2</span></p>
+  </div>
+  <p style="font-size:11.4px;color:var(--mut);margin-top:6px">Modèle indicatif : si le guichet unique propose son propre formulaire, utilisez celui-là.</p>
+
+  <h2><span class="k">4</span>Les liens utiles (officiels et gratuits)</h2>
+  <div class="links">
+    <div><code>formalites.entreprises.gouv.fr</code><span>créer ou fermer l'entreprise</span></div>
+    <div><code>autoentrepreneur.urssaf.fr</code><span>déclarer le CA, payer les cotisations</span></div>
+    <div><code>impots.gouv.fr</code><span>espace professionnel, CFE, impôt</span></div>
+    <div><code>service-public.fr</code><span>rubrique « Entreprendre » : toutes les règles</span></div>
+  </div>
+  <div class="ft"><b>Et si vous arrêtez ?</b> La fermeture se déclare aussi gratuitement sur le guichet unique. Ce guide résume des règles générales (octobre 2026) et ne remplace pas un conseil juridique.</div>
+</section>
+</body>
+</html>

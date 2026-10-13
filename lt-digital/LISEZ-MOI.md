@@ -1,0 +1,116 @@
+# L&T Digital — site de vente de sites web
+
+## Modifier le site SANS toucher au code
+1. Ouvre **`admin.html`** (même adresse que ton site, en ajoutant `/admin.html`).
+2. Choisis une rubrique à gauche (Gammes & tarifs, Options, FAQ, Contact…), modifie.
+   L'aperçu à droite se met à jour tout seul. Ton brouillon est gardé dans ton navigateur.
+3. Clique **⬇ Télécharger config.js**.
+4. Sur GitHub, dans le dossier `lt-digital`, remplace `config.js` (Add file ▸ Upload files).
+   Le site se met à jour après quelques instants.
+
+## Modifier à la main (facultatif)
+Tout le contenu est dans `config.js` (texte simple, commenté).
+- "Sur devis" : `price: null` — "à partir de" : `from: true`
+- Ligne non incluse dans une gamme : commence par `!`
+
+## Mettre en ligne
+Site statique (HTML/CSS/JS) : héberge le dossier `lt-digital` sur Vercel, Netlify ou GitHub Pages.
+
+## Maquettes de démonstration (16 vrais mini-sites)
+Chaque métier a son propre site de 3 pages (Accueil, Carte/Catalogue, Contact), ouvert depuis « Réalisations » :
+restaurant, boutique, coach, menuisier, fromagerie, boucherie, pizzeria, boulangerie, fleuriste, barbier,
+garage, plombier, institut de beauté, photographe, caviste, tatoueur.
+
+### Tout modifier dans une maquette
+Ouvre `demos/<métier>/site.js` : textes, produits, prix, horaires, couleurs, polices, style (A/B/C) et
+illustration. Enregistre, recharge : c'est à jour. Aucune autre ligne de code à toucher.
+Pour livrer un site à un client : copie le dossier, change `site.js`, et c'est son site.
+
+### Photos des produits (restaurant, pizzeria, boucherie, fromagerie)
+47 emplacements de photos (un par plat / produit). Ouvre **`demos/photos.html`** : pour chaque produit, clique ou glisse
+une photo, puis « Télécharger mes photos (.zip) », dézippe et envoie les fichiers dans `demos/photos/` sur GitHub.
+Les photos sont recadrées et allégées automatiquement.
+Tant qu'une photo manque, le site affiche une case « Photo à ajouter » (cliquable : elle ouvre l'outil photos).
+Pour masquer ces cases : dans `site.js`, mets `"placeholders": false` (ou ajoute `?clean` à l'adresse de la page).
+(Pour un autre métier : ajoute `"photo": "../photos/nom.jpg"` à ses produits dans `site.js`.)
+
+### Ajouter un nouveau métier (ex : poissonnerie)
+Copie un dossier de `demos/`, renomme-le et modifie son `site.js`. (Ou ajoute une entrée dans `tools/niches.py`
+puis lance `python3 tools/build_sites.py` — attention : ça réécrit tous les `site.js`.)
+Les images d'aperçu du portfolio sont dans `images/portfolio/`.
+
+### Tes vrais projets
+Mets une capture PC (et téléphone) dans `images/portfolio/`, puis renseigne-la dans `admin.html` ▸ Réalisations.
+
+## Dans l'administration
+Démarrer · Prix rapides (tous les prix au même endroit) · Gammes · Options (par gamme : réservées, incluses, quantité) · Promos (codes ou automatiques, % ou montant, dates, minimum) · Commande (acompte, note, champs demandés) · Comparatif · Réalisations ·
+Accueil · Identité (couleurs, logo) · Sections (afficher/masquer/renommer) · Processus · Avis · Garanties · FAQ · Contact.
+Prix vide = « Sur devis ».
+
+## Haut de page (animations)
+
+Admin → **Accueil** : badge, titre (les mots apparaissent un par un, la partie colorée a un dégradé animé), **mots qui défilent** (« Pensé pour les restaurants / boulangeries… », un mot par ligne), **petites coches** sous les boutons, **notifications animées** autour des images (3 max). La bande des métiers qui défile se remplit toute seule avec tes réalisations.
+
+## Logo, affiches & réseaux sociaux
+
+Section sombre « Photos, logo, affiches & réseaux » (photos : on se déplace pour les produits (149 €), photos d'équipe (129 €), shooting complet (249 €), mise en place, retouche, pack photos pro, vidéo ; logo, identité visuelle, cartes de visite, affiches, flyers, menus, kit réseaux, gestion des réseaux sociaux au mois, montage vidéo, pub…).
+- **Admin → onglet « Logo & réseaux »** : nom, prix, description, ce qui est inclus, onglet de rangement, mise en avant, quantité.
+- **Prix vide = « Sur devis »**. **Unité « /mois » = abonnement** : affiché à part, pas compté dans le total payé tout de suite.
+- Le client peut commander **sans site** (choix « Pas de site » dans la commande).
+- Les prix sont des exemples : change-les dans **Prix rapides** (tout en bas).
+
+## Publicité vidéo (sans voix)
+
+- **`promo/lt-digital-pub.mp4`** : la pub prête à poster (format vertical 1080 × 1920, 27 s, sans son), pour les Reels, les stories Instagram ou TikTok. Ajoute une musique directement dans Instagram si tu veux.
+- **`promo/lt-digital-pub-2.mp4`** : 2e pub, style clair « avant / après » (25,5 s) : vieux site → nouveau site, photos, logo, réseaux, offre. Page animée : `promo/pub2.html`.
+- **`promo/lt-digital-pub-3.mp4`** : 3e pub « Ton site, en un message » (22 s) : une conversation où un client commande son site, qui se construit et passe en ligne avec des confettis. Page animée : `promo/pub3.html`.
+- **`promo/lt-digital-film-1min40.mp4`** : film de présentation de 1 min 40 en 10 chapitres (constat, avant/après, qui on est, sites, 16 métiers, gammes, photos, logo & print, réseaux, méthode, engagements, contact). Page animée : `promo/film.html`.
+- **`promo/lt-digital-pub-4.mp4`** : 4e pub, style « cinéma orange » plein écran vertical (30 s), coupes calées sur un tempo de 120 BPM. Page animée : `promo/pub5.html`. Texte de voix off : `promo/voix-off-pub4.txt`. La musique s'ajoute dans TikTok/Instagram (« Utiliser ce son »).
+- **`promo/lt-digital-pub-1min30.mp4`** : pub de 1 min 30, style « cinéma orange » plein écran, 25 scènes calées sur 120 BPM. Page animée : `promo/pub6.html`. Voix off : `promo/voix-off-1min30.txt`.
+- **Versions avec son** : `promo/lt-digital-pub-1min30-son.mp4` et `promo/lt-digital-pub-4-son.mp4` (musique originale + bruitages calés sur les coupes, créés pour L&T Digital : libres d'utilisation). Musique seule : `promo/musique-pub-1min30.mp3`. Pour refaire le son : `python3 tools/musique.py pub6 sortie.wav`.
+- **`promo/lt-digital-pub-7.mp4`** : pub n°7 style « portfolio tech » (32 s, plein écran) AVEC SON : musique originale trap/cinématique 90 BPM + bruitages, calés sur l'image. Page animée : `promo/pub7.html`. Musique seule : `promo/musique-pub-7.mp3` (refaire : `python3 tools/musique2.py sortie.wav`).
+- **Affiche « Comment ça se passe »** (pour rassurer les clients) : `promo/affiche-comment-ca-se-passe-A3.pdf` et `.jpg`, source `promo/process.html`.
+- **TVA** : le site est en franchise de TVA (`vat.mode: "franchise"` dans config.js, mention « TVA non applicable, art. 293 B du CGI »). Les prix ont été adaptés le 12/10/2026 (ancien prix TTC ÷ 1,2, arrondi) : même revenu pour toi, prix plus bas pour le client. L'ancienne version est dans l'historique Git.
+- **Affiche « confiance »** (sans prix) : `promo/affiche-confiance-A3.pdf` et `promo/affiche-confiance.jpg`. Source : `promo/confiance.html` — mets ton numéro SIRET dans la ligne `const SIRET = ""` puis refais l'export (sinon une case jaune « à compléter » s'affiche).
+- **Affiche** : `promo/affiche-lt-digital-A3.pdf` (impression A3, ~300 dpi) et `promo/affiche-lt-digital.jpg` (réseaux). Modifiable dans `promo/affiche.html` (textes, prix, contacts). Le QR code mène à l'Instagram.
+- **Nos designs de logos** : section « Logos » du site (après les services). Les images sont dans `images/logos/`. Titre, texte, bouton et liste des logos se modifient dans l'admin, onglet « Logos ». Clic sur un logo = agrandi ; le bouton ouvre l'onglet « Logo & identité » des services.
+- **Maquettes sans photos** : tant que `"hasPhotos": true` n'est pas mis dans `offers` (site.js), le haut de page affiche une fiche pratique (ouvert/fermé, horaires du jour, adresse + itinéraire, téléphone, spécialité) au lieu d'une illustration ; la section « À propos » affiche une citation (`home.quote` et `home.signature`, sinon le slogan). Captures du portfolio régénérées à partir des maquettes.
+- **Admin protégé (Vercel)** : `api/admin.js` + `vercel.json`. Sur Vercel, `/admin` demande ton e-mail et ton mot de passe. Tu les choisis toi-même : Vercel → ton projet → Settings → Environment Variables → ajoute `ADMIN_EMAIL` (ton adresse) et `ADMIN_PASSWORD` (un long mot de passe que toi seul connais), puis « Redeploy ». Ne les écris jamais dans un fichier du site ni dans un message. L'admin modifie un brouillon : pour publier, tu télécharges `config.js` et tu le remplaces dans ton dépôt GitHub (Vercel se met à jour tout seul).
+- **Masquer sur le site** : dans l'admin, chaque gamme, option et service a une case « 🙈 Masquer sur le site ». Décochée, l'élément réapparaît.
+- **Options des maquettes** : dans `demos/<site>/site.js`, la rubrique `"extras"` active `"maps"` (carte façon Google Maps + bouton Itinéraire), `"booking"` (réservation : jours, créneaux, couverts ou prestations) et `"notify"` (notifications commerçant + SMS client après une réservation). Déjà actif sur restaurant, barbier, coach (et Maps sur la boulangerie). Les badges sous chaque réalisation se règlent dans l'admin (« Fonctions à mettre en avant »).
+- **`promo/lt-digital-pub-8.mp4`** : pub n°8 style « demande tapée → planète → océan → code → compteur → logo » (24 s, plein écran, sans ordinateur) AVEC SON : musique originale 92 BPM + bruitages. Version bruitages seuls : `lt-digital-pub-8-bruitages.mp4`. Page animée : `promo/pub8.html` (textes modifiables dedans). Musique seule : `promo/musique-pub-8.mp3` (refaire : `python3 tools/musique3.py sortie.wav`).
+- **`promo/index.html`** : la 1re pub en page web animée (bouton « Rejouer »). Les textes (prix, code promo, contacts…) se changent directement dans ce fichier.
+- Pour refaire la vidéo après une modification, il faut relancer l'enregistrement : demande-le-moi.
+
+## Pubs vidéo (services) et s'y retrouver sur le site
+
+- **Pubs vidéo** : un onglet « Pubs vidéo » dans la section Services (6 prestations : pub courte 149 €, longue 349 €, pack de 3 399 €, style portfolio 249 €, visuel animé 39 €, 5 stories 99 €). Exemples de stories, post carré et bannière : dossier `exemples/` (page animée : `promo/stories.html`). Modifie noms, prix et textes dans **Admin → Services & pubs**. Chaque carte peut avoir un **aperçu vidéo** (chemin d'un mp4 dans `images/pubs/`, plus un `.webm` du même nom pour les vieux navigateurs).
+- **Recherche** : bouton « Rechercher » en haut (ou touche **/** ou **Ctrl+K**). Tape un mot (« logo », « pub », « délai »…) : prix, services, options, questions, maquettes, contacts. Un clic t'emmène au bon endroit, qui s'illumine.
+- **Plan de la page** : petits points à droite (ordinateur) : la section en cours s'allume, un survol affiche son nom.
+
+## Google et partage du lien
+
+- Quand ton lien est partagé (WhatsApp, Instagram, Facebook…), l'image `images/og.jpg` s'affiche en aperçu. Remplace-la si tu veux (format 1200 × 630).
+- Quand tu auras ton nom de domaine, mets l'adresse complète de l'image dans `index.html` (ligne `og:image`, ex : `https://www.lt-digital.fr/images/og.jpg`) : certains réseaux l'exigent.
+- La page d'administration n'est pas indexée par Google (`robots.txt`).
+
+## TVA et pages légales
+Admin ▸ **Légal & TVA** : choisis le régime (TTC, HT ou « TVA non applicable art. 293 B »), le taux, et renseigne ton entreprise
+(SIRET, adresse, hébergeur, médiateur…). Les pages `mentions-legales.html`, `cgv.html` et `confidentialite.html` se remplissent toutes seules,
+avec un rappel « [à compléter] » pour ce qui manque. La case « J'ai lu et j'accepte les CGV » est obligatoire avant de copier une commande.
+⚠ Ce sont des modèles : à faire relire par un expert-comptable ou un juriste.
+Le délai de livraison se règle une seule fois (Admin ▸ Gammes & tarifs) ; écris `{delivery}` dans un texte pour l'y insérer.
+
+## Guide : comment modifier ton site toi-même (sans coder)
+**Méthode 1 — la plus simple : l'administration**
+1. Ouvre `admin.html` (adresse de ton site + `/admin.html`).
+2. Choisis une rubrique à gauche (Prix rapides, Options, Promos, Textes du site, Légal & TVA…), modifie. L'aperçu à droite se met à jour.
+3. Clique sur **Télécharger config.js**.
+4. Sur GitHub, ouvre le dossier `lt-digital`, clique **Add file ▸ Upload files**, glisse le `config.js` téléchargé, puis **Commit changes**.
+5. Ton site se met à jour en quelques minutes.
+
+**Méthode 2 — modifier un fichier directement sur GitHub**
+Ouvre le fichier (ex : `config.js`), clique sur le crayon ✏️, change le texte entre guillemets, puis **Commit changes**.
+
+**Maquettes (restaurant, pizzeria…)** : `demos/<métier>/site.js` (textes, prix, horaires, couleurs). Photos : `demos/photos.html`.
+**Images et logos** : dépose-les dans le dossier `images/` puis écris leur chemin dans l'admin.

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L&amp;T Digital — Exemples : stories, post et bannière animés</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../images/logo-small.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* EXEMPLES de ce que reçoit un client : série de 5 stories animées + visuel animé (post carré) + bannière web.
+   Commerce fictif : « Pizzeria Bella Napoli ». Chez un vrai client : ses couleurs, ses photos, son logo, ses textes.
+   Pages : ?s=1..5 (stories 1080×1920, 8 s) · ?v=post (1080×1080, 6 s) · ?v=banner (1500×500, 6 s). */
+:root{--red:#c1121f;--dark:#1a0f0a;--cream:#fff3e0;--gold:#ffc857;--ink:#2a140c;
+  --hf:'Bricolage Grotesque',system-ui,sans-serif;--bf:'Hanken Grotesk',system-ui,sans-serif;
+  --e:cubic-bezier(.2,.8,.2,1);--bo:cubic-bezier(.34,1.56,.64,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;overflow:hidden}
+body{display:grid;place-items:center;font-family:var(--bf);color:#fff}
+.frame{position:relative;overflow:hidden;transform-origin:center;flex:none}
+.view{display:none}
+body[data-v="story"] .frame{width:1080px;height:1920px}
+body[data-v="post"] .frame{width:1080px;height:1080px}
+body[data-v="banner"] .frame{width:1500px;height:500px}
+body[data-v="story"] .story,body[data-v="post"] .post,body[data-v="banner"] .banner{display:block}
+.story,.post,.banner{position:absolute;inset:0}
+.st{position:absolute;inset:0;display:none;overflow:hidden}
+body[data-s="1"] .s1,body[data-s="2"] .s2,body[data-s="3"] .s3,body[data-s="4"] .s4,body[data-s="5"] .s5{display:block}
+.up{animation:up .7s var(--e) both;animation-delay:var(--d)}
+@keyframes up{from{opacity:0;transform:translateY(80px)}to{opacity:1;transform:none}}
+.pop{animation:pop .6s var(--bo) both;animation-delay:var(--d)}
+@keyframes pop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:none}}
+.mask{display:inline-block;overflow:hidden;vertical-align:bottom;padding:0 .04em .14em;margin-bottom:-.14em}
+.mask>span{display:inline-block;animation:rise .8s var(--e) both;animation-delay:var(--d)}
+@keyframes rise{from{transform:translateY(110%) rotate(5deg)}to{transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{50%{transform:translateY(-18px)}}
+
+/* en-tête façon stories : barres de progression + compte */
+.top{position:absolute;left:36px;right:36px;top:48px;z-index:10}
+.bars{display:flex;gap:8px}
+.bars i{flex:1;height:6px;border-radius:6px;background:rgba(255,255,255,.35);overflow:hidden}
+.bars i b{display:block;height:100%;background:#fff;transform-origin:left;transform:scaleX(0)}
+.bars i.done b{transform:scaleX(1)}
+.bars i.cur b{animation:fill 8s linear forwards}
+@keyframes fill{to{transform:scaleX(1)}}
+.acc{display:flex;align-items:center;gap:18px;margin-top:26px;font:700 36px var(--bf)}
+.acc .av{width:78px;height:78px;border-radius:50%;background:var(--gold);display:grid;place-items:center;font:800 30px var(--hf);color:var(--red);box-shadow:0 0 0 4px rgba(255,255,255,.9)}
+.acc span{opacity:.8;font-weight:500;font-size:30px}
+.dk .bars i{background:rgba(0,0,0,.2)}.dk .bars i b{background:var(--ink)}.dk .acc{color:var(--ink)}
+
+/* ---------- STORY 1 : accroche ---------- */
+.s1{background:radial-gradient(ellipse 80% 60% at 50% 55%,#e03a2e,#a30d18 60%,#6d0710)}
+.s1 .pz{position:absolute;left:50%;top:1170px;width:860px;height:860px;margin:-430px 0 0 -430px;animation:pizIn 1.4s var(--bo) both .3s}
+@keyframes pizIn{from{transform:rotate(-200deg) scale(.1);opacity:0}to{transform:none;opacity:1}}
+.s1 .pz svg{width:100%;height:100%;animation:spin 40s linear infinite 1.7s;filter:drop-shadow(0 50px 60px rgba(0,0,0,.45))}
+.s1 h1{position:absolute;left:0;right:0;top:310px;text-align:center;font:800 190px/.9 var(--hf);letter-spacing:-.05em}
+.s1 .kick{position:absolute;left:0;right:0;top:230px;text-align:center;font:700 44px var(--bf);letter-spacing:.3em}
+.s1 .steam i{position:absolute;bottom:760px;width:30px;height:200px;border-radius:50%;background:linear-gradient(transparent,rgba(255,255,255,.4),transparent);filter:blur(10px);animation:steam 3s ease-in infinite}
+@keyframes steam{from{transform:translateY(80px) scaleX(.6);opacity:0}30%{opacity:.8}to{transform:translateY(-320px) scaleX(1.6);opacity:0}}
+.s1 .pill{position:absolute;left:0;right:0;margin:0 auto;width:max-content;bottom:100px;padding:28px 56px;border-radius:999px;background:#fff;color:var(--red);font:800 52px var(--hf);white-space:nowrap}
+
+/* ---------- STORY 2 : les stars ---------- */
+.s2{background:var(--cream);color:var(--ink)}
+.s2 h2{position:absolute;left:70px;top:230px;font:800 150px/.95 var(--hf);letter-spacing:-.05em;color:var(--red)}
+.s2 .line{position:absolute;left:70px;top:420px;width:420px;height:10px;border-radius:10px;background:var(--gold);transform-origin:left;animation:grow .7s var(--e) both .8s}
+@keyframes grow{from{transform:scaleX(0)}}
+.s2 .cards{position:absolute;left:60px;right:60px;top:500px;display:grid;gap:34px}
+.s2 .c{display:flex;align-items:center;gap:36px;height:340px;padding:0 50px;border-radius:44px;background:#fff;box-shadow:0 30px 70px -30px rgba(120,40,10,.45)}
+.s2 .c svg{width:260px;height:260px;flex:none;animation:spin 18s linear infinite}
+.s2 .c .tx{flex:1}.s2 .c b{display:block;font:800 64px/1 var(--hf);letter-spacing:-.03em}
+.s2 .c span{display:block;margin-top:10px;font:500 34px var(--bf);color:#8a5a44}
+.s2 .c .pr{flex:none;display:grid;place-items:center;width:170px;height:170px;border-radius:50%;background:var(--red);color:#fff;font:800 66px var(--hf)}
+.s2 .c:nth-child(odd){animation:inL .8s var(--e) both}.s2 .c:nth-child(even){animation:inR .8s var(--e) both}
+@keyframes inL{from{opacity:0;transform:translateX(-300px)}to{opacity:1;transform:none}}
+@keyframes inR{from{opacity:0;transform:translateX(300px)}to{opacity:1;transform:none}}
+.s2 .more{position:absolute;left:0;right:0;bottom:150px;text-align:center;font:700 46px var(--bf);color:var(--red)}
+
+/* ---------- STORY 3 : promo ---------- */
+.s3{background:radial-gradient(ellipse 80% 50% at 50% 40%,#3a1a10,var(--dark) 70%)}
+.s3 .ring{position:absolute;left:50%;top:800px;width:780px;height:780px;margin:-390px 0 0 -390px}
+.s3 .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.s3 .ring .tr{fill:none;stroke:rgba(255,255,255,.12);stroke-width:34}
+.s3 .ring .pg{fill:none;stroke:var(--gold);stroke-width:34;stroke-linecap:round;stroke-dasharray:2450;stroke-dashoffset:2450;animation:dash 2s var(--e) forwards .4s}
+@keyframes dash{to{stroke-dashoffset:0}}
+@property --n{syntax:"<integer>";inherits:false;initial-value:0}
+.s3 .num{position:absolute;left:0;right:0;top:690px;text-align:center;font:800 250px/1 var(--hf);letter-spacing:-.06em;--n:0;counter-reset:n var(--n);animation:cnt 2s cubic-bezier(.3,0,.2,1) forwards .5s;color:#fff}
+.s3 .num::before{content:"-" counter(n) " %"}
+@keyframes cnt{to{--n:20}}
+.s3 .sub{position:absolute;left:0;right:0;top:1230px;text-align:center;font:700 56px var(--hf)}
+.s3 .tag{position:absolute;left:0;right:0;top:250px;text-align:center;font:700 44px var(--bf);letter-spacing:.3em;color:var(--gold)}
+.s3 .ticket{position:absolute;left:0;right:0;margin:0 auto;width:max-content;top:1360px;display:flex;flex-direction:column;align-items:center;gap:8px;padding:36px 70px;border-radius:30px;background:var(--gold);color:var(--ink);overflow:hidden}
+.s3 .ticket small{font:600 32px var(--bf)}.s3 .ticket b{font:800 80px var(--hf);letter-spacing:.06em}
+.s3 .ticket::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.7) 50%,transparent 65%);transform:translateX(-120%);animation:shine 1.2s ease-in-out forwards 4.6s}
+@keyframes shine{to{transform:translateX(120%)}}
+.s3 .clock{position:absolute;left:0;right:0;bottom:140px;text-align:center;font:700 46px var(--bf)}
+.s3 .clock i{display:inline-block;width:20px;height:20px;border-radius:50%;background:#ff5a4a;margin-right:14px;animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:.2}}
+
+/* ---------- STORY 4 : infos ---------- */
+.s4{background:var(--cream);color:var(--ink)}
+.s4 h2{position:absolute;left:70px;top:230px;font:800 150px/.95 var(--hf);letter-spacing:-.05em}
+.s4 h2 em{font-style:normal;color:var(--red)}
+.s4 .rows{position:absolute;left:70px;right:70px;top:560px;display:grid;gap:26px}
+.s4 .r{display:flex;align-items:center;gap:32px;padding:34px 40px;border-radius:36px;background:#fff;box-shadow:0 24px 60px -30px rgba(120,40,10,.4)}
+.s4 .r i{display:grid;place-items:center;flex:none;width:100px;height:100px;border-radius:28px;background:var(--red);font-style:normal;font-size:52px}
+.s4 .r b{display:block;font:800 48px/1.05 var(--hf)}.s4 .r span{font:500 34px var(--bf);color:#8a5a44}
+.s4 .map{position:absolute;left:70px;right:70px;top:1190px;height:520px;border-radius:44px;overflow:hidden;background:#e9dfcf;box-shadow:0 24px 60px -30px rgba(120,40,10,.4)}
+.s4 .map svg{position:absolute;inset:0;width:100%;height:100%}
+.s4 .pin{position:absolute;left:50%;top:250px;width:90px;height:90px;margin-left:-45px;border-radius:50% 50% 50% 0;background:var(--red);transform:rotate(-45deg);box-shadow:0 20px 30px rgba(0,0,0,.35);animation:drop .7s var(--bo) both 2.6s}
+.s4 .pin::after{content:"";position:absolute;inset:26px;border-radius:50%;background:#fff}
+@keyframes drop{from{opacity:0;transform:translateY(-400px) rotate(-45deg)}to{opacity:1;transform:rotate(-45deg)}}
+.s4 .wave{position:absolute;left:50%;top:310px;width:60px;height:60px;margin:-30px 0 0 -30px;border-radius:50%;border:5px solid var(--red);opacity:0;animation:wave 1.8s ease-out infinite 3.3s}
+@keyframes wave{from{opacity:.9;transform:scale(.3)}to{opacity:0;transform:scale(5)}}
+
+/* ---------- STORY 5 : appel à l'action ---------- */
+.s5{background:linear-gradient(170deg,#d62828,#8a0c15)}
+.s5 .big{position:absolute;left:0;right:0;top:420px;text-align:center;font:800 210px/.92 var(--hf);letter-spacing:-.055em}
+.s5 .sub{position:absolute;left:0;right:0;top:960px;text-align:center;font:600 58px/1.2 var(--bf)}
+.s5 .btn{position:absolute;left:0;right:0;margin:0 auto;width:max-content;top:1210px;padding:42px 90px;border-radius:999px;background:#fff;color:var(--red);font:800 66px var(--hf);white-space:nowrap;box-shadow:0 30px 70px rgba(0,0,0,.35);animation:pop .6s var(--bo) both 2s,beat 1.4s ease-in-out infinite 2.8s}
+@keyframes beat{50%{transform:scale(1.06)}}
+.s5 .finger{position:absolute;left:58%;top:1300px;font-size:130px;opacity:0;animation:tap 1.4s ease-in-out infinite 3s}
+@keyframes tap{0%{opacity:0;transform:translate(60px,120px)}30%{opacity:1;transform:translate(0,0)}50%{transform:translate(0,12px) scale(.92)}70%{opacity:1;transform:none}100%{opacity:0;transform:translate(40px,80px)}}
+.s5 .at{position:absolute;left:0;right:0;bottom:290px;text-align:center;font:700 52px var(--bf);opacity:.95}
+.s5 .sw{position:absolute;left:0;right:0;bottom:120px;text-align:center;font:600 40px var(--bf);letter-spacing:.14em}
+.s5 .sw i{display:block;width:34px;height:34px;margin:0 auto 14px;border-left:6px solid #fff;border-top:6px solid #fff;transform:rotate(45deg);animation:chev 1.2s ease-in-out infinite}
+@keyframes chev{0%{opacity:0;transform:translateY(24px) rotate(45deg)}50%{opacity:1}100%{opacity:0;transform:translateY(-14px) rotate(45deg)}}
+
+/* ---------- POST carré ---------- */
+.post{background:var(--cream);color:var(--ink);overflow:hidden}
+.post .blob{position:absolute;right:-260px;top:150px;width:900px;height:900px;border-radius:50%;background:var(--red);animation:pulse 6s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.post .pz{position:absolute;right:-150px;top:380px;width:660px;height:660px;animation:pizIn2 1.2s var(--bo) both .2s}
+@keyframes pizIn2{from{transform:translateX(400px) rotate(-160deg);opacity:0}to{transform:none;opacity:1}}
+.post .pz svg{width:100%;height:100%;animation:spin 30s linear infinite 1.4s;filter:drop-shadow(0 40px 40px rgba(60,10,0,.45))}
+.post .kick{position:absolute;left:70px;top:90px;font:700 36px var(--bf);letter-spacing:.3em;color:var(--red)}
+.post h2{position:absolute;z-index:3;left:70px;top:150px;font:800 170px/.9 var(--hf);letter-spacing:-.055em}
+.post h2 em{font-style:normal;color:var(--red)}
+.post .stamp{position:absolute;z-index:4;left:70px;top:520px;width:330px;height:330px;border-radius:50%;background:var(--gold);display:grid;place-items:center;text-align:center;transform:rotate(-10deg);animation:stampIn .6s var(--bo) both 1.4s,float 3s ease-in-out infinite 2.2s;box-shadow:0 20px 50px rgba(120,60,0,.35)}
+@keyframes stampIn{from{opacity:0;transform:rotate(-10deg) scale(2.5)}to{opacity:1;transform:rotate(-10deg)}}
+.post .stamp b{display:block;font:800 120px/.9 var(--hf);letter-spacing:-.05em}.post .stamp span{font:700 36px var(--bf)}
+.post .foot{position:absolute;left:70px;bottom:70px;font:700 40px var(--bf);display:flex;align-items:center;gap:16px}
+.post .foot i{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:var(--ink);color:#fff;font-style:normal;font-size:30px}
+
+/* ---------- BANNIÈRE web ---------- */
+.banner{background:linear-gradient(100deg,#7a0b12,#c1121f 55%,#e03a2e);overflow:hidden}
+.banner .txt{position:absolute;left:70px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center}
+.banner .k{font:700 26px var(--bf);letter-spacing:.3em;color:var(--gold)}
+.banner h2{margin-top:14px;font:800 92px/.95 var(--hf);letter-spacing:-.045em}
+.banner .btn{align-self:flex-start;margin-top:30px;padding:20px 48px;border-radius:999px;background:#fff;color:var(--red);font:800 34px var(--hf);animation:pop .6s var(--bo) both 1.6s,beat2 1.6s ease-in-out infinite 2.4s}
+@keyframes beat2{50%{transform:scale(1.07)}}
+.banner .row{position:absolute;right:-60px;top:50%;display:flex;gap:30px;transform:translateY(-50%);animation:slideR 1.4s var(--e) both .2s}
+@keyframes slideR{from{transform:translate(500px,-50%)}to{transform:translate(0,-50%)}}
+.banner .row svg{width:330px;height:330px;flex:none;animation:spin 24s linear infinite;filter:drop-shadow(0 20px 20px rgba(0,0,0,.4))}
+.banner .row svg:nth-child(2){animation-direction:reverse;margin-top:60px}
+.banner .tag{position:absolute;right:50px;top:30px;padding:12px 26px;border-radius:999px;background:var(--gold);color:var(--ink);font:800 28px var(--hf);transform:rotate(4deg);animation:pop .6s var(--bo) both 1.2s}
+
+.ui{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:8px;z-index:30;flex-wrap:wrap;justify-content:center}
+.ui button{font:600 13px var(--bf);padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(20,10,8,.75);color:#fff;cursor:pointer}
+.capture .ui{display:none}
+</style>
+</head>
+<body data-v="story" data-s="1">
+<div class="frame" id="frame">
+
+<!-- ================= STORIES ================= -->
+<div class="view story">
+  <div class="top" id="top"><div class="bars" id="bars"></div><div class="acc"><span class="av">BN</span>pizzeria_bella_napoli <span>· Sponsorisé</span></div></div>
+
+  <section class="st s1">
+    <div class="steam"><i style="left:380px;animation-delay:1.5s"></i><i style="left:540px;animation-delay:2.2s"></i><i style="left:700px;animation-delay:2.9s"></i></div>
+    <p class="kick up" style="--d:.4s">CE VENDREDI</p>
+    <h1><span class="mask"><span style="--d:.6s">Ça va</span></span><br><span class="mask"><span style="--d:.8s">chauffer 🔥</span></span></h1>
+    <div class="pz" data-pz="margherita"></div>
+    <div class="pill pop" style="--d:3s">Glisse pour voir →</div>
+  </section>
+
+  <section class="st s2">
+    <h2><span class="mask"><span style="--d:.2s">Nos stars</span></span></h2><div class="line"></div>
+    <div class="cards">
+      <div class="c" style="animation-delay:.6s"><div data-pz="margherita" data-w="260"></div><div class="tx"><b>Margherita</b><span>Tomate, mozzarella, basilic</span></div><div class="pr pop" style="--d:1.2s">9 €</div></div>
+      <div class="c" style="animation-delay:1.8s"><div data-pz="regina" data-w="260"></div><div class="tx"><b>Regina</b><span>Jambon, champignons</span></div><div class="pr pop" style="--d:2.4s">11 €</div></div>
+      <div class="c" style="animation-delay:3s"><div data-pz="diavola" data-w="260"></div><div class="tx"><b>Diavola</b><span>Salami piquant, piment</span></div><div class="pr pop" style="--d:3.6s">12 €</div></div>
+    </div>
+    <p class="more up" style="--d:4.4s">+ 12 autres recettes à la carte</p>
+  </section>
+
+  <section class="st s3">
+    <p class="tag up" style="--d:.2s">PROMO DU VENDREDI</p>
+    <div class="ring"><svg viewBox="0 0 820 820"><circle class="tr" cx="410" cy="410" r="390"/><circle class="pg" cx="410" cy="410" r="390"/></svg></div>
+    <div class="num"></div>
+    <p class="sub up" style="--d:2.6s">sur toutes les pizzas</p>
+    <div class="ticket pop" style="--d:3.6s"><small>Avec le code</small><b>VENDREDI20</b></div>
+    <p class="clock up" style="--d:4.4s"><i></i>Plus que 3 jours</p>
+  </section>
+
+  <section class="st s4">
+    <h2><span class="mask"><span style="--d:.2s">Où &amp;</span></span><br><span class="mask"><span style="--d:.4s"><em>quand ?</em></span></span></h2>
+    <div class="rows">
+      <div class="r up" style="--d:.9s"><i>🕖</i><div><b>Mardi → Dimanche</b><span>18 h – 23 h</span></div></div>
+      <div class="r up" style="--d:1.6s"><i>📍</i><div><b>12 rue des Lilas</b><span>13000 Marseille</span></div></div>
+      <div class="r up" style="--d:2.3s"><i>📞</i><div><b>04 00 00 00 00</b><span>Sur place, à emporter, livraison</span></div></div>
+    </div>
+    <div class="map up" style="--d:2.4s"><svg viewBox="0 0 940 520"><rect width="940" height="520" fill="#e9dfcf"/><g stroke="#fff" stroke-linecap="round" fill="none"><path d="M0 120 H940" stroke-width="30"/><path d="M0 330 H940" stroke-width="22"/><path d="M180 0 V520" stroke-width="26"/><path d="M560 0 V520" stroke-width="30"/><path d="M760 0 L860 520" stroke-width="18"/></g><g fill="#cfe3b8"><rect x="210" y="150" width="320" height="150" rx="14"/><rect x="600" y="360" width="140" height="130" rx="14"/></g></svg><span class="wave"></span><span class="pin"></span></div>
+  </section>
+
+  <section class="st s5">
+    <h2 class="big"><span class="mask"><span style="--d:.3s">On</span></span><br><span class="mask"><span style="--d:.55s">t'attend.</span></span></h2>
+    <p class="sub up" style="--d:1.3s">Réserve ta table<br>ou commande en ligne</p>
+    <div class="btn">Commander</div><span class="finger">👆</span>
+    <p class="at up" style="--d:3.4s">@pizzeria_bella_napoli</p>
+    <p class="sw up" style="--d:3.8s"><i></i>GLISSE VERS LE HAUT</p>
+  </section>
+</div>
+
+<!-- ================= POST CARRÉ ================= -->
+<div class="view post">
+  <div class="blob"></div><div class="pz" data-pz="diavola"></div>
+  <p class="kick up" style="--d:.3s">PIZZERIA BELLA NAPOLI</p>
+  <h2><span class="mask"><span style="--d:.5s">Soirée</span></span><br><span class="mask"><span style="--d:.7s"><em>pizza.</em></span></span></h2>
+  <div class="stamp"><div><b>-20%</b><span>ce vendredi</span></div></div>
+  <div class="foot up" style="--d:2.2s"><i>🕖</i> Dès 19 h · 12 rue des Lilas</div>
+</div>
+
+<!-- ================= BANNIÈRE ================= -->
+<div class="view banner">
+  <div class="txt"><span class="k up" style="--d:.3s">PIZZERIA BELLA NAPOLI</span><h2><span class="mask"><span style="--d:.5s">Livraison</span></span><br><span class="mask"><span style="--d:.7s">offerte.</span></span></h2><span class="btn">Commander</span></div>
+  <span class="tag">dès 25 €</span>
+  <div class="row"><div data-pz="margherita" data-w="330"></div><div data-pz="regina" data-w="330"></div><div data-pz="diavola" data-w="330"></div></div>
+</div>
+</div>
+
+<div class="ui" id="ui"><button type="button" id="replay">↺ Rejouer</button>
+  <button data-go="s1">Story 1</button><button data-go="s2">Story 2</button><button data-go="s3">Story 3</button><button data-go="s4">Story 4</button><button data-go="s5">Story 5</button><button data-go="post">Post carré</button><button data-go="banner">Bannière</button></div>
+
+<script>
+/* pizzas dessinées en SVG (3 recettes) — remplacées par les vraies photos du client */
+function rnd(seed){ let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
+function pizza(kind){
+  const r = rnd(kind==="regina"?7:kind==="diavola"?19:3); let t = "";
+  const dots = (n, rad, f) => { for (let i=0;i<n;i++){ const a = r()*6.283, d = Math.sqrt(r())*rad; t += f(100+Math.cos(a)*d, 100+Math.sin(a)*d, r()); } };
+  dots(18, 66, (x,y,k)=>`<ellipse cx="${x}" cy="${y}" rx="${10+k*8}" ry="${8+k*6}" fill="#ffe9a8" opacity=".95"/>`);
+  if (kind==="margherita") dots(9, 62, (x,y,k)=>`<path d="M${x} ${y} q8 -14 18 -4 q-4 14 -18 4z" fill="#2f8f3a" transform="rotate(${k*360} ${x} ${y})"/>`);
+  if (kind==="regina"){ dots(9, 62, (x,y,k)=>`<path d="M${x} ${y} h22 a11 11 0 0 1 0 14 h-22 z" fill="#f4a3a3" transform="rotate(${k*360} ${x} ${y})"/>`); dots(8, 60, (x,y,k)=>`<ellipse cx="${x}" cy="${y}" rx="9" ry="7" fill="#d9c3a5" stroke="#a88b69"/>`); }
+  if (kind==="diavola"){ dots(12, 64, (x,y,k)=>`<circle cx="${x}" cy="${y}" r="${10+k*4}" fill="#b3261e"/><circle cx="${x-3}" cy="${y-3}" r="2.5" fill="#e8776e"/>`); dots(6, 60, (x,y,k)=>`<path d="M${x} ${y} q10 -3 14 6 q-9 4 -14 -6z" fill="#e63a1e"/>`); }
+  return `<svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="98" fill="#d9954a"/><circle cx="100" cy="100" r="92" fill="#ecb36a"/><circle cx="100" cy="100" r="80" fill="#d9432b"/><circle cx="100" cy="100" r="76" fill="#ffd77a"/>${t}</svg>`;
+}
+document.querySelectorAll("[data-pz]").forEach(el => { el.innerHTML = pizza(el.dataset.pz); if (el.dataset.w) el.style.cssText += `width:${el.dataset.w}px;height:${el.dataset.w}px;flex:none`; });
+document.querySelectorAll(".c > [data-pz] svg").forEach(s => s.style.cssText = "width:260px;height:260px;animation:spin 18s linear infinite");
+document.querySelectorAll(".row [data-pz] svg").forEach((s,i) => s.style.cssText = "width:330px;height:330px;animation:spin 24s linear infinite" + (i===1?" reverse":"") + ";filter:drop-shadow(0 20px 20px rgba(0,0,0,.4))");
+/* barres de progression */
+function setBars(n){ document.getElementById("bars").innerHTML = [1,2,3,4,5].map(i=>`<i class="${i<n?"done":i===n?"cur":""}"><b></b></i>`).join(""); document.getElementById("top").classList.toggle("dk", n===2||n===4); }
+/* choix de la vue : ?s=1..5, ?v=post, ?v=banner */
+const q = new URLSearchParams(location.search);
+function show(what){
+  const b = document.body;
+  if (what==="post"||what==="banner"){ b.dataset.v = what; } else { b.dataset.v = "story"; b.dataset.s = what.replace("s",""); setBars(+b.dataset.s); }
+  document.getAnimations().forEach(a => { a.currentTime = 0; a.play(); }); fit();
+}
+const first = q.get("v") || ("s" + (q.get("s") || "1"));
+const fit = () => { const f = document.getElementById("frame"), W = f.offsetWidth, H = f.offsetHeight; if (!W) return; if (document.body.classList.contains("capture")) { f.style.transform = "none"; return; } f.style.transform = `scale(${Math.min(innerWidth/W, (innerHeight-60)/H)})`; };
+addEventListener("resize", fit);
+show(first);
+document.getElementById("replay").onclick = () => show(document.body.dataset.v==="story" ? "s"+document.body.dataset.s : document.body.dataset.v);
+document.getElementById("ui").addEventListener("click", e => { const g = e.target.closest("[data-go]"); if (g) show(g.dataset.go); });
+const DUR = () => document.body.dataset.v==="story" ? 8000 : 6000;
+(function loop(){ setTimeout(()=>{ if (!document.body.classList.contains("capture")) show(document.body.dataset.v==="story" ? "s"+document.body.dataset.s : document.body.dataset.v); loop(); }, DUR()); })();
+if (q.has("capture")) { document.body.classList.add("capture"); window.seek = t => { document.getAnimations().forEach(a => { a.pause(); a.currentTime = t; }); }; }
+</script>
+</body>
+</html>

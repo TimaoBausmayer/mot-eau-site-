@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L&amp;T Digital — Création &amp; modernisation de sites web</title>
+<meta name="description" content="L&amp;T Digital crée et modernise des sites web sur mesure : sites vitrines, boutiques en ligne, refonte. Tarifs clairs, livraison rapide.">
+<link rel="icon" href="images/logo-small.jpg">
+<link rel="apple-touch-icon" href="images/logo-small.jpg">
+<meta name="theme-color" content="#0a0f1f">
+<!-- aperçu quand on partage le lien (WhatsApp, Instagram, Facebook…) -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="L&amp;T Digital">
+<meta property="og:title" content="L&amp;T Digital — Création &amp; modernisation de sites web">
+<meta property="og:description" content="Sites vitrines, boutiques en ligne, refonte, logo et réseaux sociaux pour commerçants, artisans et indépendants. Prix annoncés, livraison rapide.">
+<meta property="og:image" content="images/og.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#top">Aller au contenu</a>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="intro" id="intro" aria-hidden="true"><div class="intro-in"><img src="images/logo-small.jpg" alt="" width="64" height="64"><span>L&amp;T Digital</span></div></div>
+<div class="topbar" id="topbar" hidden><div class="wrap tb-in" id="tb-in"></div></div>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="logo" id="logo"></a>
+    <nav class="links" id="links">
+      <a href="#tarifs">Tarifs</a>
+      <div class="dd" id="dd-svc"><a href="#services">Services</a><button type="button" class="dd-tg" id="dd-tg" aria-expanded="false" aria-controls="dd-menu" aria-label="Ouvrir le menu des services"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg></button><div class="dd-menu" id="dd-menu" role="menu"></div></div>
+      <a href="#logos" class="nq">Logos</a>
+      <a href="#services" class="nq" data-g="Pubs vidéo">Pubs</a>
+      <a href="#services" class="nq" data-g="Photos &amp; vidéo">Photos</a>
+      <a href="#realisations">Réalisations</a>
+      <a href="#avis">Avis</a>
+      <a href="#faq">Questions</a>
+      <a href="#histoire" class="nav-x">Notre histoire</a>
+      <a href="#" id="nav-insta" class="nav-x" target="_blank" rel="noopener" hidden>Instagram</a>
+    </nav>
+    <button type="button" class="srch-btn" id="srch-btn" aria-label="Rechercher sur le site"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg><span class="srch-t">Rechercher</span><kbd>/</kbd></button>
+    <a href="#commande" class="btn btn-sm">Commander</a>
+    <button class="burger" id="burger" aria-label="Menu">Menu</button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><span class="hero-grid"></span><span class="hero-bokeh" id="hero-bokeh"></span><span class="hero-arc"></span><span class="hero-grain"></span></div>
+    <div class="wrap hero-in">
+      <div class="hero-copy">
+        <p class="kicker" id="h-badge-wrap"><i class="k-dot" aria-hidden="true"></i><span id="h-badge"></span></p>
+        <h1 id="h1"><span id="h-title"></span> <em id="h-accent"></em></h1>
+        <p class="hero-rot" id="h-rot" hidden></p>
+        <p class="lead" id="h-text"></p>
+        <a href="#commande" class="h-prompt" id="h-prompt" hidden><span class="hp-ic" aria-hidden="true">✦</span><span class="hp-txt"><span class="hp-q" id="hp-q"></span><i class="hp-cur" aria-hidden="true"></i></span><span class="hp-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 6v5a3 3 0 0 1-3 3H6"/><path d="m10 10-4 4 4 4"/></svg></span></a>
+        <div class="cta-row">
+          <a href="#tarifs" class="btn btn-arrow" id="h-cta1"></a>
+          <a href="#commande" class="btn btn-ghost" id="h-cta2"></a>
+        </div>
+        <a href="#commande" class="h-offer" id="h-offer" hidden></a>
+        <ul class="trust" id="h-trust" hidden></ul>
+        <a href="#avis" class="h-rv" id="h-rv" hidden></a>
+        <p class="insta-line" id="h-insta" hidden></p>
+      </div>
+      <div class="hero-vis" id="hero-vis" aria-hidden="true"></div>
+    </div>
+    <div class="trades" id="trades" aria-hidden="true" hidden><div class="trades-track" id="trades-track"></div></div>
+    <div class="wrap"><dl class="stats" id="stats"></dl></div>
+    <a href="#pourquoi" class="h-scroll" aria-label="Descendre"><i></i></a>
+  </section>
+
+  <div class="ticks" id="ticks" aria-hidden="true"><div class="tick t1"><div class="tick-in"></div></div><div class="tick t2"><div class="tick-in"></div></div></div>
+
+  <section id="pourquoi" class="sec why-sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow"></span><h2></h2><p></p></div>
+      <div class="why-grid" id="why-grid"></div>
+      <div class="why-vs" id="why-vs"></div>
+    </div>
+  </section>
+
+  <section id="tarifs" class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Tarifs</span><h2>Choisis la gamme qui correspond à ton projet</h2><p>Des prix annoncés, sans surprise. Tu peux tout ajuster avec des options.</p></div>
+      <div class="filters" id="plan-filters"></div>
+      <div class="plans" id="plans"></div>
+      <div class="plans-dots" id="plans-dots" aria-hidden="true"></div>
+      <a href="#comparatif" class="cmp-link" id="cmp-link"><span aria-hidden="true">⇄</span> Comparer les gammes côte à côte</a>
+      <p class="vat-note" id="vat-note"></p>
+      <div class="cta-bands"><button type="button" class="photo-cta" id="photo-cta" hidden></button><button type="button" class="photo-cta pub-cta" id="pub-cta" hidden></button></div>
+    </div>
+  </section>
+
+  <section id="comparatif" class="sec alt">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Comparatif</span><h2>Ce qui change d'une gamme à l'autre</h2></div>
+      <div class="cmp-tools" id="cmp-tools"></div>
+      <div class="table-wrap"><table class="cmp" id="cmp"></table></div>
+    </div>
+  </section>
+
+  <section id="options" class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Options</span><h2>Des options, seulement si tu en as besoin</h2></div>
+      <div class="filters" id="addon-filters"></div>
+      <div class="addons" id="addons"></div>
+    </div>
+  </section>
+
+  <section id="services" class="sec svc-sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Photos, logo, pubs &amp; réseaux</span><h2></h2><p></p></div>
+      <div class="filters svc-tabs" id="svc-tabs" role="tablist"></div>
+      <div class="svcs" id="svcs"></div>
+      <p class="vat-note" id="svc-note"></p>
+    </div>
+  </section>
+
+  <section id="logos" class="sec logos-sec" hidden>
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow" id="lg-eb"></span><h2 id="lg-title"></h2><p id="lg-text"></p></div>
+      <div class="logos" id="logos-grid"></div>
+      <div class="lg-cta"><p id="lg-note"></p><button type="button" class="btn btn-arrow" id="lg-btn"></button></div>
+    </div>
+  </section>
+
+  <section id="process" class="sec alt">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Méthode</span><h2>Comment se passe une commande</h2></div>
+      <ol class="steps" id="steps"></ol>
+    </div>
+  </section>
+
+  <section id="realisations" class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Réalisations</span><h2>Des maquettes pour chaque métier</h2><p>Clique sur un aperçu pour ouvrir le site en grand.</p></div>
+      <div class="filters" id="filters"></div>
+      <div class="works" id="works"></div>
+      <div class="more"><button class="btn btn-ghost" id="more-btn" hidden>Voir toutes les maquettes</button></div>
+    </div>
+  </section>
+
+  <section id="avis" class="sec alt" hidden>
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Avis</span><h2>Ils nous ont fait confiance</h2><p>Leurs avis, leurs sites, leurs logos : jugez sur pièces.</p></div>
+      <div class="rv-top" id="rv-top"></div>
+      <div class="reviews" id="reviews"></div>
+    </div>
+  </section>
+
+  <section class="sec tight">
+    <div class="wrap"><div class="guar" id="guar"></div></div>
+  </section>
+
+  <section id="commande" class="sec alt">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Commande</span><h2>Compose ta commande</h2><p>Choisis ta gamme et tes options : le total se calcule tout seul. Envoie-nous ensuite le récapitulatif.</p></div>
+      <div class="order">
+        <form id="order-form" class="order-main" autocomplete="off">
+          <h3>Ta gamme</h3>
+          <div class="pick" id="pick"></div>
+          <h3>Tes options</h3>
+          <div class="opts" id="opts"></div>
+          <div id="svc-block"><h3 id="svc-h"></h3><div class="opts" id="svc-opts"></div></div>
+          <h3>Tes informations</h3>
+          <div class="fields">
+            <label>Ton nom<input name="pseudo" required placeholder="Ex : Jean Dupont"></label>
+            <label>Nom de ton activité<input name="biz" placeholder="Ex : Boulangerie Martin"></label>
+            <label class="full">Ton Instagram ou e-mail<input name="contact" required placeholder="@toncompte ou toi@mail.fr"></label>
+            <label class="full">Décris ton projet<textarea name="desc" rows="4" placeholder="Style, couleurs, ton activité, ce que tu veux sur le site…"></textarea></label>
+          </div>
+          <label class="cgv"><input type="checkbox" name="cgv" required><span><span id="cgv-pre"></span> <a href="cgv.html" target="_blank" rel="noopener" id="cgv-link"></a>.</span></label>
+        </form>
+        <aside class="summary">
+          <h3>Récapitulatif</h3>
+          <div id="sum-lines"></div>
+          <div class="promo"><input id="promo" placeholder="Code promo"><button type="button" class="btn btn-sm btn-ghost" id="promo-btn">Appliquer</button></div>
+          <p class="promo-msg" id="promo-msg"></p>
+          <div class="total"><span>Total</span><strong id="total">0</strong></div>
+          <p class="month" id="sum-month" hidden></p>
+          <p class="vatline" id="sum-vat"></p>
+          <p class="dep" id="sum-dep"></p>
+          <p class="small" id="sum-delay"></p>
+          <p class="small" id="sum-note" hidden></p>
+          <button type="button" class="btn full-w" id="copy-btn">Copier ma commande</button>
+          <a class="btn btn-ghost full-w" id="insta-btn" target="_blank" rel="noopener">Ouvrir Instagram</a>
+          <a class="btn btn-ghost full-w" id="mail-btn">Envoyer par e-mail</a>
+          <p class="small" id="contact-line"></p>
+          <p class="toast" id="toast" role="status"></p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">FAQ</span><h2>Questions fréquentes</h2></div>
+      <div class="faq" id="faq-list"></div>
+    </div>
+  </section>
+
+  <section id="histoire" class="sec alt">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Notre histoire</span><h2></h2></div>
+      <div class="story">
+        <div class="story-text" id="story-text"></div>
+        <div class="founders" id="founders"></div>
+      </div>
+      <div class="values" id="values"></div>
+    </div>
+  </section>
+
+  <section class="sec tight end-sec">
+    <div class="mega" id="mega" aria-hidden="true"><div class="mega-track" id="mega-track"></div></div>
+    <div class="wrap"><div class="final" id="final">
+      <span class="spark s1" aria-hidden="true">✦</span><span class="spark s2" aria-hidden="true">✦</span><span class="spark s3" aria-hidden="true">✦</span>
+      <div class="final-copy">
+        <span class="final-kicker" id="final-kicker"><i aria-hidden="true"></i><span>On répond en général dans la journée</span></span>
+        <h2>Un site pour ton activité, livré en quelques jours.</h2><p>Commande en deux minutes. On revient vers toi dans la journée.</p>
+        <ul class="final-checks" id="final-checks"></ul>
+        <p class="final-addr" id="final-addr" hidden></p>
+      </div>
+      <div class="final-btns"><a href="#commande" class="btn btn-light btn-arrow">Commander</a><a href="#" id="final-mail" class="btn btn-outline-light" hidden>Nous écrire par e-mail</a><a href="#" id="final-insta" class="btn btn-outline-light" target="_blank" rel="noopener" hidden>Écrire sur Instagram</a></div>
+    </div></div>
+  </section>
+</main>
+
+<dialog class="rv-modal" id="rv-modal" aria-labelledby="rv-m-title">
+  <form method="dialog" class="rv-form" id="rv-form" autocomplete="off">
+    <div class="rv-m-head"><h3 id="rv-m-title">Laisser un avis</h3><button type="button" class="rv-x" id="rv-x" aria-label="Fermer">✕</button></div>
+    <p class="small" id="rv-m-text"></p>
+    <div class="rv-stars-in" id="rv-stars-in" role="radiogroup" aria-label="Ta note"></div>
+    <div class="fields">
+      <label>Ton nom<input name="name" required placeholder="Ex : Julie Martin"></label>
+      <label>Ton activité<input name="biz" required placeholder="Ex : Boulangerie Martin"></label>
+      <label class="full">Ton avis<textarea name="text" rows="4" required placeholder="Comment s'est passée la création de ton site ? Qu'est-ce que ça t'a apporté ?"></textarea></label>
+      <label>Lien de ton site<input name="site" type="url" placeholder="https://..."></label>
+      <label>Ton Instagram<input name="insta" placeholder="@toncompte"></label>
+    </div>
+    <p class="small rv-logo-note">📎 Ton logo ou une capture de ton site ? Joins-les à l'e-mail (ou envoie-les en message privé sur Instagram).</p>
+    <label class="cgv"><input type="checkbox" name="ok" required><span>J'accepte que mon avis, mon nom, mon activité, mon logo et le lien de mon site soient publiés sur le site L&amp;T Digital.</span></label>
+    <div class="rv-m-btns"><button type="button" class="btn" id="rv-mail">Envoyer par e-mail</button><button type="button" class="btn btn-ghost" id="rv-copy">Copier pour Instagram</button></div>
+    <p class="toast" id="rv-toast" role="status"></p>
+  </form>
+</dialog>
+
+<button type="button" class="totop" id="totop" aria-label="Revenir en haut de la page" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+<nav class="dots" id="dots" aria-label="Plan de la page"></nav>
+<div class="srch" id="srch" hidden role="dialog" aria-modal="true" aria-label="Recherche"><div class="srch-box"><div class="srch-in"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg><input id="srch-q" type="search" autocomplete="off" placeholder="Cherche un prix, un service, une question…" aria-label="Rechercher"><button type="button" id="srch-x" aria-label="Fermer">Échap</button></div><div class="srch-res" id="srch-res" role="listbox"></div><div class="srch-foot"><span><kbd>↑</kbd><kbd>↓</kbd> choisir</span><span><kbd>↵</kbd> ouvrir</span><span><kbd>Échap</kbd> fermer</span></div></div></div>
+<div class="mcta" id="mcta" hidden><a href="#commande" class="btn" id="mcta-order">Commander mon site</a><a class="mcta-ic" id="mcta-ig" target="_blank" rel="noopener" aria-label="Instagram" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" class="f"/></svg></a><a class="mcta-ic" id="mcta-mail" aria-label="E-mail" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg></a></div>
+
+<div class="cartbar" id="cartbar" hidden><span id="cart-text"></span><a class="btn btn-sm btn-light" href="#commande">Voir ma commande</a></div>
+
+<footer class="foot">
+  <div class="wrap foot-grid">
+    <div class="fb">
+      <div class="fb-id"><img id="f-logo" alt="" width="56" height="56"><div><strong id="f-brand"></strong><span id="f-text"></span></div></div>
+      <div class="f-contact"><a id="f-mail"></a><a id="f-insta" target="_blank" rel="noopener"></a></div>
+    </div>
+    <nav class="f-col" aria-label="Le site"><h4 id="f-h1">Le site</h4><div id="f-nav"></div></nav>
+    <nav class="f-col" aria-label="Nos services"><h4 id="f-h2">Nos services</h4><div id="f-svc"></div></nav>
+    <div class="f-col"><h4 id="f-h3">Ton projet</h4><p class="f-note" id="f-note">Un message suffit : on te répond en général dans la journée.</p><a href="#commande" class="btn btn-sm btn-arrow" id="f-cta">Commander mon site</a></div>
+  </div>
+  <div class="foot-word" id="foot-word" aria-hidden="true"></div>
+  <div class="wrap foot-bottom">
+    <span class="f-copy" id="f-copy"></span>
+    <nav class="legal-nav" id="legal-nav"><a href="mentions-legales.html" id="lg-m"></a><a href="cgv.html" id="lg-c"></a><a href="confidentialite.html" id="lg-p"></a><a href="admin.html" id="lg-a" rel="nofollow">Admin</a></nav>
+    <p class="legal-id" id="legal-id"></p>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

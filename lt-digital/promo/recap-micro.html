@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Récap — créer notre micro-entreprise</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Mono:wght@400;500&family=Hanken+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* Récapitulatif imprimable (2 pages A4) : créer sa micro-entreprise quand on a 16 ans et qu'on est deux.
+   Informations générales établies en octobre 2026 — à vérifier sur service-public.fr avant toute démarche. */
+:root{--ink:#14121c;--mut:#5b5868;--line:#e3e0ea;--paper:#fbfaf7;--lime:#b8f02a;--lime-d:#4d7c0f;--vio:#5b45d6;--red:#c2410c;--soft:#f2f0f7;
+  --hf:'Bricolage Grotesque',system-ui,sans-serif;--bf:'Hanken Grotesk',system-ui,sans-serif;--mono:'DM Mono',monospace;--serif:'Instrument Serif',Georgia,serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#888}
+body{display:flex;flex-direction:column;align-items:center;gap:30px;padding:30px 0;font-family:var(--bf);color:var(--ink)}
+.page{position:relative;width:794px;height:1123px;background:var(--paper);overflow:hidden;padding:44px 48px 40px;display:flex;flex-direction:column}
+.page>*{flex-shrink:0}
+.page::before{content:"";position:absolute;right:-120px;top:-140px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(184,240,42,.35),transparent 65%)}
+.hd{position:relative;display:flex;justify-content:space-between;align-items:center;font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.hd b{display:flex;align-items:center;gap:8px;color:var(--ink)}
+.hd b img{width:26px;height:26px;border-radius:50%}
+h1{position:relative;margin-top:22px;font:800 46px/1 var(--hf);letter-spacing:-.04em}
+h1 em{font:400 54px var(--serif);font-style:italic;color:var(--vio)}
+.sub{position:relative;margin-top:10px;font-size:14.5px;line-height:1.45;color:var(--mut);max-width:620px}
+h2{font:800 20px/1.1 var(--hf);letter-spacing:-.02em;margin:22px 0 10px;display:flex;align-items:center;gap:10px}
+h2 .k{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;background:var(--ink);color:var(--lime);font:500 12px var(--mono)}
+p,li{font-size:12.6px;line-height:1.45}
+ul{list-style:none}
+/* encadré « à savoir » */
+.must{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.must div{padding:12px 14px;border-radius:14px;background:#fff;border:1px solid var(--line)}
+.must b{display:block;font:700 13.5px var(--bf);margin-bottom:3px}
+.must i{font-style:normal;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--lime);font-size:11px;margin-right:6px;vertical-align:-3px}
+/* 3 options */
+.opts{display:grid;gap:10px}
+.opt{display:grid;grid-template-columns:118px 1fr;gap:14px;padding:14px 16px;border-radius:16px;background:#fff;border:1px solid var(--line)}
+.opt.best{border:2px solid var(--lime-d);background:linear-gradient(90deg,rgba(184,240,42,.18),#fff 40%)}
+.opt .lab{font:500 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.opt .lab b{display:block;margin-top:4px;font:800 17px/1.05 var(--hf);letter-spacing:-.02em;color:var(--ink);text-transform:none}
+.opt .badge{display:inline-block;margin-top:8px;padding:3px 8px;border-radius:999px;font:600 10px var(--mono);letter-spacing:.04em}
+.ok{background:var(--lime);color:#1a2e00}.warn{background:#fde7d9;color:var(--red)}.later{background:var(--soft);color:var(--vio)}
+.opt ul{display:grid;gap:4px}
+.opt li{padding-left:16px;position:relative}
+.opt li::before{content:"";position:absolute;left:2px;top:.6em;width:7px;height:7px;border-radius:50%;background:var(--ink)}
+.opt li.no::before{background:var(--red)}.opt li.yes::before{background:var(--lime-d)}
+.note{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--ink);color:#fff}
+.note b{color:var(--lime)}
+.note p{font-size:12.4px}
+/* étapes */
+.steps{display:grid;gap:8px;counter-reset:s}
+.st{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;padding:10px 14px;border-radius:14px;background:#fff;border:1px solid var(--line)}
+.st::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--lime);font:800 14px var(--hf)}
+.st b{display:block;font:700 13.5px var(--bf)}
+.st code{font:500 11.5px var(--mono);background:var(--soft);padding:1px 6px;border-radius:5px;color:var(--vio)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.box{padding:13px 15px;border-radius:14px;background:#fff;border:1px solid var(--line)}
+.box h3{font:800 14.5px var(--hf);margin-bottom:6px}
+.box li{padding-left:14px;position:relative;margin-bottom:3px}
+.box li::before{content:"–";position:absolute;left:0;color:var(--lime-d);font-weight:700}
+.box.red{border-color:#f3c9b3;background:#fff8f4}.box.red li::before{content:"✕";color:var(--red);font-size:10px;top:2px}
+.key{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.key div{padding:11px 12px;border-radius:12px;background:var(--ink);color:#fff}
+.key b{display:block;font:800 18px var(--hf);color:var(--lime)}
+.key span{font-size:11px;line-height:1.35;display:block;margin-top:3px;color:#d8d5e6}
+.ft{margin-top:auto;padding-top:12px;border-top:1px solid var(--line);font:500 10.5px/1.45 var(--mono);color:var(--mut)}
+.ft b{color:var(--ink)}
+/* ajustements pour tenir sur 2 pages A4 */
+.page{padding:36px 44px 32px}
+h1{margin-top:16px;font-size:40px}h1 em{font-size:46px}
+.sub{font-size:13.5px;margin-top:8px}
+h2{margin:16px 0 8px;font-size:18px}
+p,li{font-size:12px;line-height:1.4}
+.must div{padding:10px 12px}.must b{font-size:13px}
+.opt{padding:11px 14px;gap:12px}.opt ul{gap:3px}.opt .lab b{font-size:16px}
+.note{margin-top:10px;padding:10px 13px}
+.st{padding:8px 12px}.steps{gap:6px}
+.box{padding:11px 13px}
+.ft{padding-top:10px}
+</style>
+</head>
+<body>
+
+<!-- ===================== PAGE 1 ===================== -->
+<section class="page" id="p1">
+  <div class="hd"><b><img src="../images/logo-small.jpg" alt="">L&amp;T Digital</b><span>Récap · page 1 / 2</span></div>
+  <h1>Créer notre micro-entreprise <em>à&nbsp;16&nbsp;ans, à&nbsp;deux.</em></h1>
+  <p class="sub">Ce qu'il faut savoir, les solutions possibles et les étapes, pour deux associés mineurs qui ne sont pas de la même famille.</p>
+
+  <h2><span class="k">01</span>À savoir avant tout</h2>
+  <div class="must">
+    <div><b><i>1</i>Une micro = une seule personne</b><p>Une micro-entreprise est toujours au nom d'<strong>une</strong> personne. On ne peut pas en avoir une à deux : chacun crée la sienne (ou plus tard, une société).</p></div>
+    <div><b><i>2</i>Pas avant 16 ans</b><p>Il faut avoir <strong>16 ans révolus</strong>. Celui qui n'a pas encore 16 ans attend le jour de son anniversaire pour déclarer la sienne.</p></div>
+    <div><b><i>3</i>Mineur : l'accord des parents</b><p>Entre 16 et 18 ans, il faut une <strong>autorisation écrite des parents</strong> (les deux, s'ils ont l'autorité parentale), ou être émancipé.</p></div>
+    <div><b><i>4</i>Une activité de services</b><p>Sans émancipation, l'activité doit être <strong>non commerciale</strong> : création de sites, design, montage vidéo, conseil… oui. Achat-revente de produits : non.</p></div>
+  </div>
+
+  <h2><span class="k">02</span>Les 3 façons de faire</h2>
+  <div class="opts">
+    <div class="opt best"><div class="lab">Solution A<b>Chacun sa micro-entreprise</b><span class="badge ok">✓ Recommandé</span></div>
+      <ul>
+        <li class="yes">Chacun déclare sa micro à son nom, avec l'autorisation de ses propres parents.</li>
+        <li class="yes">Vous travaillez ensemble sous la marque « L&amp;T Digital » et vous vous partagez les clients.</li>
+        <li class="yes">Pour se répartir l'argent : chacun facture ses clients, ou l'un facture le client et l'autre lui facture sa part (sous-traitance).</li>
+        <li>Mettez par écrit un <strong>accord entre vous deux</strong> : qui fait quoi, le partage, à qui est la marque, que se passe-t-il si l'un arrête.</li>
+      </ul></div>
+    <div class="opt"><div class="lab">Solution B<b>Au nom d'un parent</b><span class="badge warn">⚠ Possible, avec prudence</span></div>
+      <ul>
+        <li>Légalement, l'entreprise devient <strong>celle du parent</strong> : responsabilité, cotisations, impôts et revenus sont à son nom.</li>
+        <li class="no">Cela peut toucher ses aides, son chômage ou son contrat de travail : il doit vérifier avant d'accepter.</li>
+        <li class="no">Vous ne pouvez pas être payés par sa micro sans être déclarés. Si c'est vous qui faites tout, c'est un « prête-nom » : à éviter.</li>
+        <li>Valable seulement si le parent est vraiment impliqué et d'accord pour en être le responsable.</li>
+      </ul></div>
+    <div class="opt"><div class="lab">Solution C<b>Une société à deux (SAS)</b><span class="badge later">Plus tard</span></div>
+      <ul>
+        <li>Une seule entreprise pour vous deux, avec des parts chacun. Plus solide pour grandir.</li>
+        <li class="no">Plus de frais, de paperasse et de comptabilité ; diriger une société est compliqué pour des mineurs.</li>
+        <li>À envisager à 18 ans, ou quand le chiffre d'affaires augmente.</li>
+      </ul></div>
+  </div>
+
+  <div class="note"><p><b>Notre conseil :</b> Solution A. Celui qui a 16 ans déclare sa micro maintenant, l'autre le jour de ses 16 ans. En attendant, le plus jeune ne doit pas être payé : il ne facture rien tant que sa micro n'existe pas.</p></div>
+
+  <div class="ft"><b>Informations générales</b>, établies en octobre 2026 : les règles et les montants changent. Vérifiez tout sur <b>service-public.fr</b> (rubrique « Entreprendre ») avant de déclarer, ou demandez un rendez-vous gratuit à votre CCI.</div>
+</section>
+
+<!-- ===================== PAGE 2 ===================== -->
+<section class="page" id="p2">
+  <div class="hd"><b><img src="../images/logo-small.jpg" alt="">L&amp;T Digital</b><span>Récap · page 2 / 2</span></div>
+
+  <h2 style="margin-top:14px"><span class="k">03</span>Les étapes (gratuit, en ligne)</h2>
+  <div class="steps">
+    <div class="st"><div><b>Préparer les documents</b><p>Pièce d'identité · justificatif de domicile (chez les parents + attestation d'hébergement) · <strong>autorisation parentale signée</strong> (modèle sur service-public.fr) · copie de la pièce d'identité des parents.</p></div></div>
+    <div class="st"><div><b>Déclarer l'entreprise sur le guichet unique</b><p>Site officiel <code>formalites.entreprises.gouv.fr</code>. C'est <strong>gratuit</strong>. Activité à décrire : « création de sites internet, design graphique, montage vidéo ». Attention aux sites qui font payer cette démarche.</p></div></div>
+    <div class="st"><div><b>Recevoir le numéro SIRET</b><p>En général sous 1 à 4 semaines, avec la création de votre espace URSSAF. À mettre sur le site, les devis et les factures.</p></div></div>
+    <div class="st"><div><b>Ouvrir un compte bancaire</b><p>Avec un parent pour un mineur. Un compte réservé à l'activité est conseillé dès le début (et obligatoire au-delà d'un certain chiffre d'affaires).</p></div></div>
+    <div class="st"><div><b>Déclarer son chiffre d'affaires</b><p>Chaque mois ou chaque trimestre sur <code>autoentrepreneur.urssaf.fr</code>, <strong>même à 0 €</strong>. Les cotisations sont calculées sur ce que vous encaissez.</p></div></div>
+    <div class="st"><div><b>Se mettre en règle sur le site</b><p>Mentions légales et CGV avec le SIRET, devis écrit avant chaque projet, facture après chaque paiement. Une assurance responsabilité civile professionnelle est conseillée.</p></div></div>
+  </div>
+
+  <h2><span class="k">04</span>Les chiffres clés <span style="font:500 11px var(--mono);color:var(--mut);margin-left:6px">(ordres de grandeur, à vérifier chaque année)</span></h2>
+  <div class="key">
+    <div><b>≈ 21 à 26 %</b><span>du chiffre d'affaires en cotisations sociales, selon l'activité</span></div>
+    <div><b>0 € de TVA</b><span>tant que vous restez sous le seuil de franchise (≈ 37 500 € pour les services)</span></div>
+    <div><b>≈ 77 700 €</b><span>de chiffre d'affaires maximum par an pour rester en micro (services)</span></div>
+    <div><b>Foyer fiscal</b><span>vos revenus comptent dans la déclaration d'impôts de vos parents</span></div>
+  </div>
+
+  <div class="two" style="margin-top:14px">
+    <div class="box"><h3>Sur chaque facture</h3><ul>
+      <li>Nom, adresse et numéro SIRET</li><li>Numéro de facture et date</li><li>Nom du client et détail de la prestation</li>
+      <li>Prix total</li><li>« TVA non applicable, art. 293 B du CGI »</li></ul></div>
+    <div class="box red"><h3>Les pièges à éviter</h3><ul>
+      <li>Payer un site qui imite le guichet officiel</li><li>Oublier de déclarer quand le CA est à 0 €</li><li>Travailler sans devis signé</li>
+      <li>Mélanger l'argent de l'activité et l'argent perso</li><li>Ne rien écrire entre vous deux</li></ul></div>
+  </div>
+
+  <div class="two" style="margin-top:12px">
+    <div class="box"><h3>Et l'école ?</h3><p>La formation est obligatoire jusqu'à 18 ans : la micro-entreprise se fait <strong>en plus</strong> des cours, pas à la place.</p></div>
+    <div class="box"><h3>Où se faire aider (gratuit)</h3><ul>
+      <li>service-public.fr · rubrique « Entreprendre »</li><li>urssaf.fr · autoentrepreneur.urssaf.fr</li><li>Votre CCI ou Chambre de métiers</li></ul></div>
+  </div>
+
+  <div class="ft"><b>Ce récap ne remplace pas un conseil juridique.</b> Il résume des règles générales du droit français (octobre 2026). Les taux, seuils et démarches peuvent évoluer : vérifiez-les sur les sites officiels au moment de déclarer.</div>
+</section>
+</body>
+</html>
