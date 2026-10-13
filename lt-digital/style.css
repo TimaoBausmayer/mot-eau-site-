@@ -1450,3 +1450,7 @@ body::after{content:"";position:fixed;inset:0;z-index:300;pointer-events:none;op
 .links{gap:20px}
 .dd-menu i{width:44px;height:44px}
 @media(max-width:1260px) and (min-width:961px){.links{gap:14px;font-size:.88rem}.srch-t,.srch-btn kbd{display:none}.srch-btn{padding:10px 12px}.nav-in{gap:18px}}
+
+/* lien Admin du pied de page : discret mais bien visible */
+#lg-a{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;border:1px solid rgba(200,255,62,.55);color:#c8ff3e!important;background:rgba(200,255,62,.08);font-weight:600}
+#lg-a:hover{background:#c8ff3e;color:#0a0912!important}
