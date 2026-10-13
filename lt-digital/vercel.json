@@ -1,7 +1,7 @@
 {
-  "functions": { "api/admin.js": { "includeFiles": "admin.html" } },
   "routes": [
-    { "src": "/admin(?:\\.html)?/?", "dest": "/api/admin" },
+    { "src": "/admin/", "status": 308, "headers": { "Location": "/admin" } },
+    { "src": "/admin(?:\\.html)?", "dest": "/api/admin" },
     { "handle": "filesystem" }
   ]
 }
