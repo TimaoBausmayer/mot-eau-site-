@@ -46,22 +46,22 @@ window.SITE_CONFIG = {
 
   /* ---------- HERO (haut de page) ---------- */
   hero: {
-    badge: "Création & modernisation de sites web",
+    badge: "On crée ton site internet",
     title: "Le site qui fait venir",
     titleAccent: "de nouveaux clients.",
-    text: "Un site beau, rapide et bien placé sur Google. On s'occupe de tout, en ligne en {delivery}.",
-    cta1: "Voir les tarifs",
-    cta2: "Démarrer mon site",
+    text: "On fait ton site internet. Il est joli, facile à utiliser, et les gens te trouvent sur Google. Prêt en {delivery}.",
+    cta1: "Voir les prix",
+    cta2: "Je commande",
     /* mots qui défilent sous le titre : « Pour les restaurants », puis « Pour les boulangeries »… (vide = rien) */
     rotatePrefix: "Pensé pour les",
     rotate: [],
     /* barre « demande » qui s'écrit toute seule (clic = page de commande). Vide = pas de barre */
-    prompts: ["Je veux un site pour ma boulangerie", "Un logo pour mon salon de coiffure", "Une pub vidéo pour mon Instagram", "Moderniser le site de mon garage", "Des photos pro de mes produits"],
+    prompts: ["Je veux un site pour ma boulangerie", "Je veux un logo pour mon salon", "Je veux une vidéo pour Instagram", "Je veux refaire mon site", "Je veux de belles photos"],
     /* petites coches sous les boutons */
-    trust: ["Prix annoncé à l'avance", "Retouches incluses", "Livré en {delivery}"],
+    trust: ["Le prix est écrit à l'avance", "Tu peux demander des changements", "Prêt en {delivery}"],
     /* petites notifications animées autour des images (exemples de ce que le site apporte) */
     notes: [
-      { icon: "🔔", title: "Nouvelle réservation", text: "Table pour 4 · ce soir 20 h" }
+      { icon: "🔔", title: "Nouvelle réservation", text: "Un client a réservé" }
     ],
     /* images du haut de page (captures de tes maquettes) */
     visual: { a: "images/portfolio/restaurant.jpg", b: "images/portfolio/boutique.jpg", phone: "images/portfolio/coach-mobile.jpg" }
@@ -71,30 +71,30 @@ window.SITE_CONFIG = {
   /* ---------- POURQUOI UN VRAI SITE (argumentaire) ----------
      icon : search, shield, clock, time, home, growth */
   why: {
-    eyebrow: "Pourquoi un vrai site",
-    title: "Ton site travaille pour toi, même quand tu es fermé.",
-    intro: "Aujourd'hui, avant de pousser ta porte, tes clients te cherchent sur internet. Ce qu'ils y trouvent décide s'ils viennent… ou s'ils vont chez le voisin.",
+    eyebrow: "Pourquoi un site ?",
+    title: "Un site, c'est ta boutique sur internet.",
+    intro: "Quand quelqu'un veut un magasin, il cherche sur internet d'abord. Si tu as un site, il te trouve. Sinon, il va chez un autre.",
     items: [
-      { icon: "search", title: "Être trouvé sur Google", text: "Quand quelqu'un tape « boulangerie près de chez moi » ou « plombier à côté », ce sont les commerces avec un site qui sortent. Sans site, ces clients partent chez tes concurrents." },
-      { icon: "shield", title: "Inspirer confiance tout de suite", text: "Un site propre, rapide et à jour rassure avant même la première visite. Un site vieillot, lent ou absent donne l'impression que l'activité n'est pas sérieuse." },
-      { icon: "clock", title: "Ouvert 24 h/24, 7 j/7", text: "Horaires, carte, tarifs, adresse, photos : tout est consultable à toute heure. Les réservations, commandes et demandes de devis arrivent même la nuit." },
-      { icon: "time", title: "Moins d'appels, plus de temps", text: "Les questions qui reviennent (horaires, prix, accès) trouvent leur réponse sur le site. Tu passes moins de temps au téléphone et plus sur ton métier." },
-      { icon: "home", title: "Une vitrine qui t'appartient", text: "Les réseaux sociaux changent leurs règles et peuvent bloquer un compte. Ton site, c'est chez toi : ton nom, ton adresse web, tes règles." },
-      { icon: "growth", title: "Plus de clients, plus de chiffre", text: "Un client qui trouve facilement ce qu'il cherche passe à l'action : il appelle, réserve, commande ou vient en boutique. C'est un investissement, pas une dépense." }
+      { icon: "search", title: "Les gens te trouvent", text: "Quelqu'un écrit « boulangerie près de moi » sur Google. Avec un site, c'est toi qu'il voit." },
+      { icon: "shield", title: "Les gens te font confiance", text: "Un joli site donne envie de venir. Sans site, on se demande si tu existes vraiment." },
+      { icon: "clock", title: "Ouvert tout le temps", text: "Ton site ne dort jamais. On y voit tes horaires et tes prix, même la nuit." },
+      { icon: "time", title: "Moins de questions au téléphone", text: "Les réponses (horaires, prix, adresse) sont sur le site. Tu gagnes du temps." },
+      { icon: "home", title: "C'est chez toi", text: "Ton site est à toi, avec ton nom. Personne ne peut te le prendre." },
+      { icon: "growth", title: "Plus de clients", text: "Plus de gens te trouvent, donc plus de gens appellent, réservent et achètent." }
     ],
-    withoutTitle: "Sans site (ou avec un vieux site)",
-    without: ["Invisible quand on te cherche sur Google", "Des clients qui doutent et vont ailleurs", "Des appels à répétition pour les mêmes questions", "Dépendant des réseaux sociaux", "Aucune vente ou réservation en dehors des horaires"],
+    withoutTitle: "Sans site",
+    without: ["On ne te trouve pas sur Google", "Des clients qui hésitent et vont ailleurs", "Toujours les mêmes questions au téléphone", "Tu dépends des réseaux sociaux", "Rien ne se passe quand tu es fermé"],
     withTitle: "Avec un site L&T Digital",
-    with: ["Trouvé par les clients près de chez toi", "Une image pro qui donne envie de venir", "Infos, prix et horaires toujours à jour", "Ta propre vitrine, à ton nom", "Réservations, commandes et devis 24 h/24"],
+    with: ["Les clients près de chez toi te trouvent", "Une belle image qui donne envie", "Prix et horaires toujours justes", "Ta vitrine, à ton nom", "On peut réserver et commander tout le temps"],
     cta: "Je veux mon site"
   },
 
   /* ---------- CHIFFRES CLÉS (supprime les lignes inutiles) ---------- */
   stats: [
-    { value: "{delivery}",  label: "Délai de livraison de ton site" },
-    { value: "1", label: "seul interlocuteur, de A à Z" },
-    { value: "100%", label: "Adapté au mobile et à la tablette" },
-    { value: "7j/7", label: "Support après livraison" }
+    { value: "{delivery}",  label: "pour recevoir ton site" },
+    { value: "1", label: "personne qui s'occupe de tout" },
+    { value: "100%", label: "Marche sur téléphone et tablette" },
+    { value: "7j/7", label: "On t'aide après la livraison" }
   ],
 
   /* ---------- NOTRE HISTOIRE (fin de page) ----------
@@ -102,20 +102,20 @@ window.SITE_CONFIG = {
      vide = pastille avec l'initiale (champ initial). Modifie tout depuis admin.html ▸ Notre histoire. */
   story: {
     eyebrow: "Notre histoire",
-    title: "Deux fondateurs, un même objectif : des sites à l'image de chaque commerce.",
+    title: "On est deux, et on fait des sites pour les commerces.",
     paragraphs: [
-      "L&T Digital est née d'une idée simple : les commerçants, artisans et indépendants méritent un site aussi soigné que leur travail, sans jargon et sans prix cachés.",
-      "Nous avons fondé L&T Digital pour proposer des sites modernes, rapides et sur mesure, avec un seul interlocuteur du premier échange jusqu'à la mise en ligne.",
-      "Aujourd'hui, nous créons de nouveaux sites et nous modernisons ceux qui ont vieilli, pour que chaque entreprise ait une vitrine à la hauteur de ce qu'elle propose."
+      "L&T Digital est née d'une idée simple : chaque commerce mérite un beau site, expliqué simplement, avec un prix clair.",
+      "Tu parles toujours à la même personne, du premier message jusqu'à la mise en ligne de ton site.",
+      "On crée de nouveaux sites, et on refait ceux qui sont vieux, pour que chaque commerce ait une belle vitrine."
     ],
     founders: [
       { name: "Prénom du fondateur L", initial: "L", role: "Cofondateur", text: "À compléter : son parcours, ce qu'il aime dans ce métier et son rôle chez L&T Digital.", photo: "" },
       { name: "Prénom du fondateur T", initial: "T", role: "Cofondateur", text: "À compléter : son parcours, ce qu'il aime dans ce métier et son rôle chez L&T Digital.", photo: "" }
     ],
     values: [
-      { title: "Clarté", text: "Des prix annoncés, des étapes expliquées, aucune mauvaise surprise." },
-      { title: "Soin", text: "Chaque site est dessiné pour une activité précise, jamais copié-collé." },
-      { title: "Proximité", text: "Un échange direct avec les fondateurs, avant, pendant et après le projet." }
+      { title: "Clair", text: "Le prix est écrit, les étapes sont expliquées, pas de surprise." },
+      { title: "Soigné", text: "Chaque site est fait pour ton métier. On ne copie pas." },
+      { title: "Proche de toi", text: "Tu nous écris directement, avant, pendant et après." }
     ]
   },
 
@@ -123,17 +123,17 @@ window.SITE_CONFIG = {
      Chaque bloc de la page. show:false => la section disparaît (et son lien du menu).
      Laisse title/subtitle vides ("") pour garder le texte par défaut. */
   sections: {
-    tarifs:       { show: true, eyebrow: "Tarifs",       title: "", subtitle: "" },
-    comparatif:   { show: true, eyebrow: "Comparatif",   title: "", subtitle: "" },
-    options:      { show: true, eyebrow: "Options",      title: "", subtitle: "" },
+    tarifs:       { show: true, eyebrow: "1 · Les prix",  title: "Choisis ton site", subtitle: "Chaque site a un prix clair. Si tu veux plus, tu ajoutes des options." },
+    comparatif:   { show: true, eyebrow: "Comparer",   title: "Les sites, côte à côte", subtitle: "Pour voir la différence en un coup d'œil." },
+    options:      { show: true, eyebrow: "2 · Les options", title: "Tu veux plus ? Ajoute ce que tu aimes", subtitle: "Rien n'est obligatoire. Tu prends seulement ce qui te plaît." },
     services:     { show: true, eyebrow: "Photos, logo, pubs & réseaux" },
-    process:      { show: true, eyebrow: "Processus",    title: "", subtitle: "" },
-    realisations: { show: true, eyebrow: "Réalisations", title: "", subtitle: "" },
-    pourquoi:     { show: true, eyebrow: "Pourquoi un vrai site" },
+    process:      { show: true, eyebrow: "Comment ça marche",    title: "C'est facile : 4 étapes", subtitle: "" },
+    realisations: { show: true, eyebrow: "Exemples", title: "Des exemples de sites", subtitle: "Clique sur un exemple pour le voir en grand." },
+    pourquoi:     { show: true, eyebrow: "Pourquoi un site ?" },
     avis:         { show: true, eyebrow: "Avis",         title: "", subtitle: "" },
-    commande:     { show: true, eyebrow: "Commande",     title: "", subtitle: "" },
-    faq:          { show: true, eyebrow: "FAQ",          title: "", subtitle: "" },
-    histoire:     { show: true, eyebrow: "Notre histoire", title: "", subtitle: "" }
+    commande:     { show: true, eyebrow: "3 · Je commande",     title: "Fais ta commande, c'est simple", subtitle: "Choisis ce que tu veux. Le prix se calcule tout seul. Ensuite, envoie-nous ta commande." },
+    faq:          { show: true, eyebrow: "Questions",          title: "Tu te poses des questions ?", subtitle: "" },
+    histoire:     { show: true, eyebrow: "Qui sommes-nous ?", title: "", subtitle: "" }
   },
 
   /* ---------- GAMMES / TARIFS ----------
@@ -148,61 +148,61 @@ window.SITE_CONFIG = {
   */
   plans: [
     {
-      id: "express", name: "Page Express", tagline: "Une page, l'essentiel, vite.",
+      id: "express", name: "Page Express", tagline: "Une seule page, vite faite.",
       price: 85, from: false, delay: "", popular: false, cta: "Choisir Express",
       features: [
-        "1 page unique responsive",
-        "Présentation + contact",
-        "Design aux couleurs de ton activité",
-        "1 retouche incluse",
+        "1 seule page",
+        "Qui tu es + comment te contacter",
+        "Aux couleurs de ton activité",
+        "1 changement gratuit",
         "!Plusieurs pages",
-        "!Formulaire de contact avancé"
+        "!Formulaire pour t'écrire"
       ]
     },
     {
-      id: "vitrine", name: "Site Vitrine", tagline: "Le choix idéal pour une entreprise.",
+      id: "vitrine", name: "Site Vitrine", tagline: "Le bon choix pour la plupart des gens.",
       price: 239, from: false, delay: "", popular: true, cta: "Choisir Vitrine",
       features: [
-        "Jusqu'à 5 pages (Accueil, Services, À propos, Galerie, Contact)",
-        "Design premium sur mesure",
-        "Formulaire de contact",
-        "Optimisation Google de base (SEO)",
-        "3 retouches incluses",
-        "Support 7 jours après livraison"
+        "Jusqu'à 5 pages (Accueil, Services, Qui es-tu, Photos, Contact)",
+        "Un beau design fait pour toi",
+        "Un formulaire pour que les clients t'écrivent",
+        "On t'aide à être trouvé sur Google",
+        "3 changements gratuits",
+        "On t'aide pendant 7 jours après"
       ]
     },
     {
-      id: "complet", name: "Site Complet", tagline: "Boutique, réservation, tout-en-un.",
+      id: "complet", name: "Site Complet", tagline: "Tout en un : boutique ou réservation.",
       price: 575, from: true, delay: "", popular: false, cta: "Choisir Complet",
       features: [
         "Jusqu'à 10 pages",
-        "Boutique en ligne ou système de réservation",
-        "Animations et design haut de gamme",
-        "SEO avancé + Google Analytics",
-        "Retouches illimitées pendant la création",
-        "Support prioritaire 30 jours"
+        "Une boutique en ligne ou des réservations",
+        "Un très beau design qui bouge",
+        "Très bien placé sur Google + on compte tes visites",
+        "Autant de changements que tu veux pendant la création",
+        "On t'aide en priorité pendant 30 jours"
       ]
     },
     {
-      id: "refonte", name: "Refonte de site", tagline: "On modernise ton site existant.",
+      id: "refonte", name: "Refaire mon site", tagline: "On rajeunit ton site qui existe déjà.",
       price: 159, from: true, delay: "selon le site", popular: false, cta: "Moderniser mon site",
       features: [
-        "Audit de ton site actuel",
-        "Nouveau design moderne et responsive",
-        "Conservation de tes contenus",
-        "Amélioration de la vitesse",
-        "2 retouches incluses",
-        "!Nouvelles fonctionnalités (en option)"
+        "On regarde ce qui ne va pas sur ton site",
+        "Un nouveau design, joli sur téléphone",
+        "On garde tes textes et tes photos",
+        "Ton site va plus vite",
+        "2 changements gratuits",
+        "!Nouvelles choses à ajouter (en option)"
       ]
     },
     {
-      id: "surmesure", name: "Sur mesure", tagline: "Un projet unique ? On en parle.",
+      id: "surmesure", name: "Sur mesure", tagline: "Un projet spécial ? On en parle.",
       price: null, from: false, delay: "selon projet", popular: false, cta: "Demander un devis",
       features: [
-        "Fonctionnalités spécifiques",
-        "Identité visuelle complète",
-        "Suivi dédié du projet",
-        "Maintenance sur demande"
+        "Des choses faites exactement pour toi",
+        "Un logo et des couleurs rien qu'à toi",
+        "Quelqu'un te suit pendant tout le projet",
+        "On s'occupe de ton site après, si tu veux"
       ]
     }
   ],
@@ -210,14 +210,14 @@ window.SITE_CONFIG = {
   /* ---------- TABLEAU COMPARATIF ----------
      true (✔), false (✘) ou un texte. Les clés = les "id" des gammes. */
   compare: [
-    { label: "Nombre de pages",         values: { express: "1", vitrine: "5", complet: "10", refonte: "Existant", surmesure: "Illimité" } },
-    { label: "Design sur mesure",       values: { express: true, vitrine: true, complet: true, refonte: true, surmesure: true } },
-    { label: "Responsive (mobile)",     values: { express: true, vitrine: true, complet: true, refonte: true, surmesure: true } },
-    { label: "Formulaire de contact",   values: { express: false, vitrine: true, complet: true, refonte: true, surmesure: true } },
-    { label: "SEO (Google)",            values: { express: false, vitrine: "Base", complet: "Avancé", refonte: "Base", surmesure: "Avancé" } },
+    { label: "Nombre de pages",         values: { express: "1", vitrine: "5", complet: "10", refonte: "Les mêmes", surmesure: "Autant que tu veux" } },
+    { label: "Design fait pour toi",       values: { express: true, vitrine: true, complet: true, refonte: true, surmesure: true } },
+    { label: "Marche sur téléphone",     values: { express: true, vitrine: true, complet: true, refonte: true, surmesure: true } },
+    { label: "Formulaire pour t'écrire",   values: { express: false, vitrine: true, complet: true, refonte: true, surmesure: true } },
+    { label: "Trouvé sur Google",            values: { express: false, vitrine: "Un peu", complet: "Beaucoup", refonte: "Un peu", surmesure: "Beaucoup" } },
     { label: "Boutique / réservation",  values: { express: false, vitrine: false, complet: true, refonte: false, surmesure: true } },
-    { label: "Retouches incluses",      values: { express: "1", vitrine: "3", complet: "Illimitées", refonte: "2", surmesure: "Illimitées" } },
-    { label: "Support après livraison", values: { express: "—", vitrine: "7 jours", complet: "30 jours", refonte: "7 jours", surmesure: "Au choix" } }
+    { label: "Changements gratuits",      values: { express: "1", vitrine: "3", complet: "À volonté", refonte: "2", surmesure: "À volonté" } },
+    { label: "Aide après la livraison", values: { express: "—", vitrine: "7 jours", complet: "30 jours", refonte: "7 jours", surmesure: "Au choix" } }
   ],
 
   /* ---------- OPTIONS / SUPPLÉMENTS ----------
@@ -229,38 +229,38 @@ window.SITE_CONFIG = {
      included : liste d'id de gammes où l'option est déjà incluse (gratuite)
      tag      : badge facultatif (sinon "Populaire" si popular) */
   addons: [
-    { id: "reservation", name: "Réservation en ligne", price: 115, from: true, group: "Fonctionnalités", popular: true, qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Rendez-vous ou tables réservés directement sur le site." },
-    { id: "carte", name: "Google Maps + bouton itinéraire", price: 25, group: "Fonctionnalités", popular: true, qty: false, plans: [], included: [], tag: "", desc: "Ta carte Google Maps sur le site, avec un bouton « Itinéraire » qui guide le client jusqu'à chez toi." },
-    { id: "notif", name: "Système de notifications (e-mail / SMS)", price: 39, group: "Fonctionnalités", popular: true, qty: false, plans: [], included: [], tag: "", desc: "Tu es prévenu à chaque réservation, commande ou message, et ton client reçoit sa confirmation + un rappel la veille." },
-    { id: "boutique", name: "Boutique en ligne / catalogue", price: 125, from: true, group: "Fonctionnalités", popular: true, qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Présente et vends tes produits en ligne." },
-    { id: "domain", name: "Nom de domaine + hébergement (1 an)", price: 49, group: "Mise en ligne & visibilité", popular: true, qty: false, plans: [], included: [], tag: "", desc: "On s'occupe de toute la mise en ligne." },
-    { id: "seo", name: "Optimisation Google (SEO)", price: 59, group: "Mise en ligne & visibilité", popular: true, qty: false, plans: [], included: [], tag: "", desc: "Pour mieux apparaître dans les recherches." },
-    { id: "maint", name: "Maintenance (1 mois)", price: 25, group: "Service & rapidité", popular: true, qty: false, plans: [], included: [], tag: "", desc: "Mises à jour et petites modifications." },
-    { id: "page", name: "Page supplémentaire", price: 35, group: "Contenu & visuel", qty: true, max: 20, plans: ["vitrine","complet","refonte"], included: [], tag: "", desc: "Ajoute autant de pages que nécessaire." },
-    { id: "logo", name: "Création de logo", price: 65, group: "Contenu & visuel", qty: false, plans: [], included: ["complet"], tag: "", desc: "Un logo propre à ton activité." },
-    { id: "texte", name: "Rédaction des textes", price: 59, group: "Contenu & visuel", qty: false, plans: [], included: [], tag: "", desc: "Des contenus clairs et percutants." },
-    { id: "photos", name: "Séance photo ou retouche des photos", price: 99, group: "Contenu & visuel", qty: false, plans: [], included: [], tag: "", desc: "Des photos soignées pour ton site." },
-    { id: "equipe", name: "Page « Notre équipe »", price: 35, group: "Contenu & visuel", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Présente ton équipe avec photos (photos d'équipe disponibles dans nos services)." },
-    { id: "galerie", name: "Galerie photo / portfolio", price: 49, group: "Contenu & visuel", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Montre tes réalisations en images." },
-    { id: "traduction", name: "Traduction du site (anglais)", price: 75, group: "Contenu & visuel", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Ton site dans une deuxième langue." },
-    { id: "video", name: "Vidéo de présentation intégrée", price: null, group: "Contenu & visuel", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Une vidéo mise en valeur sur ton site." },
-    { id: "paiement", name: "Paiement en ligne", price: null, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Encaisse tes clients directement sur le site." },
-    { id: "devisform", name: "Formulaire de devis / commande avancé", price: 49, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Reçois des demandes complètes et bien ordonnées." },
+    { id: "reservation", name: "Réserver en ligne", price: 115, from: true, group: "Fonctionnalités", popular: true, qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Tes clients réservent une table ou un rendez-vous sur ton site." },
+    { id: "carte", name: "Google Maps + bouton itinéraire", price: 25, group: "Fonctionnalités", popular: true, qty: false, plans: [], included: [], tag: "", desc: "Une carte sur ton site, avec un bouton qui montre le chemin jusqu'à chez toi." },
+    { id: "notif", name: "Être prévenu (e-mail / SMS)", price: 39, group: "Fonctionnalités", popular: true, qty: false, plans: [], included: [], tag: "", desc: "Tu reçois un message à chaque réservation. Ton client reçoit une confirmation." },
+    { id: "boutique", name: "Boutique en ligne / catalogue", price: 125, from: true, group: "Fonctionnalités", popular: true, qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Montre tes produits et vends-les sur internet." },
+    { id: "domain", name: "Ton adresse internet (1 an)", price: 49, group: "Mise en ligne & visibilité", popular: true, qty: false, plans: [], included: [], tag: "", desc: "On choisit ton adresse (par exemple tonnom.fr) et on met ton site en ligne." },
+    { id: "seo", name: "Mieux placé sur Google", price: 59, group: "Mise en ligne & visibilité", popular: true, qty: false, plans: [], included: [], tag: "", desc: "Pour que plus de gens te trouvent quand ils cherchent." },
+    { id: "maint", name: "On s'occupe de ton site (1 mois)", price: 25, group: "Service & rapidité", popular: true, qty: false, plans: [], included: [], tag: "", desc: "On le garde à jour et on fait les petits changements pour toi." },
+    { id: "page", name: "Page supplémentaire", price: 35, group: "Contenu & visuel", qty: true, max: 20, plans: ["vitrine","complet","refonte"], included: [], tag: "", desc: "Ajoute autant de pages que tu veux." },
+    { id: "logo", name: "Création de logo", price: 65, group: "Contenu & visuel", qty: false, plans: [], included: ["complet"], tag: "", desc: "Un logo rien qu'à toi." },
+    { id: "texte", name: "On écrit tes textes", price: 59, group: "Contenu & visuel", qty: false, plans: [], included: [], tag: "", desc: "On écrit les phrases de ton site, simples et claires." },
+    { id: "photos", name: "Photos prises ou arrangées", price: 99, group: "Contenu & visuel", qty: false, plans: [], included: [], tag: "", desc: "De belles photos pour ton site." },
+    { id: "equipe", name: "Page « Notre équipe »", price: 35, group: "Contenu & visuel", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Présente ton équipe avec des photos." },
+    { id: "galerie", name: "Galerie de photos", price: 49, group: "Contenu & visuel", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Montre ce que tu as fait avec des photos." },
+    { id: "traduction", name: "Traduction du site (anglais)", price: 75, group: "Contenu & visuel", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Ton site aussi en anglais." },
+    { id: "video", name: "Vidéo de présentation intégrée", price: null, group: "Contenu & visuel", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Une vidéo qui te présente, sur ton site." },
+    { id: "paiement", name: "Paiement en ligne", price: null, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Tes clients paient directement sur ton site." },
+    { id: "devisform", name: "Formulaire pour demander un prix", price: 49, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Tu reçois des demandes claires et bien rangées." },
     { id: "whatsapp", name: "Bouton WhatsApp / Instagram", price: 25, group: "Fonctionnalités", qty: false, plans: [], included: [], tag: "", desc: "Un contact direct en un clic." },
-    { id: "newsletter", name: "Inscription à la newsletter", price: 49, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Récupère les e-mails de tes visiteurs." },
-    { id: "avis", name: "Affichage des avis clients", price: 39, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Mets en avant les retours de tes clients." },
-    { id: "blog", name: "Blog / actualités modifiable", price: 75, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Publie des nouvelles facilement." },
-    { id: "espace", name: "Espace client / connexion", price: null, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Un espace privé pour tes clients." },
-    { id: "spec", name: "Fonctionnalité spéciale", price: null, group: "Fonctionnalités", qty: false, plans: [], included: [], tag: "", desc: "Un besoin particulier ? On chiffre ensemble." },
-    { id: "email", name: "Adresse e-mail professionnelle", price: 39, group: "Mise en ligne & visibilité", qty: false, plans: [], included: [], tag: "", desc: "contact@tonsite avec ton nom de domaine." },
-    { id: "gbp", name: "Fiche Google Business Profile", price: 49, group: "Mise en ligne & visibilité", qty: false, plans: [], included: [], tag: "", desc: "Ta fiche Google soignée (Maps et recherches)." },
-    { id: "reseaux", name: "Création des comptes réseaux sociaux", price: 49, group: "Mise en ligne & visibilité", qty: false, plans: [], included: [], tag: "", desc: "Instagram, Facebook… prêts à l'emploi." },
-    { id: "analytics", name: "Statistiques de visites", price: 25, group: "Mise en ligne & visibilité", qty: false, plans: [], included: [], tag: "", desc: "Sais combien de personnes visitent ton site." },
-    { id: "urgent", name: "Livraison express", price: 85, group: "Service & rapidité", qty: false, plans: [], included: [], tag: "", desc: "Ton projet passe en priorité." },
-    { id: "modifs", name: "Modifications illimitées (1 mois)", price: 39, group: "Service & rapidité", qty: false, plans: [], included: [], tag: "", desc: "Change ce que tu veux après la livraison." },
-    { id: "formation", name: "Formation (30 min en visio)", price: 39, group: "Service & rapidité", qty: false, plans: [], included: [], tag: "", desc: "Je t'apprends à modifier ton site toi-même." },
-    { id: "secu", name: "Sauvegardes + sécurité (1 mois)", price: 12, group: "Service & rapidité", qty: false, plans: [], included: [], tag: "", desc: "Ton site protégé et sauvegardé." },
-    { id: "evol", name: "Pack d'évolution annuel", price: null, group: "Service & rapidité", qty: false, plans: [], included: [], tag: "", desc: "De nouvelles fonctionnalités chaque année." }
+    { id: "newsletter", name: "Lettre d'infos par e-mail", price: 49, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Garde les e-mails de tes visiteurs pour leur écrire." },
+    { id: "avis", name: "Les avis de tes clients", price: 39, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Montre ce que tes clients disent de toi." },
+    { id: "blog", name: "Page de nouvelles (tu la modifies)", price: 75, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Tu écris tes nouvelles facilement." },
+    { id: "espace", name: "Espace privé pour tes clients", price: null, group: "Fonctionnalités", qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Chaque client a son espace avec un mot de passe." },
+    { id: "spec", name: "Une idée spéciale", price: null, group: "Fonctionnalités", qty: false, plans: [], included: [], tag: "", desc: "Tu as une idée ? On regarde ensemble et on te donne un prix." },
+    { id: "email", name: "Adresse e-mail professionnelle", price: 39, group: "Mise en ligne & visibilité", qty: false, plans: [], included: [], tag: "", desc: "Une adresse e-mail à ton nom, comme contact@tonnom.fr." },
+    { id: "gbp", name: "Ta fiche Google", price: 49, group: "Mise en ligne & visibilité", qty: false, plans: [], included: [], tag: "", desc: "Ta fiche avec ton adresse et tes horaires, sur Google et sur la carte." },
+    { id: "reseaux", name: "On crée tes comptes (Instagram…)", price: 49, group: "Mise en ligne & visibilité", qty: false, plans: [], included: [], tag: "", desc: "Instagram, Facebook… prêts à utiliser." },
+    { id: "analytics", name: "Compter les visites", price: 25, group: "Mise en ligne & visibilité", qty: false, plans: [], included: [], tag: "", desc: "Tu vois combien de personnes visitent ton site." },
+    { id: "urgent", name: "Plus vite !", price: 85, group: "Service & rapidité", qty: false, plans: [], included: [], tag: "", desc: "Ton projet passe avant les autres." },
+    { id: "modifs", name: "Changements à volonté (1 mois)", price: 39, group: "Service & rapidité", qty: false, plans: [], included: [], tag: "", desc: "Tu changes ce que tu veux, même après la livraison." },
+    { id: "formation", name: "Apprends à le modifier (30 min en visio)", price: 39, group: "Service & rapidité", qty: false, plans: [], included: [], tag: "", desc: "On t'apprend à changer ton site tout seul." },
+    { id: "secu", name: "Site protégé et sauvegardé (1 mois)", price: 12, group: "Service & rapidité", qty: false, plans: [], included: [], tag: "", desc: "Ton site est en sécurité et on garde une copie." },
+    { id: "evol", name: "Nouveautés chaque année", price: null, group: "Service & rapidité", qty: false, plans: [], included: [], tag: "", desc: "On ajoute de nouvelles choses à ton site chaque année." }
   ],
 
 
@@ -275,42 +275,42 @@ window.SITE_CONFIG = {
      popular : true = mise en avant · features : petites lignes « ce qui est inclus » */
   services: {
     eyebrow: "Photos, logo, pubs & réseaux",
-    title: "Toute ton image, pas seulement ton site",
-    intro: "On équipe ton site avec de vraies photos, on crée ton logo, tes affiches, tes pubs vidéo et on gère tes réseaux : avec ton site ou sans site, tu prends seulement ce dont tu as besoin.",
+    title: "Et aussi : photos, logo, vidéos…",
+    intro: "On peut aussi faire tes photos, ton logo, tes affiches, tes vidéos et tes réseaux. Avec un site ou sans site : tu prends seulement ce que tu veux.",
     items: [
-      { id: "s-pubv-courte", group: "Pubs vidéo", name: "Pub vidéo courte (15 à 30 s)", price: 125, popular: true, video: "images/pubs/courte.mp4", videoSound: "images/pubs/courte-son.mp4", desc: "Une pub animée, 100 % visuelle (sans voix), prête pour Reels, TikTok et stories.", features: ["Format vertical plein écran", "Animations + bruitages calés sur l'image", "Musique originale libre de droits", "1 retouche incluse"] },
-      { id: "s-pubv-longue", group: "Pubs vidéo", name: "Pub vidéo longue (1 min 30)", price: 289, video: "images/pubs/longue.mp4", videoSound: "images/pubs/longue-son.mp4", desc: "Un vrai film de présentation de ton activité, en chapitres.", features: ["Jusqu'à 1 min 30", "Scénario et animations sur mesure", "Musique originale + bruitages", "2 retouches incluses"] },
-      { id: "s-pubv-pack", group: "Pubs vidéo", name: "Pack 3 pubs courtes", price: 335, video: "images/pubs/pack.mp4", videoSound: "images/pubs/pack-son.mp4", desc: "3 pubs avec 3 styles différents, pour varier tes publications.", features: ["3 vidéos de 15 à 30 s", "Styles différents à alterner", "Le meilleur prix par pub"] },
-      { id: "s-pubv-portfolio", group: "Pubs vidéo", name: "Pub style « portfolio tech »", price: 209, video: "images/pubs/portfolio.mp4", videoSound: "images/pubs/portfolio-son.mp4", desc: "Le style moderne des vidéos tendance : cartes lumineuses, panneaux 3D, drop musical.", features: ["30 s plein écran", "Texte et visuels à ton image", "Musique originale"] },
-      { id: "s-pubv-visuel", group: "Pubs vidéo", name: "Visuel animé (post ou bannière)", price: 35, qty: true, max: 30, video: "images/pubs/visuel.mp4", desc: "Une image animée courte pour un post, une story ou une bannière.", features: ["Format carré ou vertical", "5 à 8 secondes", "Texte et couleurs de ta marque"] },
-      { id: "s-pubv-stories", group: "Pubs vidéo", name: "Série de 5 stories animées", price: 85, video: "images/pubs/stories.mp4", desc: "5 stories qui s'enchaînent pour annoncer une promo ou un événement.", features: ["5 stories de 8 s", "Stickers et boutons animés", "Prêtes à publier"] },
+      { id: "s-pubv-courte", group: "Pubs vidéo", name: "Pub vidéo courte (15 à 30 s)", price: 125, popular: true, video: "images/pubs/courte.mp4", videoSound: "images/pubs/courte-son.mp4", desc: "Une petite vidéo animée, sans voix, pour Instagram, TikTok et les stories.", features: ["Pour le téléphone, plein écran", "Des animations et des bruitages", "Une musique faite pour toi", "1 changement gratuit"] },
+      { id: "s-pubv-longue", group: "Pubs vidéo", name: "Pub vidéo longue (1 min 30)", price: 289, video: "images/pubs/longue.mp4", videoSound: "images/pubs/longue-son.mp4", desc: "Un vrai petit film qui présente ton activité.", features: ["Jusqu'à 1 min 30", "Une histoire faite pour toi", "Musique et bruitages", "2 changements gratuits"] },
+      { id: "s-pubv-pack", group: "Pubs vidéo", name: "Pack 3 pubs courtes", price: 335, video: "images/pubs/pack.mp4", videoSound: "images/pubs/pack-son.mp4", desc: "3 vidéos de styles différents, pour changer à chaque publication.", features: ["3 vidéos de 15 à 30 s", "Styles différents à alterner", "Le meilleur prix par pub"] },
+      { id: "s-pubv-portfolio", group: "Pubs vidéo", name: "Pub style « portfolio tech »", price: 209, video: "images/pubs/portfolio.mp4", videoSound: "images/pubs/portfolio-son.mp4", desc: "Une vidéo moderne, comme celles qu'on voit partout sur les réseaux.", features: ["30 s plein écran", "Texte et visuels à ton image", "Musique originale"] },
+      { id: "s-pubv-visuel", group: "Pubs vidéo", name: "Visuel animé (post ou bannière)", price: 35, qty: true, max: 30, video: "images/pubs/visuel.mp4", desc: "Une petite image qui bouge, pour un post ou une story.", features: ["Carré ou vertical", "5 à 8 secondes", "Tes couleurs et tes mots"] },
+      { id: "s-pubv-stories", group: "Pubs vidéo", name: "Série de 5 stories animées", price: 85, video: "images/pubs/stories.mp4", desc: "5 stories qui se suivent pour annoncer une promo.", features: ["5 stories de 8 s", "Stickers et boutons animés", "Prêtes à publier"] },
       { id: "s-shoot-prod", group: "Photos & vidéo", name: "On vient photographier tes produits", price: 125, from: true, popular: true, desc: "On se déplace dans ton commerce pour photographier tes produits, plats ou créations.", features: ["Déplacement compris (au-delà : sur devis)", "1 h sur place", "20 photos de produits retouchées", "Prêtes pour le site et les réseaux"] },
       { id: "s-shoot-team", group: "Photos & vidéo", name: "Photos de ton équipe", price: 109, from: true, desc: "Portraits de toi et de ton équipe pour une page « Notre équipe » qui inspire confiance.", features: ["On se déplace chez toi", "Portrait de chaque personne", "Photo de groupe", "Retouche incluse"] },
       { id: "s-shoot-full", group: "Photos & vidéo", name: "Shooting complet : produits + lieu + équipe", price: 209, from: true, desc: "Tout en une seule visite : tes produits, ton lieu et ton équipe.", features: ["Demi-journée sur place", "40 photos retouchées", "Le meilleur prix par photo"] },
-      { id: "s-photo-integ", group: "Photos & vidéo", name: "Mise en place de tes photos", price: 35, desc: "Tu nous envoies tes photos (même prises au téléphone), on s'occupe du reste.", features: ["Tri, recadrage et luminosité", "Optimisées pour un site rapide", "Jusqu'à 30 photos"] },
+      { id: "s-photo-integ", group: "Photos & vidéo", name: "Mise en place de tes photos", price: 35, desc: "Tu nous envoies tes photos, même prises au téléphone. On s'occupe du reste.", features: ["On trie et on améliore tes photos", "Elles ne ralentissent pas ton site", "Jusqu'à 30 photos"] },
       { id: "s-packshot", group: "Photos & vidéo", name: "Photo de produit en plus", price: 8, qty: true, max: 100, desc: "Beaucoup de produits ? Ajoute des photos à ton shooting, sur fond propre ou en situation.", features: ["Fond blanc ou en situation", "Idéal pour une boutique en ligne"] },
       { id: "s-retouche", group: "Photos & vidéo", name: "Retouche photo", price: 4, qty: true, max: 200, desc: "On rend tes photos existantes plus belles et plus nettes.", features: ["Couleurs, lumière, netteté", "Détourage possible"] },
       { id: "s-banque", group: "Photos & vidéo", name: "Pack photos pro libres de droits", price: 39, desc: "En attendant tes propres photos : une sélection d'images professionnelles adaptées à ton métier.", features: ["15 photos choisies pour toi", "Utilisation autorisée sur ton site"] },
       { id: "s-video", group: "Photos & vidéo", name: "Vidéo de présentation", price: null, desc: "Une courte vidéo de ton commerce pour ton site et tes réseaux.", features: ["Tournage + montage", "Format site et format réseaux"] },
 
-      { id: "s-logo", group: "Logo & identité", name: "Logo essentiel", price: 125, desc: "Un logo simple et lisible pour ton activité.", features: ["2 propositions", "2 retouches", "Fichiers PNG, JPG et PDF"] },
-      { id: "s-logo-pro", group: "Logo & identité", name: "Logo + identité visuelle", price: 289, popular: true, desc: "Ton logo et tout ce qui va autour pour une image pro et cohérente.", features: ["3 propositions", "Retouches illimitées (raisonnables)", "Couleurs et typographies", "Versions claire / foncée / icône", "Mini charte graphique"] },
-      { id: "s-refonte-logo", group: "Logo & identité", name: "Modernisation de logo", price: 85, from: true, desc: "On rafraîchit ton logo existant sans perdre ton identité.", features: ["Nettoyage et vectorisation", "Couleurs modernisées"] },
-      { id: "s-carte", group: "Logo & identité", name: "Carte de visite", price: 39, desc: "Recto-verso, prête à imprimer.", features: ["Fichier imprimeur (PDF)", "QR code vers ton site ou Instagram"] },
+      { id: "s-logo", group: "Logo & identité", name: "Logo essentiel", price: 125, desc: "Un logo simple et facile à lire.", features: ["2 propositions", "2 retouches", "Tes fichiers prêts à utiliser"] },
+      { id: "s-logo-pro", group: "Logo & identité", name: "Logo + identité visuelle", price: 289, popular: true, desc: "Ton logo, et tout ce qui va avec : couleurs, lettres, modèles.", features: ["3 propositions", "Autant de changements que tu veux", "Tes couleurs et tes lettres", "Plusieurs versions du logo", "Un petit guide pour l'utiliser"] },
+      { id: "s-refonte-logo", group: "Logo & identité", name: "Modernisation de logo", price: 85, from: true, desc: "On rajeunit ton logo sans qu'il perde son air.", features: ["On le redessine proprement", "Des couleurs plus modernes"] },
+      { id: "s-carte", group: "Logo & identité", name: "Carte de visite", price: 39, desc: "Recto-verso, prête à imprimer.", features: ["Prête à envoyer à l'imprimeur", "Un QR code vers ton site ou Instagram"] },
 
-      { id: "s-affiche", group: "Affiches & print", name: "Affiche", price: 49, qty: true, max: 20, popular: true, desc: "Pour ta vitrine, un événement, une promo…", features: ["Format A3 / A4", "1 retouche", "Fichier prêt à imprimer"] },
-      { id: "s-flyer", group: "Affiches & print", name: "Flyer recto-verso", price: 59, qty: true, max: 20, desc: "Pour distribuer ou laisser au comptoir.", features: ["Format A5 / A6", "Fichier prêt à imprimer"] },
-      { id: "s-menu", group: "Affiches & print", name: "Carte / menu / tarifs", price: 75, from: true, desc: "Menu de restaurant, carte de prix, plaquette.", features: ["Mise en page claire", "Facile à mettre à jour"] },
+      { id: "s-affiche", group: "Affiches & print", name: "Affiche", price: 49, qty: true, max: 20, popular: true, desc: "Pour ta vitrine, un événement, une promo…", features: ["Grande (A3) ou normale (A4)", "1 changement gratuit", "Prête à imprimer"] },
+      { id: "s-flyer", group: "Affiches & print", name: "Flyer recto-verso", price: 59, qty: true, max: 20, desc: "Pour distribuer ou laisser au comptoir.", features: ["Petit format (A5 ou A6)", "Prêt à imprimer"] },
+      { id: "s-menu", group: "Affiches & print", name: "Carte / menu / tarifs", price: 75, from: true, desc: "Menu de restaurant, carte de prix, plaquette.", features: ["Bien rangé et facile à lire", "Facile à changer plus tard"] },
       { id: "s-impression", group: "Affiches & print", name: "Impression et livraison", price: null, desc: "On s'occupe de faire imprimer tes supports.", features: ["Papier au choix", "Prix selon la quantité"] },
 
-      { id: "s-kit", group: "Réseaux sociaux", name: "Kit réseaux sociaux", price: 75, desc: "Photo de profil, bannières et couvertures à tes couleurs.", features: ["Instagram, Facebook, TikTok", "Couvertures de stories à la une"] },
-      { id: "s-templates", group: "Réseaux sociaux", name: "Modèles de publications", price: 99, desc: "10 modèles que tu réutilises toi-même facilement.", features: ["Posts et stories", "Modifiables sur Canva"] },
-      { id: "s-setup", group: "Réseaux sociaux", name: "Création / optimisation de comptes", price: 65, desc: "Comptes bien configurés pour être trouvé.", features: ["Bio, liens, catégories", "Fiche Google conseillée"] },
-      { id: "s-cm-1", group: "Réseaux sociaux", name: "Gestion des réseaux — Essentiel", price: 159, unit: "/mois", desc: "On publie pour toi chaque semaine.", features: ["8 publications / mois", "1 réseau", "Visuels et textes rédigés"] },
-      { id: "s-cm-2", group: "Réseaux sociaux", name: "Gestion des réseaux — Pro", price: 325, unit: "/mois", popular: true, desc: "Une présence active et régulière.", features: ["12 publications + stories", "2 réseaux", "Réponses aux messages", "Bilan chaque mois"] },
-      { id: "s-reel", group: "Réseaux sociaux", name: "Montage vidéo (Reel / TikTok)", price: 39, qty: true, max: 30, desc: "Tes vidéos montées, rythmées et sous-titrées.", features: ["Jusqu'à 60 secondes", "Musique et sous-titres"] },
-      { id: "s-boost", group: "Réseaux sociaux", name: "Boost de publications", price: 35, qty: true, max: 20, popular: true, desc: "On sponsorise tes meilleures publications Instagram / Facebook / TikTok auprès des gens de ta ville. Prix par boost, budget publicitaire en plus.", features: ["Ciblage autour de ton commerce", "Choix de la publication à booster", "Bilan des résultats"] },
-      { id: "s-pub", group: "Réseaux sociaux", name: "Campagne de publicité", price: null, desc: "Pubs Instagram / Facebook ciblées autour de chez toi.", features: ["Budget pub en plus", "Réglages et suivi"] }
+      { id: "s-kit", group: "Réseaux sociaux", name: "Kit réseaux sociaux", price: 75, desc: "Photo de profil, bannières et couvertures à tes couleurs.", features: ["Instagram, Facebook, TikTok", "Des images pour tes stories à la une"] },
+      { id: "s-templates", group: "Réseaux sociaux", name: "Modèles de publications", price: 99, desc: "10 modèles que tu peux réutiliser tout seul.", features: ["Pour les posts et les stories", "Tu les changes sur Canva"] },
+      { id: "s-setup", group: "Réseaux sociaux", name: "On prépare tes comptes", price: 65, desc: "Tes comptes bien réglés, pour qu'on te trouve.", features: ["Ta description, tes liens", "On te conseille pour ta fiche Google"] },
+      { id: "s-cm-1", group: "Réseaux sociaux", name: "Gestion des réseaux — Essentiel", price: 159, unit: "/mois", desc: "On publie à ta place chaque semaine.", features: ["8 publications par mois", "1 réseau", "Images et textes faits pour toi"] },
+      { id: "s-cm-2", group: "Réseaux sociaux", name: "Gestion des réseaux — Pro", price: 325, unit: "/mois", popular: true, desc: "Tu es présent sur les réseaux, régulièrement.", features: ["12 publications + stories", "2 réseaux", "On répond aux messages", "Un résumé chaque mois"] },
+      { id: "s-reel", group: "Réseaux sociaux", name: "Montage vidéo (Reel / TikTok)", price: 39, qty: true, max: 30, desc: "On monte tes vidéos : musique et sous-titres.", features: ["Jusqu'à 60 secondes", "Avec musique et sous-titres"] },
+      { id: "s-boost", group: "Réseaux sociaux", name: "Boost de publications", price: 35, qty: true, max: 20, popular: true, desc: "On montre tes meilleures publications à plus de gens de ta ville. Prix par boost ; l'argent de la pub est en plus.", features: ["Les gens près de ton commerce", "On choisit la publication avec toi", "Un résumé des résultats"] },
+      { id: "s-pub", group: "Réseaux sociaux", name: "Campagne de publicité", price: null, desc: "Des pubs Instagram et Facebook pour les gens près de chez toi.", features: ["Budget pub en plus", "Réglages et suivi"] }
     ]
   },
 
@@ -333,7 +333,7 @@ window.SITE_CONFIG = {
   /* ---------- RÉGLAGES DE LA COMMANDE ---------- */
   order: {
     depositPercent: 30,    /* acompte demandé à la commande, en % (0 = ne pas afficher) */
-    note: "Un acompte est demandé au démarrage, le solde à la validation du site.",
+    note: "On te demande une partie du prix au début (l'acompte). Le reste, tu le paies quand ton site te plaît.",
     intro: "NOUVELLE COMMANDE",
     askBusiness: true,     /* demander le nom de l'activité */
     askProject: true       /* demander la description du projet */
@@ -341,10 +341,10 @@ window.SITE_CONFIG = {
 
   /* ---------- PROCESSUS ---------- */
   process: [
-    { title: "Tu choisis",  text: "Sélectionne ta gamme et tes options, puis envoie ta commande." },
-    { title: "On échange",  text: "On te contacte pour cadrer ton besoin : style, couleurs, contenu." },
-    { title: "On crée",     text: "Tu reçois une première version et tu demandes les retouches voulues." },
-    { title: "Mise en ligne", text: "Tu valides, tu règles le solde, et ton site est en ligne." }
+    { title: "Tu choisis",  text: "Tu prends ton site et ce que tu veux en plus. Puis tu envoies ta commande." },
+    { title: "On discute",  text: "On te pose quelques questions : tes couleurs, tes photos, ce que tu aimes." },
+    { title: "On fabrique",     text: "On te montre ton site. Tu dis ce que tu veux changer." },
+    { title: "C'est en ligne !", text: "Tu dis OK, tu paies le reste, et tout le monde peut voir ton site." }
   ],
 
   /* ---------- RÉALISATIONS ----------
@@ -357,8 +357,8 @@ window.SITE_CONFIG = {
   logos: {
     eyebrow: "Logos",
     title: "Voici nos designs de logos",
-    text: "Chaque logo est dessiné sur mesure, pour l'activité et le style de chaque client. On en crée autant que tu veux : un logo, une déclinaison, une identité complète.",
-    note: "Ton logo sur mesure, avec plusieurs propositions et des retouches jusqu'à ce qu'il te plaise.",
+    text: "Chaque logo est dessiné pour un métier. On t'en fait un rien qu'à toi. Clique sur un logo pour le voir en grand.",
+    note: "On te propose plusieurs logos, et on change jusqu'à ce qu'il te plaise.",
     cta: "Je veux mon logo",
     items: [
       { name: "LT Digital", sector: "Agence web", image: "images/logos/lt-digital.jpg" },
@@ -404,38 +404,38 @@ window.SITE_CONFIG = {
   /* Avis clients : ajoute-les depuis admin.html ▸ Avis clients (avec l'accord du client).
      rating = note sur 5 · site = lien vers son site · logo / image = chemin d'une image (ex : images/avis/logo-martin.png) */
   testimonials: [],
-  reviewsForm: { show: true, title: "Tu es client ? Laisse ton avis", text: "Raconte ton expérience et montre ton site ou ton logo. Ton avis sera publié après vérification." },
+  reviewsForm: { show: true, title: "Tu es client ? Donne ton avis", text: "Raconte ce que tu as pensé de notre travail. On le lit avant de le publier." },
 
   /* ---------- GARANTIES ---------- */
   guarantees: [
-    { title: "Satisfait ou retouché", text: "Tu valides chaque étape avant la mise en ligne." },
-    { icon: "⚡",  title: "Livraison rapide",      text: "Des délais annoncés, et tenus." },
-    { title: "100 % unique",          text: "Aucun modèle réutilisé : ton site est le tien." },
-    { title: "Réponse rapide",        text: "Un message et on te répond en général dans la journée." }
+    { title: "Tu es d'accord à chaque étape", text: "Rien n'est mis en ligne sans ton OK." },
+    { icon: "⚡",  title: "Prêt vite",      text: "On dit quand ce sera prêt, et on le fait." },
+    { title: "Rien que pour toi",          text: "On ne copie pas : ton site est le tien." },
+    { title: "On répond vite",        text: "Tu écris, on te répond en général dans la journée." }
   ],
 
   /* ---------- TEXTES DU SITE (boutons, menus, formulaire…) ----------
      Modifie le texte que tu veux. Tout se change aussi depuis admin.html ▸ Textes du site. */
   texts: {
-    nav_tarifs: "Tarifs", nav_comparatif: "Comparatif", nav_process: "Méthode", nav_realisations: "Réalisations", nav_avis: "Avis", cmp_link: "Comparer les gammes côte à côte", cmp_pick: "Gammes à comparer", cmp_diff: "Seulement les différences", cmp_choose: "Choisir", mcta_btn: "Commander mon site", nav_faq: "Questions", nav_histoire: "Notre histoire", nav_insta: "Instagram", nav_cta: "Commander",
+    nav_tarifs: "Tarifs", nav_comparatif: "Comparatif", nav_process: "Comment ça marche", nav_realisations: "Réalisations", nav_avis: "Avis", cmp_link: "Comparer les gammes côte à côte", cmp_pick: "Gammes à comparer", cmp_diff: "Seulement les différences", cmp_choose: "Choisir", mcta_btn: "Commander mon site", nav_faq: "Questions", nav_histoire: "Notre histoire", nav_insta: "Instagram", nav_cta: "Commander",
     badge_pop: "Le plus choisi", nav_services: "Services", nav_search: "Rechercher", search_ph: "Cherche un prix, un service, une question…", search_empty: "Aucun résultat. Essaie « logo », « pub », « photo », « prix »…", pub_cta: "Envie d'une pub vidéo pour tes réseaux ? Animée, sans voix, avec musique : à partir de 125 €.", pub_cta_btn: "Voir les pubs vidéo", photo_cta: "Pas de belles photos ? On se déplace pour photographier tes produits et ton équipe, ou on retouche les tiennes.", photo_cta_btn: "Voir les offres photo", pick_none: "Pas de site", pick_none_sub: "Services seuls", label_monthly: "Abonnement mensuel", label_monthly_note: "Payé chaque mois, sans engagement au-delà du 1er mois.", label_services: "Photos, logo, affiches & réseaux", label_delivery: "Livraison :", label_from: "À partir de", label_delay_est: "Délai estimé :",
-    order_plan: "Ta gamme", order_opts: "Tes options", order_info: "Tes informations",
+    order_plan: "1. Choisis ton site", order_opts: "2. Ajoute ce que tu veux", order_info: "3. Dis-nous qui tu es",
     f_name: "Ton nom", f_biz: "Nom de ton activité", f_contact: "Ton Instagram ou e-mail", f_project: "Décris ton projet",
     sum_title: "Récapitulatif", promo_btn: "Appliquer", sum_total: "Total", copy_btn: "Copier ma commande", insta_btn: "Ouvrir Instagram", mail_btn: "Envoyer par e-mail", cart_btn: "Voir ma commande",
     cgv_pre: "J'ai lu et j'accepte les", cgv_link: "conditions générales de vente", legal_mentions: "Mentions légales", legal_cgv: "CGV", legal_privacy: "Confidentialité", top_question: "Une question ? Écris-nous", top_mail_short: "E-mail", top_copy: "Copier le code", top_copied: "Copié !",
-    final_title: "Un site pour ton activité, livré en {delivery}.", final_text: "Commande en deux minutes. On revient vers toi dans la journée.", final_btn: "Commander", final_insta: "Écrire sur Instagram", final_mail: "Nous écrire par e-mail"
+    final_title: "Ton site est prêt en {delivery}.", final_text: "Tu commandes en deux minutes. On te répond dans la journée.", final_btn: "Commander", final_insta: "Écrire sur Instagram", final_mail: "Nous écrire par e-mail"
   },
 
   /* ---------- FAQ ---------- */
   faq: [
-    { q: "Combien de temps pour recevoir mon site ?", a: "Ton site est livré en {delivery}, selon la gamme et la rapidité de tes retours." },
-    { q: "Comment se passe le paiement ?", a: "Un acompte est demandé au démarrage, le solde à la validation du site. Les moyens de paiement te sont précisés lors de notre échange." },
-    { q: "Je n'ai pas besoin de site, juste d'un logo ou d'aide sur mes réseaux. C'est possible ?", a: "Oui. Dans la commande, choisis « Pas de site » puis les prestations voulues (photos, logo, affiches, gestion des réseaux…). Les abonnements réseaux sont payés chaque mois." },
-    { q: "Je n'ai pas de belles photos, c'est un problème ?", a: "Non. On se déplace pour photographier tes produits, ton lieu ou ton équipe, on peut retoucher et mettre en place tes photos, ou t'équiper d'un pack de photos pro en attendant (voir « Photos & vidéo »)." },
-    { q: "Puis-je demander des modifications ?", a: "Oui. Chaque gamme inclut des retouches, et l'option maintenance permet des changements après la livraison." },
-    { q: "Je n'ai pas de logo ni de textes, c'est un problème ?", a: "Pas du tout. On peut créer ton logo et rédiger tes textes (voir les options et la partie « Logo, affiches & réseaux »)." },
-    { q: "J'ai déjà un site, vous pouvez le moderniser ?", a: "Oui, c'est la gamme « Refonte de site » : nouveau design, mobile, vitesse, en gardant tes contenus." },
-    { q: "Et si j'ai un besoin très particulier ?", a: "Choisis « Sur mesure » : on discute de ton projet et on te propose un devis." }
+    { q: "Combien de temps pour avoir mon site ?", a: "Ton site est prêt en {delivery}. Ça dépend du site que tu choisis et de la vitesse à laquelle tu nous réponds." },
+    { q: "Comment je paie ?", a: "Tu paies une partie au début (l'acompte). Le reste, tu le paies quand ton site te plaît. On t'explique comment payer quand on discute." },
+    { q: "Je veux juste un logo ou de l'aide sur mes réseaux. C'est possible ?", a: "Oui. Dans la commande, choisis « Pas de site », puis ce que tu veux (photos, logo, affiches, réseaux…). L'aide pour les réseaux se paie chaque mois." },
+    { q: "Je n'ai pas de belles photos. C'est grave ?", a: "Non. On peut venir faire tes photos, ou arranger celles que tu as, ou te donner de belles photos en attendant (voir « Photos & vidéo »)." },
+    { q: "Je peux demander des changements ?", a: "Oui. Chaque site inclut des changements gratuits. Après la livraison, l'option « On s'occupe de ton site » permet d'en faire d'autres." },
+    { q: "Je n'ai pas de logo ni de textes. C'est grave ?", a: "Pas du tout. On peut créer ton logo et écrire tes textes à ta place (voir les options)." },
+    { q: "J'ai déjà un site. Vous pouvez le refaire ?", a: "Oui, c'est « Refaire mon site » : un nouveau design, joli sur téléphone, plus rapide. On garde tes textes et tes photos." },
+    { q: "Et si je veux quelque chose de très spécial ?", a: "Choisis « Sur mesure » : on discute de ton idée et on te donne un prix." }
   ],
 
   /* ---------- CONTACT ---------- */
