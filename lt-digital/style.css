@@ -1454,3 +1454,17 @@ body::after{content:"";position:fixed;inset:0;z-index:300;pointer-events:none;op
 /* lien Admin du pied de page : discret mais bien visible */
 #lg-a{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;border:1px solid rgba(200,255,62,.55);color:#c8ff3e!important;background:rgba(200,255,62,.08);font-weight:600}
 #lg-a:hover{background:#c8ff3e;color:#0a0912!important}
+
+/* ===== Version allégée : moins de blocs, plus d'air ===== */
+.sec{padding:72px 0}.sec.tight{padding:36px 0}
+.ticks,.hero-bokeh,.hero-arc,.hero-grain,.hero .blob.b3,.h-scroll{display:none!important}
+/* « Pourquoi » : 3 arguments seulement, sans le tableau avant/après */
+.why-sec .why-grid>*:nth-child(n+4),.why-vs{display:none!important}
+.why-sec{padding-bottom:24px}
+/* le comparatif détaillé est retiré (les gammes sont déjà détaillées juste au-dessus) */
+#comparatif,#cmp-link{display:none!important}
+/* bande « garanties » retirée (déjà dit dans la FAQ) */
+.sec.tight:has(#guar){display:none}
+#dots{display:none!important}
+/* accueil : l'essentiel seulement (titre, une phrase, deux boutons, une maquette) */
+#h-prompt,#h-offer,#h-trust,#h-rv,#h-insta,.hero-vis .note,.hero-vis .vp,.hero-vis .vf.b,.hero .stats{display:none!important}
