@@ -8,6 +8,9 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const fmt = n => { const r = Math.round(n*100)/100, v = Number.isInteger(r) ? r.toLocaleString("fr-FR") : r.toLocaleString("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2}); return C.currency.after ? v+" "+C.currency.symbol : C.currency.symbol+v; };
 
+/* éléments masqués depuis l'admin (« Masquer sur le site ») : on les retire avant d'afficher quoi que ce soit */
+(function(){ const vis = l => Array.isArray(l) ? l.filter(x=>!(x && x.hidden===true)) : l;
+  C.plans = vis(C.plans); C.addons = vis(C.addons); if (C.services) C.services.items = vis(C.services.items); C.portfolio = vis(C.portfolio); if (C.logos) C.logos.items = vis(C.logos.items); })();
 /* {delivery} : le délai de livraison réglé dans config.delivery */
 (function tok(o){ const f = s => String(s).replace(/\{delivery\}/g, C.delivery||""); (function w(x){ if(Array.isArray(x)) x.forEach((v,i)=>{ if(typeof v==="string") x[i]=f(v); else w(v); }); else if(x&&typeof x==="object") Object.keys(x).forEach(k=>{ if(typeof x[k]==="string") x[k]=f(x[k]); else w(x[k]); }); })(C); })();
 const TX = Object.assign({ badge_pop:"Le plus choisi", label_delivery:"Livraison :", label_from:"À partir de", label_delay_est:"Délai estimé :" }, C.texts||{});
