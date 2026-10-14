@@ -1,0 +1,76 @@
+/* ===== Scène 01 (0 → 2 s) : rolodex des métiers → COMMERCE → plongée dans le O ===== */
+/* image 0 déjà pleine : la scène est visible dès t = 0 (le sc-on commun donne opacité 0 à t = 0 pile) */
+.s01.sc{background:var(--night);opacity:1;animation:s01-off .001s linear forwards;animation-delay:var(--b)}
+@keyframes s01-off{to{opacity:0}}
+.s01 .bg{position:absolute;inset:0;background:var(--night)}
+.s01 .halo{position:absolute;left:-160px;top:800px;width:1400px;height:1400px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(124,92,255,.35),rgba(124,92,255,.16) 52%,rgba(124,92,255,.05) 78%,rgba(124,92,255,0));
+  transform-origin:50% 50%;opacity:.88}
+.s01 .halo2{position:absolute;left:-420px;top:-620px;width:1300px;height:1300px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(124,92,255,.10),rgba(124,92,255,0))}
+
+/* décor : rangées de métiers en contour, inclinées */
+.s01 .rig{position:absolute;inset:0;transform-origin:230px 900px}
+.s01 .rows{position:absolute;left:-600px;top:-400px;width:2280px;height:2720px;transform:rotate(-8deg)}
+.s01 .row{position:absolute;left:-1500px;height:260px;white-space:nowrap;
+  font:900 260px/1 var(--f);font-stretch:125%;letter-spacing:-.01em;color:transparent;
+  -webkit-text-stroke:2px rgba(255,255,255,.08)}
+.s01 .row span{display:inline-block}
+.s01 .r1{top:420px} .s01 .r1 span{margin-left:-300px}
+.s01 .r2{top:870px} .s01 .r2 span{margin-left:-1250px}
+.s01 .r3{top:1520px} .s01 .r3 span{margin-left:-700px}
+.s01 .r4{top:1970px} .s01 .r4 span{margin-left:-1700px}
+
+/* caméra */
+.s01 .zoom{position:absolute;inset:0;transform-origin:230.1px 900.2px}
+.s01 .shk{position:absolute;inset:0;transform-origin:485px 900px}
+.s01 .cam{position:absolute;inset:0;transform-origin:485px 900px;transform:scale(1.08) rotate(-3deg)}
+.s01 .rings{position:absolute;left:0;top:0;overflow:visible}
+.s01 .rings circle{fill:none;opacity:0}
+.s01 .rings .w1{stroke:var(--lime)}
+.s01 .rings .w2{stroke:rgba(255,255,255,.45)}
+.s01 .rings .w3{stroke:var(--lime)}
+
+/* lueur du O (dégradé : reste propre pendant la plongée, contrairement à un text-shadow) */
+.s01 .oglow{position:absolute;left:107.5px;top:740.2px;width:260px;height:320px;border-radius:50%;opacity:0;
+  background:radial-gradient(closest-side,rgba(200,255,62,.55),rgba(200,255,62,.22) 42%,rgba(200,255,62,.06) 75%,rgba(200,255,62,0))}
+.s01 .warp{position:absolute;left:0;top:0;overflow:visible}
+.s01 .warp polygon{opacity:0}
+
+/* « Ton » */
+.s01 .ton{position:absolute;left:0;top:600px;width:970px;text-align:center;
+  font:italic 400 170px/1 var(--serif);color:var(--lime)}
+.s01 .tonin{display:inline-block;transform-origin:50% 90%}
+
+/* fenêtre rolodex */
+.s01 .win{position:absolute;left:70px;top:770px;width:830px;height:260px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 14px,#000 246px,transparent 260px);
+          mask-image:linear-gradient(to bottom,transparent 0,#000 14px,#000 246px,transparent 260px)}
+.s01 .ghost{position:absolute;left:70px;top:1030px;width:830px;height:300px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.9) 0,rgba(0,0,0,.35) 120px,transparent 270px);
+          mask-image:linear-gradient(to bottom,rgba(0,0,0,.9) 0,rgba(0,0,0,.35) 120px,transparent 270px)}
+.s01 .strip{position:absolute;left:0;top:0;width:830px}
+.s01 .gstrip{top:-260px}
+.s01 .cell{position:relative;height:260px}
+.s01 .w{position:absolute;left:0;top:19px;width:830px;display:flex;justify-content:center}
+.s01 .w.mg{top:21px}
+.s01 .w.cw{top:40px}
+.s01 .t{display:block;white-space:nowrap;font:900 225px/1 var(--f);letter-spacing:-.03em;padding-right:.03em;color:#fff}
+.s01 .mg .t{font-size:220px}
+.s01 .cw .t{font-size:183px;font-weight:400;font-stretch:125%;transform:scale(.5584,.5584);transform-origin:50% 50%}
+.s01 .ghost .t{color:#fff} /* contour net (sans les recouvrements de la police variable) : filtre #s01-gh */
+.s01 .gstrip{filter:url(#s01-gh)}
+.s01 .l{display:inline-block}
+.s01 .o{position:relative}
+.s01 .o i{position:absolute;left:35px;top:48px;width:32px;height:88px;border-radius:16px;background:var(--lime);transform:scale(0)}
+
+/* « mérite d’être vu. » */
+.s01 .merite{position:absolute;left:0;top:1070px;width:970px;display:flex;justify-content:center;align-items:baseline;gap:8px}
+.s01 .mclip{padding:30px 40px 40px 20px;margin:-30px -40px -40px -20px;clip-path:inset(0 100% 0 0)}
+.s01 .mtxt{font:italic 400 120px/1 var(--serif);color:#fff;white-space:nowrap}
+.s01 .mtxt em{font-style:italic;color:var(--lime)}
+.s01 .dotw{width:26px;height:26px}
+.s01 .dot{width:26px;height:26px;border-radius:50%;background:var(--lime);opacity:0;transform-origin:50% 100%}
+
+/* iris lime de sortie */
+.s01 .iris{position:absolute;inset:0;background:var(--lime);clip-path:ellipse(0px 0px at 230.1px 900.2px)}

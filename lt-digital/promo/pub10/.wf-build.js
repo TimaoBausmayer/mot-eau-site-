@@ -3,8 +3,7 @@ export const meta = {
   description: 'Coder les 12 scènes de la pub 10 + la couche fx, chacune vérifiée image par image puis critiquée et corrigée',
   phases: [
     { title: 'Construction', detail: 'un agent par scène : code + planche contact + auto-vérification' },
-    { title: 'Critique', detail: 'critique indépendant par scène (vision)' },
-    { title: 'Correction', detail: 'corrections puis re-vérification' },
+    { title: 'Critique', detail: 'relecteur indépendant qui critique puis corrige' },
     { title: 'FX', detail: 'couche globale de transitions' },
   ],
 }
@@ -45,24 +44,11 @@ const sceneCtx = n => `TON BRIEF (à lire en entier avant tout) : ${P10}/briefs/
 const scenes = Array.from({ length: 12 }, (_, i) => i + 1)
 
 const results = await pipeline(scenes,
-  n => agent(`${COMMON}\n\n${sceneCtx(n)}\n\nTA MISSION : réaliser la scène ${pad(n)} en entier (fichiers s${pad(n)}.html / .css / .js) en suivant le brief au plus près, puis la vérifier sur planches contact (au minimum la planche indiquée dans le brief + une planche serrée au pas de 0,1 s sur toute la scène) et l'améliorer jusqu'à un rendu haut de gamme. Si un point du brief est impossible ou moche en vrai, choisis la meilleure alternative et note-la dans deviations. Rends le résultat structuré.`,
+  n => n <= 2 ? { scene: n, done: true, files: [], sheets: [], deviations: ['déjà construite lors du premier passage'], known_issues: [] } :
+    agent(`${COMMON}\n\n${sceneCtx(n)}\n\nTA MISSION : réaliser la scène ${pad(n)} en entier (fichiers s${pad(n)}.html / .css / .js) en suivant le brief au plus près, puis la vérifier sur planches contact (au minimum la planche indiquée dans le brief + une planche serrée au pas de 0,1 s sur toute la scène + image par image autour des moments forts et des raccords) et l'améliorer jusqu'à un rendu haut de gamme. NOTE : base.css a été corrigé, la scène est désormais visible dès sa première image (t = début exact) ; inutile de surcharger .sc. Si un point du brief est impossible ou moche en vrai, choisis la meilleure alternative et note-la dans deviations. Sois efficace : pas de captures inutiles, mais regarde vraiment chaque planche. Rends le résultat structuré.`,
     { label: `construire:s${pad(n)}`, phase: 'Construction', schema: RESULT }),
-  (built, n) => agent(`${COMMON}\n\n${sceneCtx(n)}\n\nTU ES LE CRITIQUE INDÉPENDANT de la scène ${pad(n)} (tu n'as pas écrit le code). Construis-la (build.py --only ${pad(n)}) et capture-la toi-même : une planche au pas de 0,1 s sur toute la scène + des planches au pas de 0,033 s (image par image) autour de chaque moment fort et des 0,15 premières / dernières secondes. Regarde chaque image. Juge sans complaisance :\n1) fidélité au brief (textes exacts, instants, couches, effets) ;\n2) lisibilité (chaque phrase-clé nette ≥ 0,5 s, taille, contraste) et zones sûres (x 70–900, y 220–1560) ;\n3) défauts visuels : texte coupé ou qui déborde, éléments qui sautent d'une image à l'autre, images vides ou noires, flou/pixellisation, crénelage, chevauchements laids, couleurs hors charte, flash désagréable ;\n4) qualité de motion design : mouvement continu, courbes, rythme sur les temps, richesse des couches, niveau "studio" ;\n5) raccords : la première image doit raccorder avec la fin de la scène précédente et la dernière avec l'entrée de la suivante ;\n6) règles de SPEC.md (lis le code : délais absolus, aucune horloge réelle, Math.random interdit, préfixes .s${pad(n)} / s${pad(n)}-, fill-mode).\nNote du constructeur : ${JSON.stringify(built)}\nDonne une liste précise de problèmes avec l'instant et la correction concrète. Verdict "excellent" seulement si tu n'as rien d'important à redire.`,
-    { label: `critiquer:s${pad(n)}`, phase: 'Critique', schema: CRIT }),
-  (crit, n) => {
-    if (!crit || (crit.verdict === 'excellent' && !crit.issues.some(i => i.severity !== 'mineur'))) {
-      if (crit && crit.issues.length) return agent(`${COMMON}\n\n${sceneCtx(n)}\n\nUn critique a validé la scène ${pad(n)} avec seulement des remarques mineures. Applique celles qui améliorent vraiment le rendu (sans rien casser), vérifie sur planche, puis rends le résultat.\nRemarques : ${JSON.stringify(crit.issues)}`,
-        { label: `peaufiner:s${pad(n)}`, phase: 'Correction', schema: RESULT })
-      return { scene: n, done: true, files: [], sheets: [], deviations: [], known_issues: [] }
-    }
-    return agent(`${COMMON}\n\n${sceneCtx(n)}\n\nLa scène ${pad(n)} est déjà codée (fichiers s${pad(n)}.* dans ${P10}). Un critique indépendant a trouvé ces problèmes :\n${JSON.stringify(crit.issues, null, 1)}\nPlanches du critique : ${JSON.stringify(crit.sheets)}\n\nTA MISSION : corriger TOUS les problèmes bloquants et importants (et les mineurs quand c'est simple), puis re-vérifier toi-même image par image autour de chaque point corrigé et sur toute la scène au pas de 0,1 s. Ne casse rien qui marchait. Rends le résultat structuré (known_issues = ce qui reste).`,
-      { label: `corriger:s${pad(n)}`, phase: 'Correction', schema: RESULT })
-  },
-  (fixed, n) => {
-    if (!fixed || !fixed.known_issues || !fixed.known_issues.length) return fixed
-    return agent(`${COMMON}\n\n${sceneCtx(n)}\n\nDernière passe sur la scène ${pad(n)}. Problèmes encore signalés : ${JSON.stringify(fixed.known_issues)}\nRègle ce qui peut l'être, vérifie sur planches, rends le résultat.`,
-      { label: `finir:s${pad(n)}`, phase: 'Correction', schema: RESULT })
-  })
+  (built, n) => agent(`${COMMON}\n\n${sceneCtx(n)}\n\nTU ES LE RELECTEUR-CORRECTEUR INDÉPENDANT de la scène ${pad(n)} (tu n'as pas écrit le code). Étape 1 : construis-la (build.py --only ${pad(n)}) et capture-la toi-même (planche au pas de 0,1 s + image par image autour des moments forts et des 0,15 premières / dernières secondes). Juge sans complaisance : fidélité au brief (textes exacts, instants), lisibilité (phrase-clé nette ≥ 0,5 s) et zones sûres (texte dans x 70–900, y 220–1560), défauts visuels (texte coupé, sauts, images vides, pixellisation, chevauchements, flash désagréable), qualité de motion design (niveau studio), raccords avec les scènes voisines, règles de SPEC.md (lis le code). Étape 2 : CORRIGE toi-même tous les problèmes bloquants et importants (et les mineurs simples) dans les fichiers s${pad(n)}.*, puis re-vérifie image par image. Ne casse rien qui marchait. Note du constructeur : ${JSON.stringify(built)}\nRends le résultat structuré (deviations = ce que tu as corrigé ; known_issues = ce qui reste).`,
+    { label: `relire+corriger:s${pad(n)}`, phase: 'Critique', schema: RESULT }))
 
 phase('FX')
 const fx = await agent(`${COMMON}\n\nTA MISSION : réaliser la COUCHE GLOBALE fx (fichiers fx.html / fx.css / fx.js dans ${P10} ; sélecteurs .fx…, keyframes fx-…, ids fx-…), d'après le brief ${P10}/briefs/fx.md (à lire en entier).\n\nLes 12 scènes sont déjà codées. Construis la vidéo complète (python3 ${P10}/build.py, qui inclut fx) et vérifie TOUTES les coupes avec shot.py pub10.html (instants listés dans le brief, plus des planches image par image autour de 2, 6, 8, 12 et 20 s). La couche fx doit enrichir sans jamais gêner la lecture ni créer de flash désagréable. Rends le résultat structuré (scene = 0).`,

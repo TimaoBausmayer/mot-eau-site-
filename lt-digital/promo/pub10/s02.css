@@ -1,0 +1,96 @@
+/* ===== Scène 02 (2 → 4 s) — DROP 1 : « On te crée un beau SITE. » ===== */
+.s02{background:var(--lime);color:var(--ink);font-family:var(--f)}
+.s02 i{display:block;font-style:normal}
+/* légère profondeur du champ lime (part du lime pur du raccord) */
+.s02 .s02-tint{position:absolute;inset:0;opacity:0;background:radial-gradient(900px 1100px at 485px 930px,rgba(255,255,255,.22),rgba(255,255,255,0) 70%),radial-gradient(1400px 1700px at 485px 930px,rgba(11,11,16,0) 55%,rgba(60,90,0,.16));animation:s02-tint .6s var(--e) forwards;animation-delay:2s}
+@keyframes s02-tint{to{opacity:1}}
+
+.s02 .s02-zoom{position:absolute;inset:0;transform-origin:485px 1050px}
+
+/* décor : 3 rangées « SITE · » en contour encre 8 % */
+.s02 .s02-rowsz{position:absolute;inset:0;transform-origin:485px 960px;animation:s02-rowsin .7s var(--ex) both;animation-delay:2s}
+@keyframes s02-rowsin{from{transform:scale(1.45)}to{transform:none}}
+.s02 .s02-rows{position:absolute;left:-760px;width:2600px;top:0;height:1920px;transform:rotate(-12deg);transform-origin:1245px 960px}
+.s02 .s02-row{position:absolute;left:0;white-space:nowrap;font-weight:900;font-size:260px;line-height:1;font-stretch:100%;letter-spacing:-.03em;color:transparent;-webkit-text-stroke:3px rgba(11,11,16,.085)}
+.s02 .s02-r1{top:70px;animation:s02-rowR 2s linear both;animation-delay:2s}
+.s02 .s02-r2{top:760px;left:-420px;animation:s02-rowL 2s linear both;animation-delay:2s}
+.s02 .s02-r3{top:1450px;left:-200px;animation:s02-rowR 2s linear both;animation-delay:2s}
+@keyframes s02-rowR{from{transform:translateX(-300px)}to{transform:translateX(0)}}
+@keyframes s02-rowL{from{transform:translateX(0)}to{transform:translateX(-300px)}}
+
+/* anneaux : on sort du O */
+.s02 .s02-rings i{position:absolute;left:385px;top:860px;width:200px;height:200px;border:var(--bw) solid var(--ink);border-radius:50%;opacity:0;
+  animation:s02-ringS .6s cubic-bezier(.12,.75,.3,1) forwards,s02-ringO .6s cubic-bezier(.3,.3,.6,1) forwards}
+.s02 .s02-rings i:nth-child(1){--bw:14px;--o:1;animation-delay:2s,2s}
+.s02 .s02-rings i:nth-child(2){--bw:9px;--o:.8;animation-delay:2.125s,2.125s}
+.s02 .s02-rings i:nth-child(3){--bw:5px;--o:.6;animation-delay:2.25s,2.25s}
+@keyframes s02-ringS{from{transform:scale(.35)}to{transform:scale(13)}}
+@keyframes s02-ringO{from{opacity:var(--o)}to{opacity:0}}
+
+/* caméra */
+.s02 .s02-shk{position:absolute;inset:0;transform-origin:485px 900px}
+.s02 .s02-stage{position:absolute;inset:0;perspective:1400px;perspective-origin:485px 900px}
+.s02 .s02-cam{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:485px 900px;animation:s02-cam 2s var(--e) both;animation-delay:2s}
+@keyframes s02-cam{from{transform:rotateY(8deg) scale(1.06)}to{transform:rotateY(-4deg) scale(1)}}
+
+/* « On te crée » : chute 3D lettre à lettre */
+.s02 .s02-on{position:absolute;left:0;top:300px;width:970px;text-align:center;white-space:nowrap;font-weight:900;font-size:110px;line-height:1;font-stretch:100%;letter-spacing:-.03em;transform-style:preserve-3d}
+.s02 .s02-on .ch{transform-origin:50% 100%;animation:s02-fall .35s var(--bo) both;animation-delay:var(--t)}
+@keyframes s02-fall{from{transform:rotateX(-100deg) translateZ(-110px);opacity:0}30%{opacity:1}to{transform:none;opacity:1}}
+
+/* « un beau » : monte dans un masque */
+.s02 .s02-beau{position:absolute;left:0;top:380px;width:970px;height:160px;clip-path:inset(0 -80px 0 -80px)}
+.s02 .s02-beau-in{position:absolute;left:0;right:0;top:20px;text-align:center;white-space:nowrap;font-family:var(--serif);font-style:italic;font-weight:400;font-size:150px;line-height:1;
+  animation:s02-rise .25s var(--ex) both;animation-delay:2.25s}
+@keyframes s02-rise{from{transform:translateY(130px)}to{transform:none}}
+.s02 .s02-ul,.s02 .s02-wave,.s02 .s02-phone{position:absolute;left:0;top:0;overflow:visible}
+.s02 .s02-ul path{fill:none;stroke:var(--ink);stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1 2;stroke-dashoffset:1;
+  animation:s02-draw .2s cubic-bezier(.45,0,.2,1) forwards;animation-delay:2.375s}
+@keyframes s02-draw{to{stroke-dashoffset:0}}
+.s02 .s02-wave circle{fill:none;stroke:var(--ink)}
+
+/* « SITE. » */
+.s02 .s02-site{position:absolute;inset:0;transform-origin:485px 886px;opacity:0}
+.s02 .s02-L{position:absolute;top:760px;font-weight:900;font-size:260px;line-height:1;font-stretch:110%;letter-spacing:-.03em}
+.s02 .s02-L1{left:109px} .s02 .s02-L2{left:306px} .s02 .s02-L3{left:397px} .s02 .s02-L4{left:593px}
+.s02 .s02-sdot{position:absolute;left:809px;top:927px;width:52px;height:52px;border-radius:50%;background:var(--ink)}
+
+/* éclats */
+.s02 .s02-shards{position:absolute;inset:0;transform-style:preserve-3d}
+.s02 .s02-sh{position:absolute;left:485px;top:880px;width:0;height:0;opacity:0}
+.s02 .s02-sh b{position:absolute;transform:translate(-50%,-50%);font-weight:900;line-height:1;font-stretch:110%;white-space:nowrap}
+.s02 .s02-sh b.o{color:transparent;-webkit-text-stroke:3px var(--ink)}
+.s02 .s02-sh b.d{border-radius:50%;background:var(--ink)}
+
+/* le mot devient un site */
+.s02 .s02-dev{position:absolute;inset:0;transform-origin:485px 1120px}
+.s02 .s02-phone path{fill:none;stroke:var(--ink);stroke-width:14;stroke-linecap:round;stroke-dasharray:1 2;stroke-dashoffset:1}
+.s02 .s02-shadow,.s02 .s02-body{position:absolute;left:275px;top:690px;width:420px;height:860px;border-radius:64px}
+.s02 .s02-shadow{opacity:0;box-shadow:26px 46px 90px rgba(40,62,0,.42),8px 14px 24px rgba(40,62,0,.25)}
+.s02 .s02-body{background:var(--ink);clip-path:inset(0 0 100% 0)}
+.s02 .s02-blk{position:absolute;background:var(--ink);opacity:0}
+.s02 .s02-b1{left:120px;top:794px;width:184px;height:185px}
+.s02 .s02-b2{left:325px;top:797px;width:60px;height:179px}
+.s02 .s02-b3{left:403px;top:797px;width:191px;height:179px}
+.s02 .s02-b4{left:613px;top:797px;width:171px;height:179px}
+.s02 .s02-screen{position:absolute;left:289px;top:704px;width:392px;height:832px;border-radius:52px;overflow:hidden;clip-path:inset(0 0 100% 0)}
+.s02 .s02-scroll{position:absolute;left:0;top:0;width:392px}
+.s02 .s02-scroll img{display:block;width:392px;height:auto}
+.s02 .s02-tap,.s02 .s02-tap2{position:absolute;border-radius:50%;background:#fff;opacity:0}
+.s02 .s02-tap{left:72px;top:509px;width:60px;height:60px;background:rgba(255,255,255,.45);border:5px solid #fff}
+.s02 .s02-tap2{left:80px;top:517px;width:44px;height:44px}
+.s02 .s02-glare{position:absolute;left:-392px;top:0;width:1176px;height:832px;opacity:0;
+  background:linear-gradient(110deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.34) 47%,rgba(255,255,255,.08) 52%,rgba(255,255,255,0) 60%)}
+.s02 .s02-dx{position:absolute;left:809px;top:927px;width:52px;height:52px;opacity:0}
+.s02 .s02-dy,.s02 .s02-dd{position:absolute;inset:0}
+.s02 .s02-dd{border-radius:50%;background:var(--ink)}
+
+/* sortie : le « + » traverse la caméra */
+.s02 .s02-pst{position:absolute;inset:0;perspective:1400px;perspective-origin:485px 960px;pointer-events:none}
+.s02 .s02-plus{position:absolute;left:35px;top:510px;width:900px;height:900px;opacity:0}
+.s02 .s02-prot{position:absolute;inset:0}
+.s02 .s02-ph1,.s02 .s02-pv1{position:absolute;background:var(--ink);border-radius:30px}
+.s02 .s02-ph1{left:0;top:355px;width:900px;height:190px}
+.s02 .s02-pv1{left:355px;top:0;width:190px;height:900px}
+.s02 .s02-ink{position:absolute;inset:0;background:var(--ink);opacity:0;animation:s02-ink .01s linear forwards;animation-delay:3.94s}
+@keyframes s02-ink{to{opacity:1}}
