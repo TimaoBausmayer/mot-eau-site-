@@ -247,7 +247,7 @@ onSeek(t => {
   const on = t >= 10.5 && t < 11.75;
   const phi = t <= 11 ? 4 * Math.PI * (t - 10.5) : 2 * Math.PI + 8 * Math.PI * (t - 11);
   LB.forEach((el, i) => {
-    el.style.fontStretch = on ? (75 + 12 * Math.sin(phi - .6 * i)).toFixed(2) + "%" : "75%";
+    el.style.fontStretch = on ? (75 + 6 * Math.sin(phi - .6 * i)).toFixed(2) + "%" : "75%";
     el.style.fontWeight = on ? (825 + 75 * Math.sin(phi - .6 * i + 1)).toFixed(1) : "825";
   });
   /* tremblement + aberration (≤ 4 px) */

@@ -29,7 +29,7 @@
 .s06 .s06-cws,.s06 .s06-cw{position:absolute;inset:0;transform-origin:485.5px 685px}
 /* letter-spacing −0.03em : la largeur maxi de chaque lettre (87 %, graisse ~865) tient dans sa boîte ;
    le glyphe est alors décalé de 2,55 px à droite dans sa boîte → ligne à 102,5 pour rester centrée sur 485,5 */
-.s06 .s06-cw2{position:absolute;left:102.5px;top:600px;width:761px;height:170px;display:flex}
+.s06 .s06-cw2{position:absolute;left:62.5px;top:600px;width:841px;height:170px;display:flex;justify-content:center}
 .s06 .s06-lb{display:block;flex:none;height:170px;text-align:center;white-space:nowrap;overflow:visible;
   font-family:var(--f);font-size:170px;line-height:170px;font-weight:825;font-stretch:75%;letter-spacing:-.03em;color:#fff}
 
