@@ -1,7 +1,0 @@
-Déposez ici vos photos et votre logo, avec ces noms exacts :
-
-logo.png      → logo dans le menu
-hero.jpg      → grande photo en haut
-avant.jpg     → photo AVANT nettoyage
-apres.jpg     → photo APRÈS nettoyage
-photo-1.jpg à photo-4.jpg → galerie "Notre travail sur le terrain"
