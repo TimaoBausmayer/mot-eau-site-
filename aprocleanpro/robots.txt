@@ -1,5 +1,7 @@
 # A-Proclean — tous les robots (moteurs de recherche et agents IA) sont les bienvenus.
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /api/
 
 Sitemap: https://aprocleanpro.fr/sitemap.xml
