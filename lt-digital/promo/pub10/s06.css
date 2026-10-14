@@ -1,0 +1,56 @@
+/* ===== Scène 06 (10 → 12 s) — MONTÉE / SUSPENSE : « Et ça coûte COMBIEN ? » =====
+   Nuit + lueur violette, vortex de 3 anneaux de texte, COMBIEN qui respire (largeur/graisse variables),
+   « ? » lime qui tombe et rebondit, tout est aspiré dans le point, puis LE TROU (11,75 → 12,00).
+   Les mouvements sont créés dans s06.js (WAAPI à délais absolus + onSeek) ; ici : géométrie et états de base. */
+.s06{font-family:var(--f);color:#fff}
+.s06 i{display:block;font-style:normal}
+
+.s06 .s06-night{position:absolute;inset:0;background:var(--night)}
+
+/* ---- rigs caméra : origine = (485, 960), point d’arrivée du point lime ---- */
+.s06 .s06-cam,.s06 .s06-kick{position:absolute;inset:0;transform-origin:485px 960px}
+
+/* ---- lueur : même dégradé que la nuit de S5 (rayon 708,5 px), centrée (485, 900) au départ ---- */
+.s06 .s06-glow{position:absolute;left:-223.5px;top:191.5px;width:1417px;height:1417px;transform-origin:708.5px 708.5px}
+.s06 .s06-glowp{position:absolute;inset:0;background:radial-gradient(closest-side,rgba(124,92,255,.35),rgba(124,92,255,0))}
+
+/* ---- vortex (canvas plein cadre, blanc 12 %) ---- */
+.s06 .s06-vx{position:absolute;left:0;top:0;width:1080px;height:1920px;opacity:.12}
+
+/* ---- « Et ça coûte » : ligne top 420, gauche 240 (largeur 491), masque y 405–566 ---- */
+.s06 .s06-etca{position:absolute;inset:0;transform-origin:485.5px 495px}
+.s06 .s06-etm{position:absolute;left:140px;top:405px;width:691px;height:161px;overflow:hidden}
+.s06 .s06-ett{position:absolute;left:0;top:15px;width:691px;text-align:center;white-space:nowrap;
+  font-family:var(--serif);font-style:italic;font-weight:400;font-size:130px;line-height:130px;color:#fff}
+.s06 .s06-ett .ch{animation:s06-up .3s var(--ex) both;animation-delay:var(--t)}
+@keyframes s06-up{from{transform:translateY(112%)}to{transform:translateY(0)}}
+
+/* ---- COMBIEN : ligne top 600, gauche 105, 7 boîtes de largeur fixe (total 761) ---- */
+.s06 .s06-cws,.s06 .s06-cw{position:absolute;inset:0;transform-origin:485.5px 685px}
+/* letter-spacing −0.03em : la largeur maxi de chaque lettre (87 %, graisse ~865) tient dans sa boîte ;
+   le glyphe est alors décalé de 2,55 px à droite dans sa boîte → ligne à 102,5 pour rester centrée sur 485,5 */
+.s06 .s06-cw2{position:absolute;left:102.5px;top:600px;width:761px;height:170px;display:flex}
+.s06 .s06-lb{display:block;flex:none;height:170px;text-align:center;white-space:nowrap;overflow:visible;
+  font-family:var(--f);font-size:170px;line-height:170px;font-weight:825;font-stretch:75%;letter-spacing:-.03em;color:#fff}
+
+/* ---- « ? » : Archivo 900 420 px lime, boîte top 760 / gauche 363 ; le point du glyphe est masqué ---- */
+.s06 .s06-qf{position:absolute;inset:0;transform-origin:493px 1112px;opacity:0}
+.s06 .s06-q{position:absolute;inset:0;transform-origin:493px 910px}
+.s06 .s06-qw{position:absolute;inset:0;transform-origin:493px 1070px}
+.s06 .s06-qg{position:absolute;left:363px;top:760px;height:420px;display:block;white-space:nowrap;
+  font-family:var(--f);font-weight:900;font-size:420px;line-height:420px;font-stretch:100%;letter-spacing:0;color:var(--lime);
+  clip-path:inset(0 0 150px 0)}
+/* point = disque lime Ø 84 centré (493, 1070) */
+.s06 .s06-dot{position:absolute;left:451px;top:1028px;width:84px;height:84px;transform-origin:42px 42px}
+.s06 .s06-dotc{position:absolute;inset:0;transform-origin:42px 42px}
+.s06 .s06-dh{position:absolute;left:-58px;top:-58px;width:200px;height:200px;border-radius:50%;opacity:0;
+  background:radial-gradient(closest-side,rgba(200,255,62,.42),rgba(200,255,62,.12) 55%,rgba(200,255,62,0))}
+.s06 .s06-dd{position:absolute;inset:0;border-radius:50%;background:var(--lime)}
+
+/* ---- onde au sol (ellipse) sous le point ---- */
+.s06 .s06-rip{position:absolute;left:493px;top:1112px;width:90px;height:26px;border:5px solid var(--lime);border-radius:50%;
+  transform:translate(-50%,-50%);opacity:0}
+
+/* ---- LE TROU : anneau lime 40 %, Ø 70 à l’écran (66 px × caméra 1,06), centré (485, 960) ---- */
+.s06 .s06-hole{position:absolute;left:452px;top:927px;width:66px;height:66px;border:2px solid rgba(200,255,62,.4);border-radius:50%;
+  transform-origin:33px 33px;opacity:0}

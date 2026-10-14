@@ -1,0 +1,83 @@
+/* ===== Scène 07 (12 → 14 s) — DROP 2 : le point explose et devient le prix « Un site dès 85 € » ===== */
+.s07{background:var(--night);color:var(--ink);font-family:var(--f)}
+.s07 i{display:block;font-style:normal}
+.s07 .s07-cam{position:absolute;inset:0;transform-origin:485px 900px}
+.s07 .s07-shk{position:absolute;inset:0;transform-origin:485px 960px}
+
+/* champ lime né du point (déborde de 60 px pour la secousse et la poussée caméra) */
+.s07 .s07-lime{position:absolute;left:-60px;top:-60px;width:1200px;height:2040px;clip-path:circle(30px at 545px 1020px);
+  background:radial-gradient(circle 880px at 545px 1000px,rgba(255,255,255,.26),rgba(255,255,255,0) 72%),
+             radial-gradient(circle 1250px at 545px 1020px,rgba(40,70,0,0) 52%,rgba(40,70,0,.2)),var(--lime)}
+/* soleil de rayons encre 6 % (centré 485/960) */
+.s07 .s07-sun{position:absolute;left:-715px;top:-240px;width:2400px;height:2400px;
+  background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(11,11,16,.06) 0 7.5deg,rgba(11,11,16,0) 7.5deg 15deg)}
+.s07 .s07-sunrot{animation:s07-sun 2s linear both;animation-delay:12s}
+@keyframes s07-sun{from{transform:rotate(0deg)}to{transform:rotate(40deg)}}
+
+.s07 .s07-svg{position:absolute;left:0;top:0;overflow:visible}
+.s07 .s07-svg circle,.s07 .s07-svg ellipse{fill:none;stroke:var(--ink)}
+.s07 #s07-rl{stroke:var(--lime)}
+
+/* confettis de glyphes */
+.s07 .s07-gl{position:absolute;inset:0}
+.s07 .s07-gl b{position:absolute;left:0;top:0;font-weight:900;line-height:1;font-stretch:75%;white-space:nowrap;opacity:0}
+.s07 .s07-gl b.d{border-radius:50%}
+
+/* sol : ombre de contact (enveloppe = apparition, enfant = flexion) */
+.s07 .s07-shw{position:absolute;left:100px;top:1044px;width:580px;height:66px;transform-origin:290px 33px}
+.s07 .s07-shadow{position:absolute;inset:0;transform-origin:560px 33px}
+.s07 .s07-shw2{position:absolute;left:668px;top:1048px;width:212px;height:58px;transform-origin:106px 29px}
+.s07 .s07-shadow,.s07 .s07-shw2{border-radius:50%;background:radial-gradient(closest-side,rgba(11,11,16,.36),rgba(11,11,16,.16) 55%,rgba(11,11,16,0))}
+
+/* 3D : perspective sur la scène, orbite + prix en preserve-3d */
+.s07 .s07-stage{position:absolute;inset:0;perspective:1500px;perspective-origin:485px 900px}
+.s07 .s07-orbit{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:485px 900px}
+.s07 .s07-price{position:absolute;inset:0;transform-style:preserve-3d;font-stretch:70%}
+.s07 .s07-face,.s07 .s07-e85{position:absolute;right:422px;top:560px;font-weight:900;font-size:600px;line-height:1;letter-spacing:-.04em;white-space:nowrap}
+.s07 .s07-face{transform-origin:calc(100% - 266px) 507px}
+.s07 .s07-sheen{position:absolute;left:0;top:0;color:transparent;
+  background:linear-gradient(110deg,rgba(255,255,255,0) 42%,rgba(255,255,255,.14) 46.5%,rgba(255,255,255,.75) 49.4%,rgba(255,255,255,.75) 50.2%,rgba(255,255,255,.14) 52.5%,rgba(255,255,255,0) 57%) 100% 0/300% 100% no-repeat;
+  -webkit-background-clip:text;background-clip:text}
+.s07 .s07-ey{position:absolute;left:682px;top:796px;transform-style:preserve-3d}
+.s07 .s07-er{position:relative;transform-style:preserve-3d;transform-origin:50% 50%}
+.s07 .s07-eg,.s07 .s07-eeu{display:block;font-weight:900;font-size:320px;line-height:1;font-stretch:75%;white-space:nowrap}
+.s07 .s07-er .s07-eg+.s07-eg{position:absolute;left:0;top:0;color:#262630}
+.s07 .s07-er .s07-eg.f,.s07 .s07-er .s07-eg.b{-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.s07 .s07-er .s07-eg.b{color:var(--ink)}
+.s07 .s07-eg .s07-sheen{font-stretch:75%}
+.s07 .s07-echo{position:absolute;inset:0;opacity:0;color:transparent}
+.s07 .s07-e85,.s07 .s07-eeu{-webkit-text-stroke:3px var(--ink)}
+.s07 .s07-eeu{position:absolute;left:682px;top:796px}
+/* reflet au sol (miroir sous la ligne de base y 1067) */
+.s07 .s07-refl{position:absolute;inset:0;opacity:.12;transform:scaleY(-1);transform-origin:0 1067px;
+  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,0) 830px,#000 1067px);mask-image:linear-gradient(180deg,rgba(0,0,0,0) 830px,#000 1067px)}
+.s07 .s07-refl .s07-er{transform-style:flat}
+
+.s07 .s07-dust{position:absolute;left:0;top:0}
+
+/* « Un site dès » */
+.s07 .s07-unsite{position:absolute;left:0;top:400px;width:970px;text-align:center;font-family:var(--serif);font-style:italic;font-weight:400;font-size:140px;line-height:1;white-space:nowrap}
+.s07 .s07-unsite .ch{transform-origin:50% 100%;animation:s07-up .32s var(--ex) both;animation-delay:var(--t)}
+@keyframes s07-up{from{transform:translateY(56px) rotate(9deg);opacity:0}45%{opacity:1}to{transform:none;opacity:1}}
+
+/* étincelles de la pièce */
+.s07 .s07-star{position:absolute;left:750px;top:810px;width:100px;height:100px;transform:scale(0)}
+.s07 .s07-star svg{display:block}
+.s07 .s07-star path{fill:#fff}
+.s07 .s07-star2{left:676px;top:1000px;width:100px;height:100px}
+
+/* coup de lame */
+.s07 .s07-cut{position:absolute;inset:0;opacity:0}
+.s07 .s07-inkbase{position:absolute;left:-400px;top:-400px;right:-400px;bottom:-400px;background:var(--ink)}
+.s07 .s07-half{position:absolute;inset:0}
+.s07 .s07-flat{position:absolute;inset:0}
+.s07 .s07-flat .s07-lime{clip-path:none}
+/* la plaque coupée déborde de 400 px : aucun bord vertical visible au début de la glissade (mêmes dégradés, recentrés) */
+.s07 .s07-flat .s07-limeX{left:-400px;top:-400px;width:1880px;height:2720px;
+  background:radial-gradient(circle 880px at 885px 1340px,rgba(255,255,255,.26),rgba(255,255,255,0) 72%),
+             radial-gradient(circle 1250px at 885px 1360px,rgba(40,70,0,0) 52%,rgba(40,70,0,.2)),var(--lime)}
+.s07 .s07-flat .s07-sun{left:-1415px;top:-940px;width:3800px;height:3800px}
+.s07 .s07-edge{position:absolute;left:-215px;top:857px;width:1400px;height:6px;background:#fff;transform:rotate(-12deg);transform-origin:700px 3px}
+.s07 .s07-bladeR{position:absolute;left:-215px;top:858px;width:1400px;height:4px;transform:rotate(-12deg);transform-origin:700px 2px}
+.s07 .s07-blade{position:absolute;inset:0;background:#fff;border-radius:2px;transform:scaleX(0);transform-origin:0 50%;
+  box-shadow:0 0 8px 2px rgba(255,255,255,.9),0 0 26px 6px rgba(255,255,255,.35)}

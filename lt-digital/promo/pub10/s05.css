@@ -1,0 +1,93 @@
+/* ===== Scène 05 (8 → 10 s) — COMMENT : « Tu nous écris. → On crée. → C’est en ligne. » =====
+   Respiration papier. Les mouvements sont créés dans s05.js (WAAPI à délais absolus) ;
+   ici : géométrie, états de base, et deux boucles CSS (points de la bulle, surligneur). */
+.s05{font-family:var(--f);color:var(--ink)}
+.s05 i{display:block;font-style:normal}
+
+/* ---- nuit sous les paupières (raccord S6) ---- */
+.s05 .s05-night{position:absolute;inset:0;background:radial-gradient(circle at 485px 900px,rgba(124,92,255,.35),rgba(124,92,255,0) 60%),var(--night)}
+
+/* ---- paupières papier : chacune montre sa moitié d'un même décor plein écran ---- */
+.s05 .s05-lid{position:absolute;left:0;width:1080px;height:960px;overflow:hidden}
+.s05 .s05-lidT{top:0}
+.s05 .s05-lidB{top:960px}
+.s05 .s05-pp{position:absolute;left:0;width:1080px;height:1920px;background:var(--paper)}
+.s05 .s05-lidT .s05-pp{top:0}
+.s05 .s05-lidB .s05-pp{top:-960px}
+.s05 .s05-glow{position:absolute;left:-140px;top:120px;width:1250px;height:1500px;border-radius:50%;transform-origin:625px 750px;opacity:0;
+  background:radial-gradient(closest-side,#e2dcff,rgba(230,225,255,.85) 45%,rgba(230,225,255,0))}
+.s05 .s05-dots{position:absolute;left:-40px;top:-40px;width:1160px;height:2040px;
+  background:radial-gradient(circle,rgba(124,92,255,.2) 2.6px,rgba(124,92,255,0) 3.4px) 5px 0/40px 40px}
+/* moitiés de la ligne encre portées par les paupières */
+.s05 .s05-sh{position:absolute;left:0;width:1080px;height:4px;background:var(--ink);opacity:0;transform-origin:485px 50%}
+.s05 .s05-lidT .s05-sh{bottom:0}
+.s05 .s05-lidB .s05-sh{top:0}
+
+/* ---- rigs ---- */
+.s05 .s05-crush{position:absolute;inset:0;transform-origin:485px 960px}
+.s05 .s05-cam,.s05 .s05-kick{position:absolute;inset:0;transform-origin:485px 900px}
+
+/* ---- ligne de titre masquée : x 70–900 ---- */
+.s05 .s05-ml{position:absolute;left:70px;top:296px;width:830px;height:168px;overflow:hidden}
+.s05 .s05-ln{position:absolute;left:0;top:14px;width:830px;text-align:center;white-space:nowrap;
+  font-weight:900;font-size:130px;line-height:1;font-stretch:75%;letter-spacing:-.03em;word-spacing:.1em;color:var(--ink);transform:translateY(120%)}
+.s05 .s05-hl{position:relative;z-index:0;display:inline-block}
+.s05 .s05-hl::before{content:"";position:absolute;left:-.07em;right:-.05em;bottom:6%;height:42%;background:var(--lime);z-index:-1;
+  border-radius:6px;transform:scaleX(0);transform-origin:0 50%;animation:s05-hl .2s var(--e2) both;animation-delay:9.1s}
+@keyframes s05-hl{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* ---- fenêtre de navigateur : x 110–860, y 500–1240 ---- */
+.s05 .s05-stage{position:absolute;inset:0;perspective:1200px;perspective-origin:485px 870px}
+.s05 .s05-wtilt{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:485px 870px}
+.s05 .s05-win{position:absolute;left:110px;top:500px;width:750px;height:740px;border-radius:28px;background:#fff;overflow:hidden;
+  transform-origin:375px 740px;box-shadow:0 40px 80px rgba(60,40,140,.18),0 0 0 0 rgba(200,255,62,0)}
+.s05 .s05-wbar{position:absolute;left:0;top:0;width:750px;height:56px;background:#ece9f7}
+.s05 .s05-wd{position:absolute;top:22px;width:13px;height:13px;border-radius:50%;background:#cdc8e0}
+.s05 .s05-url{position:absolute;left:185px;top:13px;width:380px;height:30px;border-radius:15px;background:#fff}
+.s05 .s05-lock{position:absolute;left:11px;top:5px;transform-origin:10px 12px}
+.s05 .s05-lkb{stroke:#a8a3bd}
+.s05 .s05-lkf{fill:#a8a3bd}
+.s05 .s05-ptr{position:absolute;left:40px;top:13px;width:322px;height:5px;border-radius:3px;background:#ece9f7;overflow:hidden}
+.s05 .s05-pf{position:absolute;inset:0;border-radius:3px;background:#b6a9ff;transform:scaleX(0);transform-origin:0 50%}
+.s05 .s05-wct{position:absolute;left:0;top:56px;width:750px;height:684px;overflow:hidden;background:#fff}
+.s05 .s05-blk{position:absolute;border-radius:14px;transform-origin:50% 100%;transform:translateY(-700px);
+  background:repeating-linear-gradient(45deg,rgba(124,92,255,.075) 0 9px,rgba(124,92,255,0) 9px 20px),#e4e0f5}
+.s05 .s05-pill{border-radius:25px}
+.s05 .s05-rip{position:absolute;left:236px;top:263px;width:180px;height:180px;border-radius:50%;border:4px solid var(--violet);opacity:0}
+.s05 .s05-img{position:absolute;left:0;top:0;width:750px;height:1458px;display:block;clip-path:inset(0 100% 0 0)}
+.s05 .s05-sw{position:absolute;left:-5px;top:0;width:10px;height:684px;border-radius:5px;background:var(--lime);opacity:0;
+  box-shadow:0 0 26px 8px rgba(200,255,62,.55)}
+
+/* ---- bulle « ••• » : x 150–410, y 1290–1400 ---- */
+.s05 .s05-bub{position:absolute;left:150px;top:1290px;width:260px;height:110px;border-radius:44px;background:var(--lime);
+  transform-origin:0 110px;transform:scale(0);box-shadow:0 18px 40px rgba(60,40,140,.16)}
+.s05 .s05-bub::after{content:"";position:absolute;left:14px;bottom:-15px;width:46px;height:34px;background:var(--lime);
+  clip-path:polygon(0 100%,22% 0,100% 0)}
+.s05 .s05-bd{position:absolute;top:46px;width:18px;height:18px;border-radius:50%;background:var(--ink);
+  animation:s05-dot .3s cubic-bezier(.45,0,.55,1) infinite alternate both;animation-delay:calc(8.05s + .1s * var(--i))}
+@keyframes s05-dot{from{transform:translateY(0)}to{transform:translateY(-10px)}}
+
+/* ---- bouton « Publier » : x 305–665, y 1290–1400 ---- */
+.s05 .s05-btn{position:absolute;left:305px;top:1290px;width:360px;height:110px;transform-origin:180px 55px;transform:scale(0)}
+.s05 .s05-btnp{position:absolute;inset:0;transform-origin:180px 55px}
+.s05 .s05-btnb{position:absolute;left:0;top:0;width:360px;height:110px;border-radius:55px;background:var(--lime);
+  box-shadow:inset 0 0 0 4px var(--ink),0 18px 40px rgba(60,40,140,.2)}
+.s05 .s05-btnt{position:absolute;left:0;top:0;width:360px;height:110px;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:56px;line-height:1;letter-spacing:-.01em;color:var(--ink);transform-origin:180px 55px;padding-bottom:3px}
+.s05 .s05-spin,.s05 .s05-chk{position:absolute;left:125px;top:0;opacity:0;overflow:visible}
+.s05 .s05-spin{transform-origin:55px 55px}
+.s05 .s05-spin circle,.s05 .s05-chk path{stroke:var(--ink)}
+.s05 .s05-chk path{stroke-dasharray:72 80;stroke-dashoffset:72}
+
+/* ---- confettis ---- */
+.s05 .s05-cf{position:absolute;left:0;top:0;width:1080px;height:1920px}
+
+/* ---- curseur : pointe = origine du repère ---- */
+.s05 .s05-cur{position:absolute;left:0;top:0;width:0;height:0;transform:translate(1140px,1760px)}
+.s05 .s05-curk{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0}
+.s05 .s05-curk svg{position:absolute;left:-4px;top:-4px;overflow:visible;filter:drop-shadow(0 10px 14px rgba(40,25,110,.25))}
+.s05 .s05-crg{position:absolute;left:-70px;top:-70px;width:140px;height:140px;border-radius:50%;border:6px solid var(--lime);opacity:0;
+  box-shadow:0 0 0 2px rgba(11,11,16,.85),inset 0 0 0 2px rgba(11,11,16,.85)}
+
+/* ---- ligne encre (écrasement) ---- */
+.s05 .s05-seam{position:absolute;left:0;top:956px;width:1080px;height:8px;background:var(--ink);opacity:0;transform-origin:485px 50%}
