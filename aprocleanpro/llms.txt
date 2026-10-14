@@ -1,0 +1,29 @@
+# A-Proclean
+
+> A-Proclean est une entreprise française de nettoyage professionnel. Elle intervient pour les entreprises, les commerces, les copropriétés et les particuliers. Le devis est gratuit et sans engagement.
+
+Tout le site tient sur une seule page : https://aprocleanpro.fr/
+Le téléphone, l'email et la zone d'intervention à jour figurent dans la section « Contact » de cette page (#contact). Ils sont aussi dans les données structurées schema.org (LocalBusiness) de la page.
+
+## Prestations
+
+- Bureaux et entreprises : sols, sanitaires, espaces communs, consommables, passage quotidien ou hebdomadaire.
+- Logements et particuliers : ménage régulier, grand nettoyage, entrée ou sortie de logement.
+- Vitres et vitrines : vitrines de commerces, baies vitrées, vérandas.
+- Fin de chantier : poussières fines, traces de peinture, retrait des protections.
+- Remise en état : décapage, lustrage et traitement des sols et moquettes.
+- Copropriétés : halls, escaliers, ascenseurs, parties communes.
+
+## Demander un devis
+
+- Formulaire : https://aprocleanpro.fr/#contact (il ouvre la messagerie du visiteur ; rien n'est envoyé à un serveur).
+- Téléphone et email : voir https://aprocleanpro.fr/#contact
+
+## Informations légales
+
+- Mentions légales : https://aprocleanpro.fr/#mentions-legales
+- Politique de confidentialité : https://aprocleanpro.fr/#confidentialite
+- Politique cookies (le site n'utilise aucun cookie ni traceur) : https://aprocleanpro.fr/#cookies
+- Conditions générales d'utilisation : https://aprocleanpro.fr/#cgu
+- Conditions générales de vente, rétractation et remboursement : https://aprocleanpro.fr/#cgv
+- Accessibilité : https://aprocleanpro.fr/#accessibilite
