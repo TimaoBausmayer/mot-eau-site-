@@ -921,4 +921,26 @@ document.querySelectorAll(".links a.nq[data-g]").forEach(a=>a.addEventListener("
   /* 6. la bande qui défile s'incline selon la vitesse de défilement */
   const tick = document.querySelector(".tick.t1"); if (tick){ let last = scrollY, v = 0;
     (function run(){ const d = scrollY - last; last = scrollY; v += (d - v) * .12; tick.style.setProperty("--sk", Math.max(-8, Math.min(8, v * .35)).toFixed(2) + "deg"); requestAnimationFrame(run); })(); }
+
+/* vidéo de présentation : se lance (sans le son) quand elle est visible, bouton pour le son */
+(function(){ let C = window.SITE_CONFIG; if (/[?&]preview/.test(location.search)) { try { const d = localStorage.getItem("ltd_draft"); if (d) C = JSON.parse(d); } catch(e){} }
+  const $ = id => document.getElementById(id);
+  const V = C.promoVideo, sec = $("video"); if (!sec || !V || V.show === false || !V.src) return;
+  sec.hidden = false;
+  $("pv-eyebrow").textContent = V.eyebrow || ""; $("pv-title").textContent = V.title || ""; $("pv-text").textContent = V.text || "";
+  const cta = $("pv-cta"); if (V.cta) cta.textContent = V.cta; else cta.hidden = true;
+  const v = $("pv"), snd = $("pv-snd"); if (V.poster) v.poster = V.poster;
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let loaded = false; const load = () => { if (loaded) return; loaded = true;
+    const webm = V.srcWebm || V.src.replace(/\.mp4$/i, ".webm");
+    [[V.src, "video/mp4"], [webm, "video/webm"]].forEach(([u, t]) => { if (!u) return; const s = document.createElement("source"); s.src = u; s.type = t; v.append(s); });
+    v.load(); };
+  if (still) { v.controls = true; v.preload = "metadata"; load(); }
+  else if ("IntersectionObserver" in window) new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { load(); const p = v.play(); if (p && p.catch) p.catch(()=>{}); } else v.pause(); }), { threshold: .35 }).observe(v);
+  else { load(); v.autoplay = true; }
+  snd.onclick = () => { load(); v.muted = !v.muted; if (!v.muted) { const p = v.play(); if (p && p.catch) p.catch(()=>{}); }
+    snd.textContent = v.muted ? "🔇 Activer le son" : "🔊 Couper le son"; snd.setAttribute("aria-pressed", String(!v.muted)); };
+  v.addEventListener("click", () => snd.click());
+})();
 })();

@@ -68,6 +68,18 @@ window.SITE_CONFIG = {
   },
 
 
+  /* ---------- VIDÉO DE PRÉSENTATION (juste après l'accueil) ----------
+     show:false => section cachée. src = la vidéo (format vertical), poster = l'image affichée avant la lecture. */
+  promoVideo: {
+    show: true,
+    eyebrow: "Notre pub en 24 secondes",
+    title: "Regarde ce qu'on sait faire.",
+    text: "Cette vidéo, on l'a entièrement créée nous-mêmes : animations, musique et bruitages. On peut faire la même pour ton commerce.",
+    cta: "Je veux la mienne",
+    src: "images/pubs/pub-lt-digital.mp4",
+    poster: "images/pubs/pub-lt-digital.jpg"
+  },
+
   /* ---------- POURQUOI UN VRAI SITE (argumentaire) ----------
      icon : search, shield, clock, time, home, growth */
   why: {
