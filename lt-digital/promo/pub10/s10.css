@@ -1,0 +1,56 @@
+/* ===== Scène 10 (18 → 20 s) — MONTÉE 2 / RÉCAP : « Tout au même endroit. »
+   Mur de bandes-services en 3D qui accélère, se fige, tombe en dominos ; il ne reste que le point. ===== */
+.s10{background:#07060c;color:#fff;font-family:var(--f)}
+.s10 i{display:block;font-style:normal}
+
+/* ---------- fond : dégradé du raccord S9 + lueur violette qui pulse en croches ---------- */
+.s10 .s10-bg{position:absolute;inset:0;background:radial-gradient(circle 1300px at 485px 900px,#2a1c66,#07060c)}
+.s10 .s10-gw{position:absolute;inset:0;transform-origin:485px 960px}
+.s10 .s10-glow{position:absolute;left:-215px;top:260px;width:1400px;height:1400px;opacity:0;
+  background:radial-gradient(circle closest-side,rgba(124,92,255,.40),rgba(124,92,255,.16) 48%,rgba(124,92,255,.05) 75%,rgba(124,92,255,0))}
+
+/* ---------- mur 3D (caméra 2D → coups de zoom 2D → perspective → bandes, chacune avec la transformation du mur) ---------- */
+.s10 .s10-cam,.s10 .s10-punch,.s10 .s10-stage{position:absolute;inset:0;transform-origin:485px 960px}
+.s10 .s10-stage{perspective:1400px;perspective-origin:485px 960px}
+.s10 .s10-strip{position:absolute;left:-1315px;width:3600px;height:213px;backface-visibility:hidden}
+.s10 .s10-run{position:absolute;left:-520px;top:0;height:213px}
+.s10 .s10-txt{white-space:nowrap;font-weight:900;font-size:170px;font-stretch:125%;letter-spacing:-.03em;
+  line-height:213px;height:213px;padding-top:14px;opacity:0;filter:url(#s10-mb)}
+.s10 .s10-k0 .s10-txt{color:#fff}
+.s10 .s10-k1 .s10-txt{color:transparent;-webkit-text-stroke:3px #fff}
+.s10 .s10-k2 .s10-txt{color:var(--lime)}
+.s10 .s10-k3 .s10-txt{color:transparent;-webkit-text-stroke:3px var(--lime)}
+
+/* voile d’assombrissement 19,70 → 20,00 (base invisible) */
+.s10 .s10-dim{position:absolute;inset:0;background:#07060c;opacity:0}
+.s10 .s10-fx{position:absolute;left:0;top:0;width:1080px;height:1920px;display:block}
+
+/* ---------- carte nuit à bord lime (hors du mur, stable) ---------- */
+.s10 .s10-cw,.s10 .s10-pulse,.s10 .s10-ew{position:absolute;inset:0;transform-origin:485px 960px}
+.s10 .s10-card{position:absolute;left:90px;top:780px;width:790px;height:360px;border-radius:40px;
+  background:#07060c;border:4px solid var(--lime);
+  box-shadow:0 30px 80px rgba(0,0,0,.6),inset 0 0 60px rgba(124,92,255,.14),0 0 0 rgba(200,255,62,0)}
+.s10 .s10-echo{position:absolute;left:90px;top:780px;width:790px;height:360px;border-radius:40px;
+  border:3px solid var(--lime);opacity:0}
+
+/* repli final : les deux lignes se replient vers le point (790, 1046) */
+.s10 .s10-fold{position:absolute;inset:0;transform-origin:790px 1046px}
+.s10 .s10-sl{position:absolute;left:90px;width:790px;top:832px;height:120px;text-align:center;transform-origin:395px 62px}
+.s10 .s10-l1{display:inline-block;font-weight:900;font-size:120px;font-stretch:85%;letter-spacing:-.03em;line-height:1;
+  margin-right:-.03em;word-spacing:.07em;color:#fff;opacity:0;white-space:nowrap}
+.s10 .s10-l2{position:absolute;left:168px;top:957px;font-family:var(--serif);font-style:italic;font-weight:400;
+  font-size:120px;line-height:1;color:var(--lime);white-space:nowrap;
+  clip-path:inset(-40px calc(100% + 40px) -40px -40px)}
+
+/* plume : reflet lime qui suit le bord de l’écriture (incliné comme l’italique) */
+.s10 .s10-nib{position:absolute;left:127px;top:968px;width:4px;height:104px;border-radius:2px;opacity:0;
+  background:linear-gradient(180deg,rgba(200,255,62,0),#e9ffb0 30%,#e9ffb0 70%,rgba(200,255,62,0));
+  box-shadow:0 0 14px 3px rgba(200,255,62,.55)}
+/* petite onde quand le point se pose (18,475) */
+.s10 .s10-rip{position:absolute;left:774px;top:1030px;width:32px;height:32px;border-radius:50%;
+  border:1.5px solid var(--lime);opacity:0}
+
+/* le point lime = le « . » de « endroit. » (Ø 26, centre 790 / 1046) */
+.s10 .s10-dot{position:absolute;left:777px;top:1033px;width:26px;height:26px;border-radius:50%;background:var(--lime);
+  opacity:0;box-shadow:0 0 0 rgba(200,255,62,0)}
+.s10 .s10-defs{position:absolute;left:0;top:0;overflow:hidden}

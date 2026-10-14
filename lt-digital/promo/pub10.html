@@ -669,8 +669,548 @@ body.capture .ui{display:none}
   box-shadow:0 0 8px 2px rgba(255,255,255,.9),0 0 26px 6px rgba(255,255,255,.35)}
 
 /* ---- s08 ---- */
+/* ===== Scène 08 (14 → 16 s) — CONFIANCE : « PRIX annoncé à l’avance. RETOUCHES incluses. »
+   Le O de RETOUCHES s’allume puis devient l’anneau lime qui ouvre le tunnel du temps (S9). ===== */
+.s08{background:var(--night);color:#fff;font-family:var(--f)}
+.s08 i{display:block;font-style:normal}
+
+/* ---------- fond : nuit + lueurs qui dérivent (éteintes à la fin : raccord S9 sur la nuit) ---------- */
+.s08 .s08-bg{position:absolute;inset:0;overflow:hidden}
+.s08 .s08-gv,.s08 .s08-gb{position:absolute;left:0;top:0;border-radius:50%}
+.s08 .s08-gv{width:1800px;height:1800px;margin:-900px 0 0 -900px;
+  background:radial-gradient(closest-side,rgba(124,92,255,.3),rgba(124,92,255,.17) 38%,rgba(124,92,255,.06) 70%,rgba(124,92,255,0))}
+.s08 .s08-gb{width:1300px;height:1300px;margin:-650px 0 0 -650px;
+  background:radial-gradient(closest-side,rgba(143,162,255,.13),rgba(143,162,255,.05) 55%,rgba(143,162,255,0))}
+.s08 .s08-dark{position:absolute;inset:0;opacity:0;background:var(--night)}
+
+/* ---------- « € » géant en contour, 3 échos qui reculent en Z ---------- */
+.s08 .s08-euout{position:absolute;inset:0;transform-origin:485px 900px}
+.s08 .s08-eustage{position:absolute;inset:0;perspective:1400px;perspective-origin:485px 900px}
+.s08 .s08-eurot{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:485px 960px}
+.s08 .s08-eu{position:absolute;left:0;top:98px;width:970px;text-align:center;font-weight:900;font-size:1800px;line-height:1;
+  font-stretch:100%;color:transparent;white-space:nowrap;-webkit-text-stroke:2px rgba(255,255,255,.055)}
+.s08 .s08-eu2{transform:translateZ(-170px);-webkit-text-stroke-color:rgba(255,255,255,.035)}
+.s08 .s08-eu3{transform:translateZ(-340px);-webkit-text-stroke-color:rgba(255,255,255,.022)}
+
+/* ---------- caméra ---------- */
+.s08 .s08-cam,.s08 .s08-shk{position:absolute;inset:0;transform-origin:485px 900px}
+.s08 .s08-halo{position:absolute;left:149px;top:593.5px;width:520px;height:520px;border-radius:50%;opacity:0;
+  background:radial-gradient(closest-side,rgba(200,255,62,.5),rgba(200,255,62,.2) 40%,rgba(200,255,62,.06) 70%,rgba(200,255,62,0))}
+.s08 .s08-fxs{position:absolute;left:0;top:0;overflow:visible}
+.s08 .s08-fxs circle{fill:none;stroke:var(--lime)}
+.s08 .s08-fxs line{stroke:var(--lime);stroke-linecap:round}
+
+/* ---------- bloc 1 : PRIX + ligne de base + « annoncé à l’avance. » ---------- */
+.s08 .s08-b1{position:absolute;left:0;top:300px;width:1080px;height:390px}
+.s08 .s08-prixw{position:absolute;left:70px;top:30px;width:830px;height:200px;transform-origin:415px 150px}
+.s08 .s08-prix,.s08 .s08-echo{font-weight:900;font-size:200px;line-height:1;text-align:center;white-space:nowrap;
+  font-stretch:125%;letter-spacing:-.03em;text-indent:-.03em}
+.s08 .s08-echo{position:absolute;left:70px;top:30px;width:830px;height:200px;color:transparent;
+  -webkit-text-stroke:2px rgba(255,255,255,.55);opacity:0;transform-origin:415px 96px}
+.s08 .s08-base{position:absolute;left:180px;top:207px;width:609px;height:4px;background:var(--lime);transform:scaleX(0);
+  border-radius:2px}
+.s08 .s08-pl{position:absolute;left:0;width:1080px}
+.s08 .s08-pl1{top:220px;height:104px;transform-origin:485px 60px}
+.s08 .s08-ann,.s08 .s08-inc{position:absolute;left:485px;top:0;transform:translateX(-50%);padding:0 20px;white-space:nowrap;
+  font-family:var(--serif);font-style:italic;font-weight:400;line-height:1;color:var(--lime);clip-path:inset(-40px 100% -50px 0)}
+.s08 .s08-ann{font-size:104px}
+/* plume lumineuse au bord de l’écriture (base invisible) */
+.s08 .s08-nib{position:absolute;left:0;top:0;width:4px;border-radius:2px;opacity:0;
+  background:linear-gradient(180deg,rgba(255,255,255,0),#fff 22%,#f4ffd6 50%,#fff 78%,rgba(255,255,255,0));
+  box-shadow:0 0 14px 3px rgba(200,255,62,.85),0 0 40px 8px rgba(200,255,62,.35)}
+.s08 #s08-nib1{top:6px;height:110px}
+
+/* ---------- bloc 2 : RETOUCHES (volets) + « incluses. » ---------- */
+.s08 .s08-b2{position:absolute;inset:0}
+.s08 .s08-row{position:absolute;left:135px;top:780px;white-space:nowrap;font-weight:900;font-size:150px;line-height:1;
+  font-stretch:70%;letter-spacing:-.03em}
+.s08 .s08-lt,.s08 .s08-ow{display:inline-block;perspective:900px}
+.s08 .s08-ow{width:87px;text-align:center;overflow:visible;transform-origin:45.7px 73.5px}
+.s08 .s08-row .ch{transform-origin:50% 0;transform:rotateX(-90deg)}
+.s08 .s08-incf{position:absolute;left:0;top:920px;width:1080px;height:130px;transform-origin:485px 65px}
+.s08 .s08-pl2{top:0;height:130px;transform-origin:485px 75px}
+.s08 .s08-inc{font-size:130px}
+.s08 #s08-nib2{top:10px;height:136px}
+
+/* ---------- le O devenu tracé (dessiné à chaque image) + anneau final ---------- */
+.s08 .s08-osvg,.s08 .s08-ring{position:absolute;left:0;top:0;overflow:visible}
+.s08 #s08-op,.s08 #s08-og{fill:var(--lime);fill-rule:evenodd}
+.s08 #s08-oe1,.s08 #s08-oe2{fill:none;stroke:var(--lime);fill-rule:evenodd}
+.s08 .s08-ring{opacity:0;transform-origin:485px 900px}
+.s08 .s08-ring circle{fill:none;stroke:var(--lime);stroke-width:170px}
+/* reflet qui court sur l’anneau */
+.s08 .s08-shim{position:absolute;left:135px;top:550px;width:700px;height:700px;border-radius:50%;opacity:0;
+  background:conic-gradient(from 0deg,rgba(255,255,255,0) 0deg,rgba(255,255,255,0) 290deg,rgba(255,255,255,.12) 315deg,rgba(255,255,255,.5) 333deg,rgba(255,255,255,.62) 338deg,rgba(255,255,255,.5) 343deg,rgba(255,255,255,.1) 355deg,rgba(255,255,255,0) 360deg);
+  -webkit-mask-image:radial-gradient(circle closest-side,rgba(0,0,0,0) 179.5px,#000 181px,#000 348.5px,rgba(0,0,0,0) 350px);
+  mask-image:radial-gradient(circle closest-side,rgba(0,0,0,0) 179.5px,#000 181px,#000 348.5px,rgba(0,0,0,0) 350px)}
+.s08 .s08-defs{position:absolute;left:0;top:0;width:0;height:0;overflow:hidden}
+
+/* ---- s09 ---- */
+/* ===== Scène 09 (16 → 18 s) — BREAKDOWN : tunnel de cadrans, « Livré en 48 à 72 h », balayage d’aiguille ===== */
+.s09{background:#06070d;color:#fff;font-family:var(--f)}
+.s09 i{display:block;font-style:normal}
+.s09 .s09-cv{position:absolute;left:0;top:0;width:1080px;height:1920px;display:block}
+
+/* voile sombre derrière le texte (invisible à 16,00 pour que l’anneau de S8 soit identique) */
+.s09 .s09-veil{position:absolute;inset:0;opacity:0;
+  background:radial-gradient(ellipse 560px 440px at 485px 900px,rgba(6,7,13,.65),rgba(6,7,13,.36) 38%,rgba(6,7,13,0) 70%);
+  animation:s09-veil .4s var(--e) forwards;animation-delay:16s}
+@keyframes s09-veil{from{opacity:0}to{opacity:1}}
+
+/* onde sonar (redessinée dans onSeek) */
+.s09 .s09-son{position:absolute;left:0;top:0;overflow:visible}
+.s09 .s09-son circle{fill:none;opacity:0}
+.s09 #s09-son1{stroke:var(--lime)}
+.s09 #s09-son2{stroke:#fff}
+
+/* caméra du texte : dérive permanente + coups d’impact (deux wrappers, une animation chacun) */
+.s09 .s09-cam,.s09 .s09-kick{position:absolute;inset:0;transform-origin:485px 900px}
+
+.s09 .s09-t{position:absolute;line-height:1;white-space:nowrap}
+.s09 .s09-l1{left:300px;top:640px;font-family:var(--serif);font-style:italic;font-weight:400;font-size:130px;
+  text-shadow:0 4px 34px rgba(6,7,13,.6)}
+.s09 .s09-l1 .ch{opacity:0;animation:s09-fall .3s var(--ex) both;animation-delay:var(--t)}
+@keyframes s09-fall{from{transform:translateY(-60px);opacity:0}to{transform:none;opacity:1}}
+
+.s09 .s09-n{top:790px;font-weight:900;font-size:270px;font-stretch:62%;letter-spacing:-.03em;
+  text-shadow:0 6px 40px rgba(6,7,13,.55),0 0 0 rgba(200,255,62,0)}
+.s09 .s09-48{left:128px;transform-origin:67px 132px;opacity:0}
+.s09 .s09-72{left:461px;transform-origin:104px 132px;opacity:0}
+.s09 .s09-h{left:690px;font-stretch:80%;transform-origin:0 150px;opacity:0}
+.s09 .s09-a{left:374px;top:912px;font-family:var(--serif);font-style:italic;font-weight:400;font-size:125px;color:var(--lime);
+  transform-origin:28px 70px;transform:scale(0);text-shadow:0 4px 26px rgba(6,7,13,.6)}
+
+/* échos en contour (traînée du SLAM qui recule en Z) */
+.s09 .s09-echo{color:transparent;-webkit-text-stroke:3px rgba(200,255,62,.9);text-shadow:none;opacity:0}
+.s09 .s09-e48{left:128px;transform-origin:67px 132px}
+.s09 .s09-e72{left:461px;transform-origin:104px 132px}
+
+/* soulignement lime 17,50 */
+.s09 .s09-ul{position:absolute;left:128px;top:1042px;width:701px;height:6px;border-radius:3px;background:var(--lime);
+  box-shadow:0 0 16px rgba(200,255,62,.55);transform:scaleX(0);transform-origin:0 50%}
+
+/* ---- s10 ---- */
+/* ===== Scène 10 (18 → 20 s) — MONTÉE 2 / RÉCAP : « Tout au même endroit. »
+   Mur de bandes-services en 3D qui accélère, se fige, tombe en dominos ; il ne reste que le point. ===== */
+.s10{background:#07060c;color:#fff;font-family:var(--f)}
+.s10 i{display:block;font-style:normal}
+
+/* ---------- fond : dégradé du raccord S9 + lueur violette qui pulse en croches ---------- */
+.s10 .s10-bg{position:absolute;inset:0;background:radial-gradient(circle 1300px at 485px 900px,#2a1c66,#07060c)}
+.s10 .s10-gw{position:absolute;inset:0;transform-origin:485px 960px}
+.s10 .s10-glow{position:absolute;left:-215px;top:260px;width:1400px;height:1400px;opacity:0;
+  background:radial-gradient(circle closest-side,rgba(124,92,255,.40),rgba(124,92,255,.16) 48%,rgba(124,92,255,.05) 75%,rgba(124,92,255,0))}
+
+/* ---------- mur 3D (caméra 2D → coups de zoom 2D → perspective → bandes, chacune avec la transformation du mur) ---------- */
+.s10 .s10-cam,.s10 .s10-punch,.s10 .s10-stage{position:absolute;inset:0;transform-origin:485px 960px}
+.s10 .s10-stage{perspective:1400px;perspective-origin:485px 960px}
+.s10 .s10-strip{position:absolute;left:-1315px;width:3600px;height:213px;backface-visibility:hidden}
+.s10 .s10-run{position:absolute;left:-520px;top:0;height:213px}
+.s10 .s10-txt{white-space:nowrap;font-weight:900;font-size:170px;font-stretch:125%;letter-spacing:-.03em;
+  line-height:213px;height:213px;padding-top:14px;opacity:0;filter:url(#s10-mb)}
+.s10 .s10-k0 .s10-txt{color:#fff}
+.s10 .s10-k1 .s10-txt{color:transparent;-webkit-text-stroke:3px #fff}
+.s10 .s10-k2 .s10-txt{color:var(--lime)}
+.s10 .s10-k3 .s10-txt{color:transparent;-webkit-text-stroke:3px var(--lime)}
+
+/* voile d’assombrissement 19,70 → 20,00 (base invisible) */
+.s10 .s10-dim{position:absolute;inset:0;background:#07060c;opacity:0}
+.s10 .s10-fx{position:absolute;left:0;top:0;width:1080px;height:1920px;display:block}
+
+/* ---------- carte nuit à bord lime (hors du mur, stable) ---------- */
+.s10 .s10-cw,.s10 .s10-pulse,.s10 .s10-ew{position:absolute;inset:0;transform-origin:485px 960px}
+.s10 .s10-card{position:absolute;left:90px;top:780px;width:790px;height:360px;border-radius:40px;
+  background:#07060c;border:4px solid var(--lime);
+  box-shadow:0 30px 80px rgba(0,0,0,.6),inset 0 0 60px rgba(124,92,255,.14),0 0 0 rgba(200,255,62,0)}
+.s10 .s10-echo{position:absolute;left:90px;top:780px;width:790px;height:360px;border-radius:40px;
+  border:3px solid var(--lime);opacity:0}
+
+/* repli final : les deux lignes se replient vers le point (790, 1046) */
+.s10 .s10-fold{position:absolute;inset:0;transform-origin:790px 1046px}
+.s10 .s10-sl{position:absolute;left:90px;width:790px;top:832px;height:120px;text-align:center;transform-origin:395px 62px}
+.s10 .s10-l1{display:inline-block;font-weight:900;font-size:120px;font-stretch:85%;letter-spacing:-.03em;line-height:1;
+  margin-right:-.03em;word-spacing:.07em;color:#fff;opacity:0;white-space:nowrap}
+.s10 .s10-l2{position:absolute;left:168px;top:957px;font-family:var(--serif);font-style:italic;font-weight:400;
+  font-size:120px;line-height:1;color:var(--lime);white-space:nowrap;
+  clip-path:inset(-40px calc(100% + 40px) -40px -40px)}
+
+/* plume : reflet lime qui suit le bord de l’écriture (incliné comme l’italique) */
+.s10 .s10-nib{position:absolute;left:127px;top:968px;width:4px;height:104px;border-radius:2px;opacity:0;
+  background:linear-gradient(180deg,rgba(200,255,62,0),#e9ffb0 30%,#e9ffb0 70%,rgba(200,255,62,0));
+  box-shadow:0 0 14px 3px rgba(200,255,62,.55)}
+/* petite onde quand le point se pose (18,475) */
+.s10 .s10-rip{position:absolute;left:774px;top:1030px;width:32px;height:32px;border-radius:50%;
+  border:1.5px solid var(--lime);opacity:0}
+
+/* le point lime = le « . » de « endroit. » (Ø 26, centre 790 / 1046) */
+.s10 .s10-dot{position:absolute;left:777px;top:1033px;width:26px;height:26px;border-radius:50%;background:var(--lime);
+  opacity:0;box-shadow:0 0 0 rgba(200,255,62,0)}
+.s10 .s10-defs{position:absolute;left:0;top:0;overflow:hidden}
+
+/* ---- s11 ---- */
+/* ===== Scène 11 (20 → 22 s) — DROP FINAL : le point explose, le logo jaillit, la poussière devient l’anneau, puis le @ se tape ===== */
+.s11{background:#07060c;color:#fff;font-family:var(--f)}
+.s11 i{display:block;font-style:normal}
+.s11 .s11-bg{position:absolute;inset:0;background:#07060c}
+
+/* caméra : léger recul + roulis qui se pose à 21,80 (identité exacte pour le raccord S12) */
+.s11 .s11-cam{position:absolute;inset:0;transform-origin:485px 940px;
+  animation:s11-cam 1.8s cubic-bezier(.25,.6,.3,1) both;animation-delay:20s}
+@keyframes s11-cam{from{transform:scale(1.07) rotate(-1.6deg)}to{transform:none}}
+.s11 .s11-shake{position:absolute;inset:0}
+
+/* rayons coniques lime / bleu (2400 × 2400 centrés 485/940) */
+.s11 .s11-rays{position:absolute;left:-715px;top:-260px;width:2400px;height:2400px;
+  animation:s11-rays .5s var(--ex) both;animation-delay:20s}
+@keyframes s11-rays{from{transform:scale(.3)}to{transform:none}}
+.s11 .s11-raysSpin{position:absolute;inset:0;
+  background:repeating-conic-gradient(from 0deg at 50% 50%,
+    rgba(200,255,62,.06) 0 3.4deg,transparent 4.6deg 11.4deg,
+    rgba(143,162,255,.085) 12.6deg 15.4deg,transparent 16.6deg 24deg);
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,transparent 150px,#000 380px,#000 760px,transparent 1180px);
+          mask-image:radial-gradient(circle at 50% 50%,transparent 150px,#000 380px,#000 760px,transparent 1180px);
+  animation:s11-spin 2s linear both,s11-raysOut .4s cubic-bezier(.4,0,.6,1) forwards;animation-delay:20s,21.5s}
+@keyframes s11-spin{from{transform:none}to{transform:rotate(40deg)}}
+@keyframes s11-raysOut{to{opacity:0}}
+
+/* tout ce qui monte à la mise en place (21,40 → 21,80, vitesse maximale sur le temps 21,50) */
+.s11 .s11-move{position:absolute;inset:0;transform-origin:485px 940px;
+  animation:s11-move .4s cubic-bezier(.45,0,.15,1) forwards;animation-delay:21.4s}
+@keyframes s11-move{to{transform:translate(0,-470px) scale(.667)}}
+
+/* lueur bleue Ø 1020 centrée 485/940 (après mise en place : rayon 340 centré 485/470) */
+.s11 .s11-glow{position:absolute;left:-25px;top:430px;width:1020px;height:1020px;
+  animation:s11-glowIn .5s var(--ex) both;animation-delay:20s}
+@keyframes s11-glowIn{from{transform:scale(.35)}to{transform:none}}
+.s11 .s11-glowB,.s11 .s11-glowP{position:absolute;inset:0;
+  background:radial-gradient(circle 510px at center,rgba(61,107,255,.35),transparent 510px)}
+.s11 .s11-glowP{opacity:0}
+
+/* logo + orbite dans le même contexte 3D */
+.s11 .s11-stage{position:absolute;inset:0;perspective:1400px;perspective-origin:485px 940px}
+/* balancement 3D qui fait vivre le logo et l’orbite entre la pose et la mise en place (identité à 21,80) */
+.s11 .s11-sway{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:483px 929px;
+  animation:s11-sway 1.3s linear both;animation-delay:20.5s}
+@keyframes s11-sway{
+  0%{transform:rotateY(0deg) rotateX(0deg);animation-timing-function:cubic-bezier(.4,0,.5,1)}
+  32%{transform:rotateY(8deg) rotateX(-4deg);animation-timing-function:cubic-bezier(.45,0,.55,1)}
+  66%{transform:rotateY(-6deg) rotateX(3deg);animation-timing-function:cubic-bezier(.45,0,.4,1)}
+  100%{transform:rotateY(0deg) rotateX(0deg)}}
+.s11 .s11-flip{position:absolute;left:185px;top:640px;width:600px;height:600px;transform-style:preserve-3d;
+  animation:s11-flip .5s var(--bo) both;animation-delay:20s}
+@keyframes s11-flip{from{transform:scale(0) rotateY(100deg)}to{transform:scale(1) rotateY(0deg)}}
+.s11 .s11-logo{position:absolute;left:0;top:0;width:600px;height:600px;display:block;
+  -webkit-mask-image:radial-gradient(circle at 49.5% 48.2%,#000 48.5%,transparent 50.5%);
+          mask-image:radial-gradient(circle at 49.5% 48.2%,#000 48.5%,transparent 50.5%);
+  animation:s11-bright .5s var(--e) both,s11-logoIn .1s cubic-bezier(.5,0,.9,.6) both;animation-delay:20s,20s}
+/* l’anneau bleu du logo : n’apparaît que quand la poussière s’y pose, s’allume au verrouillage (20,75) */
+.s11 .s11-ring{position:absolute;left:0;top:0;width:600px;height:600px;display:block;opacity:0;
+  -webkit-mask-image:radial-gradient(circle at 49.5% 48.2%,transparent 45%,#000 48%,#000 55%,transparent 61%);
+          mask-image:radial-gradient(circle at 49.5% 48.2%,transparent 45%,#000 48%,#000 55%,transparent 61%);
+  animation:s11-ringIn .28s cubic-bezier(.5,0,.9,.5) both,s11-ringLit .45s var(--e) both;animation-delay:20.5s,20.75s}
+@keyframes s11-ringIn{from{opacity:0}to{opacity:1}}
+@keyframes s11-ringLit{from{filter:brightness(2.6)}to{filter:brightness(1)}}
+@keyframes s11-bright{from{filter:brightness(3)}to{filter:brightness(1)}}
+@keyframes s11-logoIn{from{opacity:0}to{opacity:1}}
+
+/* reflet « shing » qui balaie le logo pendant qu’il se pose */
+.s11 .s11-sheen{position:absolute;left:0;top:0;width:600px;height:600px;opacity:.55;
+  background:linear-gradient(112deg,transparent 45%,rgba(240,244,255,.5) 49.5%,rgba(255,255,255,.75) 50%,rgba(240,244,255,.5) 50.5%,transparent 55%) no-repeat;
+  background-size:1200px 600px;background-position:-1200px 0;
+  -webkit-mask-image:radial-gradient(circle at 49.5% 48.2%,#000 53%,transparent 56%);
+          mask-image:radial-gradient(circle at 49.5% 48.2%,#000 53%,transparent 56%);
+  animation:s11-sheen .4s cubic-bezier(.3,.1,.45,1) both;animation-delay:20.8s}
+@keyframes s11-sheen{from{background-position:-900px 0}to{background-position:300px 0}}
+
+/* orbite Ø 900 inclinée, centrée sur l’anneau du logo (297, 289 dans l’image) */
+.s11 .s11-orbit{position:absolute;left:-153px;top:-161px;width:900px;height:900px;overflow:visible;opacity:0;
+  transform:rotateZ(-13deg) rotateX(75deg);
+  animation:s11-orbitA .8s linear forwards;animation-delay:21s}
+@keyframes s11-orbitA{0%{opacity:0}18.75%{opacity:1}62.5%{opacity:1}100%{opacity:0}}
+.s11 .s11-orbit path{fill:none}
+.s11 .s11-oLine{stroke:url(#s11-og);stroke-width:4}
+.s11 .s11-oGlow{stroke:url(#s11-og);stroke-width:16;opacity:.22}
+.s11 .s11-cTail{stroke:#c8ff3e;stroke-width:6;stroke-linecap:round;opacity:.35;stroke-dasharray:0 1000}
+.s11 .s11-cMid{stroke:#c8ff3e;stroke-width:9;stroke-linecap:round;opacity:.8;stroke-dasharray:0 1000}
+.s11 .s11-cGlow{stroke:#c8ff3e;stroke-width:30;stroke-linecap:round;opacity:.8;stroke-dasharray:0 1000}
+.s11 .s11-cHead{stroke:#fbffe9;stroke-width:12;stroke-linecap:round;stroke-dasharray:0 1000}
+
+/* 20,75 : l’anneau se verrouille (flash lime) */
+.s11 .s11-flash{position:absolute;left:-3px;top:-11px;width:600px;height:600px;overflow:visible;opacity:0;
+  filter:drop-shadow(0 0 30px #c8ff3e);
+  animation:s11-flash .3s linear forwards;animation-delay:20.75s}
+.s11 .s11-flash circle{fill:none;stroke:#c8ff3e;stroke-width:10}
+@keyframes s11-flash{
+  0%{opacity:0;transform:scale(1.07);animation-timing-function:cubic-bezier(.2,.8,.2,1)}
+  12%{opacity:.9;transform:scale(1);animation-timing-function:cubic-bezier(.3,0,.7,1)}
+  100%{opacity:0;transform:scale(1.025)}}
+
+/* particules + ondes de choc (canvas redessiné dans onSeek) */
+.s11 .s11-p{position:absolute;left:0;top:0;width:1080px;height:1920px;display:block}
+
+/* traînée anamorphique de l’explosion */
+.s11 .s11-streak{position:absolute;left:-315px;top:956px;width:1600px;height:8px;border-radius:4px;opacity:0;
+  background:linear-gradient(90deg,transparent,rgba(143,162,255,.55) 28%,#f4f8ff 50%,rgba(143,162,255,.55) 72%,transparent);
+  animation:s11-streak .5s linear forwards;animation-delay:20s}
+@keyframes s11-streak{
+  0%{opacity:1;transform:scaleX(.08) scaleY(1.5);animation-timing-function:cubic-bezier(.16,1,.3,1)}
+  100%{opacity:0;transform:scaleX(1.25) scaleY(.35)}}
+
+/* « @l.t_digital » : DM Mono 500 88 px, top 900, gauche 168 */
+.s11 .s11-handle{position:absolute;left:168px;top:900px;font-family:var(--mono);font-weight:500;font-size:88px;
+  line-height:1;letter-spacing:0;white-space:pre;color:#fff}
+.s11 .s11-handle .ch{opacity:0;transform-origin:50% 85%;
+  animation:s11-key .001s linear forwards,s11-keyPop .16s var(--ex) both;animation-delay:var(--t),var(--t)}
+.s11 .s11-handle .ch.s11-dotCh{color:transparent}
+@keyframes s11-key{to{opacity:1}}
+@keyframes s11-keyPop{from{transform:translateY(-10px) scale(1.3)}to{transform:none}}
+
+/* curseur lime (piloté dans onSeek) */
+.s11 .s11-cur{position:absolute;left:168px;top:904px;width:6px;height:80px;border-radius:2px;background:#c8ff3e;
+  box-shadow:0 0 18px rgba(200,255,62,.6);opacity:0}
+
+/* le point lime qui tombe sur le « . » : disque Ø 22 centré (300, 967) */
+.s11 .s11-dotY{position:absolute;left:289px;top:956px;width:22px;height:22px;opacity:0;
+  animation:s11-dotFall .2s linear forwards;animation-delay:21.75s}
+.s11 .s11-dot{width:22px;height:22px;border-radius:50%;background:#c8ff3e;transform-origin:50% 100%;
+  animation:s11-squash .2s linear both;animation-delay:21.75s}
+@keyframes s11-dotFall{
+  0%{opacity:0;transform:translateY(-140px);animation-timing-function:cubic-bezier(.5,0,.85,.4)}
+  12%{opacity:1;transform:translateY(-131px);animation-timing-function:cubic-bezier(.4,0,.9,.6)}
+  50%{opacity:1;transform:none;animation-timing-function:cubic-bezier(.2,.6,.4,1)}
+  75%{opacity:1;transform:translateY(-15px);animation-timing-function:cubic-bezier(.6,0,.8,.4)}
+  100%{opacity:1;transform:none}}
+@keyframes s11-squash{
+  0%{transform:scale(.8,1.35)}
+  45%{transform:scale(.88,1.25)}
+  52%{transform:scale(1.45,.62)}
+  68%{transform:scale(.92,1.1)}
+  90%{transform:scale(1.12,.88)}
+  100%{transform:none}}
+
+/* « bloop » : petite onde lime à l’atterrissage */
+.s11 .s11-ripple{position:absolute;left:280px;top:947px;width:40px;height:40px;border-radius:50%;
+  border:3px solid #c8ff3e;opacity:0;
+  animation:s11-ripple .12s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:21.85s}
+@keyframes s11-ripple{0%{opacity:.85;transform:scale(.5)}100%{opacity:0;transform:scale(2.6)}}
+
+/* ---- s12 ---- */
+/* ===== Scène 12 (22 → 24,1 s) — APPEL À L’ACTION : « ÉCRIS-NOUS @l.t_digital — LIEN EN BIO »
+   Raccord invisible avec S11 (logo, lueur bleue et @ au même pixel). Le texte se pose puis reste immobile ;
+   seul le décor vit (@ géant qui tourne, lueurs qui respirent, bokeh, poussée lente). ===== */
+.s12{background:#07060c;color:#fff;font-family:var(--f)}
+.s12 i{display:block;font-style:normal}
+.s12 .s12-bg{position:absolute;inset:0;background:#07060c}
+
+/* ---------- décor : seul calque poussé (1 → 1,03, linéaire, 22,0 → 24,1), centré sur le logo pour que la lueur bleue reste dessus ---------- */
+.s12 .s12-decor{position:absolute;inset:0;transform-origin:485px 470px;
+  animation:s12-push 2.1s linear both;animation-delay:22s}
+@keyframes s12-push{from{transform:none}to{transform:scale(1.03)}}
+
+/* lueur bleue : IDENTIQUE à la fin de S11 (rayon 340 centré 485/470) ; respire 1 → .7 → 1 */
+.s12 .s12-glowB{position:absolute;inset:0}
+.s12 .s12-glowBi{position:absolute;inset:0;
+  background:radial-gradient(circle 340px at 485px 470px,rgba(61,107,255,.35),transparent 340px);
+  animation:s12-breathe .5s ease-in-out infinite alternate both;animation-delay:22s}
+@keyframes s12-breathe{from{opacity:1}to{opacity:.7}}
+/* lueur lime Ø 900 centrée 485/1110 : apparaît 22,0 → 22,4 puis respire en opposition de phase */
+.s12 .s12-glowL{position:absolute;inset:0;opacity:0;animation:s12-in .4s ease-out forwards;animation-delay:22s}
+.s12 .s12-glowLi{position:absolute;inset:0;
+  background:radial-gradient(circle 450px at 485px 1110px,rgba(200,255,62,.15),rgba(200,255,62,.06) 55%,transparent 450px);
+  animation:s12-breatheL .5s ease-in-out infinite alternate both;animation-delay:22s}
+@keyframes s12-breatheL{from{opacity:.7}to{opacity:1}}
+@keyframes s12-in{to{opacity:1}}
+
+/* « @ » géant en contour blanc 4 % qui tourne lentement */
+.s12 .s12-atFade{position:absolute;inset:0;opacity:0;animation:s12-in .3s ease-out forwards;animation-delay:22s}
+/* boîte 2000² : encre du glyphe (903 × 1381) centrée en (485, 960), rotation autour de ce centre */
+.s12 .s12-at{position:absolute;left:-510px;top:-115px;width:2000px;height:2000px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-weight:500;font-size:1700px;line-height:1;color:transparent;
+  -webkit-text-stroke:2.5px rgba(255,255,255,.07);transform-origin:995px 1075px;
+  animation:s12-spin 2.1s linear both;animation-delay:22s}
+@keyframes s12-spin{from{transform:none}to{transform:rotate(25deg)}}
+
+.s12 .s12-bokeh,.s12 .s12-wave{position:absolute;left:0;top:0;width:1080px;height:1920px;display:block}
+
+/* éclat bleu derrière le logo sur le dernier coup (23,5) — base invisible */
+.s12 .s12-flare{position:absolute;inset:0;opacity:0;
+  background:radial-gradient(circle 380px at 485px 470px,rgba(110,140,255,.42),rgba(61,107,255,.12) 60%,transparent 380px);
+  animation:s12-flare .6s linear forwards;animation-delay:23.5s}
+@keyframes s12-flare{
+  0%{opacity:0;animation-timing-function:cubic-bezier(.2,.8,.2,1)}
+  10%{opacity:1;animation-timing-function:cubic-bezier(.3,0,.4,1)}
+  100%{opacity:0}}
+
+/* ---------- logo : même structure et mêmes animations (finies avant 22,0) que S11 → même pixel au raccord ---------- */
+/* pulse du dernier coup (23,5) autour du centre affiché (485, 470) */
+.s12 .s12-logoWrap{position:absolute;inset:0;transform-origin:485px 470px;
+  animation:s12-pulse .3s ease-in-out both;animation-delay:23.5s}
+@keyframes s12-pulse{
+  0%{transform:none;animation-timing-function:cubic-bezier(.2,.7,.3,1)}
+  35%{transform:scale(1.04);animation-timing-function:cubic-bezier(.45,0,.4,1)}
+  100%{transform:none}}
+/* flottement 0 ↔ −8 px (1 s, aller-retour) */
+.s12 .s12-logoFloat{position:absolute;inset:0;
+  animation:s12-float 1s ease-in-out infinite alternate both;animation-delay:22s}
+@keyframes s12-float{from{transform:none}to{transform:translateY(-8px)}}
+/* copie de la mise en place de S11 : logo 600 → 400 affiché, centré (485, 470) */
+.s12 .s12-move{position:absolute;inset:0;transform-origin:485px 940px;
+  animation:s12-move .4s cubic-bezier(.45,0,.15,1) forwards;animation-delay:21.4s}
+@keyframes s12-move{to{transform:translate(0,-470px) scale(.667)}}
+.s12 .s12-stage{position:absolute;inset:0;perspective:1400px;perspective-origin:485px 940px}
+.s12 .s12-sway{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:483px 929px;
+  animation:s12-sway 1.3s linear both;animation-delay:20.5s}
+@keyframes s12-sway{from{transform:rotateY(0deg) rotateX(0deg)}to{transform:rotateY(0deg) rotateX(0deg)}}
+.s12 .s12-flip{position:absolute;left:185px;top:640px;width:600px;height:600px;transform-style:preserve-3d;
+  animation:s12-flip .5s var(--bo) both;animation-delay:20s}
+@keyframes s12-flip{from{transform:scale(0) rotateY(100deg)}to{transform:scale(1) rotateY(0deg)}}
+.s12 .s12-logo,.s12 .s12-ring,.s12 .s12-ringHit{position:absolute;left:0;top:0;width:600px;height:600px;display:block}
+.s12 .s12-logo{
+  -webkit-mask-image:radial-gradient(circle at 49.5% 48.2%,#000 48.5%,transparent 50.5%);
+          mask-image:radial-gradient(circle at 49.5% 48.2%,#000 48.5%,transparent 50.5%);
+  animation:s12-bright .5s var(--e) both;animation-delay:20s}
+@keyframes s12-bright{from{filter:brightness(3)}to{filter:brightness(1)}}
+.s12 .s12-ring,.s12 .s12-ringHit{
+  -webkit-mask-image:radial-gradient(circle at 49.5% 48.2%,transparent 45%,#000 48%,#000 55%,transparent 61%);
+          mask-image:radial-gradient(circle at 49.5% 48.2%,transparent 45%,#000 48%,#000 55%,transparent 61%)}
+.s12 .s12-ring{opacity:0;
+  animation:s12-ringIn .28s cubic-bezier(.5,0,.9,.5) both,s12-ringLit .45s var(--e) both;animation-delay:20.5s,20.75s}
+@keyframes s12-ringIn{from{opacity:0}to{opacity:1}}
+@keyframes s12-ringLit{from{filter:brightness(2.6)}to{filter:brightness(1)}}
+/* l’anneau néon s’allume sur le dernier coup (23,5) — calque superposé, base invisible */
+.s12 .s12-ringHit{opacity:0;filter:brightness(2.2);
+  animation:s12-ringHit .5s linear forwards;animation-delay:23.5s}
+@keyframes s12-ringHit{
+  0%{opacity:0;animation-timing-function:cubic-bezier(.2,.8,.2,1)}
+  12%{opacity:1;animation-timing-function:cubic-bezier(.3,0,.4,1)}
+  100%{opacity:0}}
+
+/* ---------- appel à l’action (immobile après son entrée) ---------- */
+.s12 .s12-cta{position:absolute;inset:0}
+
+/* « ÉCRIS-NOUS » : Archivo 900 stretch 72 % 150 px, se tasse lettre à lettre (étiré → posé) */
+.s12 .s12-title{position:absolute;left:118px;top:712px;width:740px;white-space:nowrap;
+  font-weight:900;font-stretch:72%;font-size:150px;line-height:1;letter-spacing:-.03em;color:#fff}
+.s12 .s12-title .ch{opacity:0;transform-origin:50% 100%;
+  animation:s12-tass .3s var(--bo) both;animation-delay:var(--t)}
+@keyframes s12-tass{
+  from{opacity:0;transform:translateY(40px) scaleY(1.8) scaleX(.6)}
+  to{opacity:1;transform:none}}
+/* ligne de base lime */
+.s12 .s12-base{position:absolute;left:125px;top:856px;width:720px;height:5px;border-radius:3px;background:#c8ff3e;
+  box-shadow:0 0 18px rgba(200,255,62,.45);transform-origin:0 50%;
+  animation:s12-draw .2s var(--e2) both;animation-delay:22.15s}
+@keyframes s12-draw{from{transform:scaleX(0)}to{transform:none}}
+
+/* « @l.t_digital » : DM Mono 500 88 px (identique à S11) */
+.s12 .s12-handle{position:absolute;left:168px;top:900px;font-family:var(--mono);font-weight:500;font-size:88px;
+  line-height:1;letter-spacing:0;white-space:pre;color:#fff}
+.s12 .s12-handle .ch{opacity:0;transform-origin:50% 85%;
+  animation:s12-key .001s linear forwards,s12-keyPop .16s var(--ex) both;animation-delay:var(--t),var(--t)}
+.s12 .s12-handle .ch.s12-dotCh{color:transparent}
+@keyframes s12-key{to{opacity:1}}
+@keyframes s12-keyPop{from{transform:translateY(-10px) scale(1.3)}to{transform:none}}
+.s12 .s12-dotP{position:absolute;left:289px;top:956px;width:22px;height:22px}
+.s12 .s12-dot{width:22px;height:22px;border-radius:50%;background:#c8ff3e;
+  animation:s12-dotHit .4s linear both;animation-delay:23.5s}
+@keyframes s12-dotHit{
+  0%{transform:none;animation-timing-function:cubic-bezier(.2,.8,.3,1)}
+  20%{transform:scale(1.55);animation-timing-function:cubic-bezier(.4,0,.3,1)}
+  100%{transform:none}}
+/* soulignement lime du @ (22,50) */
+.s12 .s12-uline{position:absolute;left:171px;top:1006px;width:619px;height:4px;border-radius:2px;background:#c8ff3e;
+  transform-origin:0 50%;animation:s12-draw .25s var(--ex) both;animation-delay:22.5s}
+
+/* pilule « LIEN EN BIO » + flèche */
+.s12 .s12-pill{position:absolute;left:225px;top:1050px;width:520px;height:130px;border-radius:65px;background:#c8ff3e;
+  box-shadow:0 0 90px rgba(200,255,62,.45);color:#0b0b10;
+  display:flex;align-items:center;justify-content:center;gap:18px;
+  animation:s12-pop .3s var(--bo) both,s12-glowBeat .5s linear infinite both;animation-delay:22.25s,22.5s}
+/* le halo de la pilule pompe sur chaque temps (sidechain) */
+@keyframes s12-glowBeat{
+  0%{box-shadow:0 0 120px rgba(200,255,62,.62);animation-timing-function:cubic-bezier(.2,.7,.4,1)}
+  100%{box-shadow:0 0 90px rgba(200,255,62,.45)}}
+@keyframes s12-pop{from{transform:scale(0)}to{transform:none}}
+.s12 .s12-pillTxt{display:block;font-weight:900;font-stretch:80%;font-size:84px;line-height:1;letter-spacing:-.03em;
+  white-space:nowrap}
+.s12 .s12-arrowBox{display:block;width:44px;height:56px}
+.s12 .s12-arrow{display:block;width:44px;height:56px;overflow:visible;
+  animation:s12-hop .5s linear infinite both;animation-delay:22.5s}
+.s12 .s12-arrow path{fill:none;stroke:#0b0b10;stroke-width:10.5;stroke-linecap:round;stroke-linejoin:round}
+@keyframes s12-hop{
+  0%{transform:none;animation-timing-function:cubic-bezier(.25,.6,.45,1)}
+  50%{transform:translateY(-14px);animation-timing-function:cubic-bezier(.55,0,.75,.4)}
+  100%{transform:none}}
+
+/* rappel de l’offre */
+.s12 .s12-recall{position:absolute;left:158px;top:1235px;white-space:pre;
+  font-family:var(--mono);font-weight:500;font-size:34px;line-height:1;color:rgba(255,255,255,.8);
+  animation:s12-rise .3s var(--ex) both;animation-delay:22.5s}
+@keyframes s12-rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+/* ---------- reflet qui balaie le bloc (23,00 → 23,55) ----------
+   Une copie du texte (mêmes classes, donc mêmes positions) porte un halo ; un masque oblique (110°)
+   ne la révèle que dans une bande qui traverse l’écran : les lettres s’illuminent au passage. */
+.s12 .s12-glint{position:absolute;inset:0;opacity:0;pointer-events:none;
+  text-shadow:0 0 12px rgba(255,255,255,.9),0 0 34px rgba(200,255,62,.55);
+  -webkit-mask-image:linear-gradient(110deg,transparent 46%,#000 50%,transparent 54%);
+          mask-image:linear-gradient(110deg,transparent 46%,#000 50%,transparent 54%);
+  -webkit-mask-size:3240px 1920px;mask-size:3240px 1920px;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-position:-1770px 0;mask-position:-1770px 0;
+  animation:s12-glint .55s cubic-bezier(.25,.4,.5,1) forwards;animation-delay:23s}
+.s12 .s12-glint .s12-dotCh{text-shadow:none}
+/* dans la bande : lignes, point et pilule plus clairs (mêmes classes → mêmes positions et animations) */
+.s12 .s12-glint .s12-base,.s12 .s12-glint .s12-uline{background:#f3ffd0;box-shadow:0 0 22px rgba(225,255,140,.9)}
+.s12 .s12-glint .s12-dot{background:#f3ffd0;box-shadow:0 0 18px rgba(225,255,140,.9)}
+.s12 .s12-glint .s12-pill{background:#ecffb2;text-shadow:none}
+@keyframes s12-glint{
+  from{opacity:1;-webkit-mask-position:-1770px 0;mask-position:-1770px 0}
+  to{opacity:1;-webkit-mask-position:-420px 0;mask-position:-420px 0}}
 
 /* ---- fx ---- */
+/* Couche globale fx (0 → 24,1 s) — aucun texte, rien ne dépend d’une scène, tout est piloté par le temps.
+   NB : .fx ne porte PAS de z-index. Un z-index en ferait un contexte d’empilement, donc un groupe isolé :
+   les modes de fusion (screen, overlay) de ses enfants ne verraient plus les scènes (vérifié dans Chromium :
+   un gris en « screen » sur du lime rend gris au lieu de lime clair). Chaque couche porte donc son propre
+   z-index 901 → 906, ce qui la place au-dessus de toutes les scènes (.sc, z auto) dans le contexte du .viewport. */
+.fx{position:absolute;inset:0;pointer-events:none}
+.fx>*{position:absolute;pointer-events:none}
+
+/* 1) poussière de glyphes */
+.fx .fx-dust{left:0;top:0;width:1080px;height:1920px;z-index:901}
+
+/* 4) fuites de lumière : bande lime → transparent, inclinée −30°, en « screen », bords adoucis par un masque */
+.fx .fx-leak{left:0;top:0;width:1600px;height:700px;z-index:902;opacity:0;mix-blend-mode:screen;
+  background:linear-gradient(180deg,rgba(200,255,62,0) 0%,rgba(200,255,62,.4) 24%,rgba(226,255,160,.95) 44%,rgba(200,255,62,.55) 58%,rgba(200,255,62,0) 100%);
+  -webkit-mask-image:radial-gradient(closest-side,#000 0%,rgba(0,0,0,.85) 40%,rgba(0,0,0,.35) 72%,transparent 100%);
+          mask-image:radial-gradient(closest-side,#000 0%,rgba(0,0,0,.85) 40%,rgba(0,0,0,.35) 72%,transparent 100%);
+  transform:rotate(-30deg)}
+.fx .fx-leak-warm{background:linear-gradient(180deg,rgba(255,154,60,0) 0%,rgba(255,154,60,.5) 24%,rgba(255,190,120,.95) 42%,rgba(255,77,109,.8) 58%,rgba(255,77,109,0) 100%)}
+/* positions (centre de la bande) */
+.fx #fx-leak-a{left:-520px;top:150px}    /* centre (280, 500)  */
+.fx #fx-leak-b{left:-120px;top:950px}    /* centre (680, 1300) */
+.fx #fx-leak-w{left:-460px;top:1060px}   /* centre (340, 1410) */
+.fx #fx-leak-c{left:-315px;top:260px}    /* centre (485, 610)  */
+
+/* 6) bloom de l’iris : radial blanc-lavande Ø 1600 centré (485, 1000) */
+.fx .fx-bloom{left:-315px;top:200px;width:1600px;height:1600px;z-index:903;opacity:0;border-radius:50%;
+  background:radial-gradient(closest-side,#fff 0%,rgba(244,242,255,.92) 18%,rgba(230,225,255,.62) 42%,rgba(230,225,255,.22) 70%,rgba(230,225,255,0) 100%)}
+
+/* 5) traînées du whip pan : traits blancs, tête nette à gauche (sens du mouvement), queue qui s’efface à droite */
+.fx .fx-whip{left:0;top:0;width:1080px;height:1920px;z-index:904}
+.fx .fx-st{position:absolute;left:0;opacity:0;border-radius:3px;transform:translateX(1200px);
+  background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,.92) 12%,rgba(255,255,255,.45) 55%,rgba(255,255,255,0) 100%);
+  box-shadow:0 0 6px rgba(255,255,255,.35)}
+
+/* 3) vignette (le dégradé est réécrit par onSeek pendant le silence de 11,75 → 12,0) */
+.fx .fx-vig{left:0;top:0;width:1080px;height:1920px;z-index:905;opacity:.8;
+  background:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.0281) 66.25%,rgba(0,0,0,.1125) 77.5%,rgba(0,0,0,.2531) 88.75%,rgba(0,0,0,.45) 100%)}
+
+/* 2) grain : tuiles 256 px posées par fx.js, une seule visible par image */
+.fx .fx-grain{left:0;top:0;width:1080px;height:1920px;z-index:906;opacity:0;mix-blend-mode:overlay;
+  background-repeat:repeat;background-size:256px 256px}
 
 </style></head>
 <body>
@@ -1069,7 +1609,7 @@ body.capture .ui{display:none}
   <div class="s08-bg">
     <i class="s08-gv" id="s08-gv"></i>
     <i class="s08-gb" id="s08-gb"></i>
-    <i class="s08-teal" id="s08-teal"></i>
+    <i class="s08-dark" id="s08-dark"></i>
   </div>
   <div class="s08-euout" id="s08-euout">
     <div class="s08-eustage">
@@ -1084,17 +1624,18 @@ body.capture .ui{display:none}
     <div class="s08-shk" id="s08-shk">
       <i class="s08-halo" id="s08-halo"></i>
       <svg class="s08-fxs" viewBox="0 0 1080 1920" width="1080" height="1920">
-        <circle id="s08-wv1" cx="0" cy="0" r="0"/>
-        <circle id="s08-wv2" cx="0" cy="0" r="0"/>
+        <circle id="s08-wv1" cx="409" cy="853.5" r="0"/>
+        <circle id="s08-wv2" cx="409" cy="853.5" r="0"/>
         <g id="s08-ticks"></g>
       </svg>
       <div class="s08-b1" id="s08-b1">
-        <div class="s08-echo" id="s08-echo">PRIX</div>
-        <div class="s08-prixw" id="s08-prixw"><div class="s08-prix s08-mb" id="s08-prix">PRIX</div></div>
-        <i class="s08-base s08-mb" id="s08-base"></i>
+        <div class="s08-echo" id="s08-echo1">PRIX</div>
+        <div class="s08-echo" id="s08-echo2">PRIX</div>
+        <div class="s08-prixw" id="s08-prixw"><div class="s08-prix" id="s08-prix">PRIX</div></div>
+        <i class="s08-base" id="s08-base"></i>
         <div class="s08-pl s08-pl1" id="s08-pl1">
-          <div class="s08-ann s08-mb" id="s08-ann">annoncé à l’avance.</div>
-          <i class="s08-nib s08-nib1" id="s08-nib1"></i>
+          <div class="s08-ann" id="s08-ann">annoncé à l’avance.</div>
+          <i class="s08-nib" id="s08-nib1"></i>
         </div>
       </div>
       <div class="s08-b2" id="s08-b2">
@@ -1102,27 +1643,200 @@ body.capture .ui{display:none}
         <div class="s08-incf" id="s08-incf">
           <div class="s08-pl s08-pl2" id="s08-pl2">
             <div class="s08-inc" id="s08-inc">incluses.</div>
-            <i class="s08-nib s08-nib2" id="s08-nib2"></i>
+            <i class="s08-nib" id="s08-nib2"></i>
           </div>
         </div>
       </div>
-      <svg class="s08-osvg" viewBox="0 0 1080 1920" width="1080" height="1920">
-        <path id="s08-op" d="" fill="#c8ff3e" fill-rule="evenodd"/>
-      </svg>
     </div>
   </div>
-  <svg class="s08-ring" viewBox="0 0 1080 1920" width="1080" height="1920">
-    <circle id="s08-ringc" cx="485" cy="900" r="265"/>
+  <svg class="s08-osvg" viewBox="0 0 1080 1920" width="1080" height="1920">
+    <path id="s08-oe2" d=""/>
+    <path id="s08-oe1" d=""/>
+    <path id="s08-og" d="" filter="url(#s08-ogf)"/>
+    <path id="s08-op" d=""/>
+  </svg>
+  <svg class="s08-ring" id="s08-ring" viewBox="0 0 1080 1920" width="1080" height="1920">
+    <circle cx="485" cy="900" r="265"/>
   </svg>
   <i class="s08-shim" id="s08-shim"></i>
   <svg class="s08-defs" width="0" height="0" aria-hidden="true">
-    <filter id="s08-hb" x="-30%" y="-10%" width="160%" height="120%" color-interpolation-filters="sRGB">
+    <filter id="s08-ogf" x="-60%" y="-60%" width="220%" height="220%" color-interpolation-filters="sRGB">
+      <feGaussianBlur id="s08-ogb" stdDeviation="15"/>
+    </filter>
+    <filter id="s08-hb" x="-40%" y="-10%" width="180%" height="120%" color-interpolation-filters="sRGB">
       <feGaussianBlur id="s08-hbg" stdDeviation="0 0"/>
+    </filter>
+    <g id="s08-vbs"></g>
+  </svg>
+</section>
+
+<!-- ---- s09 ---- -->
+<section class="sc s09" style="--a:16s;--b:18s">
+  <canvas class="s09-cv" id="s09-tun" width="1080" height="1920"></canvas>
+  <i class="s09-veil" id="s09-veil"></i>
+  <svg class="s09-son" viewBox="0 0 1080 1920" width="1080" height="1920" aria-hidden="true">
+    <circle id="s09-son1" cx="485" cy="900" r="0"/>
+    <circle id="s09-son2" cx="485" cy="900" r="0"/>
+  </svg>
+  <div class="s09-cam" id="s09-cam">
+    <div class="s09-kick" id="s09-kick">
+      <div class="s09-t s09-l1" id="s09-l1">Livré en</div>
+      <span class="s09-t s09-n s09-echo s09-e48" id="s09-e48">48</span>
+      <span class="s09-t s09-n s09-echo s09-e72" id="s09-e72">72</span>
+      <span class="s09-t s09-n s09-48" id="s09-48">48</span>
+      <span class="s09-t s09-a" id="s09-a">à</span>
+      <span class="s09-t s09-n s09-72" id="s09-72">72</span>
+      <span class="s09-t s09-n s09-h" id="s09-h">h</span>
+      <i class="s09-ul" id="s09-ul"></i>
+    </div>
+  </div>
+  <canvas class="s09-cv" id="s09-sweep" width="1080" height="1920"></canvas>
+</section>
+
+<!-- ---- s10 ---- -->
+<section class="sc s10" style="--a:18s;--b:20s">
+  <div class="s10-bg">
+    <div class="s10-gw" id="s10-gw"><i class="s10-glow" id="s10-glow"></i></div>
+  </div>
+  <div class="s10-cam" id="s10-cam">
+    <div class="s10-punch" id="s10-punch">
+      <div class="s10-stage" id="s10-stage"></div>
+    </div>
+  </div>
+  <i class="s10-dim" id="s10-dim"></i>
+  <canvas class="s10-fx" id="s10-fx" width="1080" height="1920"></canvas>
+  <div class="s10-ew" id="s10-ew"><i class="s10-echo" id="s10-echo"></i></div>
+  <div class="s10-cw" id="s10-cw">
+    <div class="s10-pulse" id="s10-pulse">
+      <i class="s10-card" id="s10-card"></i>
+      <div class="s10-fold s10-f1" id="s10-f1">
+        <div class="s10-sl" id="s10-sl"><div class="s10-l1" id="s10-l1">Tout au</div></div>
+      </div>
+      <div class="s10-fold s10-f2" id="s10-f2">
+        <div class="s10-l2" id="s10-l2">même endroit</div>
+        <i class="s10-nib" id="s10-nib"></i>
+      </div>
+      <i class="s10-rip" id="s10-rip"></i>
+      <i class="s10-dot" id="s10-dot"></i>
+    </div>
+  </div>
+  <svg class="s10-defs" width="0" height="0" aria-hidden="true">
+    <filter id="s10-mb" x="-5%" y="0%" width="110%" height="100%" color-interpolation-filters="sRGB">
+      <feGaussianBlur id="s10-mbg" stdDeviation="0 0"/>
     </filter>
   </svg>
 </section>
 
+<!-- ---- s11 ---- -->
+<section class="sc s11" style="--a:20s;--b:22s">
+  <div class="s11-bg"></div>
+  <div class="s11-cam">
+    <div class="s11-shake" id="s11-shake">
+      <div class="s11-move">
+        <div class="s11-rays"><i class="s11-raysSpin"></i></div>
+        <div class="s11-glow"><i class="s11-glowB"></i><i class="s11-glowP" id="s11-glowP"></i></div>
+        <div class="s11-stage">
+          <div class="s11-sway">
+          <div class="s11-flip">
+            <img class="s11-logo" src="../images/logo.jpg" alt="L&amp;T Digital" width="600" height="600">
+            <img class="s11-ring" src="../images/logo.jpg" alt="" width="600" height="600">
+            <svg class="s11-flash" viewBox="0 0 600 600" width="600" height="600" aria-hidden="true"><circle cx="300" cy="300" r="235"/></svg>
+            <i class="s11-sheen"></i>
+            <svg class="s11-orbit" id="s11-orbit" viewBox="0 0 900 900" width="900" height="900" aria-hidden="true">
+              <defs>
+                <linearGradient id="s11-og" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#3d6bff"/><stop offset=".45" stop-color="#8fa2ff"/><stop offset="1" stop-color="#c8ff3e"/>
+                </linearGradient>
+                <filter id="s11-cblur" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="9"/></filter>
+              </defs>
+              <path class="s11-oGlow" d="M4 450A446 446 0 0 0 896 450A446 446 0 0 0 4 450" pathLength="1000"/>
+              <path class="s11-oLine" d="M4 450A446 446 0 0 0 896 450A446 446 0 0 0 4 450" pathLength="1000"/>
+              <path class="s11-cTail" id="s11-cTail" d="M4 450A446 446 0 0 0 896 450A446 446 0 0 0 4 450" pathLength="1000"/>
+              <path class="s11-cMid" id="s11-cMid" d="M4 450A446 446 0 0 0 896 450A446 446 0 0 0 4 450" pathLength="1000"/>
+              <path class="s11-cGlow" id="s11-cGlow" d="M4 450A446 446 0 0 0 896 450A446 446 0 0 0 4 450" pathLength="1000" filter="url(#s11-cblur)"/>
+              <path class="s11-cHead" id="s11-cHead" d="M4 450A446 446 0 0 0 896 450A446 446 0 0 0 4 450" pathLength="1000"/>
+            </svg>
+          </div>
+          </div>
+        </div>
+      </div>
+      <canvas class="s11-p" id="s11-p" width="1080" height="1920"></canvas>
+      <i class="s11-streak"></i>
+    </div>
+  </div>
+  <div class="s11-handle" id="s11-handle">@l.t_digital</div>
+  <i class="s11-cur" id="s11-cur"></i>
+  <i class="s11-ripple"></i>
+  <div class="s11-dotY"><i class="s11-dot"></i></div>
+</section>
+
+<!-- ---- s12 ---- -->
+<section class="sc s12" style="--a:22s;--b:24.1s">
+  <div class="s12-bg"></div>
+  <div class="s12-decor">
+    <div class="s12-glowB"><i class="s12-glowBi"></i></div>
+    <div class="s12-glowL"><i class="s12-glowLi"></i></div>
+    <div class="s12-atFade"><div class="s12-at">@</div></div>
+    <canvas class="s12-bokeh" id="s12-bokeh" width="1080" height="1920"></canvas>
+  </div>
+  <i class="s12-flare"></i>
+  <canvas class="s12-wave" id="s12-wave" width="1080" height="1920"></canvas>
+  <div class="s12-logoWrap">
+    <div class="s12-logoFloat">
+      <div class="s12-move"><div class="s12-stage"><div class="s12-sway"><div class="s12-flip">
+        <img class="s12-logo" src="../images/logo.jpg" alt="L&amp;T Digital" width="600" height="600">
+        <img class="s12-ring" src="../images/logo.jpg" alt="" width="600" height="600">
+        <img class="s12-ringHit" src="../images/logo.jpg" alt="" width="600" height="600">
+      </div></div></div></div>
+    </div>
+  </div>
+  <div class="s12-cta">
+    <div class="s12-title" id="s12-title">ÉCRIS-NOUS</div>
+    <i class="s12-base"></i>
+    <div class="s12-handle" id="s12-handle">@l.t_digital</div>
+    <div class="s12-dotP"><i class="s12-dot"></i></div>
+    <i class="s12-uline"></i>
+    <div class="s12-pill">
+      <span class="s12-pillTxt">LIEN EN BIO</span>
+      <span class="s12-arrowBox"><svg class="s12-arrow" viewBox="0 0 44 56" width="44" height="56" aria-hidden="true"><path d="M22 50.5V9.5M7 24.5l15-15 15 15"/></svg></span>
+    </div>
+    <div class="s12-recall">Site dès 85&#8239;€ · prêt en 48 à 72&#8239;h</div>
+  </div>
+  <!-- reflet (23,00) : copie lumineuse du texte, révélée par une bande oblique qui balaie le bloc -->
+  <div class="s12-glint" aria-hidden="true">
+    <div class="s12-title" id="s12-titleG">ÉCRIS-NOUS</div>
+    <div class="s12-handle" id="s12-handleG">@l.t_digital</div>
+    <div class="s12-recall">Site dès 85&#8239;€ · prêt en 48 à 72&#8239;h</div>
+    <i class="s12-base"></i>
+    <i class="s12-uline"></i>
+    <div class="s12-dotP"><i class="s12-dot"></i></div>
+    <div class="s12-pill">
+      <span class="s12-pillTxt">LIEN EN BIO</span>
+      <span class="s12-arrowBox"><svg class="s12-arrow" viewBox="0 0 44 56" width="44" height="56"><path d="M22 50.5V9.5M7 24.5l15-15 15 15"/></svg></span>
+    </div>
+  </div>
+</section>
+
 <!-- ---- fx ---- -->
+<div class="fx" id="fx" aria-hidden="true">
+  <!-- 1) poussière de glyphes (canvas piloté par onSeek) -->
+  <canvas class="fx-dust" id="fx-dust" width="1080" height="1920"></canvas>
+  <!-- 4) fuites de lumière (WAAPI, base invisible) : 2,0 · 12,0 · 17,9 (chaude) · 20,0 -->
+  <div class="fx-leak" id="fx-leak-a"></div>
+  <div class="fx-leak" id="fx-leak-b"></div>
+  <div class="fx-leak fx-leak-warm" id="fx-leak-w"></div>
+  <div class="fx-leak" id="fx-leak-c"></div>
+  <!-- 6) bloom de l’iris papier (7,92 → 8,12) -->
+  <div class="fx-bloom" id="fx-bloom"></div>
+  <!-- 5) traînées du whip pan (5,85 → 6,15) : 10 traits créés par fx.js -->
+  <div class="fx-whip" id="fx-whip"></div>
+  <!-- 3) vignette qui pulse sur les temps -->
+  <div class="fx-vig" id="fx-vig"></div>
+  <!-- 2) grain : 3 tuiles de bruit, une seule visible par image -->
+  <div class="fx-grain" id="fx-g0"></div>
+  <div class="fx-grain" id="fx-g1"></div>
+  <div class="fx-grain" id="fx-g2"></div>
+</div>
 
 </div>
 <button class="ui" id="replay">Rejouer</button>
@@ -2685,6 +3399,1263 @@ A(blade, [{ opacity: 1 }, { opacity: 1, offset: .25 }, { opacity: 0 }], 13.81, .
   A(top, [{ transform: "translate(0px,0px) rotate(0deg)" }, { transform: "translate(-1650px,-320px) rotate(-8deg)" }], 13.81, .19, E2, "forwards");
   A(bot, [{ transform: "translate(0px,0px) rotate(0deg)" }, { transform: "translate(1650px,320px) rotate(8deg)" }], 13.81, .19, E2, "forwards");
 }
+
+})();
+/* ---- s08 ---- */
+(function(){
+/* Scène 08 (14 → 16 s) — CONFIANCE : « PRIX annoncé à l’avance. RETOUCHES incluses. »
+   Tout est en délais ABSOLUS (secondes depuis le début de la vidéo → ms dans A()).
+   Le O de RETOUCHES : glyphe jusqu’à 15,5 s, puis tracé SVG (profil mesuré du glyphe Archivo 900 / 70 %)
+   qui se transforme sans coupure en anneau parfait (centre 485/900, r int. 180, r ext. 350). */
+const S = $(".s08");
+const A = (el, kf, t0, dur, easing = "linear", fill = "both") =>
+  el.animate(kf, { delay: Math.round(t0 * 1000), duration: Math.round(dur * 1000), easing, fill });
+const EX = "cubic-bezier(.16,1,.3,1)", E = "cubic-bezier(.2,.8,.2,1)", E2 = "cubic-bezier(.7,0,.2,1)", BO = "cubic-bezier(.34,1.56,.64,1)";
+const bez = (x1, y1, x2, y2) => {
+  const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx, cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+  const X = u => ((ax * u + bx) * u + cx) * u, Y = u => ((ay * u + by) * u + cy) * u;
+  return x => {
+    if (x <= 0) return 0; if (x >= 1) return 1;
+    let lo = 0, hi = 1, u = x;
+    for (let i = 0; i < 30; i++) { u = (lo + hi) / 2; if (X(u) < x) lo = u; else hi = u; }
+    return Y(u);
+  };
+};
+const fEX = bez(.16, 1, .3, 1), fE = bez(.2, .8, .2, 1), fE2 = bez(.7, 0, .2, 1);
+const cl = x => x < 0 ? 0 : x > 1 ? 1 : x;
+const lerp = (a, b, u) => a + (b - a) * u;
+
+/* ---------- fond ---------- */
+A($("#s08-gv"), [{ transform: "translate(300px,400px)" }, { transform: "translate(700px,1300px)" }], 14, 2, "linear");
+A($("#s08-gv"), [{ opacity: .35 }, { opacity: 1 }], 14, .45, E);
+A($("#s08-gb"), [{ transform: "translate(860px,1560px) scale(.9)" }, { transform: "translate(260px,620px) scale(1.15)" }], 14, 2, "linear");
+/* les lueurs s’éteignent pendant que le O devient l’anneau : S8 finit sur la nuit (S9 rallume le tunnel sur le kick de 16,0) */
+A($("#s08-dark"), [{ opacity: 0 }, { opacity: 1 }], 15.55, .38, "cubic-bezier(.45,0,.3,1)", "forwards");
+
+/* ---------- « € » géant : rotation 3D permanente, puis il file vers la caméra ---------- */
+A($("#s08-eurot"), [{ transform: "rotateY(0deg) rotateX(4deg)" }, { transform: "rotateY(60deg) rotateX(-3deg)" }], 14, 2, "linear");
+A($("#s08-euout"), [
+  { transform: "scale(.93)", easing: EX },
+  { transform: "scale(1)", offset: .3 },
+  { transform: "scale(1.02)", offset: .75, easing: "cubic-bezier(.55,0,.9,.45)" },
+  { transform: "scale(2.3)" }], 14, 2);
+$$(".s08-eu", S).forEach(e => A(e, [{ opacity: 1 }, { opacity: 0 }], 15.55, .35, "cubic-bezier(.5,0,.8,.3)"));
+
+/* ---------- caméra : poussée + roulis permanents (origine 485/900) ---------- */
+const CAM = { s0: 1, s1: 1.045, r0: -.4, r1: .35 };
+A($("#s08-cam"), [{ transform: `scale(${CAM.s0}) rotate(${CAM.r0}deg)` }, { transform: `scale(${CAM.s1}) rotate(${CAM.r1}deg)` }], 14, 2, "linear");
+/* secousse du moment fort (15,0 → 15,2) */
+A($("#s08-shk"), [
+  { transform: "translate(0px,0px)" },
+  { transform: "translate(-6px,4px)", offset: .1 },
+  { transform: "translate(5px,-4px)", offset: .24 },
+  { transform: "translate(-4px,3px)", offset: .4 },
+  { transform: "translate(3px,-2px)", offset: .56 },
+  { transform: "translate(-2px,1px)", offset: .72 },
+  { transform: "translate(1px,0px)", offset: .87 },
+  { transform: "translate(0px,0px)" }], 14.99, .21);
+
+/* ---------- 14,00 PRIX se gonfle (mot entier : symétrique) ---------- */
+A($("#s08-prix"), [
+  { fontStretch: "62%", fontWeight: 400, letterSpacing: ".2em", textIndent: ".2em" },
+  { fontStretch: "125%", fontWeight: 900, letterSpacing: "-.03em", textIndent: "-.03em" }], 14, .35, "cubic-bezier(.38,1.32,.5,1)");
+A($("#s08-prixw"), [{ transform: "scale(.94,.8)" }, { transform: "scale(1,1)" }], 14, .35, "cubic-bezier(.38,1.32,.5,1)");
+/* échos en contour à l’atterrissage */
+A($("#s08-echo1"), [{ transform: "scale(1)", opacity: .7 }, { transform: "scale(1.13)", opacity: 0 }], 14.28, .45, EX, "forwards");
+A($("#s08-echo2"), [{ transform: "scale(1)", opacity: .4 }, { transform: "scale(1.28)", opacity: 0 }], 14.33, .55, EX, "forwards");
+/* ligne de base lime */
+A($("#s08-base"), [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], 14.2, .2, EX);
+/* « annoncé à l’avance. » s’écrit (plume lumineuse au bord) */
+const write = (el, nib, t0, dur, x0, x1) => {
+  A(el, [{ clipPath: "inset(-40px 100% -50px 0px)" }, { clipPath: "inset(-40px 0% -50px 0px)" }], t0, dur, E2);
+  A(nib, [{ transform: `translateX(${x0 - 2}px)` }, { transform: `translateX(${x1 - 2}px)` }], t0, dur, E2);
+  A(nib, [{ opacity: 0 }, { opacity: 1, offset: .12 }, { opacity: 1, offset: .7 }, { opacity: 0 }], t0, dur + .05, "linear");
+};
+write($("#s08-ann"), $("#s08-nib1"), 14.125, .275, 95.85, 874.15);   // boîte 738,3 + 2×20 centrée sur 485
+
+/* ---------- 14,50 RETOUCHES : volets de tableau de gare ---------- */
+const row = $("#s08-row");
+const chs = split(row, 14.5, .02);
+const wraps = chs.map((ch, i) => {
+  const w = document.createElement("span"); w.className = i === 3 ? "s08-ow" : "s08-lt";
+  ch.replaceWith(w); w.append(ch);
+  const t0 = 14.5 + i * .02;
+  A(ch, [{ transform: "rotateX(-90deg)" }, { transform: "rotateX(0deg)" }], t0, .18, BO);
+  A(ch, [{ color: "rgba(75,72,96,0)" }, { color: "rgba(75,72,96,1)", offset: .12 }, { color: "#ffffff" }], t0, .18, "linear", "backwards");
+  return w;
+});
+const ow = wraps[3];
+write($("#s08-inc"), $("#s08-nib2"), 14.625, .225, 264.85, 705.15);   // boîte 400,3 + 2×20
+
+/* ---------- 15,00 MOMENT FORT : le O s’allume ---------- */
+A(ow, [{ color: "#ffffff" }, { color: "#c8ff3e" }], 14.98, .1, E);
+A(ow, [
+  { textShadow: "0 0 0px rgba(200,255,62,0)", easing: "cubic-bezier(.2,.8,.3,1)" },
+  { textShadow: "0 0 60px rgba(200,255,62,1)", offset: .14 },
+  { textShadow: "0 0 30px rgba(200,255,62,.55)" }], 14.98, .47, "linear");
+A(ow, [
+  { transform: "scale(1)", easing: "cubic-bezier(.2,.8,.3,1)" },
+  { transform: "scale(1.17)", offset: .22, easing: "cubic-bezier(.34,1.4,.64,1)" },
+  { transform: "scale(1)" }], 14.98, .36, "linear");
+A($("#s08-halo"), [{ opacity: 0 }, { opacity: .9, offset: .06 }, { opacity: .32, offset: .75 }, { opacity: 0 }], 14.985, .655, "linear", "forwards");
+A($("#s08-halo"), [{ transform: "scale(.45)" }, { transform: "scale(1)" }], 14.985, .4, EX);
+A($("#s08-pl1"), [{ transform: "scale(1.06)" }, { transform: "scale(1)" }], 14.99, .36, E, "forwards");
+A($("#s08-pl2"), [{ transform: "scale(1.06)" }, { transform: "scale(1)" }], 14.99, .36, E, "forwards");
+
+/* onde + graduations qui jaillissent autour du O (repère local caméra) */
+{
+  const OX = 409, OY = 853.5, w1 = $("#s08-wv1"), w2 = $("#s08-wv2"), g = $("#s08-ticks"), NS = "http://www.w3.org/2000/svg";
+  const tk = Array.from({ length: 12 }, () => { const l = document.createElementNS(NS, "line"); g.append(l); return l; });
+  onSeek(t => {
+    const p = (t - 14.985) / .5;
+    if (p > 0 && p < 1) {
+      w1.setAttribute("r", (50 + 550 * fEX(p)).toFixed(1));
+      w1.style.strokeWidth = (12 * Math.pow(1 - p, 1.15)).toFixed(2); w1.style.opacity = 1;
+    } else { w1.setAttribute("r", 0); w1.style.opacity = 0; }
+    const q = (t - 15.07) / .45;
+    if (q > 0 && q < 1) {
+      w2.setAttribute("r", (44 + 360 * fEX(q)).toFixed(1));
+      w2.style.strokeWidth = (5 * (1 - q)).toFixed(2); w2.style.opacity = (.7 * (1 - q)).toFixed(3);
+    } else { w2.setAttribute("r", 0); w2.style.opacity = 0; }
+    const k = (t - 14.985) / .42;
+    tk.forEach((l, i) => {
+      if (k <= 0 || k >= 1) { l.style.opacity = 0; return; }
+      const e = fEX(k), a = (i * 30 - 90 + 14 * e) * Math.PI / 180, big = i % 3 === 0;
+      const r1 = 78 + 175 * e, L = (big ? 46 : 26) * (1 - .75 * k) + 4;
+      l.setAttribute("x1", (OX + r1 * Math.cos(a)).toFixed(1)); l.setAttribute("y1", (OY + r1 * Math.sin(a)).toFixed(1));
+      l.setAttribute("x2", (OX + (r1 + L) * Math.cos(a)).toFixed(1)); l.setAttribute("y2", (OY + (r1 + L) * Math.sin(a)).toFixed(1));
+      l.style.strokeWidth = ((big ? 6 : 4) * (1 - .5 * k)).toFixed(2); l.style.opacity = Math.pow(1 - k, 1.4).toFixed(3);
+    });
+  });
+}
+
+/* ---------- 15,50 SORTIE ---------- */
+/* bloc 1 file à gauche (+ flou de bougé horizontal) */
+const B1T = 15.5, B1D = .25;
+A($("#s08-b1"), [{ transform: "translateX(0px)" }, { transform: "translateX(-1400px)" }], B1T, B1D, E2, "forwards");
+{
+  const b1 = $("#s08-b1"), hb = $("#s08-hbg"), x = t => -1400 * fE2(cl((t - B1T) / B1D));
+  onSeek(t => {
+    const sg = Math.min(38, Math.abs(x(t) - x(t - 1 / 30)) * .16);
+    if (sg > .4) { hb.setAttribute("stdDeviation", `${sg.toFixed(1)} 0`); b1.style.filter = "url(#s08-hb)"; }
+    else b1.style.filter = "none";
+  });
+}
+/* les autres lettres sont lâchées (du O vers l’extérieur) avec un petit sursaut, flou vertical */
+{
+  const NS = "http://www.w3.org/2000/svg", defs = $("#s08-vbs");
+  const fall = [];
+  const add = (el, t0, dx, rot, id) => {
+    const D = .27, k1 = .24;
+    A(el, [
+      { transform: "translate(0px,0px) rotate(0deg)", easing: "cubic-bezier(.25,.7,.4,1)" },
+      { transform: `translate(${(dx * .12).toFixed(1)}px,-24px) rotate(${(rot * .12).toFixed(2)}deg)`, offset: k1, easing: "cubic-bezier(.55,0,.9,.55)" },
+      { transform: `translate(${dx}px,2300px) rotate(${rot}deg)` }], t0, D, "linear", "forwards");
+    const f = document.createElementNS(NS, "filter"); f.id = id;
+    f.setAttribute("x", "-50%"); f.setAttribute("y", "-60%"); f.setAttribute("width", "200%"); f.setAttribute("height", "220%");
+    const gb = document.createElementNS(NS, "feGaussianBlur"); gb.setAttribute("stdDeviation", "0 0"); f.append(gb); defs.append(f);
+    const ey = bez(.55, 0, .9, .55);
+    const y = t => { const p = (t - t0) / D; return p <= k1 ? 0 : 2300 * ey(cl((p - k1) / (1 - k1))); };
+    fall.push({ el, gb, y, id });
+  };
+  wraps.forEach((w, i) => {
+    if (i === 3) return;
+    const d = Math.abs(i - 3), side = i < 3 ? -1 : 1;
+    add(w, 15.5 + (d - 1) * .022 + (side > 0 ? .011 : 0), side * (34 + 16 * d), side * (24 + 5 * d), "s08-vb" + i);
+  });
+  add($("#s08-incf"), 15.54, 0, 9, "s08-vbi");
+  onSeek(t => fall.forEach(o => {
+    const sg = Math.min(18, Math.abs(o.y(t) - o.y(t - 1 / 30)) * .07);
+    if (sg > .4) { o.gb.setAttribute("stdDeviation", `0 ${sg.toFixed(1)}`); o.el.style.filter = `url(#${o.id})`; }
+    else o.el.style.filter = "none";
+  }));
+}
+
+/* ---------- le O devient l’anneau (15,50 → 15,85) ---------- */
+{
+  /* profil polaire mesuré du O (Archivo 900, stretch 70 %, 150 px), quart 0→90° par pas de 2,5° (px depuis le centre de l’encre) */
+  const QI = [11.84, 11.85, 11.88, 11.94, 12.02, 12.12, 12.25, 12.41, 12.59, 12.81, 13.06, 13.34, 13.67, 14.03, 14.45, 14.92, 15.44, 16.02, 16.67, 17.39, 18.18, 19.04, 19.98, 21.03, 22.11, 23.24, 24.34, 25.45, 26.48, 27.35, 28.06, 28.63, 29.05, 29.34, 29.5, 29.56, 29.6];
+  const QO = [40.97, 41.0, 41.09, 41.22, 41.42, 41.67, 41.98, 42.32, 42.73, 43.19, 43.7, 44.25, 44.85, 45.48, 46.14, 46.83, 47.54, 48.25, 48.96, 49.65, 50.32, 50.94, 51.51, 52.02, 52.44, 52.77, 53.04, 53.23, 53.36, 53.45, 53.49, 53.48, 53.48, 53.45, 53.4, 53.39, 53.4];
+  const N = 144, FI = [], FO = [];
+  for (let k = 0; k < N; k++) { let d = (k * 2.5) % 180; if (d > 90) d = 180 - d; const j = Math.round(d / 2.5); FI.push(QI[j]); FO.push(QO[j]); }
+  /* centre de l’encre du O dans le repère caméra, puis à l’écran à 15,5 s (caméra linéaire 14 → 16) */
+  const OX = 408.74, OY = 853.5, T0 = 15.5, T1 = 15.85;
+  const camAt = t => { const u = cl((t - 14) / 2); return { s: lerp(CAM.s0, CAM.s1, u), r: lerp(CAM.r0, CAM.r1, u) * Math.PI / 180 }; };
+  const c0 = camAt(T0);
+  const SX = 485 + c0.s * (Math.cos(c0.r) * (OX - 485) - Math.sin(c0.r) * (OY - 900));
+  const SY = 900 + c0.s * (Math.sin(c0.r) * (OX - 485) + Math.cos(c0.r) * (OY - 900));
+  const path = (u, w, uc = u) => {
+    const cx = lerp(SX, 485, uc), cy = lerp(SY, 900, uc), rot = lerp(c0.r, 0, u);
+    let s = "";
+    for (const [F, R] of [[FO, 350], [FI, 180]]) {
+      for (let k = 0; k < N; k++) {
+        const r = lerp(F[k] * c0.s, R, u) + (R === 350 ? w : -w), a = k * Math.PI * 2 / N + rot;
+        s += (k ? "L" : "M") + (cx + r * Math.cos(a)).toFixed(2) + " " + (cy + r * Math.sin(a)).toFixed(2);
+      }
+      s += "Z";
+    }
+    return s;
+  };
+  const op = $("#s08-op"), og = $("#s08-og"), ogb = $("#s08-ogb"), e1 = $("#s08-oe1"), e2 = $("#s08-oe2"), ring = $("#s08-ring");
+  const fM = bez(.68, 0, .26, 1.1), U = t => fM(cl((t - T0) / (T1 - T0)));
+  onSeek(t => {
+    const on = t >= T0 - .005 && t < T1 - .005;
+    ow.style.visibility = t >= T0 - .005 ? "hidden" : "visible";
+    ring.style.opacity = t >= T1 - .005 ? 1 : 0;
+    if (!on) { [op, og, e1, e2].forEach(p => p.setAttribute("d", "")); return; }
+    const u = U(t), d = path(u, 0);
+    op.setAttribute("d", d);
+    /* lueur héritée du glyphe (text-shadow 0 0 30px .55) qui s’éteint pendant la course */
+    const ga = .55 * (1 - fE(cl((t - T0) / .34)));
+    if (ga > .01) { og.setAttribute("d", d); og.style.opacity = ga.toFixed(3); ogb.setAttribute("stdDeviation", (15 * c0.s + 22 * u).toFixed(1)); }
+    else og.setAttribute("d", "");
+    /* deux échos en contour qui traînent derrière */
+    [[e1, .045, .55], [e2, .09, .3]].forEach(([e, lag, a]) => {
+      const ue = U(t - lag), al = a * Math.sin(Math.PI * cl((ue - .18) / .78));
+      if (al > .02 && Math.abs(u - ue) > .01) { e.setAttribute("d", path(ue, 0, u)); e.style.opacity = al.toFixed(3); e.style.strokeWidth = 3; }
+      else e.setAttribute("d", "");
+    });
+  });
+}
+/* anneau final : respire et revient pile à r 265 à la dernière image (raccord S9) */
+A($("#s08-ring"), [
+  { transform: "scale(1)", easing: "cubic-bezier(.3,.7,.4,1)" },
+  { transform: "scale(1.016)", offset: .45, easing: "cubic-bezier(.5,0,.5,1)" },
+  { transform: "scale(1)" }], 15.85, .117, "linear");
+A($("#s08-shim"), [{ transform: "rotate(-75deg)" }, { transform: "rotate(85deg)" }], 15.833, .134, "cubic-bezier(.3,.4,.4,1)");
+A($("#s08-shim"), [{ opacity: 0 }, { opacity: 1, offset: .3 }, { opacity: .6, offset: .7 }, { opacity: 0 }], 15.833, .134, "linear", "forwards");
+
+})();
+/* ---- s09 ---- */
+(function(){
+/* Scène 09 (16 → 18 s) — BREAKDOWN demi-temps : tunnel de cadrans d’horloge, « Livré en 48 à 72 h »,
+   puis une aiguille balaie l’écran et le repeint en violet (raccord S10).
+   Tout est piloté par le temps absolu : WAAPI à delay absolu + canvas redessinés en entier dans onSeek(t). */
+const S = $(".s09");
+const A = (el, kf, t0, dur, easing = "linear", fill = "both") =>
+  el.animate(kf, { delay: Math.round(t0 * 1000), duration: Math.round(dur * 1000), easing, fill });
+const EX = "cubic-bezier(.16,1,.3,1)", E = "cubic-bezier(.2,.8,.2,1)", E2 = "cubic-bezier(.7,0,.2,1)", BO = "cubic-bezier(.34,1.56,.64,1)";
+
+/* ---------- petits outils ---------- */
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const sstep = (a, b, x) => { const u = clamp((x - a) / (b - a)); return u * u * (3 - 2 * u); };
+const eoc = u => 1 - Math.pow(1 - clamp(u), 3);                       // easeOutCubic
+const eoq = u => 1 - Math.pow(1 - clamp(u), 4);                       // easeOutQuart
+const back = u => { u = clamp(u); const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(u - 1, 3) + c1 * Math.pow(u - 1, 2); };
+const TAU = Math.PI * 2;
+const T0 = 16, T1 = 18, CX = 485, CY = 900;
+
+/* ======================================================================
+   TUNNEL (canvas#s09-tun)
+   cadran k : profondeur z = (1 + k) − 2(t − 16) − Z0 ; rayon écran 265 / z ; centre (485, 900).
+   Z0 = 1 − 1/1,02 : à 16,00 le cadran 0 vaut l’anneau de S8 en fin de respiration (scale 1,02 à 16,00).
+   ====================================================================== */
+const cv = $("#s09-tun"), g = cv.getContext("2d");
+const Z0 = 1 - 1 / 1.02, R0 = 265, NK = 14;
+const COL = ["200,255,62", "124,92,255", "143,162,255"];               // lime, violet, bleu
+const dialCol = k => (k === 0 ? COL[0] : COL[k % 3]);
+const PH = [0, .9, 2.1, .4, 1.7, 2.9, 1.2, .2, 2.5, 1.5, .7, 2.2, 1.0, 2.7];   // calage angulaire des graduations
+
+/* rotation des graduations : moitié continue, moitié en « tics » calés sur les croches (16,00 → 17,75) */
+const tickRot = u => {
+  let s = 0;
+  for (let i = 0; i < 8; i++) s += back((u - .25 * i) / .1);
+  return .175 * u + .04375 * s;                                      // moyenne 0,35 rad/s
+};
+/* légère dérive latérale de la caméra dans le tunnel (unités monde ; 0 à 16,00) */
+const camX = u => .045 * Math.sin(2.1 * u);
+const camY = u => .03 * (1 - Math.cos(1.6 * u)) - .012 * Math.sin(3.1 * u);
+/* coups de zoom d’impact sur 16,50 et 17,00 */
+const punch = t => {
+  let p = 0;
+  for (const tb of [16.5, 17.0]) if (t >= tb) p += .022 * Math.exp(-(t - tb) / .09);
+  return 1 + p;
+};
+/* lignes de vitesse : 120, perspective vraie (rayon monde R, profondeur cyclique), mkRnd(909) */
+const LINES = (() => {
+  const r = mkRnd(909), out = [];
+  for (let i = 0; i < 120; i++) out.push({ a: TAU * r(), R: .6 + 1.8 * r(), z0: 5.2 * r(), w: 1.6 + .8 * r() });
+  return out;
+})();
+const ZMIN = .15, ZSPAN = 5.2;
+
+const ring = (x, y, r, w, col, a) => {
+  if (a <= .002 || r <= 0) return;
+  g.strokeStyle = `rgba(${col},${a.toFixed(4)})`; g.lineWidth = w;
+  g.beginPath(); g.arc(x, y, r, 0, TAU); g.stroke();
+};
+const ticks = (x, y, r, z, rot, col, a, sa = .72) => {
+  if (a <= .002) return;
+  const w = Math.max(1, 5 / z);
+  g.lineWidth = w; g.lineCap = "butt";
+  for (const long of [false, true]) {
+    g.beginPath();
+    for (let i = 0; i < 60; i++) {
+      const isL = i % 5 === 0;
+      if (isL !== long) continue;
+      const th = rot + i * TAU / 60, c = Math.cos(th), s = Math.sin(th);
+      const r1 = (isL ? .78 : .84) * r, r2 = .93 * r;
+      g.moveTo(x + c * r1, y + s * r1); g.lineTo(x + c * r2, y + s * r2);
+    }
+    g.strokeStyle = `rgba(${col},${(a * (long ? 1 : sa)).toFixed(4)})`;
+    g.stroke();
+  }
+};
+
+/* lunette extérieure : anneau fin à 1,1 r + 12 index des heures */
+const bezel = (x, y, r, z, rot, col, a) => {
+  if (a <= .003) return;
+  ring(x, y, 1.1 * r, Math.max(1, 2.2 / z), col, .45 * a);
+  g.lineWidth = Math.max(1.5, 6 / z); g.lineCap = "butt"; g.beginPath();
+  for (let i = 0; i < 12; i++) {
+    const th = rot + i * TAU / 12, c = Math.cos(th), s = Math.sin(th);
+    g.moveTo(x + c * 1.045 * r, y + s * 1.045 * r); g.lineTo(x + c * 1.1 * r, y + s * 1.1 * r);
+  }
+  g.strokeStyle = `rgba(${col},${(.8 * a).toFixed(4)})`; g.stroke();
+};
+/* anneaux de points entre deux cadrans (profondeur k + 0,5) : texture du tunnel */
+const dots = (x, y, r, z, rot, a) => {
+  if (a <= .003) return;
+  const d = Math.max(1, 2.4 / z);
+  g.fillStyle = `rgba(255,255,255,${a.toFixed(4)})`; g.beginPath();
+  for (let i = 0; i < 72; i++) {
+    const th = rot + i * TAU / 72, px = x + Math.cos(th) * r, py = y + Math.sin(th) * r;
+    g.moveTo(px + d, py); g.arc(px, py, d, 0, TAU);
+  }
+  g.fill();
+};
+
+const drawTunnel = t => {
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  g.clearRect(0, 0, 1080, 1920);
+  if (t < T0 || t >= T1) return;
+  const u = t - T0;
+  const on = eoc(u / .3);                                              // le tunnel « s’allume » sur le kick
+  /* fond : nuit (= fin de S8) → radial bleu-vert */
+  g.globalCompositeOperation = "source-over"; g.globalAlpha = 1;
+  g.fillStyle = "#07060c"; g.fillRect(0, 0, 1080, 1920);
+  const bg = g.createRadialGradient(CX, CY, 0, CX, CY, 1300);
+  bg.addColorStop(0, "#0f2f3a"); bg.addColorStop(1, "#06070d");
+  g.globalAlpha = on; g.fillStyle = bg; g.fillRect(0, 0, 1080, 1920); g.globalAlpha = 1;
+
+  /* lueur au point de fuite (+30 % sur 16,0 / 16,5 / 17,0 / 17,5) */
+  let pulse = 1;
+  for (const tb of [16, 16.5, 17, 17.5]) if (t >= tb) pulse += .3 * Math.exp(-(t - tb) / .14);
+  const ga = on * pulse;
+  g.globalCompositeOperation = "lighter";
+  const halo = g.createRadialGradient(CX, CY, 0, CX, CY, 430);
+  halo.addColorStop(0, `rgba(25,198,176,${(.16 * ga).toFixed(4)})`); halo.addColorStop(1, "rgba(25,198,176,0)");
+  g.fillStyle = halo; g.fillRect(CX - 430, CY - 430, 860, 860);
+  const core = g.createRadialGradient(CX, CY, 0, CX, CY, 160);
+  core.addColorStop(0, `rgba(255,255,255,${(.5 * ga).toFixed(4)})`); core.addColorStop(1, "rgba(255,255,255,0)");
+  g.fillStyle = core; g.fillRect(CX - 160, CY - 160, 320, 320);
+  g.globalCompositeOperation = "source-over";
+
+  const P = punch(t), cxw = camX(u), cyw = camY(u), rot = tickRot(u);
+  const sx = z => CX - cxw * R0 * P / z, sy = z => CY - cyw * R0 * P / z;
+
+  /* lignes de vitesse (sous les cadrans proches) */
+  const lineOn = clamp(u / .15);
+  g.lineCap = "round";
+  for (const L of LINES) {
+    const z = ZMIN + (((L.z0 - 2 * u) % ZSPAN) + ZSPAN) % ZSPAN;
+    const a = .22 * lineOn * sstep(ZMIN, .32, z) * sstep(5.2, 3.2, z);
+    if (a < .003) continue;
+    const c = Math.cos(L.a), s = Math.sin(L.a);
+    const ra = L.R * R0 * P / z, rb = L.R * R0 * P / (z + .14);       // traînée = obturateur 70 ms
+    const rB = clamp(rb, ra - 600, ra - 8);
+    const xa = sx(z) + c * ra, ya = sy(z) + s * ra, xb = sx(z + .14) + c * rB, yb = sy(z + .14) + s * rB;
+    g.strokeStyle = `rgba(255,255,255,${a.toFixed(4)})`; g.lineWidth = L.w * Math.min(1.8, Math.max(1, .6 / z));
+    g.beginPath(); g.moveTo(xb, yb); g.lineTo(xa, ya); g.stroke();
+  }
+
+  /* cadrans, du plus loin au plus proche */
+  const blurOn = clamp((u - .03) / .1);
+  for (let k = NK - 1; k >= 0; k--) {
+    /* anneau de points à mi-chemin (plus loin que le cadran k) */
+    {
+      const zh = (1.5 + k) - 2 * u - Z0;
+      if (zh > .12) {
+        const ah = .38 * Math.min(1, 1.6 / zh) * sstep(.12, .45, zh) * sstep(12.5, 9.5, zh) * eoc((u - .03 - .02 * k) / .22);
+        dots(sx(zh), sy(zh), .97 * R0 * P / zh, zh, (k % 2 ? .2 : -.2) * u + k * .37, ah);
+      }
+    }
+    const z = (1 + k) - 2 * u - Z0;
+    if (z <= .12) continue;
+    const vis = Math.min(1, 1.6 / z) * sstep(.12, .4, z) * sstep(13, 10, z);
+    const lit = k === 0 ? 1 : eoc((u - .02 * (k - 1)) / .22);        // à 16,00 seul l’anneau de S8 est là
+    const a = vis * lit;
+    if (a < .003) continue;
+    const r = R0 * P / z, x = sx(z), y = sy(z), col = dialCol(k);
+    const w = k === 0 ? (170 - 154 * eoc(u / .25)) * P / z : 16 * P / z;
+    /* lueur douce autour de l’anneau */
+    g.globalCompositeOperation = "lighter";
+    ring(x, y, r, Math.min(260, 64 * P / z), col, .06 * a * on);
+    g.globalCompositeOperation = "source-over";
+    /* flou de bougé (obturateur ~30 ms) sur les cadrans proches */
+    const bOn = k === 0 ? blurOn * sstep(.2, .32, u) : blurOn;      // pas de flou pendant l’affinage de l’anneau
+    if (z < 2.2 && bOn > 0) for (let j = 3; j >= 1; j--) {
+      const zj = z + .02 * j;
+      const wj = k === 0 ? (170 - 154 * eoc(u / .25)) * P / zj : 16 * P / zj;
+      ring(sx(zj), sy(zj), R0 * P / zj, wj, col, a * bOn * [0, .42, .24, .12][j]);
+    }
+    ring(x, y, r, w, col, a);
+    ticks(x, y, r, z, PH[k] + (k % 2 ? -rot : rot), col, a, k === 0 ? 1 - .28 * sstep(.15, .35, u) : .72);
+    bezel(x, y, r, z, PH[k] * .5 + (k % 2 ? rot : -rot) * .5, col, a * (k === 0 ? sstep(.05, .25, u) : 1));
+    /* repère lumineux sur le cadran (petite bille blanche qui tourne) */
+    const th = PH[k] * 2.3 + (k % 2 ? 1 : -1) * 1.1 * u, rr = r;
+    const bx = x + Math.cos(th) * rr, by = y + Math.sin(th) * rr, br = Math.max(2.2, 7 / z);
+    if (k > 0 || u > .2) {
+      g.globalCompositeOperation = "lighter";
+      const bgd = g.createRadialGradient(bx, by, 0, bx, by, br * 4);
+      bgd.addColorStop(0, `rgba(255,255,255,${(.9 * a * on).toFixed(4)})`); bgd.addColorStop(.25, `rgba(${col},${(.5 * a * on).toFixed(4)})`); bgd.addColorStop(1, `rgba(${col},0)`);
+      g.fillStyle = bgd; g.beginPath(); g.arc(bx, by, br * 4, 0, TAU); g.fill();
+      g.globalCompositeOperation = "source-over";
+    }
+    /* vague lime à 17,50 (du cadran le plus proche vers le fond) */
+    if (k >= 3) {
+      const wv = .9 * Math.exp(-Math.pow((t - 17.5 - .035 * (k - 3)) / .08, 2));
+      if (wv > .004) {
+        const aw = wv * Math.min(1, .45 + vis) * sstep(.12, .4, z);
+        g.globalCompositeOperation = "lighter";
+        ring(x, y, r, Math.min(300, 90 * P / z), COL[0], .22 * aw);
+        g.globalCompositeOperation = "source-over";
+        ring(x, y, r, 22 * P / z, COL[0], aw);
+        ticks(x, y, r, z, PH[k] + (k % 2 ? -rot : rot), COL[0], aw);
+      }
+    }
+  }
+};
+
+/* ======================================================================
+   BALAYAGE D’AIGUILLE (canvas#s09-sweep, au-dessus de tout) 17,80 → 18,00
+   ====================================================================== */
+const sw = $("#s09-sweep"), h = sw.getContext("2d");
+const drawSweep = t => {
+  h.setTransform(1, 0, 0, 1, 0, 0);
+  h.clearRect(0, 0, 1080, 1920);
+  if (t < 17.8 || t >= T1) return;
+  const q = (t - 17.8) / .2, a = TAU * q * q, full = t >= 17.99;
+  const a0 = -Math.PI / 2, ah = a0 + a;
+  const vg = h.createRadialGradient(CX, CY, 0, CX, CY, 1300);
+  vg.addColorStop(0, "#2a1c66"); vg.addColorStop(1, "#07060c");
+  h.fillStyle = vg;
+  if (full) { h.fillRect(0, 0, 1080, 1920); return; }
+  if (a > .0005) {
+    h.beginPath(); h.moveTo(CX, CY); h.arc(CX, CY, 2400, a0, ah); h.closePath(); h.fill();
+    /* traînée lumineuse derrière l’aiguille (longueur = vitesse × obturateur 30 ms) */
+    const om = TAU * 2 * q / .2, tr = Math.min(a, 1.6, om * .03);
+    if (tr > .01) {
+      const cg = h.createConicGradient(ah - tr, CX, CY);
+      const f = tr / TAU;
+      cg.addColorStop(0, "rgba(124,92,255,0)");
+      cg.addColorStop(f * .7, "rgba(124,92,255,.22)");
+      cg.addColorStop(f * .985, "rgba(200,255,62,.30)");
+      cg.addColorStop(f, "rgba(200,255,62,0)");
+      cg.addColorStop(1, "rgba(200,255,62,0)");
+      h.fillStyle = cg;
+      h.beginPath(); h.moveTo(CX, CY); h.arc(CX, CY, 2400, ah - tr, ah); h.closePath(); h.fill();
+    }
+  }
+  /* l’aiguille */
+  const ex = CX + Math.cos(ah) * 2400, ey = CY + Math.sin(ah) * 2400;
+  h.lineCap = "butt";
+  h.globalCompositeOperation = "lighter";
+  h.strokeStyle = "rgba(200,255,62,.28)"; h.lineWidth = 22;
+  h.beginPath(); h.moveTo(CX, CY); h.lineTo(ex, ey); h.stroke();
+  h.globalCompositeOperation = "source-over";
+  h.strokeStyle = "#c8ff3e"; h.lineWidth = 6;
+  h.beginPath(); h.moveTo(CX, CY); h.lineTo(ex, ey); h.stroke();
+  /* moyeu */
+  h.fillStyle = "#c8ff3e"; h.beginPath(); h.arc(CX, CY, 13, 0, TAU); h.fill();
+  h.fillStyle = "#07060c"; h.beginPath(); h.arc(CX, CY, 5, 0, TAU); h.fill();
+};
+
+/* ======================================================================
+   SONAR 17,00 (SVG, base invisible)
+   ====================================================================== */
+const s1 = $("#s09-son1"), s2 = $("#s09-son2");
+const drawSonar = t => {
+  const p1 = (t - 17.0) / .5, p2 = (t - 17.07) / .5;
+  if (p1 > 0 && p1 < 1) {
+    s1.setAttribute("r", (100 + 600 * eoq(p1)).toFixed(1));
+    s1.style.strokeWidth = (6 * (1 - p1)).toFixed(2); s1.style.opacity = (1 - p1 * p1).toFixed(3);
+  } else { s1.setAttribute("r", 0); s1.style.opacity = 0; }
+  if (p2 > 0 && p2 < 1) {
+    s2.setAttribute("r", (80 + 520 * eoq(p2)).toFixed(1));
+    s2.style.strokeWidth = (3 * (1 - p2)).toFixed(2); s2.style.opacity = (.55 * (1 - p2)).toFixed(3);
+  } else { s2.setAttribute("r", 0); s2.style.opacity = 0; }
+};
+
+onSeek(t => { drawTunnel(t); drawSweep(t); drawSonar(t); });
+
+/* ======================================================================
+   TEXTE
+   ====================================================================== */
+/* caméra : dérive (push + roulis) et coups d’impact sur 16,5 / 17,0 / 17,5 */
+A($("#s09-cam"), [{ transform: "scale(1) rotate(0deg)" }, { transform: "scale(1.03) rotate(-.5deg)" }], 16.0, 2.0, "linear");
+A($("#s09-kick"), [
+  { transform: "scale(1) translateY(0px)", offset: 0 },
+  { transform: "scale(1) translateY(0px)", offset: .25 },
+  { transform: "scale(1.018) translateY(3px)", offset: .265 },
+  { transform: "scale(1) translateY(0px)", offset: .36 },
+  { transform: "scale(1) translateY(0px)", offset: .5 },
+  { transform: "scale(1.022) translateY(4px)", offset: .515 },
+  { transform: "scale(1) translateY(0px)", offset: .61 },
+  { transform: "scale(1) translateY(0px)", offset: .75 },
+  { transform: "scale(1.008) translateY(0px)", offset: .765 },
+  { transform: "scale(1) translateY(0px)", offset: .84 },
+  { transform: "scale(1) translateY(0px)", offset: 1 }
+], 16.0, 2.0, "linear");
+
+/* « Livré en » tombe lettre à lettre */
+split($("#s09-l1"), 16.0, .03);
+
+/* SLAM des nombres : scale 2,6 → 1, opacité, flou → 0 */
+const slam = (el, t0) => A(el, [
+  { transform: "scale(2.6)", opacity: 0, filter: "blur(12px)" },
+  { opacity: 1, offset: .38 },
+  { transform: "scale(1)", opacity: 1, filter: "blur(0px)" }
+], t0, .3, BO, "both");
+slam($("#s09-48"), 16.5);
+slam($("#s09-72"), 17.0);
+
+/* « à » : pop doux */
+A($("#s09-a"), [{ transform: "scale(0) rotate(-14deg)" }, { transform: "scale(1) rotate(0deg)" }], 16.75, .2, BO, "both");
+
+/* « h » : arrive à 17,06 (scale 1,85 → 1 : reste dans x < 900), s’étire (62 % → 110 % à 17,20) puis se pose à 80 % (17,36) */
+A($("#s09-h"), [
+  { offset: 0, transform: "scale(1.85)", opacity: 0, fontStretch: "62%", easing: EX },
+  { offset: .25, opacity: 1 },
+  { offset: .467, transform: "scale(1)", fontStretch: "110%", easing: "cubic-bezier(.45,0,.2,1.25)" },
+  { offset: 1, transform: "scale(1)", opacity: 1, fontStretch: "80%" }
+], 17.06, .3, "linear", "both");
+
+/* écho en contour lime : il « verrouille » le chiffre en reculant en Z jusqu’au plan du texte */
+const echo = (el, t0) => A(el, [
+  { transform: "scale(1.5)", opacity: 0 },
+  { opacity: .42, offset: .3 },
+  { transform: "scale(1)", opacity: 0 }
+], t0, .26, "cubic-bezier(.2,.7,.3,1)", "forwards");
+echo($("#s09-e48"), 16.56);
+echo($("#s09-e72"), 17.06);
+
+/* 17,50 : soulignement lime + halo lime sur 48 et 72 h */
+A($("#s09-ul"), [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], 17.5, .2, E2, "both");
+const GL0 = "0 6px 40px rgba(6,7,13,.55),0 0 0px rgba(200,255,62,0)";
+const GL1 = "0 6px 40px rgba(6,7,13,.55),0 0 42px rgba(200,255,62,.85)";
+const GL2 = "0 6px 40px rgba(6,7,13,.55),0 0 30px rgba(200,255,62,.6)";
+for (const id of ["#s09-48", "#s09-72", "#s09-h"])
+  A($(id), [{ textShadow: GL0 }, { textShadow: GL1, offset: .3 }, { textShadow: GL2 }], 17.5, .3, "ease-out", "both");
+
+})();
+/* ---- s10 ---- */
+(function(){
+/* Scène 10 (18 → 20 s) — MONTÉE 2 / RÉCAP « Tout au même endroit. »
+   Tout est piloté par le temps absolu : WAAPI à delay absolu (ms) + canvas/SVG redessinés dans onSeek(t). */
+const S = $(".s10");
+const EX = "cubic-bezier(.16,1,.3,1)", E = "cubic-bezier(.2,.8,.2,1)", E2 = "cubic-bezier(.7,0,.2,1)",
+  BO = "cubic-bezier(.34,1.56,.64,1)", SUCK = "cubic-bezier(.7,0,.84,0)";
+/* TL(el, [{t, …propriétés, e}], fill) : une animation WAAPI, instants ABSOLUS (s) ; e = courbe du segment suivant */
+const TL = (el, fr, fill = "both") => {
+  const t0 = fr[0].t, t1 = fr[fr.length - 1].t, d = t1 - t0;
+  const kf = fr.map(f => {
+    const o = {}; for (const k in f) if (k !== "t" && k !== "e") o[k] = f[k];
+    o.offset = d > 0 ? Math.min(1, Math.max(0, (f.t - t0) / d)) : 0; o.easing = f.e || "linear"; return o;
+  });
+  return el.animate(kf, { delay: t0 * 1000, duration: Math.max(1, d * 1000), fill });
+};
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+
+/* ======================================================================
+   FOND : lueur qui éclot avec la carte puis est aspirée vers le point
+   ====================================================================== */
+TL($("#s10-gw"), [
+  { t: 18.0, transform: "scale(.55)", e: EX }, { t: 18.5, transform: "scale(1)" },
+  { t: 19.75, transform: "scale(1)", e: SUCK }, { t: 19.9, transform: "scale(.22)" }, { t: 20.0, transform: "scale(.22)" }]);
+/* pulsation en croches : montée 45 ms, retombée douce (amplitude volontairement faible, sécurité) */
+{
+  const fr = [];
+  for (let k = 0; k < 8; k++) {
+    const tb = 18 + k * .25;
+    fr.push({ t: tb, opacity: k ? .55 : 0, e: "cubic-bezier(.3,0,.5,1)" }, { t: tb + (k ? .045 : .06), opacity: 1, e: "cubic-bezier(.3,.6,.4,1)" });
+  }
+  fr.push({ t: 20.0, opacity: .55 });
+  TL($("#s10-glow"), fr);
+}
+/* voile : le fond s’assombrit à 40 % (19,70 → 20,00) */
+TL($("#s10-dim"), [{ t: 19.7, opacity: 0, e: "cubic-bezier(.4,0,.6,1)" }, { t: 20.0, opacity: .6 }], "forwards");
+
+/* ======================================================================
+   MUR 3D : 13 bandes (2 de plus que le brief pour couvrir les coins pendant la bascule).
+   Chaque bande est un enfant DIRECT de .stage (perspective) et porte toute la transformation du mur :
+   rotate(−8°) rotateX(bascule) puis sa propre charnière (haut de la bande) → pas de preserve-3d
+   (Chromium perdait des bandes presque coplanaires pendant le tri 3D).
+   ====================================================================== */
+const W = ["PHOTOS", "RÉSEAUX", "SITE", "LOGO", "PUBS", "AFFICHES", "SITE", "PHOTOS", "RÉSEAUX", "SITE", "LOGO", "PUBS", "AFFICHES"];
+const N = W.length, SH = 213, WH = N * SH, MID = (N - 1) / 2, WTOP = 960 - WH / 2;
+const OP = [.30, .35, .28, .40];                       // contraste réduit : blanc plein, contour blanc, lime plein, contour lime
+const stage = $("#s10-stage");
+const strips = [];
+W.forEach((w, i) => {
+  const k = i % 4, dir = i % 2 ? -1 : 1;
+  const st = document.createElement("div"); st.className = `s10-strip s10-k${k}`;
+  st.style.top = (WTOP + i * SH) + "px";
+  st.style.transformOrigin = `1800px ${WH / 2 - i * SH}px`;          // = centre du mur (485, 960)
+  const run = document.createElement("div"); run.className = "s10-run"; run.style.left = (-520 - (i * 173) % 420) + "px";
+  const tx = document.createElement("div"); tx.className = "s10-txt";
+  const reps = Math.ceil(6200 / ((w.length + 3) * 100));
+  tx.textContent = Array(reps).fill(w).join(" · ") + " · ";
+  run.append(tx); st.append(run); stage.append(st);
+  strips.push({ st, run, tx, i, k, dir });
+});
+/* transformation complète d’une bande : mur (roulis −8°, bascule wx) puis charnière BASSE (angle a) :
+   a = −90° couchée vers la caméra (invisible), 0 debout, +90° tombée en arrière comme un domino */
+const stripT = (i, wx, a) => {
+  const yt = (i + 1) * SH - WH / 2;
+  return `rotate(-8deg) rotateX(${wx}deg) translateY(${yt}px) rotateX(${a}deg) translateY(${-yt}px)`;
+};
+
+strips.forEach(({ st, run, tx, i, k, dir }) => {
+  const tr = 18.0 + .022 * Math.abs(i - MID);           // ouverture depuis le centre (la carte) vers les bords
+  const tf = 19.5 + .025 * (i - 3);                    // dominos du haut vers le bas : 1re bande visible (i = 3) à 19,50, dernière (i = 11) à 19,70
+  /* une seule animation transform par bande :
+     les bandes se redressent (−90° → 0, --ex) ; bascule du mur 12° → −12° (18,5 → 19,0, --e2) ; chute en arrière (0 → 90°) */
+  const fr = [{ t: 18.0, transform: stripT(i, 12, -90) }];
+  if (tr > 18.0) fr.push({ t: tr, transform: stripT(i, 12, -90) });
+  fr[fr.length - 1].e = EX;
+  fr.push({ t: tr + .3, transform: stripT(i, 12, 0) },
+    { t: 18.5, transform: stripT(i, 12, 0), e: E2 },
+    { t: 19.0, transform: stripT(i, -12, 0) },
+    { t: tf, transform: stripT(i, -12, 0), e: "cubic-bezier(.32,0,.7,.55)" },
+    { t: tf + .15, transform: stripT(i, -12, 90) });
+  TL(st, fr);
+  /* opacité (feuille) : apparaît pendant l’ouverture, s’éteint en tombant */
+  const o = OP[k], fo = [{ t: 18.0, opacity: 0 }];
+  if (tr > 18.0) fo.push({ t: tr, opacity: 0 });
+  fo[fo.length - 1].e = "cubic-bezier(.3,0,.4,1)";
+  fo.push({ t: tr + .14, opacity: o }, { t: tf + .04, opacity: o, e: "cubic-bezier(.4,0,.8,.6)" }, { t: tf + .145, opacity: 0 });
+  TL(tx, fo);
+  /* défilement en sens alternés, accélère jusqu’à 19,0 puis arrêt net */
+  TL(run, [{ t: 18.0, transform: "translateX(0px)", e: "cubic-bezier(.5,0,1,1)" }, { t: 19.0, transform: `translateX(${dir * 1400}px)` }]);
+});
+
+/* caméra : dérive permanente (roulis + push) */
+TL($("#s10-cam"), [
+  { t: 18.0, transform: "rotate(1deg) scale(1)", e: "cubic-bezier(.35,0,.65,1)" },
+  { t: 20.0, transform: "rotate(-.7deg) scale(1.04)" }]);
+
+/* 19,00 → 19,375 : 4 coups de zoom en doubles-croches (sauts nets + petit rebond), puis tient */
+{
+  const fr = [{ t: 18.0, transform: "scale(1) rotate(0deg)" }];
+  [19.0, 19.125, 19.25, 19.375].forEach((tb, n) => {
+    const s = 1 + .025 * (n + 1), r = n % 2 ? -.5 : .5;
+    fr.push({ t: tb - .004, transform: `scale(${(s - .025).toFixed(3)}) rotate(0deg)` },
+      { t: tb, transform: `scale(${(s + .028).toFixed(3)}) rotate(${r}deg)`, e: EX },
+      { t: tb + .1, transform: `scale(${s.toFixed(3)}) rotate(0deg)` });
+  });
+  fr.push({ t: 20.0, transform: "scale(1.1) rotate(0deg)" });
+  TL($("#s10-punch"), fr);
+}
+
+/* ======================================================================
+   CARTE (stable, hors du mur)
+   ====================================================================== */
+TL($("#s10-cw"), [{ t: 18.0, transform: "scale(0)", e: BO }, { t: 18.3, transform: "scale(1)" }]);
+/* écho en contour qui sort de derrière la carte */
+TL($("#s10-ew"), [{ t: 18.2, transform: "scale(1)", e: "cubic-bezier(.2,.7,.3,1)" }, { t: 18.62, transform: "scale(1.2)" }]);
+TL($("#s10-echo"), [{ t: 18.2, opacity: 0 }, { t: 18.24, opacity: .7, e: "cubic-bezier(.3,0,.6,1)" }, { t: 18.62, opacity: 0 }], "forwards");
+
+/* pulsations 19,0 / 19,125 / 19,25 / 19,375 */
+const HITS = [19.0, 19.125, 19.25, 19.375];
+{
+  const fr = [{ t: 18.9, transform: "scale(1)" }];
+  HITS.forEach(tb => fr.push({ t: tb - .004, transform: "scale(1)" }, { t: tb, transform: "scale(1.04)", e: E }, { t: tb + .1, transform: "scale(1)" }));
+  TL($("#s10-pulse"), fr);
+}
+const card = $("#s10-card");
+const SHB = "0 30px 80px rgba(0,0,0,.6), inset 0 0 60px rgba(124,92,255,.14), 0 0 0px rgba(200,255,62,0)";
+const SHH = "0 30px 80px rgba(0,0,0,.6), inset 0 0 60px rgba(124,92,255,.14), 0 0 44px rgba(200,255,62,.42)";
+{
+  const fr = [{ t: 18.9, boxShadow: SHB }];
+  HITS.forEach(tb => fr.push({ t: tb - .004, boxShadow: SHB }, { t: tb, boxShadow: SHH, e: E }, { t: tb + .11, boxShadow: SHB }));
+  fr.push({ t: 19.625, boxShadow: SHB, e: "cubic-bezier(.6,0,.4,1)" },
+    { t: 19.74, boxShadow: "0 6px 16px rgba(0,0,0,.35), inset 0 0 4px rgba(124,92,255,.14), 0 0 0px rgba(200,255,62,0)" });
+  TL(card, fr);
+}
+/* 19,625 → 19,74 : la carte se replie sur son point (d’abord en ligne, puis dans le point), puis disparaît */
+const FOLD = "cubic-bezier(.6,0,.35,1)";
+TL(card, [
+  { t: 19.625, left: "90px", top: "780px", width: "790px", height: "360px", borderRadius: "40px", e: FOLD },
+  { t: 19.68, left: "90px", top: "1033px", width: "790px", height: "26px", borderRadius: "13px", e: FOLD },
+  { t: 19.74, left: "777px", top: "1033px", width: "26px", height: "26px", borderRadius: "13px" }]);
+TL(card, [{ t: 19.735, opacity: 1 }, { t: 19.745, opacity: 0 }], "forwards");
+/* textes : écrasés vers la ligne du point (scaleY 1 → 0) */
+for (const id of ["#s10-f1", "#s10-f2"])
+  TL($(id), [{ t: 19.625, transform: "scale(1,1)", e: "cubic-bezier(.5,0,.6,1)" }, { t: 19.665, transform: "scale(.96,0)" }]);
+TL($("#s10-l2"), [{ t: 19.635, opacity: 1, e: "cubic-bezier(.5,0,.8,.6)" }, { t: 19.662, opacity: 0 }], "forwards");
+
+/* « Tout au » claque : 18,05 scale 2 → 1 (--bo) + opacité + flou → net */
+TL($("#s10-sl"), [{ t: 18.05, transform: "scale(2)", e: BO }, { t: 18.35, transform: "scale(1)" }]);
+TL($("#s10-l1"), [{ t: 18.05, opacity: 0, e: "cubic-bezier(.2,.6,.4,1)" }, { t: 18.13, opacity: 1 },
+  { t: 19.635, opacity: 1, e: "cubic-bezier(.5,0,.8,.6)" }, { t: 19.662, opacity: 0 }]);
+TL($("#s10-l1"), [{ t: 18.05, filter: "blur(10px)", e: E }, { t: 18.22, filter: "blur(0px)" }]);
+/* « même endroit » s’écrit de gauche à droite 18,25 → 18,45 */
+TL($("#s10-l2"), [
+  { t: 18.25, clipPath: "inset(-40px calc(100% + 40px) -40px -40px)", e: "cubic-bezier(.4,0,.25,1)" },
+  { t: 18.45, clipPath: "inset(-40px -40px -40px -40px)" }]);
+
+/* la plume suit exactement le bord du masque (128 → 811 px, même courbe) puis s’éteint */
+TL($("#s10-nib"), [
+  { t: 18.25, transform: "translateX(0px) skewX(-11deg)", e: "cubic-bezier(.4,0,.25,1)" },
+  { t: 18.45, transform: "translateX(683px) skewX(-11deg)" }]);
+TL($("#s10-nib"), [{ t: 18.25, opacity: 0 }, { t: 18.275, opacity: .95 }, { t: 18.41, opacity: .95, e: "cubic-bezier(.4,0,.6,1)" }, { t: 18.47, opacity: 0 }], "forwards");
+/* onde de pose du point */
+TL($("#s10-rip"), [{ t: 18.475, transform: "scale(.8)", e: "cubic-bezier(.15,.75,.3,1)" }, { t: 18.69, transform: "scale(2.7)" }]);
+TL($("#s10-rip"), [{ t: 18.475, opacity: 0 }, { t: 18.49, opacity: .6, e: "cubic-bezier(.3,0,.6,1)" }, { t: 18.69, opacity: 0 }], "forwards");
+
+/* ======================================================================
+   LE POINT : une seule animation transform 18,375 → 20,0
+   chute + écrasement (18,375 → 18,6) ; 19,75 → 19,875 glisse au centre (485, 960) Ø 90 ; 19,9 se comprime Ø 54
+   ====================================================================== */
+const dot = $("#s10-dot");
+TL(dot, [
+  { t: 18.375, transform: "translate(0px,-80px) scale(.86,1.18)", e: "cubic-bezier(.45,0,.9,.55)" },
+  { t: 18.475, transform: "translate(0px,3px) scale(1.24,.78)", e: E },
+  { t: 18.545, transform: "translate(0px,-5px) scale(.95,1.06)", e: "cubic-bezier(.4,0,.6,1)" },
+  { t: 18.6, transform: "translate(0px,0px) scale(1,1)" },
+  { t: 19.75, transform: "translate(0px,0px) scale(1,1)", e: E2 },
+  { t: 19.875, transform: "translate(-305px,-86px) scale(3.46,3.46)", e: "cubic-bezier(.3,0,.2,1)" },
+  { t: 19.9, transform: "translate(-305px,-86px) scale(2.08,2.08)" },
+  { t: 20.0, transform: "translate(-305px,-86px) scale(2.08,2.08)" }]);
+TL(dot, [{ t: 18.375, opacity: 0, e: "cubic-bezier(.2,.6,.4,1)" }, { t: 18.43, opacity: 1 }]);
+TL(dot, [
+  { t: 19.75, boxShadow: "0 0 0px 0px rgba(200,255,62,0)", e: "cubic-bezier(.4,0,.6,1)" },
+  { t: 19.875, boxShadow: "0 0 12px 0px rgba(200,255,62,.45)", e: E },
+  { t: 19.9, boxShadow: "0 0 16px 1px rgba(200,255,62,.6)", e: "cubic-bezier(.4,0,.8,.6)" },
+  { t: 20.0, boxShadow: "0 0 22px 3px rgba(200,255,62,.85)" }]);
+
+/* ======================================================================
+   onSeek : flou de bougé des bandes + aspiration (anneaux + traits convergents)
+   ====================================================================== */
+const mbg = $("#s10-mbg");
+/* cubic-bezier(.5,0,1,1) : dérivée dy/dx au temps normalisé u (résolution par dichotomie) */
+const bx = s => 3 * (1 - s) * (1 - s) * s * .5 + 3 * (1 - s) * s * s + s * s * s;
+const slope = u => {
+  let a = 0, b = 1;
+  for (let n = 0; n < 40; n++) { const m = (a + b) / 2; if (bx(m) < u) a = m; else b = m; }
+  const s = (a + b) / 2, h = 1e-4;
+  const by = q => 3 * (1 - q) * q * q + q * q * q;
+  return (by(s + h) - by(s - h)) / (bx(s + h) - bx(s - h));
+};
+const blurAt = t => {
+  if (t < 18.02 || t >= 19.0) return 0;
+  const v = 1400 * slope(clamp(t - 18)) / 30;            // déplacement par image (px)
+  return Math.min(24, .26 * v);
+};
+
+const cv = $("#s10-fx"), g = cv.getContext("2d");
+const TAU = Math.PI * 2, CX = 485, CY = 960;
+const LINES = (() => { const r = mkRnd(1018), o = []; for (let i = 0; i < 26; i++) o.push({ a: TAU * (i + .6 * r()) / 26, r0: 560 + 420 * r(), len: 120 + 160 * r(), w: 1.5 + 1.5 * r(), d: .025 * r(), lime: r() < .55 }); return o; })();
+const drawFx = t => {
+  g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, 1080, 1920);
+  if (t < 19.74 || t >= 20.0) return;
+  /* traits convergents (aspiration courte) */
+  g.lineCap = "round";
+  for (const L of LINES) {
+    const u = clamp((t - 19.74 - L.d) / .15); if (u <= 0 || u >= 1) continue;
+    const q = u * u * (1.6 - .6 * u);                   // accélère vers le centre
+    const rh = L.r0 * (1 - q) + 40 * q, rt = Math.min(L.r0 + L.len, rh + L.len * (1 - .7 * q));
+    const al = Math.sin(Math.PI * u) * .6;
+    const c = Math.cos(L.a), s = Math.sin(L.a);
+    g.strokeStyle = L.lime ? `rgba(200,255,62,${al.toFixed(3)})` : `rgba(143,162,255,${(al * .8).toFixed(3)})`;
+    g.lineWidth = L.w; g.beginPath(); g.moveTo(CX + c * rh, CY + s * rh); g.lineTo(CX + c * rt, CY + s * rt); g.stroke();
+  }
+  /* 19,90 battement sub : une onde fine part du point comprimé et s’éteint avant 20,0 */
+  {
+    const u = clamp((t - 19.9) / .075);
+    if (u > 0 && u < 1) {
+      const q = 1 - Math.pow(1 - u, 3);
+      g.strokeStyle = `rgba(200,255,62,${(.5 * (1 - u)).toFixed(3)})`; g.lineWidth = 3 * (1 - .6 * u);
+      g.beginPath(); g.arc(CX, CY, 34 + 80 * q, 0, TAU); g.stroke();
+    }
+  }
+  /* deux anneaux qui se resserrent sur le point */
+  for (const [t0, R, col, w0] of [[19.75, 430, "200,255,62", 5], [19.79, 300, "255,255,255", 2.5]]) {
+    const u = clamp((t - t0) / (19.9 - t0)); if (u <= 0 || u >= 1) continue;
+    const q = u * u * u;
+    const r = R * (1 - q) + 30 * q, al = Math.min(1, u * 4) * (1 - u * u) * .8;
+    g.strokeStyle = `rgba(${col},${al.toFixed(3)})`; g.lineWidth = w0 * (1 + 1.2 * q);
+    g.beginPath(); g.arc(CX, CY, r, 0, TAU); g.stroke();
+  }
+};
+
+onSeek(t => {
+  const b = blurAt(t);
+  mbg.setAttribute("stdDeviation", `${b.toFixed(2)} 0`);
+  drawFx(t);
+});
+
+})();
+/* ---- s11 ---- */
+(function(){
+/* Scène 11 (20 → 22 s) — DROP FINAL : le point explose, le logo jaillit en se retournant, 900 grains de poussière
+   se posent sur l’anneau du logo, l’orbite et sa comète passent, puis le logo monte et « @l.t_digital » se tape.
+   Tout est piloté par le temps absolu : CSS à délai absolu + onSeek(t) qui redessine tout à partir de t seul. */
+const S = $(".s11");
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const sstep = x => { x = clamp(x); return x * x * (3 - 2 * x); };
+const eio = x => { x = clamp(x); return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };   // easeInOutCubic
+const bez = (x1, y1, x2, y2) => x => {                                                                // cubic-bezier CSS
+  if (x <= 0) return 0; if (x >= 1) return 1;
+  let lo = 0, hi = 1, u = x;
+  for (let k = 0; k < 32; k++) { u = (lo + hi) / 2; const cx = 3 * x1 * u * (1 - u) * (1 - u) + 3 * x2 * u * u * (1 - u) + u * u * u; if (cx < x) lo = u; else hi = u; }
+  return 3 * y1 * u * (1 - u) * (1 - u) + 3 * y2 * u * u * (1 - u) + u * u * u;
+};
+const EX = bez(.16, 1, .3, 1);
+const TAU = Math.PI * 2;
+
+/* ---------- le @ : découpe en lettres (21,60 + i·0,02) ---------- */
+const H = $("#s11-handle");
+const chs = split(H, 21.6, .02);
+chs[2].classList.add("s11-dotCh");                       // le « . » reste transparent : le disque lime prend sa place
+const cur = $("#s11-cur");
+
+/* ---------- mise en place (même courbe que .s11-move) : point de la scène → point affiché ---------- */
+const MV = bez(.45, 0, .15, 1);
+const moveK = t => MV(clamp((t - 21.4) / .4));
+const mapMove = (x, y, m) => { const s = 1 - .333 * m; return [485 + (x - 485) * s, 940 + (y - 940) * s - 470 * m]; };
+
+/* ---------- particules : 900 grains, mkRnd(2020) ---------- */
+const cv = $("#s11-p"), g = cv.getContext("2d");
+const R = mkRnd(2020), N = 900, P = [];
+for (let i = 0; i < N; i++) {
+  const a = R() * TAU;
+  P.push({
+    a, v: 900 + R() * 1500,
+    th: a + .85 + (R() - .5) * 1.1,                        // angle d’arrivée décalé : la gerbe s’enroule sur l’anneau
+    d: R() * .15, ph: R() * TAU, sz: 2 + R() * 2,
+    j: (R() - .5) * 12, tw: R() * TAU, tf: 18 + R() * 22, glint: R() < .045
+  });
+}
+const RC = [482, 929], RR = 235;
+const pos = (p, tau) => {
+  const s = clamp(tau, 0, .3), k = p.v * s * (1 - s / .6);
+  const bx = 485 + k * Math.cos(p.a), by = 960 + k * Math.sin(p.a);
+  const th = p.th + .6 * tau, rr = RR + p.j;
+  const tx = RC[0] + rr * Math.cos(th), ty = RC[1] + rr * Math.sin(th);
+  const u = eio((tau - .15 - p.d) / .5);
+  const dx = tx - bx, dy = ty - by, L = Math.hypot(dx, dy) || 1;
+  const w = 60 * Math.sin(7 * tau + p.ph) * (1 - u) * sstep(tau / .15);
+  return [bx + dx * u - dy / L * w, by + dy * u + dx / L * w, u];
+};
+const LIME = [200, 255, 62], WHITE = [246, 248, 255], BLUE = [143, 162, 255];
+const mix = (A, B, u) => [A[0] + (B[0] - A[0]) * u, A[1] + (B[1] - A[1]) * u, A[2] + (B[2] - A[2]) * u];
+const colAt = u => (u < .5 ? mix(LIME, WHITE, u / .5) : mix(WHITE, BLUE, (u - .5) / .5));
+const alphaAt = t => (t < 20.9 ? 1 : t < 21.4 ? 1 - .65 * (t - 20.9) / .5 : t < 21.6 ? .35 * (1 - (t - 21.4) / .2) : 0);
+
+const ring = (x, y, r, w, css) => { g.beginPath(); g.arc(x, y, Math.max(r, .1), 0, TAU); g.lineWidth = w; g.strokeStyle = css; g.stroke(); };
+
+const draw = t => {
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  g.globalCompositeOperation = "source-over";
+  g.clearRect(0, 0, 1080, 1920);
+  const tau = t - 20;
+  if (tau < 0 || tau >= 2) return;
+
+  /* le point de S10 (Ø 54) qui éclate */
+  if (tau < .12) {
+    const q = tau / .12;
+    g.beginPath(); g.arc(485, 960, 27 + 46 * EX(q), 0, TAU);
+    g.fillStyle = `rgba(200,255,62,${(1 - q) * (1 - q)})`; g.fill();
+  }
+  /* éclat central (1 seul flash) */
+  if (tau < .34) {
+    const q = tau / .34, r = 90 + 520 * EX(q), a = .9 * Math.pow(1 - q, 2.2);
+    const gr = g.createRadialGradient(485, 960, 0, 485, 960, r);
+    gr.addColorStop(0, `rgba(250,255,235,${a})`); gr.addColorStop(.25, `rgba(200,255,62,${a * .55})`);
+    gr.addColorStop(.6, `rgba(143,162,255,${a * .18})`); gr.addColorStop(1, "rgba(143,162,255,0)");
+    g.globalCompositeOperation = "lighter"; g.fillStyle = gr; g.fillRect(485 - r, 960 - r, 2 * r, 2 * r);
+    g.globalCompositeOperation = "source-over";
+  }
+  /* ondes de choc : lime épaisse puis bleue fine */
+  if (tau < .6) {
+    const eo = q => 1 - Math.pow(1 - q, 3.2);
+    const q1 = clamp(tau / .5);                             // l’onde lime : bord extérieur = le point Ø 54 à 20,00, puis hors champ
+    if (q1 < 1) ring(485, 960, 16 + 774 * eo(q1), 2 + 20 * (1 - q1), `rgba(200,255,62,${Math.pow(1 - q1, 1.3)})`);
+    const q2 = clamp((tau - .05) / .55);
+    if (q2 > 0 && q2 < 1) ring(485, 960, 30 + 1050 * eo(q2), 1.5 + 5 * (1 - q2), `rgba(143,162,255,${.85 * Math.pow(1 - q2, 1.4)})`);
+    const q3 = clamp((tau - .1) / .45);
+    if (q3 > 0 && q3 < 1) ring(485, 960, 20 + 420 * eo(q3), 1 + 2 * (1 - q3), `rgba(255,255,255,${.5 * Math.pow(1 - q3, 1.6)})`);
+  }
+
+  /* poussière */
+  const A = alphaAt(t);
+  if (A <= 0) return;
+  const m = moveK(t);
+  g.globalCompositeOperation = "lighter";
+  g.lineCap = "round";
+  for (const p of P) {
+    let [x, y, u] = pos(p, tau);
+    let [x0, y0] = pos(p, tau - .016);
+    if (m > 0) { [x, y] = mapMove(x, y, m); [x0, y0] = mapMove(x0, y0, m); }   // la poussière suit le logo sans traînée
+    const sc = 1 - .333 * m;
+    const tw = 1 - .45 * u * (.5 + .5 * Math.sin(p.tf * tau + p.tw));
+    const c = colAt(u), a = A * tw;
+    g.strokeStyle = `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${a.toFixed(3)})`;
+    g.lineWidth = p.sz * sc;
+    g.beginPath(); g.moveTo(x0, y0); g.lineTo(x + .01, y); g.stroke();
+    if (p.glint) {                                        // éclats en croix
+      const l = (5 + 9 * (.5 + .5 * Math.sin(p.tf * .7 * tau + p.ph))) * sc;
+      g.lineWidth = 1.2 * sc; g.strokeStyle = `rgba(250,252,255,${(a * .85).toFixed(3)})`;
+      g.beginPath(); g.moveTo(x - l, y); g.lineTo(x + l, y); g.moveTo(x, y - l); g.lineTo(x, y + l); g.stroke();
+    }
+  }
+  g.globalCompositeOperation = "source-over";
+};
+
+/* ---------- tremblement d’impact (≤ 4 px) ---------- */
+const shake = $("#s11-shake");
+const doShake = t => {
+  const a = t - 20, b = t - 20.75;
+  let x = 0, y = 0;
+  if (a >= 0 && a < .4) { const k = 4 * Math.exp(-a / .09); x += k * Math.sin(a * TAU * 23); y += k * Math.cos(a * TAU * 29 + 1); }
+  if (b >= 0 && b < .25) { const k = 2 * Math.exp(-b / .06); x += k * Math.sin(b * TAU * 31 + .5); y += k * Math.cos(b * TAU * 27); }
+  shake.style.transform = (x || y) ? `translate(${x.toFixed(2)}px,${y.toFixed(2)}px)` : "none";
+};
+
+/* ---------- lueur : +40 % sur chaque temps (20,0 / 20,5 / 21,0 / 21,5), revenue à la base avant 21,9 ---------- */
+const glowP = $("#s11-glowP");
+const doGlow = t => {
+  let v = 0;
+  [[20, 1], [20.5, .7], [21, .75], [21.5, .6]].forEach(([b, k]) => { const d = t - b; if (d >= 0) v += k * Math.exp(-d / .14) * sstep(d / .03 + .001); });
+  v *= clamp((21.88 - t) / .3);
+  glowP.style.opacity = (.55 * v).toFixed(3);
+  glowP.style.transform = v > 0 ? `scale(${(1 + .06 * v).toFixed(4)})` : "none";
+};
+
+/* ---------- comète sur l’orbite (21,0 → 22,0) ---------- */
+const cT = $("#s11-cTail"), cM = $("#s11-cMid"), cG = $("#s11-cGlow"), cH = $("#s11-cHead");
+const setDash = (el, L, h) => { el.style.strokeDasharray = `${L} ${1000 - L}`; el.style.strokeDashoffset = `${(L - h).toFixed(2)}`; };
+const doComet = t => {
+  const x = clamp(t - 21);
+  const h = 1000 * (1 - Math.pow(1 - x, 1.8));
+  const grow = sstep(x / .12);                              // la queue s’allonge au départ
+  setDash(cT, 300 * grow + .01, h); setDash(cM, 120 * grow + .01, h); setDash(cG, 34 * grow + 4, h); setDash(cH, 3, h);
+};
+
+/* ---------- curseur qui suit la frappe (visible 21,60 → 21,92) ---------- */
+const doCursor = t => {
+  if (t < 21.6 || t >= 21.92) { cur.style.opacity = "0"; return; }
+  let n = 0; for (let i = 0; i < 12; i++) if (t > 21.6 + i * .02 + .0005) n = i + 1;
+  cur.style.opacity = "1";
+  cur.style.transform = `translateX(${(n * 52.8).toFixed(1)}px)`;
+};
+
+onSeek(t => { draw(t); doShake(t); doGlow(t); doComet(t); doCursor(t); });
+
+})();
+/* ---- s12 ---- */
+(function(){
+/* Scène 12 (22 → 24,1 s) — CTA final. Le texte est posé par CSS (délais absolus) ; le décor vivant
+   (bokeh, onde du dernier coup) est redessiné par onSeek(t) à partir de t seul. */
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const sstep = x => { x = clamp(x); return x * x * (3 - 2 * x); };
+const TAU = Math.PI * 2;
+
+/* ---------- textes ---------- */
+split($("#s12-title"), 22.0, .025);                     // « ÉCRIS-NOUS » se tasse lettre à lettre
+const hs = split($("#s12-handle"), 21.6, .02);           // même découpe ET mêmes animations que S11 (finies avant 22,0) : rendu au pixel près
+hs[2].classList.add("s12-dotCh");                        // le « . » reste transparent : le disque lime prend sa place
+/* copies du reflet : découpées à l’identique (mêmes animations, finies avant 23,0) */
+split($("#s12-titleG"), 22.0, .025);
+split($("#s12-handleG"), 21.6, .02)[2].classList.add("s12-dotCh");
+
+/* ---------- bokeh : 40 disques, mkRnd(1212) ---------- */
+const cv = $("#s12-bokeh"), g = cv.getContext("2d");
+const R = mkRnd(1212);
+const COLS = [[200, 255, 62], [143, 162, 255], [124, 92, 255]];
+const B = [];
+for (let i = 0; i < 40; i++) {
+  const d = 40 + R() * 140, k = (d - 40) / 140;          // k : 0 = petit / net, 1 = gros / flou (plus proche)
+  B.push({
+    x: -60 + R() * 1200, y: -80 + R() * 2080, r: d / 2,
+    c: COLS[[0, 1, 1, 2, 2][Math.floor(R() * 5)]],          // lime plus rare : la pilule reste le seul aplat lime
+    a: clamp(.18 - .1 * k + (R() - .5) * .04, .06, .18),
+    v: 20 + 40 * clamp(k * .8 + R() * .2),               // les gros montent plus vite (parallaxe)
+    ph: R() * TAU, sw: 4 + R() * 10, f: .9 + R() * .8, edge: .1 + .32 * k + R() * .06   // bord : net (petits) → doux (gros)
+  });
+}
+const drawBokeh = t => {
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  g.globalCompositeOperation = "source-over";
+  g.clearRect(0, 0, 1080, 1920);
+  const tau = t - 22;
+  if (tau < 0 || tau >= 2.1) return;
+  const fade = sstep(tau / .3);
+  g.globalCompositeOperation = "lighter";
+  for (const p of B) {
+    const x = p.x + p.sw * Math.sin(p.ph + tau * p.f * 1.6);
+    const y = p.y - p.v * tau;
+    const a = p.a * fade, [cr, cg, cb] = p.c, col = `${cr},${cg},${cb}`;
+    const gr = g.createRadialGradient(x, y, 0, x, y, p.r);
+    gr.addColorStop(0, `rgba(${col},${(a * .55).toFixed(4)})`);
+    gr.addColorStop(.62 * (1 - p.edge), `rgba(${col},${(a * .72).toFixed(4)})`);
+    gr.addColorStop(1 - p.edge, `rgba(${col},${a.toFixed(4)})`);       // léger liseré, comme un vrai bokeh
+    gr.addColorStop(1, `rgba(${col},0)`);
+    g.fillStyle = gr;
+    g.beginPath(); g.arc(x, y, p.r, 0, TAU); g.fill();
+  }
+  g.globalCompositeOperation = "source-over";
+};
+
+/* ---------- onde lime du dernier coup (23,50) depuis le point du @ (300, 967) ---------- */
+const wv = $("#s12-wave"), w = wv.getContext("2d");
+const OX = 300, OY = 967;
+const eo = (q, p) => 1 - Math.pow(1 - q, p);
+const ring = (r, lw, css) => { w.beginPath(); w.arc(OX, OY, Math.max(r, .1), 0, TAU); w.lineWidth = lw; w.strokeStyle = css; w.stroke(); };
+const drawWave = t => {
+  w.setTransform(1, 0, 0, 1, 0, 0);
+  w.clearRect(0, 0, 1080, 1920);
+  const d = t - 23.5;
+  if (d < 0 || d >= .6) return;
+  /* éclat doux autour du point */
+  if (d < .3) {
+    const q = d / .3, r = 40 + 160 * eo(q, 3), a = .55 * Math.pow(1 - q, 2);
+    const gr = w.createRadialGradient(OX, OY, 0, OX, OY, r);
+    gr.addColorStop(0, `rgba(230,255,170,${a.toFixed(3)})`); gr.addColorStop(.35, `rgba(200,255,62,${(a * .5).toFixed(3)})`);
+    gr.addColorStop(1, "rgba(200,255,62,0)");
+    w.globalCompositeOperation = "lighter"; w.fillStyle = gr; w.fillRect(OX - r, OY - r, 2 * r, 2 * r);
+    w.globalCompositeOperation = "source-over";
+  }
+  /* onde principale : bordure 4 px, Ø 22 → ~1300, opacité .6 → 0 en 0,5 s */
+  const q1 = clamp(d / .5);
+  if (q1 < 1) ring(11 + 650 * eo(q1, 3), 4 + 3 * (1 - q1), `rgba(200,255,62,${(.6 * Math.pow(1 - q1, 1.25)).toFixed(3)})`);
+  /* écho fin, légèrement en retard */
+  const q2 = clamp((d - .06) / .5);
+  if (q2 > 0 && q2 < 1) ring(11 + 480 * eo(q2, 3), 1.5 + 1.5 * (1 - q2), `rgba(200,255,62,${(.35 * Math.pow(1 - q2, 1.4)).toFixed(3)})`);
+};
+
+onSeek(t => { drawBokeh(t); drawWave(t); });
+
+})();
+/* ---- fx ---- */
+(function(){
+/* Couche globale fx (0 → 24,1 s) — poussière de glyphes, grain, vignette, fuites de lumière, traînées du whip, bloom de l’iris.
+   Tout est piloté par le temps : WAAPI à délai ABSOLU (fill forwards, base invisible) ou onSeek(t) qui redessine tout
+   à partir de t seul. Aucun texte DOM, aucune dépendance aux scènes, aucune horloge réelle, aléatoire = mkRnd. */
+const id = n => document.getElementById("fx-" + n);
+const FPS = 30, NF = 725;                       // 725 images : 0 → 24,133 s
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, p) => a + (b - a) * p;
+const mod = (v, m) => ((v % m) + m) % m;
+const bez = (x1, y1, x2, y2) => {
+  const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx, cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+  const X = s => ((ax * s + bx) * s + cx) * s, Y = s => ((ay * s + by) * s + cy) * s;
+  return p => { if (p <= 0) return 0; if (p >= 1) return 1;
+    let lo = 0, hi = 1, s = p; for (let i = 0; i < 40; i++) { if (X(s) < p) lo = s; else hi = s; s = (lo + hi) / 2; } return Y(s); };
+};
+const EO = bez(.2, .8, .2, 1), E2 = bez(.7, 0, .2, 1), IO = bez(.45, 0, .55, 1);
+/* hachage entier déterministe (pour les vibrations image par image et le placement du grain) */
+const hash = (a, b) => { let h = Math.imul(a | 0, 374761393) ^ Math.imul(b | 0, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); h ^= h >>> 16; return (h >>> 0) / 4294967296; };
+const ms = s => Math.round(s * 1000);
+/* animation échantillonnée : fn(p) → images clés, délai absolu, fill forwards (l’état de base CSS est invisible) */
+const samp = (el, fn, t0, dur, n = 24) => {
+  const kf = []; for (let i = 0; i <= n; i++) kf.push(fn(i / n));
+  return el.animate(kf, { delay: ms(t0), duration: ms(dur), easing: "linear", fill: "forwards" });
+};
+
+/* ================= 1) POUSSIÈRE DE GLYPHES ================= */
+/* énergie E(t) : 1 en croisière ; ×3 au coup (2,0 · 12,0 · 20,0) qui revient à 1 en 0,4 s ; ×2 pendant le survol (6 → 8) ;
+   0,3 pendant le breakdown (16 → 18) ; 0 pendant le silence (11,75 → 12,0). */
+const Ef = t => {
+  if (t >= 11.75 && t < 12) return 0;
+  let e = 1;
+  if (t >= 6 && t < 8) e = 2;
+  else if (t >= 16 && t < 18) e = .3;
+  for (const h of [2, 12, 20]) if (t >= h && t < h + .4) { const p = (t - h) / .4; e *= 1 + 2 * (1 - p * p); }
+  return e;
+};
+/* intégrale de E précalculée pour chaque image (725 valeurs), 16 sous-pas par image */
+const S = new Float64Array(NF);
+for (let k = 1, acc = 0; k < NF; k++) {
+  for (let j = 0; j < 16; j++) acc += Ef((k - 1 + (j + .5) / 16) / FPS) / (16 * FPS);
+  S[k] = acc;
+}
+const Sat = t => { const f = cl(t * FPS, 0, NF - 1), i = Math.floor(f), j = Math.min(NF - 1, i + 1); return S[i] + (S[j] - S[i]) * (f - i); };
+
+/* whip pan (5,85 → 6,15) : la poussière part vers la gauche avec la caméra (parallaxe selon le plan) */
+const WHIP = t => -1250 * E2(cl((t - 5.85) / .3));
+/* fonds clairs : lime 1,95 → 3,92 · papier 7,95 → 9,89 · lime 12,0 → 13,89 (instants mesurés sur les coupes) */
+const SW = [1.95, 3.92, 7.95, 9.89, 12.0, 13.89];
+const isLight = t => SW.filter(s => t >= s).length % 2 === 1;
+/* passage de couleur : la poussière s’efface puis revient dans l’autre couleur en ±0,04 s autour de chaque bascule */
+const dipAt = t => SW.reduce((m, s) => Math.min(m, cl(Math.abs(t - s) / .04)), 1);
+
+const dust = id("dust"), ctx = dust.getContext("2d");
+const G = [];
+{
+  const r = mkRnd(7); r();                      // la 1re valeur d’une graine courte est quasi nulle : on la jette
+  const CH = ["L", "T", "&", ".", "€", "h", "@", "+", "?"];
+  const FONTS = ["900 {s}px Archivo", "500 {s}px 'DM Mono'", "italic 400 {s}px 'Instrument Serif'"];
+  /* 3 plans : lointain (×0,5), milieu (×1), proche (×1,8) */
+  const PL = [{ k: .5, n: 62, s: [10, 15], a: [.12, .17] }, { k: 1, n: 48, s: [15, 24], a: [.16, .24] }, { k: 1.8, n: 30, s: [23, 34], a: [.22, .30] }];
+  PL.forEach((P, pi) => {
+    for (let i = 0; i < P.n; i++) {
+      const ch = CH[Math.floor(r() * CH.length)];
+      const fr = r(), font = fr < .55 ? 0 : fr < .8 ? 1 : 2;
+      const size = Math.round(lerp(P.s[0], P.s[1], r()));
+      const cr = r(), col = ch === "." ? (cr < .7 ? 1 : 0) : (cr < .6 ? 0 : cr < .8 ? 1 : 2);   // 0 blanc · 1 lime · 2 violet
+      G.push({
+        pl: pi, k: P.k, ch, size, font: FONTS[font].replace("{s}", size),
+        a: lerp(P.a[0], P.a[1], r()), col,
+        x0: r() * 1240, y0: r() * 2040,
+        sa: lerp(8, 26, r()) * (r() < .5 ? -1 : 1), sp: r() * 6.283, sf: lerp(.45, 1.2, r()),
+        r0: (r() - .5) * 1.2, rw: (r() - .5) * 1.1,
+      });
+    }
+  });
+}
+const DARK = ["#ffffff", "#c8ff3e", "#9d86ff"], INK = "#0b0b10";
+const rgba = (h, a) => `rgba(${parseInt(h.slice(1, 3), 16)},${parseInt(h.slice(3, 5), 16)},${parseInt(h.slice(5, 7), 16)},${a})`;
+const DARK_A = DARK.map(h => [rgba(h, 1), rgba(h, 0)]), INK_A = [rgba(INK, 1), rgba(INK, 0)];
+const BASE = 46;                                  // px par unité d’énergie (≈ px/s en croisière) pour le plan ×1
+const WW = 1240, MX = 80, HH = 2040, MY = 60;     // boîtes de bouclage (marges hors cadre)
+const CX = 485, CY = 960;                         // point d’aspiration (le disque lime de S10)
+
+/* position d’un glyphe à l’instant t (déterministe) : bouclage, balancement, whip, vibration du silence, aspiration */
+const P = (g, i, t) => {
+  const s = Sat(t), f = Math.round(t * FPS);
+  let x = mod(g.x0 + g.sa * Math.sin(g.sp + g.sf * s) + WHIP(t) * g.k, WW) - MX;
+  let y = mod(g.y0 - BASE * g.k * s, HH) - MY;
+  let rot = g.r0 + g.rw * s, sc = 1, al = g.a;
+  if (t >= 11.75 && t < 12) { x += Math.round((hash(i, f) - .5) * 2.4); y += Math.round((hash(i + 977, f) - .5) * 2.4); }   // vibre de ±1 px
+  if (t > 19.75) {                                // aspirée dans le point lime (485, 960) en s’éteignant
+    const p = cl((t - 19.75) / .25), q = p * p;
+    x = lerp(x, CX, q); y = lerp(y, CY, q); sc = 1 - .7 * q; al *= 1 - p * p * p * p; rot += q * 2 * g.rw;
+  }
+  return [x, y, rot, sc, al];
+};
+const SHUT = .5 / FPS;                            // obturateur 180° : la traînée couvre la moitié du trajet d’une image
+
+onSeek(t => {
+  ctx.clearRect(0, 0, 1080, 1920);
+  if (t >= 20 || t < 0) return;                   // éteinte de 20,0 à la fin (S11 a ses propres particules)
+  const light = isLight(t), dip = dipAt(t);
+  const blur = (t > 5.84 && t < 6.17) || t > 19.75;  // flou de bougé seulement quand ça va vite (whip, aspiration)
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  for (let i = 0; i < G.length; i++) {
+    const g = G[i];
+    let [x, y, rot, sc, al] = P(g, i, t);
+    al *= dip;
+    if (al < .004) continue;
+    const c = light ? INK : DARK[g.col];
+    ctx.font = g.font; ctx.fillStyle = c;
+    /* plan proche : léger halo (profondeur de champ) sur les fonds sombres seulement */
+    if (g.pl === 2 && !light) { ctx.shadowColor = c; ctx.shadowBlur = 7; } else ctx.shadowBlur = 0;
+    /* flou de bougé : traînée continue de la position (t − ½ image) à la position t, qui s’efface vers l’arrière,
+       et glyphe légèrement étiré dans le sens du mouvement */
+    let stretch = 1, ang = 0;
+    if (blur) {
+      const [x1, y1] = P(g, i, t - SHUT), dx = x1 - x, dy = y1 - y, L = Math.hypot(dx, dy);
+      if (L > 4 && L < 700) {                     // (au-delà de 700 px : saut de bouclage, pas un mouvement)
+        const hg = Math.max(1.5, g.size * .2 * sc), A = light ? INK_A : DARK_A[g.col];
+        const gr = ctx.createLinearGradient(x, y, x1, y1); gr.addColorStop(0, A[0]); gr.addColorStop(1, A[1]);
+        ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.shadowBlur = 0; ctx.globalAlpha = al * .8;
+        ctx.strokeStyle = gr; ctx.lineWidth = hg; ctx.lineCap = "round";
+        ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x1, y1); ctx.stroke();
+        stretch = 1 + Math.min(L / 40, .9); ang = Math.atan2(dy, dx); al *= .75;
+      }
+    }
+    ctx.globalAlpha = al;
+    /* étirement le long de la direction du mouvement, puis rotation propre du glyphe */
+    ctx.setTransform(1, 0, 0, 1, x, y);
+    if (stretch > 1) { ctx.rotate(ang); ctx.scale(stretch, 1); ctx.rotate(-ang); }
+    ctx.scale(sc, sc); ctx.rotate(rot);
+    ctx.fillText(g.ch, 0, 0);
+  }
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+});
+
+/* ================= 2) GRAIN ================= */
+const GR = [0, 1, 2].map(i => id("g" + i));
+{
+  GR.forEach((el, i) => {
+    const c = document.createElement("canvas"); c.width = c.height = 256;
+    const x = c.getContext("2d"), im = x.createImageData(256, 256), r = mkRnd(4099 + i * 7919); r(); r();
+    for (let p = 0; p < 65536; p++) {
+      const v = cl(Math.round(128 + (r() + r() + r() + r() - 2) * 165), 0, 255);   // bruit gris quasi gaussien centré sur 128
+      im.data[p * 4] = im.data[p * 4 + 1] = im.data[p * 4 + 2] = v; im.data[p * 4 + 3] = 255;
+    }
+    x.putImageData(im, 0, 0);
+    el.style.backgroundImage = `url(${c.toDataURL("image/png")})`;
+  });
+}
+onSeek(t => {
+  const f = Math.round(t * FPS), n = f % 3;
+  const op = t >= 7.95 && t < 9.89 ? .04 : .06;           // plus discret sur le papier
+  GR.forEach((el, i) => {
+    el.style.opacity = i === n ? op : 0;
+    if (i === n) el.style.backgroundPosition = `${Math.floor(hash(f, 31) * 256)}px ${Math.floor(hash(f, 57) * 256)}px`;
+  });
+});
+
+/* ================= 3) VIGNETTE ================= */
+const vig = id("vig");
+/* transparent jusqu’à stop %, puis montée en u² jusqu’à rgba(0,0,0,.45) au coin : pas d’arête visible (bande de Mach) au départ du dégradé */
+const VIG = stop => `radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) ${stop.toFixed(2)}%,` +
+  [.25, .5, .75].map(u => `rgba(0,0,0,${(.45 * u * u).toFixed(4)}) ${(stop + (100 - stop) * u).toFixed(2)}%`).join(",") + `,rgba(0,0,0,.45) 100%)`;
+let vigStop = -1;
+onSeek(t => {
+  const pulse = ph => Math.exp(-ph / .08);
+  let o, stop = 55;
+  if (t >= 11.75 && t < 12) {                       // silence : opacité 1, la vignette inspire lentement vers le point
+    const p = (t - 11.75) / .25; o = 1; stop = 55 - 9 * Math.sin(p * Math.PI / 2);
+  } else if (t >= 16 && t < 18) o = .8 + .2 * pulse(mod(t - 16, 1));   // demi-temps : pulses à 16,0 et 17,0 seulement
+  else o = .8 + .2 * pulse(mod(t, .5));
+  /* champs lime (drops 2–4 et 12–14) : même pulse mais ×0,65, sinon les bords du lime virent à l’olive.
+     On y entre avec l’iris lime (1,90 → 1,97) et l’explosion du point (12,0), on en sort sous l’encre (3,88 · 13,86). */
+  const wl = t < 3 ? IO(cl((t - 1.9) / .07)) : t < 6 ? 1 - IO(cl((t - 3.88) / .05))
+           : t < 12 ? 0 : t < 13 ? 1 : 1 - IO(cl((t - 13.86) / .05));
+  o *= 1 - .35 * wl;
+  /* scène claire 8–10 : .35 (on y glisse pendant l’iris 7,87 → 7,97, on en sort sous les paupières 9,87 → 9,95) */
+  const w = t < 8.9 ? IO(cl((t - 7.87) / .1)) : 1 - IO(cl((t - 9.87) / .08));
+  o = lerp(o, .35, w);
+  vig.style.opacity = o.toFixed(3);
+  if (stop !== vigStop) { vigStop = stop; vig.style.background = VIG(stop); }
+});
+
+/* ================= 4) FUITES DE LUMIÈRE ================= */
+/* opacité o0 → 0 (tient un peu puis s’éteint) en glissant de 300 px le long de la bande (sortie douce) */
+const leak = (el, t0, dur, o0, dir) => samp(el, p => ({
+  opacity: +(o0 * (1 - p) * (1 - .35 * p)).toFixed(4),
+  transform: `rotate(-30deg) translateX(${(dir * (-150 + 300 * EO(p))).toFixed(1)}px)`,
+}), t0, dur);
+leak(id("leak-a"), 2.0, .5, .5, 1);
+leak(id("leak-b"), 12.0, .5, .5, -1);
+leak(id("leak-w"), 17.9, .4, .35, 1);
+leak(id("leak-c"), 20.0, .5, .5, 1);
+
+/* ================= 5) TRAÎNÉES DU WHIP ================= */
+{
+  const box = id("whip"), r = mkRnd(66); r();
+  for (let i = 0; i < 10; i++) {
+    const el = document.createElement("i"); el.className = "fx-st";
+    const h = 2 + Math.round(r() * 2), w = Math.round(lerp(300, 900, r()));
+    const y = Math.round(lerp(140, 1780, (i + r()) / 10));        // réparties sur toute la hauteur
+    const t0 = 5.85 + ((i * 7) % 10 + r() * .6) / 10 * .14, dur = .15 + r() * .01;   // départs étalés 5,85 → 5,99, fin ≤ 6,15
+    el.style.cssText = `top:${y}px;width:${w}px;height:${h}px`;
+    box.append(el);
+    el.animate([
+      { opacity: .5, transform: "translateX(1200px)" },
+      { opacity: .5, transform: "translateX(-1400px)", offset: .96 },
+      { opacity: 0, transform: "translateX(-1400px)" },
+    ], { delay: ms(t0), duration: ms(dur), easing: "linear", fill: "forwards" });
+  }
+}
+
+/* ================= 6) BLOOM DE L’IRIS ================= */
+samp(id("bloom"), p => ({ opacity: +(.25 * (1 - EO(p))).toFixed(4), transform: `scale(${(1 + .08 * EO(p)).toFixed(4)})` }), 7.92, .2, 12);
 
 })();
 /* ===== Pub 10 — démarrage (après les scripts des scènes) ===== */

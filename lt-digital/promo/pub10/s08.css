@@ -1,0 +1,75 @@
+/* ===== Scène 08 (14 → 16 s) — CONFIANCE : « PRIX annoncé à l’avance. RETOUCHES incluses. »
+   Le O de RETOUCHES s’allume puis devient l’anneau lime qui ouvre le tunnel du temps (S9). ===== */
+.s08{background:var(--night);color:#fff;font-family:var(--f)}
+.s08 i{display:block;font-style:normal}
+
+/* ---------- fond : nuit + lueurs qui dérivent (éteintes à la fin : raccord S9 sur la nuit) ---------- */
+.s08 .s08-bg{position:absolute;inset:0;overflow:hidden}
+.s08 .s08-gv,.s08 .s08-gb{position:absolute;left:0;top:0;border-radius:50%}
+.s08 .s08-gv{width:1800px;height:1800px;margin:-900px 0 0 -900px;
+  background:radial-gradient(closest-side,rgba(124,92,255,.3),rgba(124,92,255,.17) 38%,rgba(124,92,255,.06) 70%,rgba(124,92,255,0))}
+.s08 .s08-gb{width:1300px;height:1300px;margin:-650px 0 0 -650px;
+  background:radial-gradient(closest-side,rgba(143,162,255,.13),rgba(143,162,255,.05) 55%,rgba(143,162,255,0))}
+.s08 .s08-dark{position:absolute;inset:0;opacity:0;background:var(--night)}
+
+/* ---------- « € » géant en contour, 3 échos qui reculent en Z ---------- */
+.s08 .s08-euout{position:absolute;inset:0;transform-origin:485px 900px}
+.s08 .s08-eustage{position:absolute;inset:0;perspective:1400px;perspective-origin:485px 900px}
+.s08 .s08-eurot{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:485px 960px}
+.s08 .s08-eu{position:absolute;left:0;top:98px;width:970px;text-align:center;font-weight:900;font-size:1800px;line-height:1;
+  font-stretch:100%;color:transparent;white-space:nowrap;-webkit-text-stroke:2px rgba(255,255,255,.055)}
+.s08 .s08-eu2{transform:translateZ(-170px);-webkit-text-stroke-color:rgba(255,255,255,.035)}
+.s08 .s08-eu3{transform:translateZ(-340px);-webkit-text-stroke-color:rgba(255,255,255,.022)}
+
+/* ---------- caméra ---------- */
+.s08 .s08-cam,.s08 .s08-shk{position:absolute;inset:0;transform-origin:485px 900px}
+.s08 .s08-halo{position:absolute;left:149px;top:593.5px;width:520px;height:520px;border-radius:50%;opacity:0;
+  background:radial-gradient(closest-side,rgba(200,255,62,.5),rgba(200,255,62,.2) 40%,rgba(200,255,62,.06) 70%,rgba(200,255,62,0))}
+.s08 .s08-fxs{position:absolute;left:0;top:0;overflow:visible}
+.s08 .s08-fxs circle{fill:none;stroke:var(--lime)}
+.s08 .s08-fxs line{stroke:var(--lime);stroke-linecap:round}
+
+/* ---------- bloc 1 : PRIX + ligne de base + « annoncé à l’avance. » ---------- */
+.s08 .s08-b1{position:absolute;left:0;top:300px;width:1080px;height:390px}
+.s08 .s08-prixw{position:absolute;left:70px;top:30px;width:830px;height:200px;transform-origin:415px 150px}
+.s08 .s08-prix,.s08 .s08-echo{font-weight:900;font-size:200px;line-height:1;text-align:center;white-space:nowrap;
+  font-stretch:125%;letter-spacing:-.03em;text-indent:-.03em}
+.s08 .s08-echo{position:absolute;left:70px;top:30px;width:830px;height:200px;color:transparent;
+  -webkit-text-stroke:2px rgba(255,255,255,.55);opacity:0;transform-origin:415px 96px}
+.s08 .s08-base{position:absolute;left:180px;top:207px;width:609px;height:4px;background:var(--lime);transform:scaleX(0);
+  border-radius:2px}
+.s08 .s08-pl{position:absolute;left:0;width:1080px}
+.s08 .s08-pl1{top:220px;height:104px;transform-origin:485px 60px}
+.s08 .s08-ann,.s08 .s08-inc{position:absolute;left:485px;top:0;transform:translateX(-50%);padding:0 20px;white-space:nowrap;
+  font-family:var(--serif);font-style:italic;font-weight:400;line-height:1;color:var(--lime);clip-path:inset(-40px 100% -50px 0)}
+.s08 .s08-ann{font-size:104px}
+/* plume lumineuse au bord de l’écriture (base invisible) */
+.s08 .s08-nib{position:absolute;left:0;top:0;width:4px;border-radius:2px;opacity:0;
+  background:linear-gradient(180deg,rgba(255,255,255,0),#fff 22%,#f4ffd6 50%,#fff 78%,rgba(255,255,255,0));
+  box-shadow:0 0 14px 3px rgba(200,255,62,.85),0 0 40px 8px rgba(200,255,62,.35)}
+.s08 #s08-nib1{top:6px;height:110px}
+
+/* ---------- bloc 2 : RETOUCHES (volets) + « incluses. » ---------- */
+.s08 .s08-b2{position:absolute;inset:0}
+.s08 .s08-row{position:absolute;left:135px;top:780px;white-space:nowrap;font-weight:900;font-size:150px;line-height:1;
+  font-stretch:70%;letter-spacing:-.03em}
+.s08 .s08-lt,.s08 .s08-ow{display:inline-block;perspective:900px}
+.s08 .s08-ow{width:87px;text-align:center;overflow:visible;transform-origin:45.7px 73.5px}
+.s08 .s08-row .ch{transform-origin:50% 0;transform:rotateX(-90deg)}
+.s08 .s08-incf{position:absolute;left:0;top:920px;width:1080px;height:130px;transform-origin:485px 65px}
+.s08 .s08-pl2{top:0;height:130px;transform-origin:485px 75px}
+.s08 .s08-inc{font-size:130px}
+.s08 #s08-nib2{top:10px;height:136px}
+
+/* ---------- le O devenu tracé (dessiné à chaque image) + anneau final ---------- */
+.s08 .s08-osvg,.s08 .s08-ring{position:absolute;left:0;top:0;overflow:visible}
+.s08 #s08-op,.s08 #s08-og{fill:var(--lime);fill-rule:evenodd}
+.s08 #s08-oe1,.s08 #s08-oe2{fill:none;stroke:var(--lime);fill-rule:evenodd}
+.s08 .s08-ring{opacity:0;transform-origin:485px 900px}
+.s08 .s08-ring circle{fill:none;stroke:var(--lime);stroke-width:170px}
+/* reflet qui court sur l’anneau */
+.s08 .s08-shim{position:absolute;left:135px;top:550px;width:700px;height:700px;border-radius:50%;opacity:0;
+  background:conic-gradient(from 0deg,rgba(255,255,255,0) 0deg,rgba(255,255,255,0) 290deg,rgba(255,255,255,.12) 315deg,rgba(255,255,255,.5) 333deg,rgba(255,255,255,.62) 338deg,rgba(255,255,255,.5) 343deg,rgba(255,255,255,.1) 355deg,rgba(255,255,255,0) 360deg);
+  -webkit-mask-image:radial-gradient(circle closest-side,rgba(0,0,0,0) 179.5px,#000 181px,#000 348.5px,rgba(0,0,0,0) 350px);
+  mask-image:radial-gradient(circle closest-side,rgba(0,0,0,0) 179.5px,#000 181px,#000 348.5px,rgba(0,0,0,0) 350px)}
+.s08 .s08-defs{position:absolute;left:0;top:0;width:0;height:0;overflow:hidden}

@@ -1,0 +1,42 @@
+/* ===== Scène 09 (16 → 18 s) — BREAKDOWN : tunnel de cadrans, « Livré en 48 à 72 h », balayage d’aiguille ===== */
+.s09{background:#06070d;color:#fff;font-family:var(--f)}
+.s09 i{display:block;font-style:normal}
+.s09 .s09-cv{position:absolute;left:0;top:0;width:1080px;height:1920px;display:block}
+
+/* voile sombre derrière le texte (invisible à 16,00 pour que l’anneau de S8 soit identique) */
+.s09 .s09-veil{position:absolute;inset:0;opacity:0;
+  background:radial-gradient(ellipse 560px 440px at 485px 900px,rgba(6,7,13,.65),rgba(6,7,13,.36) 38%,rgba(6,7,13,0) 70%);
+  animation:s09-veil .4s var(--e) forwards;animation-delay:16s}
+@keyframes s09-veil{from{opacity:0}to{opacity:1}}
+
+/* onde sonar (redessinée dans onSeek) */
+.s09 .s09-son{position:absolute;left:0;top:0;overflow:visible}
+.s09 .s09-son circle{fill:none;opacity:0}
+.s09 #s09-son1{stroke:var(--lime)}
+.s09 #s09-son2{stroke:#fff}
+
+/* caméra du texte : dérive permanente + coups d’impact (deux wrappers, une animation chacun) */
+.s09 .s09-cam,.s09 .s09-kick{position:absolute;inset:0;transform-origin:485px 900px}
+
+.s09 .s09-t{position:absolute;line-height:1;white-space:nowrap}
+.s09 .s09-l1{left:300px;top:640px;font-family:var(--serif);font-style:italic;font-weight:400;font-size:130px;
+  text-shadow:0 4px 34px rgba(6,7,13,.6)}
+.s09 .s09-l1 .ch{opacity:0;animation:s09-fall .3s var(--ex) both;animation-delay:var(--t)}
+@keyframes s09-fall{from{transform:translateY(-60px);opacity:0}to{transform:none;opacity:1}}
+
+.s09 .s09-n{top:790px;font-weight:900;font-size:270px;font-stretch:62%;letter-spacing:-.03em;
+  text-shadow:0 6px 40px rgba(6,7,13,.55),0 0 0 rgba(200,255,62,0)}
+.s09 .s09-48{left:128px;transform-origin:67px 132px;opacity:0}
+.s09 .s09-72{left:461px;transform-origin:104px 132px;opacity:0}
+.s09 .s09-h{left:690px;font-stretch:80%;transform-origin:0 150px;opacity:0}
+.s09 .s09-a{left:374px;top:912px;font-family:var(--serif);font-style:italic;font-weight:400;font-size:125px;color:var(--lime);
+  transform-origin:28px 70px;transform:scale(0);text-shadow:0 4px 26px rgba(6,7,13,.6)}
+
+/* échos en contour (traînée du SLAM qui recule en Z) */
+.s09 .s09-echo{color:transparent;-webkit-text-stroke:3px rgba(200,255,62,.9);text-shadow:none;opacity:0}
+.s09 .s09-e48{left:128px;transform-origin:67px 132px}
+.s09 .s09-e72{left:461px;transform-origin:104px 132px}
+
+/* soulignement lime 17,50 */
+.s09 .s09-ul{position:absolute;left:128px;top:1042px;width:701px;height:6px;border-radius:3px;background:var(--lime);
+  box-shadow:0 0 16px rgba(200,255,62,.55);transform:scaleX(0);transform-origin:0 50%}

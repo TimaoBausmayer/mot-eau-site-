@@ -1,0 +1,41 @@
+/* Couche globale fx (0 → 24,1 s) — aucun texte, rien ne dépend d’une scène, tout est piloté par le temps.
+   NB : .fx ne porte PAS de z-index. Un z-index en ferait un contexte d’empilement, donc un groupe isolé :
+   les modes de fusion (screen, overlay) de ses enfants ne verraient plus les scènes (vérifié dans Chromium :
+   un gris en « screen » sur du lime rend gris au lieu de lime clair). Chaque couche porte donc son propre
+   z-index 901 → 906, ce qui la place au-dessus de toutes les scènes (.sc, z auto) dans le contexte du .viewport. */
+.fx{position:absolute;inset:0;pointer-events:none}
+.fx>*{position:absolute;pointer-events:none}
+
+/* 1) poussière de glyphes */
+.fx .fx-dust{left:0;top:0;width:1080px;height:1920px;z-index:901}
+
+/* 4) fuites de lumière : bande lime → transparent, inclinée −30°, en « screen », bords adoucis par un masque */
+.fx .fx-leak{left:0;top:0;width:1600px;height:700px;z-index:902;opacity:0;mix-blend-mode:screen;
+  background:linear-gradient(180deg,rgba(200,255,62,0) 0%,rgba(200,255,62,.4) 24%,rgba(226,255,160,.95) 44%,rgba(200,255,62,.55) 58%,rgba(200,255,62,0) 100%);
+  -webkit-mask-image:radial-gradient(closest-side,#000 0%,rgba(0,0,0,.85) 40%,rgba(0,0,0,.35) 72%,transparent 100%);
+          mask-image:radial-gradient(closest-side,#000 0%,rgba(0,0,0,.85) 40%,rgba(0,0,0,.35) 72%,transparent 100%);
+  transform:rotate(-30deg)}
+.fx .fx-leak-warm{background:linear-gradient(180deg,rgba(255,154,60,0) 0%,rgba(255,154,60,.5) 24%,rgba(255,190,120,.95) 42%,rgba(255,77,109,.8) 58%,rgba(255,77,109,0) 100%)}
+/* positions (centre de la bande) */
+.fx #fx-leak-a{left:-520px;top:150px}    /* centre (280, 500)  */
+.fx #fx-leak-b{left:-120px;top:950px}    /* centre (680, 1300) */
+.fx #fx-leak-w{left:-460px;top:1060px}   /* centre (340, 1410) */
+.fx #fx-leak-c{left:-315px;top:260px}    /* centre (485, 610)  */
+
+/* 6) bloom de l’iris : radial blanc-lavande Ø 1600 centré (485, 1000) */
+.fx .fx-bloom{left:-315px;top:200px;width:1600px;height:1600px;z-index:903;opacity:0;border-radius:50%;
+  background:radial-gradient(closest-side,#fff 0%,rgba(244,242,255,.92) 18%,rgba(230,225,255,.62) 42%,rgba(230,225,255,.22) 70%,rgba(230,225,255,0) 100%)}
+
+/* 5) traînées du whip pan : traits blancs, tête nette à gauche (sens du mouvement), queue qui s’efface à droite */
+.fx .fx-whip{left:0;top:0;width:1080px;height:1920px;z-index:904}
+.fx .fx-st{position:absolute;left:0;opacity:0;border-radius:3px;transform:translateX(1200px);
+  background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,.92) 12%,rgba(255,255,255,.45) 55%,rgba(255,255,255,0) 100%);
+  box-shadow:0 0 6px rgba(255,255,255,.35)}
+
+/* 3) vignette (le dégradé est réécrit par onSeek pendant le silence de 11,75 → 12,0) */
+.fx .fx-vig{left:0;top:0;width:1080px;height:1920px;z-index:905;opacity:.8;
+  background:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.0281) 66.25%,rgba(0,0,0,.1125) 77.5%,rgba(0,0,0,.2531) 88.75%,rgba(0,0,0,.45) 100%)}
+
+/* 2) grain : tuiles 256 px posées par fx.js, une seule visible par image */
+.fx .fx-grain{left:0;top:0;width:1080px;height:1920px;z-index:906;opacity:0;mix-blend-mode:overlay;
+  background-repeat:repeat;background-size:256px 256px}

@@ -1,0 +1,173 @@
+/* ===== Scène 12 (22 → 24,1 s) — APPEL À L’ACTION : « ÉCRIS-NOUS @l.t_digital — LIEN EN BIO »
+   Raccord invisible avec S11 (logo, lueur bleue et @ au même pixel). Le texte se pose puis reste immobile ;
+   seul le décor vit (@ géant qui tourne, lueurs qui respirent, bokeh, poussée lente). ===== */
+.s12{background:#07060c;color:#fff;font-family:var(--f)}
+.s12 i{display:block;font-style:normal}
+.s12 .s12-bg{position:absolute;inset:0;background:#07060c}
+
+/* ---------- décor : seul calque poussé (1 → 1,03, linéaire, 22,0 → 24,1), centré sur le logo pour que la lueur bleue reste dessus ---------- */
+.s12 .s12-decor{position:absolute;inset:0;transform-origin:485px 470px;
+  animation:s12-push 2.1s linear both;animation-delay:22s}
+@keyframes s12-push{from{transform:none}to{transform:scale(1.03)}}
+
+/* lueur bleue : IDENTIQUE à la fin de S11 (rayon 340 centré 485/470) ; respire 1 → .7 → 1 */
+.s12 .s12-glowB{position:absolute;inset:0}
+.s12 .s12-glowBi{position:absolute;inset:0;
+  background:radial-gradient(circle 340px at 485px 470px,rgba(61,107,255,.35),transparent 340px);
+  animation:s12-breathe .5s ease-in-out infinite alternate both;animation-delay:22s}
+@keyframes s12-breathe{from{opacity:1}to{opacity:.7}}
+/* lueur lime Ø 900 centrée 485/1110 : apparaît 22,0 → 22,4 puis respire en opposition de phase */
+.s12 .s12-glowL{position:absolute;inset:0;opacity:0;animation:s12-in .4s ease-out forwards;animation-delay:22s}
+.s12 .s12-glowLi{position:absolute;inset:0;
+  background:radial-gradient(circle 450px at 485px 1110px,rgba(200,255,62,.15),rgba(200,255,62,.06) 55%,transparent 450px);
+  animation:s12-breatheL .5s ease-in-out infinite alternate both;animation-delay:22s}
+@keyframes s12-breatheL{from{opacity:.7}to{opacity:1}}
+@keyframes s12-in{to{opacity:1}}
+
+/* « @ » géant en contour blanc 4 % qui tourne lentement */
+.s12 .s12-atFade{position:absolute;inset:0;opacity:0;animation:s12-in .3s ease-out forwards;animation-delay:22s}
+/* boîte 2000² : encre du glyphe (903 × 1381) centrée en (485, 960), rotation autour de ce centre */
+.s12 .s12-at{position:absolute;left:-510px;top:-115px;width:2000px;height:2000px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-weight:500;font-size:1700px;line-height:1;color:transparent;
+  -webkit-text-stroke:2.5px rgba(255,255,255,.07);transform-origin:995px 1075px;
+  animation:s12-spin 2.1s linear both;animation-delay:22s}
+@keyframes s12-spin{from{transform:none}to{transform:rotate(25deg)}}
+
+.s12 .s12-bokeh,.s12 .s12-wave{position:absolute;left:0;top:0;width:1080px;height:1920px;display:block}
+
+/* éclat bleu derrière le logo sur le dernier coup (23,5) — base invisible */
+.s12 .s12-flare{position:absolute;inset:0;opacity:0;
+  background:radial-gradient(circle 380px at 485px 470px,rgba(110,140,255,.42),rgba(61,107,255,.12) 60%,transparent 380px);
+  animation:s12-flare .6s linear forwards;animation-delay:23.5s}
+@keyframes s12-flare{
+  0%{opacity:0;animation-timing-function:cubic-bezier(.2,.8,.2,1)}
+  10%{opacity:1;animation-timing-function:cubic-bezier(.3,0,.4,1)}
+  100%{opacity:0}}
+
+/* ---------- logo : même structure et mêmes animations (finies avant 22,0) que S11 → même pixel au raccord ---------- */
+/* pulse du dernier coup (23,5) autour du centre affiché (485, 470) */
+.s12 .s12-logoWrap{position:absolute;inset:0;transform-origin:485px 470px;
+  animation:s12-pulse .3s ease-in-out both;animation-delay:23.5s}
+@keyframes s12-pulse{
+  0%{transform:none;animation-timing-function:cubic-bezier(.2,.7,.3,1)}
+  35%{transform:scale(1.04);animation-timing-function:cubic-bezier(.45,0,.4,1)}
+  100%{transform:none}}
+/* flottement 0 ↔ −8 px (1 s, aller-retour) */
+.s12 .s12-logoFloat{position:absolute;inset:0;
+  animation:s12-float 1s ease-in-out infinite alternate both;animation-delay:22s}
+@keyframes s12-float{from{transform:none}to{transform:translateY(-8px)}}
+/* copie de la mise en place de S11 : logo 600 → 400 affiché, centré (485, 470) */
+.s12 .s12-move{position:absolute;inset:0;transform-origin:485px 940px;
+  animation:s12-move .4s cubic-bezier(.45,0,.15,1) forwards;animation-delay:21.4s}
+@keyframes s12-move{to{transform:translate(0,-470px) scale(.667)}}
+.s12 .s12-stage{position:absolute;inset:0;perspective:1400px;perspective-origin:485px 940px}
+.s12 .s12-sway{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:483px 929px;
+  animation:s12-sway 1.3s linear both;animation-delay:20.5s}
+@keyframes s12-sway{from{transform:rotateY(0deg) rotateX(0deg)}to{transform:rotateY(0deg) rotateX(0deg)}}
+.s12 .s12-flip{position:absolute;left:185px;top:640px;width:600px;height:600px;transform-style:preserve-3d;
+  animation:s12-flip .5s var(--bo) both;animation-delay:20s}
+@keyframes s12-flip{from{transform:scale(0) rotateY(100deg)}to{transform:scale(1) rotateY(0deg)}}
+.s12 .s12-logo,.s12 .s12-ring,.s12 .s12-ringHit{position:absolute;left:0;top:0;width:600px;height:600px;display:block}
+.s12 .s12-logo{
+  -webkit-mask-image:radial-gradient(circle at 49.5% 48.2%,#000 48.5%,transparent 50.5%);
+          mask-image:radial-gradient(circle at 49.5% 48.2%,#000 48.5%,transparent 50.5%);
+  animation:s12-bright .5s var(--e) both;animation-delay:20s}
+@keyframes s12-bright{from{filter:brightness(3)}to{filter:brightness(1)}}
+.s12 .s12-ring,.s12 .s12-ringHit{
+  -webkit-mask-image:radial-gradient(circle at 49.5% 48.2%,transparent 45%,#000 48%,#000 55%,transparent 61%);
+          mask-image:radial-gradient(circle at 49.5% 48.2%,transparent 45%,#000 48%,#000 55%,transparent 61%)}
+.s12 .s12-ring{opacity:0;
+  animation:s12-ringIn .28s cubic-bezier(.5,0,.9,.5) both,s12-ringLit .45s var(--e) both;animation-delay:20.5s,20.75s}
+@keyframes s12-ringIn{from{opacity:0}to{opacity:1}}
+@keyframes s12-ringLit{from{filter:brightness(2.6)}to{filter:brightness(1)}}
+/* l’anneau néon s’allume sur le dernier coup (23,5) — calque superposé, base invisible */
+.s12 .s12-ringHit{opacity:0;filter:brightness(2.2);
+  animation:s12-ringHit .5s linear forwards;animation-delay:23.5s}
+@keyframes s12-ringHit{
+  0%{opacity:0;animation-timing-function:cubic-bezier(.2,.8,.2,1)}
+  12%{opacity:1;animation-timing-function:cubic-bezier(.3,0,.4,1)}
+  100%{opacity:0}}
+
+/* ---------- appel à l’action (immobile après son entrée) ---------- */
+.s12 .s12-cta{position:absolute;inset:0}
+
+/* « ÉCRIS-NOUS » : Archivo 900 stretch 72 % 150 px, se tasse lettre à lettre (étiré → posé) */
+.s12 .s12-title{position:absolute;left:118px;top:712px;width:740px;white-space:nowrap;
+  font-weight:900;font-stretch:72%;font-size:150px;line-height:1;letter-spacing:-.03em;color:#fff}
+.s12 .s12-title .ch{opacity:0;transform-origin:50% 100%;
+  animation:s12-tass .3s var(--bo) both;animation-delay:var(--t)}
+@keyframes s12-tass{
+  from{opacity:0;transform:translateY(40px) scaleY(1.8) scaleX(.6)}
+  to{opacity:1;transform:none}}
+/* ligne de base lime */
+.s12 .s12-base{position:absolute;left:125px;top:856px;width:720px;height:5px;border-radius:3px;background:#c8ff3e;
+  box-shadow:0 0 18px rgba(200,255,62,.45);transform-origin:0 50%;
+  animation:s12-draw .2s var(--e2) both;animation-delay:22.15s}
+@keyframes s12-draw{from{transform:scaleX(0)}to{transform:none}}
+
+/* « @l.t_digital » : DM Mono 500 88 px (identique à S11) */
+.s12 .s12-handle{position:absolute;left:168px;top:900px;font-family:var(--mono);font-weight:500;font-size:88px;
+  line-height:1;letter-spacing:0;white-space:pre;color:#fff}
+.s12 .s12-handle .ch{opacity:0;transform-origin:50% 85%;
+  animation:s12-key .001s linear forwards,s12-keyPop .16s var(--ex) both;animation-delay:var(--t),var(--t)}
+.s12 .s12-handle .ch.s12-dotCh{color:transparent}
+@keyframes s12-key{to{opacity:1}}
+@keyframes s12-keyPop{from{transform:translateY(-10px) scale(1.3)}to{transform:none}}
+.s12 .s12-dotP{position:absolute;left:289px;top:956px;width:22px;height:22px}
+.s12 .s12-dot{width:22px;height:22px;border-radius:50%;background:#c8ff3e;
+  animation:s12-dotHit .4s linear both;animation-delay:23.5s}
+@keyframes s12-dotHit{
+  0%{transform:none;animation-timing-function:cubic-bezier(.2,.8,.3,1)}
+  20%{transform:scale(1.55);animation-timing-function:cubic-bezier(.4,0,.3,1)}
+  100%{transform:none}}
+/* soulignement lime du @ (22,50) */
+.s12 .s12-uline{position:absolute;left:171px;top:1006px;width:619px;height:4px;border-radius:2px;background:#c8ff3e;
+  transform-origin:0 50%;animation:s12-draw .25s var(--ex) both;animation-delay:22.5s}
+
+/* pilule « LIEN EN BIO » + flèche */
+.s12 .s12-pill{position:absolute;left:225px;top:1050px;width:520px;height:130px;border-radius:65px;background:#c8ff3e;
+  box-shadow:0 0 90px rgba(200,255,62,.45);color:#0b0b10;
+  display:flex;align-items:center;justify-content:center;gap:18px;
+  animation:s12-pop .3s var(--bo) both,s12-glowBeat .5s linear infinite both;animation-delay:22.25s,22.5s}
+/* le halo de la pilule pompe sur chaque temps (sidechain) */
+@keyframes s12-glowBeat{
+  0%{box-shadow:0 0 120px rgba(200,255,62,.62);animation-timing-function:cubic-bezier(.2,.7,.4,1)}
+  100%{box-shadow:0 0 90px rgba(200,255,62,.45)}}
+@keyframes s12-pop{from{transform:scale(0)}to{transform:none}}
+.s12 .s12-pillTxt{display:block;font-weight:900;font-stretch:80%;font-size:84px;line-height:1;letter-spacing:-.03em;
+  white-space:nowrap}
+.s12 .s12-arrowBox{display:block;width:44px;height:56px}
+.s12 .s12-arrow{display:block;width:44px;height:56px;overflow:visible;
+  animation:s12-hop .5s linear infinite both;animation-delay:22.5s}
+.s12 .s12-arrow path{fill:none;stroke:#0b0b10;stroke-width:10.5;stroke-linecap:round;stroke-linejoin:round}
+@keyframes s12-hop{
+  0%{transform:none;animation-timing-function:cubic-bezier(.25,.6,.45,1)}
+  50%{transform:translateY(-14px);animation-timing-function:cubic-bezier(.55,0,.75,.4)}
+  100%{transform:none}}
+
+/* rappel de l’offre */
+.s12 .s12-recall{position:absolute;left:158px;top:1235px;white-space:pre;
+  font-family:var(--mono);font-weight:500;font-size:34px;line-height:1;color:rgba(255,255,255,.8);
+  animation:s12-rise .3s var(--ex) both;animation-delay:22.5s}
+@keyframes s12-rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+/* ---------- reflet qui balaie le bloc (23,00 → 23,55) ----------
+   Une copie du texte (mêmes classes, donc mêmes positions) porte un halo ; un masque oblique (110°)
+   ne la révèle que dans une bande qui traverse l’écran : les lettres s’illuminent au passage. */
+.s12 .s12-glint{position:absolute;inset:0;opacity:0;pointer-events:none;
+  text-shadow:0 0 12px rgba(255,255,255,.9),0 0 34px rgba(200,255,62,.55);
+  -webkit-mask-image:linear-gradient(110deg,transparent 46%,#000 50%,transparent 54%);
+          mask-image:linear-gradient(110deg,transparent 46%,#000 50%,transparent 54%);
+  -webkit-mask-size:3240px 1920px;mask-size:3240px 1920px;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-position:-1770px 0;mask-position:-1770px 0;
+  animation:s12-glint .55s cubic-bezier(.25,.4,.5,1) forwards;animation-delay:23s}
+.s12 .s12-glint .s12-dotCh{text-shadow:none}
+/* dans la bande : lignes, point et pilule plus clairs (mêmes classes → mêmes positions et animations) */
+.s12 .s12-glint .s12-base,.s12 .s12-glint .s12-uline{background:#f3ffd0;box-shadow:0 0 22px rgba(225,255,140,.9)}
+.s12 .s12-glint .s12-dot{background:#f3ffd0;box-shadow:0 0 18px rgba(225,255,140,.9)}
+.s12 .s12-glint .s12-pill{background:#ecffb2;text-shadow:none}
+@keyframes s12-glint{
+  from{opacity:1;-webkit-mask-position:-1770px 0;mask-position:-1770px 0}
+  to{opacity:1;-webkit-mask-position:-420px 0;mask-position:-420px 0}}

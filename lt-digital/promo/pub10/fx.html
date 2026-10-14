@@ -1,0 +1,19 @@
+<div class="fx" id="fx" aria-hidden="true">
+  <!-- 1) poussière de glyphes (canvas piloté par onSeek) -->
+  <canvas class="fx-dust" id="fx-dust" width="1080" height="1920"></canvas>
+  <!-- 4) fuites de lumière (WAAPI, base invisible) : 2,0 · 12,0 · 17,9 (chaude) · 20,0 -->
+  <div class="fx-leak" id="fx-leak-a"></div>
+  <div class="fx-leak" id="fx-leak-b"></div>
+  <div class="fx-leak fx-leak-warm" id="fx-leak-w"></div>
+  <div class="fx-leak" id="fx-leak-c"></div>
+  <!-- 6) bloom de l’iris papier (7,92 → 8,12) -->
+  <div class="fx-bloom" id="fx-bloom"></div>
+  <!-- 5) traînées du whip pan (5,85 → 6,15) : 10 traits créés par fx.js -->
+  <div class="fx-whip" id="fx-whip"></div>
+  <!-- 3) vignette qui pulse sur les temps -->
+  <div class="fx-vig" id="fx-vig"></div>
+  <!-- 2) grain : 3 tuiles de bruit, une seule visible par image -->
+  <div class="fx-grain" id="fx-g0"></div>
+  <div class="fx-grain" id="fx-g1"></div>
+  <div class="fx-grain" id="fx-g2"></div>
+</div>

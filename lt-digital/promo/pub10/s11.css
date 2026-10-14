@@ -1,0 +1,145 @@
+/* ===== Scène 11 (20 → 22 s) — DROP FINAL : le point explose, le logo jaillit, la poussière devient l’anneau, puis le @ se tape ===== */
+.s11{background:#07060c;color:#fff;font-family:var(--f)}
+.s11 i{display:block;font-style:normal}
+.s11 .s11-bg{position:absolute;inset:0;background:#07060c}
+
+/* caméra : léger recul + roulis qui se pose à 21,80 (identité exacte pour le raccord S12) */
+.s11 .s11-cam{position:absolute;inset:0;transform-origin:485px 940px;
+  animation:s11-cam 1.8s cubic-bezier(.25,.6,.3,1) both;animation-delay:20s}
+@keyframes s11-cam{from{transform:scale(1.07) rotate(-1.6deg)}to{transform:none}}
+.s11 .s11-shake{position:absolute;inset:0}
+
+/* rayons coniques lime / bleu (2400 × 2400 centrés 485/940) */
+.s11 .s11-rays{position:absolute;left:-715px;top:-260px;width:2400px;height:2400px;
+  animation:s11-rays .5s var(--ex) both;animation-delay:20s}
+@keyframes s11-rays{from{transform:scale(.3)}to{transform:none}}
+.s11 .s11-raysSpin{position:absolute;inset:0;
+  background:repeating-conic-gradient(from 0deg at 50% 50%,
+    rgba(200,255,62,.06) 0 3.4deg,transparent 4.6deg 11.4deg,
+    rgba(143,162,255,.085) 12.6deg 15.4deg,transparent 16.6deg 24deg);
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,transparent 150px,#000 380px,#000 760px,transparent 1180px);
+          mask-image:radial-gradient(circle at 50% 50%,transparent 150px,#000 380px,#000 760px,transparent 1180px);
+  animation:s11-spin 2s linear both,s11-raysOut .4s cubic-bezier(.4,0,.6,1) forwards;animation-delay:20s,21.5s}
+@keyframes s11-spin{from{transform:none}to{transform:rotate(40deg)}}
+@keyframes s11-raysOut{to{opacity:0}}
+
+/* tout ce qui monte à la mise en place (21,40 → 21,80, vitesse maximale sur le temps 21,50) */
+.s11 .s11-move{position:absolute;inset:0;transform-origin:485px 940px;
+  animation:s11-move .4s cubic-bezier(.45,0,.15,1) forwards;animation-delay:21.4s}
+@keyframes s11-move{to{transform:translate(0,-470px) scale(.667)}}
+
+/* lueur bleue Ø 1020 centrée 485/940 (après mise en place : rayon 340 centré 485/470) */
+.s11 .s11-glow{position:absolute;left:-25px;top:430px;width:1020px;height:1020px;
+  animation:s11-glowIn .5s var(--ex) both;animation-delay:20s}
+@keyframes s11-glowIn{from{transform:scale(.35)}to{transform:none}}
+.s11 .s11-glowB,.s11 .s11-glowP{position:absolute;inset:0;
+  background:radial-gradient(circle 510px at center,rgba(61,107,255,.35),transparent 510px)}
+.s11 .s11-glowP{opacity:0}
+
+/* logo + orbite dans le même contexte 3D */
+.s11 .s11-stage{position:absolute;inset:0;perspective:1400px;perspective-origin:485px 940px}
+/* balancement 3D qui fait vivre le logo et l’orbite entre la pose et la mise en place (identité à 21,80) */
+.s11 .s11-sway{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:483px 929px;
+  animation:s11-sway 1.3s linear both;animation-delay:20.5s}
+@keyframes s11-sway{
+  0%{transform:rotateY(0deg) rotateX(0deg);animation-timing-function:cubic-bezier(.4,0,.5,1)}
+  32%{transform:rotateY(8deg) rotateX(-4deg);animation-timing-function:cubic-bezier(.45,0,.55,1)}
+  66%{transform:rotateY(-6deg) rotateX(3deg);animation-timing-function:cubic-bezier(.45,0,.4,1)}
+  100%{transform:rotateY(0deg) rotateX(0deg)}}
+.s11 .s11-flip{position:absolute;left:185px;top:640px;width:600px;height:600px;transform-style:preserve-3d;
+  animation:s11-flip .5s var(--bo) both;animation-delay:20s}
+@keyframes s11-flip{from{transform:scale(0) rotateY(100deg)}to{transform:scale(1) rotateY(0deg)}}
+.s11 .s11-logo{position:absolute;left:0;top:0;width:600px;height:600px;display:block;
+  -webkit-mask-image:radial-gradient(circle at 49.5% 48.2%,#000 48.5%,transparent 50.5%);
+          mask-image:radial-gradient(circle at 49.5% 48.2%,#000 48.5%,transparent 50.5%);
+  animation:s11-bright .5s var(--e) both,s11-logoIn .1s cubic-bezier(.5,0,.9,.6) both;animation-delay:20s,20s}
+/* l’anneau bleu du logo : n’apparaît que quand la poussière s’y pose, s’allume au verrouillage (20,75) */
+.s11 .s11-ring{position:absolute;left:0;top:0;width:600px;height:600px;display:block;opacity:0;
+  -webkit-mask-image:radial-gradient(circle at 49.5% 48.2%,transparent 45%,#000 48%,#000 55%,transparent 61%);
+          mask-image:radial-gradient(circle at 49.5% 48.2%,transparent 45%,#000 48%,#000 55%,transparent 61%);
+  animation:s11-ringIn .28s cubic-bezier(.5,0,.9,.5) both,s11-ringLit .45s var(--e) both;animation-delay:20.5s,20.75s}
+@keyframes s11-ringIn{from{opacity:0}to{opacity:1}}
+@keyframes s11-ringLit{from{filter:brightness(2.6)}to{filter:brightness(1)}}
+@keyframes s11-bright{from{filter:brightness(3)}to{filter:brightness(1)}}
+@keyframes s11-logoIn{from{opacity:0}to{opacity:1}}
+
+/* reflet « shing » qui balaie le logo pendant qu’il se pose */
+.s11 .s11-sheen{position:absolute;left:0;top:0;width:600px;height:600px;opacity:.55;
+  background:linear-gradient(112deg,transparent 45%,rgba(240,244,255,.5) 49.5%,rgba(255,255,255,.75) 50%,rgba(240,244,255,.5) 50.5%,transparent 55%) no-repeat;
+  background-size:1200px 600px;background-position:-1200px 0;
+  -webkit-mask-image:radial-gradient(circle at 49.5% 48.2%,#000 53%,transparent 56%);
+          mask-image:radial-gradient(circle at 49.5% 48.2%,#000 53%,transparent 56%);
+  animation:s11-sheen .4s cubic-bezier(.3,.1,.45,1) both;animation-delay:20.8s}
+@keyframes s11-sheen{from{background-position:-900px 0}to{background-position:300px 0}}
+
+/* orbite Ø 900 inclinée, centrée sur l’anneau du logo (297, 289 dans l’image) */
+.s11 .s11-orbit{position:absolute;left:-153px;top:-161px;width:900px;height:900px;overflow:visible;opacity:0;
+  transform:rotateZ(-13deg) rotateX(75deg);
+  animation:s11-orbitA .8s linear forwards;animation-delay:21s}
+@keyframes s11-orbitA{0%{opacity:0}18.75%{opacity:1}62.5%{opacity:1}100%{opacity:0}}
+.s11 .s11-orbit path{fill:none}
+.s11 .s11-oLine{stroke:url(#s11-og);stroke-width:4}
+.s11 .s11-oGlow{stroke:url(#s11-og);stroke-width:16;opacity:.22}
+.s11 .s11-cTail{stroke:#c8ff3e;stroke-width:6;stroke-linecap:round;opacity:.35;stroke-dasharray:0 1000}
+.s11 .s11-cMid{stroke:#c8ff3e;stroke-width:9;stroke-linecap:round;opacity:.8;stroke-dasharray:0 1000}
+.s11 .s11-cGlow{stroke:#c8ff3e;stroke-width:30;stroke-linecap:round;opacity:.8;stroke-dasharray:0 1000}
+.s11 .s11-cHead{stroke:#fbffe9;stroke-width:12;stroke-linecap:round;stroke-dasharray:0 1000}
+
+/* 20,75 : l’anneau se verrouille (flash lime) */
+.s11 .s11-flash{position:absolute;left:-3px;top:-11px;width:600px;height:600px;overflow:visible;opacity:0;
+  filter:drop-shadow(0 0 30px #c8ff3e);
+  animation:s11-flash .3s linear forwards;animation-delay:20.75s}
+.s11 .s11-flash circle{fill:none;stroke:#c8ff3e;stroke-width:10}
+@keyframes s11-flash{
+  0%{opacity:0;transform:scale(1.07);animation-timing-function:cubic-bezier(.2,.8,.2,1)}
+  12%{opacity:.9;transform:scale(1);animation-timing-function:cubic-bezier(.3,0,.7,1)}
+  100%{opacity:0;transform:scale(1.025)}}
+
+/* particules + ondes de choc (canvas redessiné dans onSeek) */
+.s11 .s11-p{position:absolute;left:0;top:0;width:1080px;height:1920px;display:block}
+
+/* traînée anamorphique de l’explosion */
+.s11 .s11-streak{position:absolute;left:-315px;top:956px;width:1600px;height:8px;border-radius:4px;opacity:0;
+  background:linear-gradient(90deg,transparent,rgba(143,162,255,.55) 28%,#f4f8ff 50%,rgba(143,162,255,.55) 72%,transparent);
+  animation:s11-streak .5s linear forwards;animation-delay:20s}
+@keyframes s11-streak{
+  0%{opacity:1;transform:scaleX(.08) scaleY(1.5);animation-timing-function:cubic-bezier(.16,1,.3,1)}
+  100%{opacity:0;transform:scaleX(1.25) scaleY(.35)}}
+
+/* « @l.t_digital » : DM Mono 500 88 px, top 900, gauche 168 */
+.s11 .s11-handle{position:absolute;left:168px;top:900px;font-family:var(--mono);font-weight:500;font-size:88px;
+  line-height:1;letter-spacing:0;white-space:pre;color:#fff}
+.s11 .s11-handle .ch{opacity:0;transform-origin:50% 85%;
+  animation:s11-key .001s linear forwards,s11-keyPop .16s var(--ex) both;animation-delay:var(--t),var(--t)}
+.s11 .s11-handle .ch.s11-dotCh{color:transparent}
+@keyframes s11-key{to{opacity:1}}
+@keyframes s11-keyPop{from{transform:translateY(-10px) scale(1.3)}to{transform:none}}
+
+/* curseur lime (piloté dans onSeek) */
+.s11 .s11-cur{position:absolute;left:168px;top:904px;width:6px;height:80px;border-radius:2px;background:#c8ff3e;
+  box-shadow:0 0 18px rgba(200,255,62,.6);opacity:0}
+
+/* le point lime qui tombe sur le « . » : disque Ø 22 centré (300, 967) */
+.s11 .s11-dotY{position:absolute;left:289px;top:956px;width:22px;height:22px;opacity:0;
+  animation:s11-dotFall .2s linear forwards;animation-delay:21.75s}
+.s11 .s11-dot{width:22px;height:22px;border-radius:50%;background:#c8ff3e;transform-origin:50% 100%;
+  animation:s11-squash .2s linear both;animation-delay:21.75s}
+@keyframes s11-dotFall{
+  0%{opacity:0;transform:translateY(-140px);animation-timing-function:cubic-bezier(.5,0,.85,.4)}
+  12%{opacity:1;transform:translateY(-131px);animation-timing-function:cubic-bezier(.4,0,.9,.6)}
+  50%{opacity:1;transform:none;animation-timing-function:cubic-bezier(.2,.6,.4,1)}
+  75%{opacity:1;transform:translateY(-15px);animation-timing-function:cubic-bezier(.6,0,.8,.4)}
+  100%{opacity:1;transform:none}}
+@keyframes s11-squash{
+  0%{transform:scale(.8,1.35)}
+  45%{transform:scale(.88,1.25)}
+  52%{transform:scale(1.45,.62)}
+  68%{transform:scale(.92,1.1)}
+  90%{transform:scale(1.12,.88)}
+  100%{transform:none}}
+
+/* « bloop » : petite onde lime à l’atterrissage */
+.s11 .s11-ripple{position:absolute;left:280px;top:947px;width:40px;height:40px;border-radius:50%;
+  border:3px solid #c8ff3e;opacity:0;
+  animation:s11-ripple .12s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:21.85s}
+@keyframes s11-ripple{0%{opacity:.85;transform:scale(.5)}100%{opacity:0;transform:scale(2.6)}}
