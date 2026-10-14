@@ -1,0 +1,2711 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L&amp;T Digital — Pub 10</title><meta name="robots" content="noindex"><link rel="icon" href="../images/logo-small.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ===== Pub 10 L&T Digital — styles communs (ne pas préfixer) =====
+   Plein écran vertical 1080 × 1920 · 24 s · 120 BPM (1 temps = 0,5 s, 1 mesure = 2 s).
+   La scène N (01→12) occupe [2(N-1) s ; 2N s]. */
+:root{
+  --lime:#c8ff3e; --violet:#7c5cff; --blue:#8fa2ff; --teal:#19c6b0; --pink:#ff4d6d; --orange:#ff9a3c;
+  --ink:#0b0b10; --night:#07060c; --paper:#f4f2ff;
+  --f:'Archivo',system-ui,sans-serif; --mono:'DM Mono',ui-monospace,monospace; --serif:'Instrument Serif',Georgia,serif;
+  --e:cubic-bezier(.2,.8,.2,1); --e2:cubic-bezier(.7,0,.2,1); --bo:cubic-bezier(.34,1.56,.64,1); --ex:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;overflow:hidden}
+body{display:grid;place-items:center;font-family:var(--f);color:#fff;-webkit-font-smoothing:antialiased}
+.viewport{position:relative;width:1080px;height:1920px;flex:none;overflow:hidden;background:var(--night);perspective:1600px}
+/* une scène n'est visible qu'entre --a et --b */
+.sc{position:absolute;inset:0;opacity:0;overflow:hidden;animation:sc-show linear both;animation-fill-mode:none;animation-duration:calc(var(--b) - var(--a));animation-delay:var(--a)}
+@keyframes sc-show{from{opacity:1}to{opacity:1}}
+/* (opacité 1 pendant [--a ; --b[, 0 avant et après — y compris pile à t = --a) */
+/* outils partagés (facultatifs) */
+.abs{position:absolute} .fill{position:absolute;inset:0}
+.ui{position:fixed;right:16px;bottom:16px;z-index:999;background:#fff;color:#000;border:0;border-radius:6px;padding:10px 14px;font:600 14px system-ui;cursor:pointer}
+body.capture .ui{display:none}
+/* lettres découpées par split() : chaque lettre a --i (index) et --t (début absolu, en s) */
+.ch{display:inline-block;white-space:pre}
+/* ---- s01 ---- */
+/* ===== Scène 01 (0 → 2 s) : rolodex des métiers → COMMERCE → plongée dans le O ===== */
+/* image 0 déjà pleine : la scène est visible dès t = 0 (le sc-on commun donne opacité 0 à t = 0 pile) */
+.s01.sc{background:var(--night);opacity:1;animation:s01-off .001s linear forwards;animation-delay:var(--b)}
+@keyframes s01-off{to{opacity:0}}
+.s01 .bg{position:absolute;inset:0;background:var(--night)}
+.s01 .halo{position:absolute;left:-160px;top:800px;width:1400px;height:1400px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(124,92,255,.35),rgba(124,92,255,.16) 52%,rgba(124,92,255,.05) 78%,rgba(124,92,255,0));
+  transform-origin:50% 50%;opacity:.88}
+.s01 .halo2{position:absolute;left:-420px;top:-620px;width:1300px;height:1300px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(124,92,255,.10),rgba(124,92,255,0))}
+
+/* décor : rangées de métiers en contour, inclinées */
+.s01 .rig{position:absolute;inset:0;transform-origin:230px 900px}
+.s01 .rows{position:absolute;left:-600px;top:-400px;width:2280px;height:2720px;transform:rotate(-8deg)}
+.s01 .row{position:absolute;left:-1500px;height:260px;white-space:nowrap;
+  font:900 260px/1 var(--f);font-stretch:125%;letter-spacing:-.01em;color:transparent;
+  -webkit-text-stroke:2px rgba(255,255,255,.08)}
+.s01 .row span{display:inline-block}
+.s01 .r1{top:420px} .s01 .r1 span{margin-left:-300px}
+.s01 .r2{top:870px} .s01 .r2 span{margin-left:-1250px}
+.s01 .r3{top:1520px} .s01 .r3 span{margin-left:-700px}
+.s01 .r4{top:1970px} .s01 .r4 span{margin-left:-1700px}
+
+/* caméra */
+.s01 .zoom{position:absolute;inset:0;transform-origin:230.1px 900.2px}
+.s01 .shk{position:absolute;inset:0;transform-origin:485px 900px}
+.s01 .cam{position:absolute;inset:0;transform-origin:485px 900px;transform:scale(1.08) rotate(-3deg)}
+.s01 .rings{position:absolute;left:0;top:0;overflow:visible}
+.s01 .rings circle{fill:none;opacity:0}
+.s01 .rings .w1{stroke:var(--lime)}
+.s01 .rings .w2{stroke:rgba(255,255,255,.45)}
+.s01 .rings .w3{stroke:var(--lime)}
+
+/* lueur du O (dégradé : reste propre pendant la plongée, contrairement à un text-shadow) */
+.s01 .oglow{position:absolute;left:107.5px;top:740.2px;width:260px;height:320px;border-radius:50%;opacity:0;
+  background:radial-gradient(closest-side,rgba(200,255,62,.55),rgba(200,255,62,.22) 42%,rgba(200,255,62,.06) 75%,rgba(200,255,62,0))}
+.s01 .warp{position:absolute;left:0;top:0;overflow:visible}
+.s01 .warp polygon{opacity:0}
+
+/* « Ton » */
+.s01 .ton{position:absolute;left:0;top:600px;width:970px;text-align:center;
+  font:italic 400 170px/1 var(--serif);color:var(--lime)}
+.s01 .tonin{display:inline-block;transform-origin:50% 90%}
+
+/* fenêtre rolodex */
+.s01 .win{position:absolute;left:70px;top:770px;width:830px;height:260px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 14px,#000 246px,transparent 260px);
+          mask-image:linear-gradient(to bottom,transparent 0,#000 14px,#000 246px,transparent 260px)}
+.s01 .ghost{position:absolute;left:70px;top:1030px;width:830px;height:300px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.9) 0,rgba(0,0,0,.35) 120px,transparent 270px);
+          mask-image:linear-gradient(to bottom,rgba(0,0,0,.9) 0,rgba(0,0,0,.35) 120px,transparent 270px)}
+.s01 .strip{position:absolute;left:0;top:0;width:830px}
+.s01 .gstrip{top:-260px}
+.s01 .cell{position:relative;height:260px}
+.s01 .w{position:absolute;left:0;top:19px;width:830px;display:flex;justify-content:center}
+.s01 .w.mg{top:21px}
+.s01 .w.cw{top:40px}
+.s01 .t{display:block;white-space:nowrap;font:900 225px/1 var(--f);letter-spacing:-.03em;padding-right:.03em;color:#fff}
+.s01 .mg .t{font-size:220px}
+.s01 .cw .t{font-size:183px;font-weight:400;font-stretch:125%;transform:scale(.5584,.5584);transform-origin:50% 50%}
+.s01 .ghost .t{color:#fff} /* contour net (sans les recouvrements de la police variable) : filtre #s01-gh */
+.s01 .gstrip{filter:url(#s01-gh)}
+.s01 .l{display:inline-block}
+.s01 .o{position:relative}
+.s01 .o i{position:absolute;left:35px;top:48px;width:32px;height:88px;border-radius:16px;background:var(--lime);transform:scale(0)}
+
+/* « mérite d’être vu. » */
+.s01 .merite{position:absolute;left:0;top:1070px;width:970px;display:flex;justify-content:center;align-items:baseline;gap:8px}
+.s01 .mclip{padding:30px 40px 40px 20px;margin:-30px -40px -40px -20px;clip-path:inset(0 100% 0 0)}
+.s01 .mtxt{font:italic 400 120px/1 var(--serif);color:#fff;white-space:nowrap}
+.s01 .mtxt em{font-style:italic;color:var(--lime)}
+.s01 .dotw{width:26px;height:26px}
+.s01 .dot{width:26px;height:26px;border-radius:50%;background:var(--lime);opacity:0;transform-origin:50% 100%}
+
+/* iris lime de sortie */
+.s01 .iris{position:absolute;inset:0;background:var(--lime);clip-path:ellipse(0px 0px at 230.1px 900.2px)}
+
+/* ---- s02 ---- */
+/* ===== Scène 02 (2 → 4 s) — DROP 1 : « On te crée un beau SITE. » ===== */
+.s02{background:var(--lime);color:var(--ink);font-family:var(--f)}
+.s02 i{display:block;font-style:normal}
+/* légère profondeur du champ lime (part du lime pur du raccord) */
+.s02 .s02-tint{position:absolute;inset:0;opacity:0;background:radial-gradient(900px 1100px at 485px 930px,rgba(255,255,255,.22),rgba(255,255,255,0) 70%),radial-gradient(1400px 1700px at 485px 930px,rgba(11,11,16,0) 55%,rgba(60,90,0,.16));animation:s02-tint .6s var(--e) forwards;animation-delay:2s}
+@keyframes s02-tint{to{opacity:1}}
+
+.s02 .s02-zoom{position:absolute;inset:0;transform-origin:485px 1050px}
+
+/* décor : 3 rangées « SITE · » en contour encre 8 % */
+.s02 .s02-rowsz{position:absolute;inset:0;transform-origin:485px 960px;animation:s02-rowsin .7s var(--ex) both;animation-delay:2s}
+@keyframes s02-rowsin{from{transform:scale(1.45)}to{transform:none}}
+.s02 .s02-rows{position:absolute;left:-760px;width:2600px;top:0;height:1920px;transform:rotate(-12deg);transform-origin:1245px 960px}
+.s02 .s02-row{position:absolute;left:0;white-space:nowrap;font-weight:900;font-size:260px;line-height:1;font-stretch:100%;letter-spacing:-.03em;color:transparent;-webkit-text-stroke:3px rgba(11,11,16,.085)}
+.s02 .s02-r1{top:70px;animation:s02-rowR 2s linear both;animation-delay:2s}
+.s02 .s02-r2{top:760px;left:-420px;animation:s02-rowL 2s linear both;animation-delay:2s}
+.s02 .s02-r3{top:1450px;left:-200px;animation:s02-rowR 2s linear both;animation-delay:2s}
+@keyframes s02-rowR{from{transform:translateX(-300px)}to{transform:translateX(0)}}
+@keyframes s02-rowL{from{transform:translateX(0)}to{transform:translateX(-300px)}}
+
+/* anneaux : on sort du O */
+.s02 .s02-rings i{position:absolute;left:385px;top:860px;width:200px;height:200px;border:var(--bw) solid var(--ink);border-radius:50%;opacity:0;
+  animation:s02-ringS .6s cubic-bezier(.12,.75,.3,1) forwards,s02-ringO .6s cubic-bezier(.3,.3,.6,1) forwards}
+.s02 .s02-rings i:nth-child(1){--bw:14px;--o:1;animation-delay:2s,2s}
+.s02 .s02-rings i:nth-child(2){--bw:9px;--o:.8;animation-delay:2.125s,2.125s}
+.s02 .s02-rings i:nth-child(3){--bw:5px;--o:.6;animation-delay:2.25s,2.25s}
+@keyframes s02-ringS{from{transform:scale(.35)}to{transform:scale(13)}}
+@keyframes s02-ringO{from{opacity:var(--o)}to{opacity:0}}
+
+/* caméra */
+.s02 .s02-shk{position:absolute;inset:0;transform-origin:485px 900px}
+.s02 .s02-stage{position:absolute;inset:0;perspective:1400px;perspective-origin:485px 900px}
+.s02 .s02-cam{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:485px 900px;animation:s02-cam 2s var(--e) both;animation-delay:2s}
+@keyframes s02-cam{from{transform:rotateY(8deg) scale(1.06)}to{transform:rotateY(-4deg) scale(1)}}
+
+/* « On te crée » : chute 3D lettre à lettre */
+.s02 .s02-on{position:absolute;left:0;top:300px;width:970px;text-align:center;white-space:nowrap;font-weight:900;font-size:110px;line-height:1;font-stretch:100%;letter-spacing:-.03em;transform-style:preserve-3d}
+.s02 .s02-on .ch{transform-origin:50% 100%;animation:s02-fall .35s var(--bo) both;animation-delay:var(--t)}
+@keyframes s02-fall{from{transform:rotateX(-100deg) translateZ(-110px);opacity:0}30%{opacity:1}to{transform:none;opacity:1}}
+
+/* « un beau » : monte dans un masque */
+.s02 .s02-beau{position:absolute;left:0;top:380px;width:970px;height:160px;clip-path:inset(0 -80px 0 -80px)}
+.s02 .s02-beau-in{position:absolute;left:0;right:0;top:20px;text-align:center;white-space:nowrap;font-family:var(--serif);font-style:italic;font-weight:400;font-size:150px;line-height:1;
+  animation:s02-rise .25s var(--ex) both;animation-delay:2.25s}
+@keyframes s02-rise{from{transform:translateY(130px)}to{transform:none}}
+.s02 .s02-ul,.s02 .s02-wave,.s02 .s02-phone{position:absolute;left:0;top:0;overflow:visible}
+.s02 .s02-ul path{fill:none;stroke:var(--ink);stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1 2;stroke-dashoffset:1;
+  animation:s02-draw .2s cubic-bezier(.45,0,.2,1) forwards;animation-delay:2.375s}
+@keyframes s02-draw{to{stroke-dashoffset:0}}
+.s02 .s02-wave circle{fill:none;stroke:var(--ink)}
+
+/* « SITE. » */
+.s02 .s02-site{position:absolute;inset:0;transform-origin:485px 886px;opacity:0}
+.s02 .s02-L{position:absolute;top:760px;font-weight:900;font-size:260px;line-height:1;font-stretch:110%;letter-spacing:-.03em}
+.s02 .s02-L1{left:109px} .s02 .s02-L2{left:306px} .s02 .s02-L3{left:397px} .s02 .s02-L4{left:593px}
+.s02 .s02-sdot{position:absolute;left:809px;top:927px;width:52px;height:52px;border-radius:50%;background:var(--ink)}
+
+/* éclats */
+.s02 .s02-shards{position:absolute;inset:0;transform-style:preserve-3d}
+.s02 .s02-sh{position:absolute;left:485px;top:880px;width:0;height:0;opacity:0}
+.s02 .s02-sh b{position:absolute;transform:translate(-50%,-50%);font-weight:900;line-height:1;font-stretch:110%;white-space:nowrap}
+.s02 .s02-sh b.o{color:transparent;-webkit-text-stroke:3px var(--ink)}
+.s02 .s02-sh b.d{border-radius:50%;background:var(--ink)}
+
+/* le mot devient un site */
+.s02 .s02-dev{position:absolute;inset:0;transform-origin:485px 1120px}
+.s02 .s02-phone path{fill:none;stroke:var(--ink);stroke-width:14;stroke-linecap:round;stroke-dasharray:1 2;stroke-dashoffset:1}
+.s02 .s02-shadow,.s02 .s02-body{position:absolute;left:275px;top:690px;width:420px;height:860px;border-radius:64px}
+.s02 .s02-shadow{opacity:0;box-shadow:26px 46px 90px rgba(40,62,0,.42),8px 14px 24px rgba(40,62,0,.25)}
+.s02 .s02-body{background:var(--ink);clip-path:inset(0 0 100% 0)}
+.s02 .s02-blk{position:absolute;background:var(--ink);opacity:0}
+.s02 .s02-b1{left:120px;top:794px;width:184px;height:185px}
+.s02 .s02-b2{left:325px;top:797px;width:60px;height:179px}
+.s02 .s02-b3{left:403px;top:797px;width:191px;height:179px}
+.s02 .s02-b4{left:613px;top:797px;width:171px;height:179px}
+.s02 .s02-screen{position:absolute;left:289px;top:704px;width:392px;height:832px;border-radius:52px;overflow:hidden;clip-path:inset(0 0 100% 0)}
+.s02 .s02-scroll{position:absolute;left:0;top:0;width:392px}
+.s02 .s02-scroll img{display:block;width:392px;height:auto}
+.s02 .s02-tap,.s02 .s02-tap2{position:absolute;border-radius:50%;background:#fff;opacity:0}
+.s02 .s02-tap{left:72px;top:509px;width:60px;height:60px;background:rgba(255,255,255,.45);border:5px solid #fff}
+.s02 .s02-tap2{left:80px;top:517px;width:44px;height:44px}
+.s02 .s02-glare{position:absolute;left:-392px;top:0;width:1176px;height:832px;opacity:0;
+  background:linear-gradient(110deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.34) 47%,rgba(255,255,255,.08) 52%,rgba(255,255,255,0) 60%)}
+.s02 .s02-dx{position:absolute;left:809px;top:927px;width:52px;height:52px;opacity:0}
+.s02 .s02-dy,.s02 .s02-dd{position:absolute;inset:0}
+.s02 .s02-dd{border-radius:50%;background:var(--ink)}
+
+/* sortie : le « + » traverse la caméra */
+.s02 .s02-pst{position:absolute;inset:0;perspective:1400px;perspective-origin:485px 960px;pointer-events:none}
+.s02 .s02-plus{position:absolute;left:35px;top:510px;width:900px;height:900px;opacity:0}
+.s02 .s02-prot{position:absolute;inset:0}
+.s02 .s02-ph1,.s02 .s02-pv1{position:absolute;background:var(--ink);border-radius:30px}
+.s02 .s02-ph1{left:0;top:355px;width:900px;height:190px}
+.s02 .s02-pv1{left:355px;top:0;width:190px;height:900px}
+.s02 .s02-ink{position:absolute;inset:0;background:var(--ink);opacity:0;animation:s02-ink .01s linear forwards;animation-delay:3.94s}
+@keyframes s02-ink{to{opacity:1}}
+
+/* ---- s03 ---- */
+/* ===== Scène 03 (4 → 6 s) — « ton LOGO · tes PUBS · tes RÉSEAUX » : tambour 3D ===== */
+.s03{background:var(--night);font-family:var(--f);color:#fff}
+.s03 i{display:block;font-style:normal}
+
+/* ---- fond : nuit + lueurs qui dérivent ---- */
+.s03 .s03-bgw{position:absolute;inset:0}
+.s03 .s03-bg{position:absolute;left:-60px;top:0;width:1700px;height:1920px;background:var(--night);overflow:hidden}
+.s03 .s03-gv{position:absolute;left:-340px;top:-450px;width:1400px;height:1400px;background:radial-gradient(closest-side,rgba(124,92,255,.35),rgba(124,92,255,.12) 55%,rgba(124,92,255,0));
+  animation:s03-gv 2s cubic-bezier(.45,.05,.55,.95) both;animation-delay:4s}
+@keyframes s03-gv{from{transform:translate(-50px,-40px)}to{transform:translate(80px,60px)}}
+.s03 .s03-gt{position:absolute;left:60px;top:900px;width:1600px;height:1600px;background:radial-gradient(closest-side,rgba(25,198,176,.2),rgba(25,198,176,.07) 55%,rgba(25,198,176,0));
+  animation:s03-gt 2s cubic-bezier(.45,.05,.55,.95) both;animation-delay:4s}
+@keyframes s03-gt{from{transform:translate(60px,40px)}to{transform:translate(-80px,-60px)}}
+.s03 .s03-streaks{position:absolute;left:0;top:0;width:1080px;height:1920px}
+.s03 .s03-defs{position:absolute;width:0;height:0}
+
+/* ---- caméra ---- */
+.s03 .s03-whip{position:absolute;inset:0;transform-origin:485px 930px}
+.s03 .s03-shk{position:absolute;inset:0;transform-origin:485px 930px}
+.s03 .s03-pool{position:absolute;left:-115px;top:430px;width:1200px;height:1000px;background:radial-gradient(closest-side,rgba(124,92,255,.42),rgba(124,92,255,.14) 50%,rgba(124,92,255,0));opacity:.55;
+  animation:s03-pool 2s linear both;animation-delay:4s}
+@keyframes s03-pool{
+  0%{opacity:.2;transform:scale(.7)} 6%{opacity:.9;transform:scale(1.04)} 22%{opacity:.55;transform:scale(1)}
+  25%{opacity:.55;transform:scale(1)} 29%{opacity:.85;transform:scale(1.05)} 47%{opacity:.55;transform:scale(1)}
+  50%{opacity:.55;transform:scale(1)} 54%{opacity:.85;transform:scale(1.05)} 72%{opacity:.55;transform:scale(1)}
+  75%{opacity:.6;transform:scale(1)} 79%{opacity:1;transform:scale(1.08)} 100%{opacity:.7;transform:scale(1.02)}}
+.s03 .s03-halo{position:absolute;left:-165px;top:330px;width:1300px;height:1200px;opacity:0}
+.s03 .s03-h0{background:radial-gradient(closest-side,rgba(143,162,255,.30),rgba(143,162,255,.10) 55%,rgba(143,162,255,0))}
+.s03 .s03-h1{background:radial-gradient(closest-side,rgba(255,120,70,.40),rgba(255,77,109,.14) 55%,rgba(255,77,109,0))}
+.s03 .s03-h2{background:radial-gradient(closest-side,rgba(255,77,109,.30),rgba(255,77,109,.10) 55%,rgba(255,77,109,0))}
+.s03 .s03-echo{position:absolute;left:75px;top:630px;width:820px;height:600px;border-radius:40px;border:3px solid var(--lime);opacity:0}
+.s03 .s03-stage{position:absolute;left:0;top:0;width:1080px;height:1250px;perspective:1400px;perspective-origin:485px 930px}
+/* reflet au sol : -webkit-box-reflect posé image par image par onSeek (s03.js) */
+.s03 .s03-cam{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:485px 930px}
+.s03 .s03-arrive{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:485px 930px -300px}
+
+/* ---- tambour : 4 faces 820 × 600 centrées sur (485, 930) ---- */
+.s03 .s03-drum{position:absolute;left:75px;top:630px;width:820px;height:600px;transform-style:preserve-3d;transform-origin:410px 300px;transform:translateZ(-300px)}
+.s03 .s03-face{position:absolute;inset:0;border-radius:40px;overflow:hidden;background:var(--ink);backface-visibility:hidden;-webkit-backface-visibility:hidden;transform-origin:410px 300px}
+.s03 .s03-f0{transform:rotateX(0deg) translateZ(300px)}
+.s03 .s03-f1{transform:rotateX(-90deg) translateZ(300px)}
+.s03 .s03-f2{transform:rotateX(-180deg) translateZ(300px)}
+.s03 .s03-f3{transform:rotateX(-270deg) translateZ(300px);background-color:var(--ink);
+  background-image:linear-gradient(rgba(200,255,62,.08) 2px,transparent 2px),linear-gradient(90deg,rgba(200,255,62,.08) 2px,transparent 2px);background-size:60px 60px;background-position:-1px -1px}
+.s03 .s03-media{position:absolute;inset:0;overflow:hidden}
+.s03 .s03-veil{position:absolute;inset:0;background:linear-gradient(rgba(11,11,16,.45),rgba(11,11,16,.75))}
+.s03 .s03-shade{position:absolute;inset:0;background:#05040a;opacity:0;z-index:5}
+.s03 .s03-gloss{position:absolute;left:-10%;width:120%;top:0;height:260px;opacity:0;z-index:6;
+  background:linear-gradient(rgba(255,255,255,0),rgba(255,255,255,.16) 50%,rgba(255,255,255,0))}
+.s03 .s03-sheen{position:absolute;left:0;top:-100px;width:260px;height:800px;z-index:6;transform:translateX(-400px) rotate(18deg);
+  background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.10) 45%,rgba(255,255,255,.16) 50%,rgba(255,255,255,.10) 55%,rgba(255,255,255,0))}
+.s03 .s03-face::after{content:"";position:absolute;inset:0;border-radius:40px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.10),inset 0 2px 0 0 rgba(255,255,255,.12);z-index:7}
+
+/* textes des faces (tailles mesurées) */
+.s03 .s03-lab{position:absolute;left:0;top:110px;width:820px;text-align:center;font-family:var(--serif);font-style:italic;font-weight:400;font-size:90px;line-height:1;color:var(--lime);white-space:nowrap;z-index:3;
+  text-shadow:0 6px 30px rgba(0,0,0,.55)}
+.s03 .s03-word{position:absolute;left:0;top:220px;width:820px;text-align:center;font-family:var(--f);font-weight:900;font-stretch:80%;font-size:240px;line-height:1;letter-spacing:-.03em;white-space:nowrap;color:#fff;z-index:3;
+  text-shadow:0 10px 40px rgba(0,0,0,.6);text-indent:-.03em}
+.s03 .s03-wr{font-stretch:62%;font-size:210px;top:235px}
+
+/* face LOGO : ligne de base lime tracée sous le mot */
+.s03 .s03-base{position:absolute;left:116px;top:484px;width:588px;height:7px;border-radius:4px;background:var(--lime);box-shadow:0 0 18px rgba(200,255,62,.45);transform-origin:0 50%;z-index:3;
+  animation:s03-base .3s var(--e2) both;animation-delay:4.12s}
+@keyframes s03-base{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.s03 .s03-f2 .s03-lab{text-shadow:0 0 18px rgba(11,11,16,.95),0 4px 26px rgba(11,11,16,.9)}
+/* face LOGO : bande de logos clients */
+.s03 .s03-strip{position:absolute;left:-46px;top:200px;height:200px;width:2100px;display:flex;gap:18px;animation:s03-strip 2s linear both;animation-delay:4s}
+@keyframes s03-strip{from{transform:translateX(0)}to{transform:translateX(-1008px)}}
+.s03 .s03-card{flex:none;width:150px;height:200px;border-radius:16px;overflow:hidden;background:#000;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
+.s03 .s03-card img{display:block;width:150px;height:200px;object-fit:cover}
+
+/* face PUBS : « vidéo » */
+.s03 .s03-conic{position:absolute;left:-190px;top:-300px;width:1200px;height:1200px;background:conic-gradient(#ff9a3c,#ff4d6d,#7c5cff,#ff9a3c);animation:s03-conic 2s linear both;animation-delay:4s}
+@keyframes s03-conic{from{transform:rotate(0deg)}to{transform:rotate(720deg)}}
+.s03 .s03-scan{position:absolute;inset:0;background:repeating-linear-gradient(rgba(0,0,0,.12) 0 2px,rgba(0,0,0,0) 2px 6px)}
+.s03 .s03-vf{position:absolute;width:46px;height:46px;border:0 solid rgba(255,255,255,.55);z-index:2}
+.s03 .s03-vf1{left:30px;top:30px;border-left-width:4px;border-top-width:4px;border-top-left-radius:14px}
+.s03 .s03-vf2{right:30px;top:30px;border-right-width:4px;border-top-width:4px;border-top-right-radius:14px}
+.s03 .s03-vf3{left:30px;bottom:30px;border-left-width:4px;border-bottom-width:4px;border-bottom-left-radius:14px}
+.s03 .s03-vf4{right:30px;bottom:30px;border-right-width:4px;border-bottom-width:4px;border-bottom-right-radius:14px}
+.s03 .s03-rec{position:absolute;left:56px;top:56px;width:22px;height:22px;border-radius:50%;background:var(--pink);box-shadow:0 0 16px rgba(255,77,109,.8);z-index:2;
+  animation:s03-rec .5s linear both;animation-delay:4.5s}
+@keyframes s03-rec{0%{opacity:1}50%{opacity:.2}100%{opacity:1}}
+.s03 .s03-play{position:absolute;left:70px;top:492px;width:56px;height:56px;z-index:2;filter:drop-shadow(0 4px 14px rgba(0,0,0,.45))}
+.s03 .s03-play svg{display:block}
+.s03 .s03-track{position:absolute;left:150px;top:516px;width:600px;height:8px;border-radius:4px;background:rgba(255,255,255,.24);z-index:2}
+.s03 .s03-prog{position:absolute;left:150px;top:516px;width:600px;height:8px;border-radius:4px;background:var(--lime);transform-origin:0 50%;z-index:2;
+  animation:s03-prog .5s linear both;animation-delay:4.5s}
+@keyframes s03-prog{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.s03 .s03-knob{position:absolute;left:140px;top:510px;width:20px;height:20px;border-radius:50%;background:var(--lime);box-shadow:0 0 14px rgba(200,255,62,.7);z-index:2;
+  animation:s03-knob .5s linear both;animation-delay:4.5s}
+@keyframes s03-knob{from{transform:translateX(0)}to{transform:translateX(600px)}}
+
+/* face RÉSEAUX : colonnes de captures de téléphone */
+.s03 .s03-cols{position:absolute;inset:0}
+.s03 .s03-col{position:absolute;width:170px;display:flex;flex-direction:column;gap:20px}
+.s03 .s03-col img{display:block;width:170px;height:368px;border-radius:18px;object-fit:cover;object-position:top;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
+.s03 .s03-ca{top:-40px;animation:s03-colA 1s linear both;animation-delay:5s}
+.s03 .s03-cb{top:-230px;animation:s03-colB 1s linear both;animation-delay:5s}
+@keyframes s03-colA{from{transform:translateY(0)}to{transform:translateY(-200px)}}
+@keyframes s03-colB{from{transform:translateY(0)}to{transform:translateY(-240px)}}
+.s03 .s03-f2 .s03-veil{background:radial-gradient(ellipse 520px 270px at 50% 54%,rgba(11,11,16,.72),rgba(11,11,16,0)),linear-gradient(rgba(11,11,16,.64),rgba(11,11,16,.8) 62%,rgba(11,11,16,.72))}
+.s03 .s03-f0 .s03-veil{background:linear-gradient(rgba(11,11,16,.30),rgba(11,11,16,.62))}
+
+/* ---- cœurs (plats, au-dessus) ---- */
+.s03 .s03-hearts{position:absolute;inset:0}
+.s03 .s03-ht{position:absolute;opacity:0}
+.s03 .s03-ht svg{display:block;width:100%;height:100%}
+
+/* ---- 3 notifications (5,10 / 5,20 / 5,30) ---- */
+.s03 .s03-nt{position:absolute;width:104px;height:76px;transform:scale(0);transform-origin:50% 100%}
+.s03 .s03-ni{position:absolute;inset:0;border-radius:26px;background:var(--pink);box-shadow:0 10px 30px rgba(255,77,109,.35);display:grid;place-items:center}
+.s03 .s03-ni::after{content:"";position:absolute;left:41px;bottom:-9px;width:22px;height:22px;background:var(--pink);border-radius:4px;transform:rotate(45deg)}
+.s03 .s03-ni svg{position:relative;z-index:1;display:block}
+.s03 .s03-n1{left:118px;top:480px}
+.s03 .s03-n2{left:244px;top:438px}
+.s03 .s03-n3{left:370px;top:480px}
+
+/* ---- 5,50 gros cœur lime ---- */
+.s03 .s03-big{position:absolute;inset:0}
+.s03 .s03-fxsvg{position:absolute;left:0;top:0;overflow:visible}
+.s03 .s03-fxsvg circle{fill:none;stroke:var(--lime)}
+.s03 .s03-fxsvg line{stroke:var(--lime);stroke-linecap:round}
+.s03 .s03-bh{position:absolute;left:715px;top:580px;width:140px;height:140px;transform:scale(0)}
+.s03 .s03-bhs{position:absolute;inset:0;filter:drop-shadow(0 0 22px rgba(200,255,62,.55)) drop-shadow(0 12px 24px rgba(0,0,0,.5))}
+.s03 .s03-bhs svg{display:block}
+
+/* ---- ouverture : 4 quarts d’encre ---- */
+.s03 .s03-quarters{position:absolute;inset:0}
+.s03 .s03-q{position:absolute;width:540px;height:960px;background:var(--ink)}
+.s03 .s03-q1{left:0;top:0;transform-origin:100% 100%;box-shadow:inset -3px -3px 0 var(--lime);animation:s03-q1 .25s var(--ex) both;animation-delay:4s}
+.s03 .s03-q2{left:540px;top:0;transform-origin:0 100%;box-shadow:inset 3px -3px 0 var(--lime);animation:s03-q2 .25s var(--ex) both;animation-delay:4s}
+.s03 .s03-q3{left:0;top:960px;transform-origin:100% 0;box-shadow:inset -3px 3px 0 var(--lime);animation:s03-q3 .25s var(--ex) both;animation-delay:4s}
+.s03 .s03-q4{left:540px;top:960px;transform-origin:0 0;box-shadow:inset 3px 3px 0 var(--lime);animation:s03-q4 .25s var(--ex) both;animation-delay:4s}
+@keyframes s03-q1{from{transform:none}to{transform:translate(-600px,-1000px) rotate(8deg)}}
+@keyframes s03-q2{from{transform:none}to{transform:translate(600px,-1000px) rotate(-8deg)}}
+@keyframes s03-q3{from{transform:none}to{transform:translate(-600px,1000px) rotate(8deg)}}
+@keyframes s03-q4{from{transform:none}to{transform:translate(600px,1000px) rotate(-8deg)}}
+
+/* ---- s04 ---- */
+/* ===== Scène 04 (6 → 8 s) — survol du mur de 16 sites · « Un style pour chaque MÉTIER. » =====
+   Tous les mouvements sont créés dans s04.js (WAAPI à délais absolus) ; ici : géométrie et états de base. */
+.s04 .s04-bg{position:absolute;inset:0;background:var(--night);overflow:hidden}
+.s04 .s04-glow{position:absolute;left:90px;top:170px;width:900px;height:500px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(124,92,255,.45),rgba(124,92,255,.18) 55%,rgba(124,92,255,0))}
+
+/* ---- plateaux 3D (A : mur, B : point) — même caméra ---- */
+.s04 .s04-stage{position:absolute;inset:0;perspective:1100px;perspective-origin:540px 700px}
+.s04 .s04-slide,.s04 .s04-roll{position:absolute;inset:0;transform-style:preserve-3d}
+.s04 .s04-fly{position:absolute;left:-330px;top:-636px;width:1740px;height:3272px;transform-style:preserve-3d}
+
+/* sol : quadrillage dans les joints des tuiles + halo violet, s'efface vers l'horizon */
+.s04 .s04-floor{position:absolute;left:-930px;top:-3400px;width:3600px;height:6712px;transform:translateZ(-8px);
+  background:
+    linear-gradient(90deg,rgba(143,162,255,0) 17px,rgba(143,162,255,.22) 17px,rgba(143,162,255,.22) 23px,rgba(143,162,255,0) 23px) 0 0/445px 100%,
+    linear-gradient(180deg,rgba(143,162,255,0) 65px,rgba(143,162,255,.22) 65px,rgba(143,162,255,.22) 71px,rgba(143,162,255,0) 71px) 0 0/100% 828px,
+    radial-gradient(ellipse 34% 26% at 50% 74%,rgba(124,92,255,.42),rgba(124,92,255,.12) 60%,rgba(124,92,255,0));
+  -webkit-mask-image:radial-gradient(ellipse 52% 62% at 50% 80%,#000 55%,transparent 100%);
+          mask-image:radial-gradient(ellipse 52% 62% at 50% 80%,#000 55%,transparent 100%)}
+
+.s04 .s04-tile{position:absolute;width:405px;height:788px;border-radius:16px;border:1px solid rgba(255,255,255,.15);
+  background-color:#15131f;background-size:cover;background-position:top center;overflow:hidden}
+/* reflet qui balaie la tuile au passage de la vague */
+.s04 .s04-tile::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(115deg,rgba(255,255,255,0) 40%,rgba(255,255,255,.2) 50%,rgba(255,255,255,0) 60%) no-repeat;
+  background-size:250% 100%;background-position:150% 0;
+  animation:s04-sheen .7s var(--e2) both;animation-delay:var(--sd)}
+@keyframes s04-sheen{from{background-position:150% 0}to{background-position:-50% 0}}
+
+/* ombre / flaque de lumière sous le point, anneaux d'impact (dans le plan des tuiles) */
+.s04 .s04-shp{position:absolute;left:0;top:0;width:0;height:0}
+.s04 .s04-shd{position:absolute;left:-70px;top:-70px;width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(7,6,12,.75),rgba(7,6,12,.35) 55%,rgba(7,6,12,0))}
+.s04 .s04-pool{position:absolute;left:-170px;top:-170px;width:340px;height:340px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(200,255,62,.55),rgba(200,255,62,.16) 50%,rgba(200,255,62,0))}
+.s04 .s04-rg{position:absolute;left:0;top:0;width:0;height:0}
+.s04 .s04-rg i{position:absolute;left:-150px;top:-150px;width:300px;height:300px;border-radius:50%;border:7px solid var(--lime);
+  box-shadow:0 0 24px rgba(200,255,62,.55),inset 0 0 24px rgba(200,255,62,.4);opacity:0}
+.s04 .s04-rg.big i{left:-500px;top:-500px;width:1000px;height:1000px;border-width:12px;
+  box-shadow:0 0 50px rgba(200,255,62,.6),inset 0 0 50px rgba(200,255,62,.45)}
+
+/* ---- brume sombre derrière le texte + lueur d'horizon ---- */
+.s04 .s04-fog{position:absolute;left:0;top:0;width:1080px;height:1300px;
+  background:linear-gradient(to bottom,rgba(7,6,12,.92) 0,rgba(7,6,12,.85) 40%,rgba(7,6,12,.42) 52%,rgba(7,6,12,.12) 58%,rgba(7,6,12,0) 64%)}
+/* renfort de brume derrière « MÉTIER. » (arrive avec le mot à 7,0) */
+.s04 .s04-fogm{position:absolute;left:0;top:520px;width:1080px;height:520px;opacity:0;
+  background:linear-gradient(to bottom,rgba(7,6,12,0) 0,rgba(7,6,12,.62) 26%,rgba(7,6,12,.66) 62%,rgba(7,6,12,0) 100%)}
+/* ombre basse : garde la nuit et dégage la zone de légende */
+.s04 .s04-low{position:absolute;left:0;top:1380px;width:1080px;height:540px;
+  background:linear-gradient(to bottom,rgba(7,6,12,0) 0,rgba(7,6,12,.22) 45%,rgba(7,6,12,.5) 100%)}
+.s04 .s04-hz{position:absolute;left:-110px;top:330px;width:1300px;height:440px;border-radius:50%;mix-blend-mode:screen;
+  background:radial-gradient(closest-side,rgba(124,92,255,.34),rgba(143,162,255,.1) 60%,rgba(124,92,255,0))}
+
+/* ---- le point lime (plateau B) : position 3D > panneau face caméra > balle ---- */
+.s04 .s04-dotp{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d}
+.s04 .s04-dotr{position:absolute;left:0;top:0;width:0;height:0;transform:rotateX(-58deg)}
+.s04 .s04-dots{position:absolute;left:-36px;top:-36px;width:72px;height:72px;border-radius:50%;transform-origin:50% 100%;
+  background:radial-gradient(circle at 36% 32%,#f6ffd9 0,#dcff7a 22%,#c8ff3e 48%,#9fd61c 100%);
+  box-shadow:0 0 22px 6px rgba(200,255,62,.55),0 0 70px 10px rgba(200,255,62,.28)}
+
+/* ---- texte (calque plat, hors 3D) ---- */
+.s04 .s04-txt{position:absolute;inset:0;transform-origin:485px 600px}
+.s04 .s04-l1{position:absolute;left:66px;top:300px;width:830px;text-align:center;white-space:nowrap;
+  font-family:var(--f);font-weight:900;font-size:150px;line-height:1;font-stretch:90%;letter-spacing:-.03em;color:#fff;
+  text-shadow:0 8px 40px rgba(7,6,12,.6);opacity:0}
+.s04 .s04-l2{position:absolute;left:75px;top:445px;width:830px;text-align:center}
+.s04 .s04-l2i{display:inline-block;padding:20px 44px;white-space:nowrap;
+  font-family:var(--serif);font-style:italic;font-weight:400;font-size:124px;line-height:1;color:var(--lime);
+  text-shadow:0 6px 30px rgba(7,6,12,.65);clip-path:inset(0 100% 0 0)}
+.s04 .s04-l3{position:absolute;inset:0}
+.s04 .s04-word{position:absolute;left:122px;top:625px;white-space:nowrap;
+  font-family:var(--f);font-weight:900;font-size:220px;line-height:1;font-stretch:70%;letter-spacing:-.03em;
+  perspective:1200px;perspective-origin:50% 50%}
+.s04 .s04-met{color:#fff;text-shadow:0 10px 44px rgba(7,6,12,.7)}
+.s04 .s04-met .ch{transform-origin:50% 100%;backface-visibility:hidden;opacity:0}
+.s04 .s04-echo{color:transparent;-webkit-text-stroke:3px var(--lime);perspective-origin:50% 260%}
+.s04 .s04-echo .ch{opacity:0}
+.s04 .s04-pt{position:absolute;left:794px;top:764px;width:44px;height:44px;border-radius:50%;background:var(--lime);
+  box-shadow:0 0 26px rgba(200,255,62,.55);opacity:0}
+
+/* ---- iris papier + anneau lime ---- */
+.s04 .s04-iris{position:absolute;inset:0;background:var(--paper);clip-path:circle(0px at 485px 1000px)}
+.s04 .s04-ring{position:absolute;left:0;top:0;opacity:0;overflow:visible}
+.s04 .s04-ring circle{fill:none;stroke:var(--lime);stroke-width:28}
+.s04 .s04-defs{position:absolute;width:0;height:0}
+
+/* ---- s05 ---- */
+/* ===== Scène 05 (8 → 10 s) — COMMENT : « Tu nous écris. → On crée. → C’est en ligne. » =====
+   Respiration papier. Les mouvements sont créés dans s05.js (WAAPI à délais absolus) ;
+   ici : géométrie, états de base, et deux boucles CSS (points de la bulle, surligneur). */
+.s05{font-family:var(--f);color:var(--ink)}
+.s05 i{display:block;font-style:normal}
+
+/* ---- nuit sous les paupières (raccord S6) ---- */
+.s05 .s05-night{position:absolute;inset:0;background:radial-gradient(circle at 485px 900px,rgba(124,92,255,.35),rgba(124,92,255,0) 60%),var(--night)}
+
+/* ---- paupières papier : chacune montre sa moitié d'un même décor plein écran ---- */
+.s05 .s05-lid{position:absolute;left:0;width:1080px;height:960px;overflow:hidden}
+.s05 .s05-lidT{top:0}
+.s05 .s05-lidB{top:960px}
+.s05 .s05-pp{position:absolute;left:0;width:1080px;height:1920px;background:var(--paper)}
+.s05 .s05-lidT .s05-pp{top:0}
+.s05 .s05-lidB .s05-pp{top:-960px}
+.s05 .s05-glow{position:absolute;left:-140px;top:120px;width:1250px;height:1500px;border-radius:50%;transform-origin:625px 750px;opacity:0;
+  background:radial-gradient(closest-side,#e2dcff,rgba(230,225,255,.85) 45%,rgba(230,225,255,0))}
+.s05 .s05-dots{position:absolute;left:-40px;top:-40px;width:1160px;height:2040px;
+  background:radial-gradient(circle,rgba(124,92,255,.2) 2.6px,rgba(124,92,255,0) 3.4px) 5px 0/40px 40px}
+/* moitiés de la ligne encre portées par les paupières */
+.s05 .s05-sh{position:absolute;left:0;width:1080px;height:4px;background:var(--ink);opacity:0;transform-origin:485px 50%}
+.s05 .s05-lidT .s05-sh{bottom:0}
+.s05 .s05-lidB .s05-sh{top:0}
+
+/* ---- rigs ---- */
+.s05 .s05-crush{position:absolute;inset:0;transform-origin:485px 960px}
+.s05 .s05-cam,.s05 .s05-kick{position:absolute;inset:0;transform-origin:485px 900px}
+
+/* ---- ligne de titre masquée : x 70–900 ---- */
+.s05 .s05-ml{position:absolute;left:70px;top:296px;width:830px;height:168px;overflow:hidden}
+.s05 .s05-ln{position:absolute;left:0;top:14px;width:830px;text-align:center;white-space:nowrap;
+  font-weight:900;font-size:130px;line-height:1;font-stretch:75%;letter-spacing:-.03em;word-spacing:.1em;color:var(--ink);transform:translateY(120%)}
+.s05 .s05-hl{position:relative;z-index:0;display:inline-block}
+.s05 .s05-hl::before{content:"";position:absolute;left:-.07em;right:-.05em;bottom:6%;height:42%;background:var(--lime);z-index:-1;
+  border-radius:6px;transform:scaleX(0);transform-origin:0 50%;animation:s05-hl .2s var(--e2) both;animation-delay:9.1s}
+@keyframes s05-hl{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* ---- fenêtre de navigateur : x 110–860, y 500–1240 ---- */
+.s05 .s05-stage{position:absolute;inset:0;perspective:1200px;perspective-origin:485px 870px}
+.s05 .s05-wtilt{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:485px 870px}
+.s05 .s05-win{position:absolute;left:110px;top:500px;width:750px;height:740px;border-radius:28px;background:#fff;overflow:hidden;
+  transform-origin:375px 740px;box-shadow:0 40px 80px rgba(60,40,140,.18),0 0 0 0 rgba(200,255,62,0)}
+.s05 .s05-wbar{position:absolute;left:0;top:0;width:750px;height:56px;background:#ece9f7}
+.s05 .s05-wd{position:absolute;top:22px;width:13px;height:13px;border-radius:50%;background:#cdc8e0}
+.s05 .s05-url{position:absolute;left:185px;top:13px;width:380px;height:30px;border-radius:15px;background:#fff}
+.s05 .s05-lock{position:absolute;left:11px;top:5px;transform-origin:10px 12px}
+.s05 .s05-lkb{stroke:#a8a3bd}
+.s05 .s05-lkf{fill:#a8a3bd}
+.s05 .s05-ptr{position:absolute;left:40px;top:13px;width:322px;height:5px;border-radius:3px;background:#ece9f7;overflow:hidden}
+.s05 .s05-pf{position:absolute;inset:0;border-radius:3px;background:#b6a9ff;transform:scaleX(0);transform-origin:0 50%}
+.s05 .s05-wct{position:absolute;left:0;top:56px;width:750px;height:684px;overflow:hidden;background:#fff}
+.s05 .s05-blk{position:absolute;border-radius:14px;transform-origin:50% 100%;transform:translateY(-700px);
+  background:repeating-linear-gradient(45deg,rgba(124,92,255,.075) 0 9px,rgba(124,92,255,0) 9px 20px),#e4e0f5}
+.s05 .s05-pill{border-radius:25px}
+.s05 .s05-rip{position:absolute;left:236px;top:263px;width:180px;height:180px;border-radius:50%;border:4px solid var(--violet);opacity:0}
+.s05 .s05-img{position:absolute;left:0;top:0;width:750px;height:1458px;display:block;clip-path:inset(0 100% 0 0)}
+.s05 .s05-sw{position:absolute;left:-5px;top:0;width:10px;height:684px;border-radius:5px;background:var(--lime);opacity:0;
+  box-shadow:0 0 26px 8px rgba(200,255,62,.55)}
+
+/* ---- bulle « ••• » : x 150–410, y 1290–1400 ---- */
+.s05 .s05-bub{position:absolute;left:150px;top:1290px;width:260px;height:110px;border-radius:44px;background:var(--lime);
+  transform-origin:0 110px;transform:scale(0);box-shadow:0 18px 40px rgba(60,40,140,.16)}
+.s05 .s05-bub::after{content:"";position:absolute;left:14px;bottom:-15px;width:46px;height:34px;background:var(--lime);
+  clip-path:polygon(0 100%,22% 0,100% 0)}
+.s05 .s05-bd{position:absolute;top:46px;width:18px;height:18px;border-radius:50%;background:var(--ink);
+  animation:s05-dot .3s cubic-bezier(.45,0,.55,1) infinite alternate both;animation-delay:calc(8.05s + .1s * var(--i))}
+@keyframes s05-dot{from{transform:translateY(0)}to{transform:translateY(-10px)}}
+
+/* ---- bouton « Publier » : x 305–665, y 1290–1400 ---- */
+.s05 .s05-btn{position:absolute;left:305px;top:1290px;width:360px;height:110px;transform-origin:180px 55px;transform:scale(0)}
+.s05 .s05-btnp{position:absolute;inset:0;transform-origin:180px 55px}
+.s05 .s05-btnb{position:absolute;left:0;top:0;width:360px;height:110px;border-radius:55px;background:var(--lime);
+  box-shadow:inset 0 0 0 4px var(--ink),0 18px 40px rgba(60,40,140,.2)}
+.s05 .s05-btnt{position:absolute;left:0;top:0;width:360px;height:110px;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:56px;line-height:1;letter-spacing:-.01em;color:var(--ink);transform-origin:180px 55px;padding-bottom:3px}
+.s05 .s05-spin,.s05 .s05-chk{position:absolute;left:125px;top:0;opacity:0;overflow:visible}
+.s05 .s05-spin{transform-origin:55px 55px}
+.s05 .s05-spin circle,.s05 .s05-chk path{stroke:var(--ink)}
+.s05 .s05-chk path{stroke-dasharray:72 80;stroke-dashoffset:72}
+
+/* ---- confettis ---- */
+.s05 .s05-cf{position:absolute;left:0;top:0;width:1080px;height:1920px}
+
+/* ---- curseur : pointe = origine du repère ---- */
+.s05 .s05-cur{position:absolute;left:0;top:0;width:0;height:0;transform:translate(1140px,1760px)}
+.s05 .s05-curk{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0}
+.s05 .s05-curk svg{position:absolute;left:-4px;top:-4px;overflow:visible;filter:drop-shadow(0 10px 14px rgba(40,25,110,.25))}
+.s05 .s05-crg{position:absolute;left:-70px;top:-70px;width:140px;height:140px;border-radius:50%;border:6px solid var(--lime);opacity:0;
+  box-shadow:0 0 0 2px rgba(11,11,16,.85),inset 0 0 0 2px rgba(11,11,16,.85)}
+
+/* ---- ligne encre (écrasement) ---- */
+.s05 .s05-seam{position:absolute;left:0;top:956px;width:1080px;height:8px;background:var(--ink);opacity:0;transform-origin:485px 50%}
+
+/* ---- s06 ---- */
+/* ===== Scène 06 (10 → 12 s) — MONTÉE / SUSPENSE : « Et ça coûte COMBIEN ? » =====
+   Nuit + lueur violette, vortex de 3 anneaux de texte, COMBIEN qui respire (largeur/graisse variables),
+   « ? » lime qui tombe et rebondit, tout est aspiré dans le point, puis LE TROU (11,75 → 12,00).
+   Les mouvements sont créés dans s06.js (WAAPI à délais absolus + onSeek) ; ici : géométrie et états de base. */
+.s06{font-family:var(--f);color:#fff}
+.s06 i{display:block;font-style:normal}
+
+.s06 .s06-night{position:absolute;inset:0;background:var(--night)}
+
+/* ---- rigs caméra : origine = (485, 960), point d’arrivée du point lime ---- */
+.s06 .s06-cam,.s06 .s06-kick{position:absolute;inset:0;transform-origin:485px 960px}
+
+/* ---- lueur : même dégradé que la nuit de S5 (rayon 708,5 px), centrée (485, 900) au départ ---- */
+.s06 .s06-glow{position:absolute;left:-223.5px;top:191.5px;width:1417px;height:1417px;transform-origin:708.5px 708.5px}
+.s06 .s06-glowp{position:absolute;inset:0;background:radial-gradient(closest-side,rgba(124,92,255,.35),rgba(124,92,255,0))}
+
+/* ---- vortex (canvas plein cadre, blanc 12 %) ---- */
+.s06 .s06-vx{position:absolute;left:0;top:0;width:1080px;height:1920px;opacity:.12}
+
+/* ---- « Et ça coûte » : ligne top 420, gauche 240 (largeur 491), masque y 405–566 ---- */
+.s06 .s06-etca{position:absolute;inset:0;transform-origin:485.5px 495px}
+.s06 .s06-etm{position:absolute;left:140px;top:405px;width:691px;height:161px;overflow:hidden}
+.s06 .s06-ett{position:absolute;left:0;top:15px;width:691px;text-align:center;white-space:nowrap;
+  font-family:var(--serif);font-style:italic;font-weight:400;font-size:130px;line-height:130px;color:#fff}
+.s06 .s06-ett .ch{animation:s06-up .3s var(--ex) both;animation-delay:var(--t)}
+@keyframes s06-up{from{transform:translateY(112%)}to{transform:translateY(0)}}
+
+/* ---- COMBIEN : ligne top 600, gauche 105, 7 boîtes de largeur fixe (total 761) ---- */
+.s06 .s06-cws,.s06 .s06-cw{position:absolute;inset:0;transform-origin:485.5px 685px}
+/* letter-spacing −0.03em : la largeur maxi de chaque lettre (87 %, graisse ~865) tient dans sa boîte ;
+   le glyphe est alors décalé de 2,55 px à droite dans sa boîte → ligne à 102,5 pour rester centrée sur 485,5 */
+.s06 .s06-cw2{position:absolute;left:102.5px;top:600px;width:761px;height:170px;display:flex}
+.s06 .s06-lb{display:block;flex:none;height:170px;text-align:center;white-space:nowrap;overflow:visible;
+  font-family:var(--f);font-size:170px;line-height:170px;font-weight:825;font-stretch:75%;letter-spacing:-.03em;color:#fff}
+
+/* ---- « ? » : Archivo 900 420 px lime, boîte top 760 / gauche 363 ; le point du glyphe est masqué ---- */
+.s06 .s06-qf{position:absolute;inset:0;transform-origin:493px 1112px;opacity:0}
+.s06 .s06-q{position:absolute;inset:0;transform-origin:493px 910px}
+.s06 .s06-qw{position:absolute;inset:0;transform-origin:493px 1070px}
+.s06 .s06-qg{position:absolute;left:363px;top:760px;height:420px;display:block;white-space:nowrap;
+  font-family:var(--f);font-weight:900;font-size:420px;line-height:420px;font-stretch:100%;letter-spacing:0;color:var(--lime);
+  clip-path:inset(0 0 150px 0)}
+/* point = disque lime Ø 84 centré (493, 1070) */
+.s06 .s06-dot{position:absolute;left:451px;top:1028px;width:84px;height:84px;transform-origin:42px 42px}
+.s06 .s06-dotc{position:absolute;inset:0;transform-origin:42px 42px}
+.s06 .s06-dh{position:absolute;left:-58px;top:-58px;width:200px;height:200px;border-radius:50%;opacity:0;
+  background:radial-gradient(closest-side,rgba(200,255,62,.42),rgba(200,255,62,.12) 55%,rgba(200,255,62,0))}
+.s06 .s06-dd{position:absolute;inset:0;border-radius:50%;background:var(--lime)}
+
+/* ---- onde au sol (ellipse) sous le point ---- */
+.s06 .s06-rip{position:absolute;left:493px;top:1112px;width:90px;height:26px;border:5px solid var(--lime);border-radius:50%;
+  transform:translate(-50%,-50%);opacity:0}
+
+/* ---- LE TROU : anneau lime 40 %, Ø 70 à l’écran (66 px × caméra 1,06), centré (485, 960) ---- */
+.s06 .s06-hole{position:absolute;left:452px;top:927px;width:66px;height:66px;border:2px solid rgba(200,255,62,.4);border-radius:50%;
+  transform-origin:33px 33px;opacity:0}
+
+/* ---- s07 ---- */
+/* ===== Scène 07 (12 → 14 s) — DROP 2 : le point explose et devient le prix « Un site dès 85 € » ===== */
+.s07{background:var(--night);color:var(--ink);font-family:var(--f)}
+.s07 i{display:block;font-style:normal}
+.s07 .s07-cam{position:absolute;inset:0;transform-origin:485px 900px}
+.s07 .s07-shk{position:absolute;inset:0;transform-origin:485px 960px}
+
+/* champ lime né du point (déborde de 60 px pour la secousse et la poussée caméra) */
+.s07 .s07-lime{position:absolute;left:-60px;top:-60px;width:1200px;height:2040px;clip-path:circle(30px at 545px 1020px);
+  background:radial-gradient(circle 880px at 545px 1000px,rgba(255,255,255,.26),rgba(255,255,255,0) 72%),
+             radial-gradient(circle 1250px at 545px 1020px,rgba(40,70,0,0) 52%,rgba(40,70,0,.2)),var(--lime)}
+/* soleil de rayons encre 6 % (centré 485/960) */
+.s07 .s07-sun{position:absolute;left:-715px;top:-240px;width:2400px;height:2400px;
+  background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(11,11,16,.06) 0 7.5deg,rgba(11,11,16,0) 7.5deg 15deg)}
+.s07 .s07-sunrot{animation:s07-sun 2s linear both;animation-delay:12s}
+@keyframes s07-sun{from{transform:rotate(0deg)}to{transform:rotate(40deg)}}
+
+.s07 .s07-svg{position:absolute;left:0;top:0;overflow:visible}
+.s07 .s07-svg circle,.s07 .s07-svg ellipse{fill:none;stroke:var(--ink)}
+.s07 #s07-rl{stroke:var(--lime)}
+
+/* confettis de glyphes */
+.s07 .s07-gl{position:absolute;inset:0}
+.s07 .s07-gl b{position:absolute;left:0;top:0;font-weight:900;line-height:1;font-stretch:75%;white-space:nowrap;opacity:0}
+.s07 .s07-gl b.d{border-radius:50%}
+
+/* sol : ombre de contact (enveloppe = apparition, enfant = flexion) */
+.s07 .s07-shw{position:absolute;left:100px;top:1044px;width:580px;height:66px;transform-origin:290px 33px}
+.s07 .s07-shadow{position:absolute;inset:0;transform-origin:560px 33px}
+.s07 .s07-shw2{position:absolute;left:668px;top:1048px;width:212px;height:58px;transform-origin:106px 29px}
+.s07 .s07-shadow,.s07 .s07-shw2{border-radius:50%;background:radial-gradient(closest-side,rgba(11,11,16,.36),rgba(11,11,16,.16) 55%,rgba(11,11,16,0))}
+
+/* 3D : perspective sur la scène, orbite + prix en preserve-3d */
+.s07 .s07-stage{position:absolute;inset:0;perspective:1500px;perspective-origin:485px 900px}
+.s07 .s07-orbit{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:485px 900px}
+.s07 .s07-price{position:absolute;inset:0;transform-style:preserve-3d;font-stretch:70%}
+.s07 .s07-face,.s07 .s07-e85{position:absolute;right:422px;top:560px;font-weight:900;font-size:600px;line-height:1;letter-spacing:-.04em;white-space:nowrap}
+.s07 .s07-face{transform-origin:calc(100% - 266px) 507px}
+.s07 .s07-sheen{position:absolute;left:0;top:0;color:transparent;
+  background:linear-gradient(110deg,rgba(255,255,255,0) 42%,rgba(255,255,255,.14) 46.5%,rgba(255,255,255,.75) 49.4%,rgba(255,255,255,.75) 50.2%,rgba(255,255,255,.14) 52.5%,rgba(255,255,255,0) 57%) 100% 0/300% 100% no-repeat;
+  -webkit-background-clip:text;background-clip:text}
+.s07 .s07-ey{position:absolute;left:682px;top:796px;transform-style:preserve-3d}
+.s07 .s07-er{position:relative;transform-style:preserve-3d;transform-origin:50% 50%}
+.s07 .s07-eg,.s07 .s07-eeu{display:block;font-weight:900;font-size:320px;line-height:1;font-stretch:75%;white-space:nowrap}
+.s07 .s07-er .s07-eg+.s07-eg{position:absolute;left:0;top:0;color:#262630}
+.s07 .s07-er .s07-eg.f,.s07 .s07-er .s07-eg.b{-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.s07 .s07-er .s07-eg.b{color:var(--ink)}
+.s07 .s07-eg .s07-sheen{font-stretch:75%}
+.s07 .s07-echo{position:absolute;inset:0;opacity:0;color:transparent}
+.s07 .s07-e85,.s07 .s07-eeu{-webkit-text-stroke:3px var(--ink)}
+.s07 .s07-eeu{position:absolute;left:682px;top:796px}
+/* reflet au sol (miroir sous la ligne de base y 1067) */
+.s07 .s07-refl{position:absolute;inset:0;opacity:.12;transform:scaleY(-1);transform-origin:0 1067px;
+  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,0) 830px,#000 1067px);mask-image:linear-gradient(180deg,rgba(0,0,0,0) 830px,#000 1067px)}
+.s07 .s07-refl .s07-er{transform-style:flat}
+
+.s07 .s07-dust{position:absolute;left:0;top:0}
+
+/* « Un site dès » */
+.s07 .s07-unsite{position:absolute;left:0;top:400px;width:970px;text-align:center;font-family:var(--serif);font-style:italic;font-weight:400;font-size:140px;line-height:1;white-space:nowrap}
+.s07 .s07-unsite .ch{transform-origin:50% 100%;animation:s07-up .32s var(--ex) both;animation-delay:var(--t)}
+@keyframes s07-up{from{transform:translateY(56px) rotate(9deg);opacity:0}45%{opacity:1}to{transform:none;opacity:1}}
+
+/* étincelles de la pièce */
+.s07 .s07-star{position:absolute;left:750px;top:810px;width:100px;height:100px;transform:scale(0)}
+.s07 .s07-star svg{display:block}
+.s07 .s07-star path{fill:#fff}
+.s07 .s07-star2{left:676px;top:1000px;width:100px;height:100px}
+
+/* coup de lame */
+.s07 .s07-cut{position:absolute;inset:0;opacity:0}
+.s07 .s07-inkbase{position:absolute;left:-400px;top:-400px;right:-400px;bottom:-400px;background:var(--ink)}
+.s07 .s07-half{position:absolute;inset:0}
+.s07 .s07-flat{position:absolute;inset:0}
+.s07 .s07-flat .s07-lime{clip-path:none}
+/* la plaque coupée déborde de 400 px : aucun bord vertical visible au début de la glissade (mêmes dégradés, recentrés) */
+.s07 .s07-flat .s07-limeX{left:-400px;top:-400px;width:1880px;height:2720px;
+  background:radial-gradient(circle 880px at 885px 1340px,rgba(255,255,255,.26),rgba(255,255,255,0) 72%),
+             radial-gradient(circle 1250px at 885px 1360px,rgba(40,70,0,0) 52%,rgba(40,70,0,.2)),var(--lime)}
+.s07 .s07-flat .s07-sun{left:-1415px;top:-940px;width:3800px;height:3800px}
+.s07 .s07-edge{position:absolute;left:-215px;top:857px;width:1400px;height:6px;background:#fff;transform:rotate(-12deg);transform-origin:700px 3px}
+.s07 .s07-bladeR{position:absolute;left:-215px;top:858px;width:1400px;height:4px;transform:rotate(-12deg);transform-origin:700px 2px}
+.s07 .s07-blade{position:absolute;inset:0;background:#fff;border-radius:2px;transform:scaleX(0);transform-origin:0 50%;
+  box-shadow:0 0 8px 2px rgba(255,255,255,.9),0 0 26px 6px rgba(255,255,255,.35)}
+
+/* ---- s08 ---- */
+
+/* ---- fx ---- */
+
+</style></head>
+<body>
+<div class="viewport" id="vp">
+<!-- ---- s01 ---- -->
+<section class="sc s01" style="--a:0s;--b:2s">
+  <div class="bg"><div class="halo"></div><div class="halo2"></div></div>
+  <div class="rig">
+    <div class="rows">
+      <div class="row r1"><span>GARAGE · SALON · RESTO · ATELIER · BOUTIQUE · CAFÉ · GARAGE · SALON · RESTO · ATELIER · BOUTIQUE · CAFÉ ·</span></div>
+      <div class="row r2"><span>BOULANGERIE · FLEURISTE · BARBIER · PIZZERIA · BOULANGERIE · FLEURISTE · BARBIER · PIZZERIA ·</span></div>
+      <div class="row r3"><span>COACH · PLOMBIER · FROMAGERIE · TATOUEUR · COACH · PLOMBIER · FROMAGERIE · TATOUEUR ·</span></div>
+      <div class="row r4"><span>CAVE · BOUCHERIE · PHOTOGRAPHE · ARTISAN · CAVE · BOUCHERIE · PHOTOGRAPHE · ARTISAN ·</span></div>
+    </div>
+  </div>
+  <div class="zoom">
+    <div class="shk">
+      <div class="cam">
+        <svg class="rings" width="1080" height="1920" viewBox="0 0 1080 1920" aria-hidden="true">
+          <defs>
+            <filter id="s01-mb" x="-5%" y="-20%" width="110%" height="140%" color-interpolation-filters="sRGB">
+              <feGaussianBlur id="s01-mbg" stdDeviation="0 0"/>
+            </filter>
+            <filter id="s01-gh" x="-3%" y="-20%" width="106%" height="140%" color-interpolation-filters="sRGB">
+              <feMorphology in="SourceAlpha" operator="dilate" radius="2" result="d"/>
+              <feComposite in="d" in2="SourceAlpha" operator="out" result="o"/>
+              <feColorMatrix in="o" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .5 0" result="c"/>
+              <feGaussianBlur in="c" id="s01-ghb" stdDeviation="0 0"/>
+            </filter>
+          </defs>
+          <circle id="s01-w1" class="w1" cx="241" cy="900" r="40"/>
+          <circle id="s01-w2" class="w2" cx="241" cy="900" r="40"/>
+          <circle id="s01-w3" class="w3" cx="241" cy="900" r="40"/>
+        </svg>
+        <div class="oglow" id="s01-glow"></div>
+        <div class="ton"><span class="tonin">Ton</span></div>
+        <div class="ghost">
+          <div class="strip gstrip">
+            <div class="cell"><div class="w"><span class="t" style="font-stretch:72%">GARAGE</span></div></div>
+            <div class="cell"><div class="w"><span class="t" style="font-stretch:93%">SALON</span></div></div>
+            <div class="cell"><div class="w"><span class="t" style="font-stretch:95%">RESTO</span></div></div>
+            <div class="cell"><div class="w"><span class="t" style="font-stretch:73%">ATELIER</span></div></div>
+            <div class="cell"><div class="w mg"><span class="t" style="font-stretch:62%">MAGASIN</span></div></div>
+            <div class="cell"><div class="w"><span class="t" style="font-stretch:125%">CAFÉ</span></div></div>
+            <div class="cell"><div class="w cw"><span class="t gcom">COMMERCE</span></div></div>
+          </div>
+        </div>
+        <div class="win">
+          <div class="strip mstrip">
+            <div class="cell"><div class="w"><span class="t" style="font-stretch:72%">GARAGE</span></div></div>
+            <div class="cell"><div class="w"><span class="t" style="font-stretch:93%">SALON</span></div></div>
+            <div class="cell"><div class="w"><span class="t" style="font-stretch:95%">RESTO</span></div></div>
+            <div class="cell"><div class="w"><span class="t" style="font-stretch:73%">ATELIER</span></div></div>
+            <div class="cell"><div class="w mg"><span class="t" style="font-stretch:62%">MAGASIN</span></div></div>
+            <div class="cell"><div class="w"><span class="t" style="font-stretch:125%">CAFÉ</span></div></div>
+            <div class="cell"><div class="w cw"><span class="t com" id="s01-com"><span class="l">C</span><span class="l o" id="s01-o">O<i id="s01-oi"></i></span><span class="l">M</span><span class="l">M</span><span class="l">E</span><span class="l">R</span><span class="l">C</span><span class="l">E</span></span></div></div>
+          </div>
+        </div>
+        <div class="merite" id="s01-mer">
+          <div class="mclip"><div class="mtxt"><em>mérite</em> d’être vu</div></div>
+          <div class="dotw"><div class="dot" id="s01-dot"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <svg class="warp" id="s01-warp" width="1080" height="1920" viewBox="0 0 1080 1920" aria-hidden="true"></svg>
+  <div class="iris" id="s01-iris"></div>
+</section>
+
+<!-- ---- s02 ---- -->
+<section class="sc s02" style="--a:2s;--b:4s">
+  <div class="s02-tint"></div>
+  <div class="s02-zoom">
+    <div class="s02-rowsz">
+      <div class="s02-rows">
+        <div class="s02-row s02-r1">SITE · SITE · SITE · SITE · SITE · SITE · </div>
+        <div class="s02-row s02-r2">TE · SITE · SITE · SITE · SITE · SITE · SI</div>
+        <div class="s02-row s02-r3">· SITE · SITE · SITE · SITE · SITE · SITE </div>
+      </div>
+    </div>
+    <div class="s02-rings"><i></i><i></i><i></i></div>
+    <div class="s02-shk">
+      <div class="s02-stage">
+        <div class="s02-cam">
+          <div class="s02-on" id="s02-on">On te crée</div>
+          <div class="s02-beau"><div class="s02-beau-in">un beau</div></div>
+          <svg class="s02-ul" viewBox="0 0 1080 1920" width="1080" height="1920"><path id="s02-ul" pathLength="1" d=""/></svg>
+          <svg class="s02-wave" viewBox="0 0 1080 1920" width="1080" height="1920"><circle id="s02-wave" cx="485" cy="886" r="0"/></svg>
+          <div class="s02-shards" id="s02-shards"></div>
+          <div class="s02-site" id="s02-site">
+            <span class="s02-L s02-L1">S</span><span class="s02-L s02-L2">I</span><span class="s02-L s02-L3">T</span><span class="s02-L s02-L4">E</span>
+            <span class="s02-sdot"></span>
+          </div>
+          <div class="s02-dev" id="s02-dev">
+            <i class="s02-shadow"></i><i class="s02-body"></i>
+            <svg class="s02-phone" viewBox="0 0 1080 1920" width="1080" height="1920">
+              <path class="s02-ph" pathLength="1" d="M485 690H339A64 64 0 0 0 275 754V1486A64 64 0 0 0 339 1550H485"/>
+              <path class="s02-ph" pathLength="1" d="M485 690H631A64 64 0 0 1 695 754V1486A64 64 0 0 1 631 1550H485"/>
+            </svg>
+            <div class="s02-blk s02-b1"></div><div class="s02-blk s02-b2"></div><div class="s02-blk s02-b3"></div><div class="s02-blk s02-b4"></div>
+            <div class="s02-screen">
+              <div class="s02-scroll">
+                <img src="../images/portfolio/boulangerie-mobile.jpg" alt="">
+                <i class="s02-tap"></i><i class="s02-tap2"></i>
+              </div>
+              <i class="s02-glare"></i>
+            </div>
+            <div class="s02-dx"><div class="s02-dy"><i class="s02-dd"></i></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="s02-pst"><div class="s02-plus"><div class="s02-prot"><i class="s02-ph1"></i><i class="s02-pv1"></i></div></div></div>
+  <div class="s02-ink"></div>
+</section>
+
+<!-- ---- s03 ---- -->
+<section class="sc s03" style="--a:4s;--b:6s">
+  <div class="s03-bgw">
+    <div class="s03-bg"><i class="s03-gv"></i><i class="s03-gt"></i></div>
+  </div>
+  <canvas class="s03-streaks" id="s03-streaks" width="1080" height="1920"></canvas>
+  <svg class="s03-defs" width="0" height="0" aria-hidden="true">
+    <filter id="s03-mb" x="-30%" y="-5%" width="160%" height="110%" color-interpolation-filters="sRGB">
+      <feGaussianBlur id="s03-mbg" stdDeviation="0 0"/>
+    </filter>
+  </svg>
+  <div class="s03-whip" id="s03-whip">
+    <div class="s03-shk" id="s03-shk">
+      <i class="s03-pool"></i>
+      <i class="s03-halo s03-h0"></i><i class="s03-halo s03-h1"></i><i class="s03-halo s03-h2"></i>
+      <i class="s03-echo"></i><i class="s03-echo"></i><i class="s03-echo"></i>
+      <div class="s03-stage">
+        <div class="s03-cam">
+          <div class="s03-arrive">
+            <div class="s03-drum" id="s03-drum">
+              <!-- face 0 : ton LOGO -->
+              <div class="s03-face s03-f0">
+                <div class="s03-media"><div class="s03-strip" id="s03-strip"></div></div>
+                <i class="s03-veil"></i>
+                <i class="s03-shade"></i><i class="s03-gloss"></i><i class="s03-sheen"></i>
+                <div class="s03-lab">ton</div>
+                <div class="s03-word">LOGO</div>
+                <i class="s03-base"></i>
+              </div>
+              <!-- face 1 : tes PUBS -->
+              <div class="s03-face s03-f1">
+                <div class="s03-media">
+                  <i class="s03-conic"></i>
+                  <i class="s03-scan"></i>
+                </div>
+                <i class="s03-veil"></i>
+                <i class="s03-vf s03-vf1"></i><i class="s03-vf s03-vf2"></i><i class="s03-vf s03-vf3"></i><i class="s03-vf s03-vf4"></i>
+                <i class="s03-rec"></i>
+                <div class="s03-play"><svg viewBox="0 0 56 56" width="56" height="56"><circle cx="28" cy="28" r="28" fill="#fff"/><path d="M23 18.5v19l15-9.5z" fill="#0b0b10"/></svg></div>
+                <i class="s03-track"></i><i class="s03-prog"></i><i class="s03-knob"></i>
+                <i class="s03-shade"></i><i class="s03-gloss"></i><i class="s03-sheen"></i>
+                <div class="s03-lab">tes</div>
+                <div class="s03-word">PUBS</div>
+              </div>
+              <!-- face 2 : tes RÉSEAUX -->
+              <div class="s03-face s03-f2">
+                <div class="s03-media"><div class="s03-cols" id="s03-cols"></div></div>
+                <i class="s03-veil"></i>
+                <i class="s03-shade"></i><i class="s03-gloss"></i><i class="s03-sheen"></i>
+                <div class="s03-lab">tes</div>
+                <div class="s03-word s03-wr">RÉSEAUX</div>
+              </div>
+              <!-- face 3 : encre + grille (jamais vue de face) -->
+              <div class="s03-face s03-f3"><i class="s03-shade"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="s03-hearts" id="s03-hearts"></div>
+      <div class="s03-notifs">
+        <div class="s03-nt s03-n1"><div class="s03-ni"><svg viewBox="0 0 24 24" width="40" height="40"><path d="M12 21.2l-1.5-1.3C5.4 15.3 2 12.3 2 8.6 2 5.5 4.4 3.1 7.5 3.1c1.7 0 3.4.8 4.5 2.1 1.1-1.3 2.8-2.1 4.5-2.1 3.1 0 5.5 2.4 5.5 5.5 0 3.7-3.4 6.7-8.5 11.3z" fill="#fff"/></svg></div></div>
+        <div class="s03-nt s03-n2"><div class="s03-ni"><svg viewBox="0 0 24 24" width="40" height="40"><path d="M4 4.5h16a1.5 1.5 0 0 1 1.5 1.5v10a1.5 1.5 0 0 1-1.5 1.5H10l-5 4v-4H4A1.5 1.5 0 0 1 2.5 16V6A1.5 1.5 0 0 1 4 4.5z" fill="#fff"/></svg></div></div>
+        <div class="s03-nt s03-n3"><div class="s03-ni"><svg viewBox="0 0 24 24" width="40" height="40"><circle cx="9.5" cy="7.5" r="4" fill="#fff"/><path d="M1.5 20.5c0-4.4 3.6-7.5 8-7.5s8 3.1 8 7.5z" fill="#fff"/><path d="M19.5 6v7M16 9.5h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg></div></div>
+      </div>
+      <div class="s03-big">
+        <svg class="s03-fxsvg" viewBox="0 0 1080 1920" width="1080" height="1920">
+          <circle id="s03-ring1" cx="785" cy="650" r="0"/>
+          <circle id="s03-ring2" cx="785" cy="650" r="0"/>
+          <g id="s03-sparks"></g>
+        </svg>
+        <div class="s03-bh"><div class="s03-bhs"><svg viewBox="0 0 24 24" width="140" height="140"><path d="M12 21.2l-1.5-1.3C5.4 15.3 2 12.3 2 8.6 2 5.5 4.4 3.1 7.5 3.1c1.7 0 3.4.8 4.5 2.1 1.1-1.3 2.8-2.1 4.5-2.1 3.1 0 5.5 2.4 5.5 5.5 0 3.7-3.4 6.7-8.5 11.3z" fill="#c8ff3e"/></svg></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="s03-quarters">
+    <i class="s03-q s03-q1"></i><i class="s03-q s03-q2"></i><i class="s03-q s03-q3"></i><i class="s03-q s03-q4"></i>
+  </div>
+</section>
+
+<!-- ---- s04 ---- -->
+<section class="sc s04" style="--a:6s;--b:8s">
+  <div class="s04-bg"><i class="s04-glow"></i></div>
+  <!-- plateau A : sol + 16 tuiles + ombres / ondes (sous la brume) -->
+  <div class="s04-stage s04-sa">
+    <div class="s04-slide"><div class="s04-roll"><div class="s04-fly" id="s04-fly">
+      <i class="s04-floor"></i>
+    </div></div></div>
+  </div>
+  <div class="s04-fog"></div>
+  <i class="s04-fogm"></i>
+  <i class="s04-low"></i>
+  <i class="s04-hz"></i>
+  <!-- plateau B : même caméra, seulement le point lime (au-dessus de la brume) -->
+  <div class="s04-stage s04-sb">
+    <div class="s04-slide"><div class="s04-roll"><div class="s04-fly" id="s04-flyb">
+      <div class="s04-dotp" id="s04-dotp"><div class="s04-dotr"><i class="s04-dots" id="s04-dots"></i></div></div>
+    </div></div></div>
+  </div>
+  <div class="s04-txt" id="s04-txt">
+    <div class="s04-l1" id="s04-l1">Un style</div>
+    <div class="s04-l2"><span class="s04-l2i" id="s04-l2">pour chaque</span></div>
+    <div class="s04-l3">
+      <div class="s04-word s04-echo" id="s04-echo1">MÉTIER</div>
+      <div class="s04-word s04-echo" id="s04-echo2">MÉTIER</div>
+      <div class="s04-word s04-met" id="s04-met">MÉTIER</div>
+      <i class="s04-pt" id="s04-pt"></i>
+    </div>
+  </div>
+  <div class="s04-iris" id="s04-iris"></div>
+  <svg class="s04-ring" viewBox="0 0 1080 1920" width="1080" height="1920"><circle id="s04-ring" cx="485" cy="1000" r="0"/></svg>
+  <svg class="s04-defs" width="0" height="0" aria-hidden="true">
+    <filter id="s04-mb" x="-25%" y="0%" width="150%" height="100%" color-interpolation-filters="sRGB">
+      <feGaussianBlur id="s04-mbg" stdDeviation="0 0"/>
+    </filter>
+  </svg>
+</section>
+
+<!-- ---- s05 ---- -->
+<section class="sc s05" style="--a:8s;--b:10s">
+  <!-- nuit (révélée par la paupière) -->
+  <div class="s05-night"></div>
+  <!-- deux paupières papier : chacune porte la moitié du décor (lueur + grille) et 4 px de la ligne encre -->
+  <div class="s05-lid s05-lidT" id="s05-lidT"><div class="s05-pp"><i class="s05-glow"></i><i class="s05-dots"></i></div><i class="s05-sh"></i></div>
+  <div class="s05-lid s05-lidB" id="s05-lidB"><div class="s05-pp"><i class="s05-glow"></i><i class="s05-dots"></i></div><i class="s05-sh"></i></div>
+
+  <div class="s05-crush" id="s05-crush">
+    <div class="s05-cam" id="s05-cam"><div class="s05-kick" id="s05-kick">
+
+      <!-- ligne de titre masquée -->
+      <div class="s05-ml">
+        <span class="s05-ln" id="s05-l1">Tu nous écris.</span>
+        <span class="s05-ln" id="s05-l2">On crée.</span>
+        <span class="s05-ln" id="s05-l3">C’est <span class="s05-hl">en ligne</span>.</span>
+      </div>
+
+      <!-- fenêtre de navigateur -->
+      <div class="s05-stage"><div class="s05-wtilt" id="s05-wtilt">
+        <div class="s05-win" id="s05-win">
+          <div class="s05-wbar">
+            <i class="s05-wd" style="left:24px"></i><i class="s05-wd" style="left:46px"></i><i class="s05-wd" style="left:68px"></i>
+            <div class="s05-url">
+              <svg class="s05-lock" id="s05-lock" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true">
+                <path class="s05-lkb" d="M6.2 9V6.6a3.8 3.8 0 0 1 7.6 0V9" fill="none" stroke-width="2.4" stroke-linecap="round"/>
+                <rect class="s05-lkf" id="s05-lkf" x="3.6" y="8.6" width="12.8" height="9.4" rx="2.4"/>
+              </svg>
+              <i class="s05-ptr"><i class="s05-pf" id="s05-pf"></i></i>
+            </div>
+          </div>
+          <div class="s05-wct">
+            <i class="s05-rip" id="s05-rip"></i>
+            <i class="s05-blk" id="s05-b1" style="left:24px;top:20px;width:702px;height:56px"></i>
+            <i class="s05-blk" id="s05-b2" style="left:40px;top:120px;width:440px;height:110px"></i>
+            <i class="s05-blk" id="s05-b3" style="left:40px;top:260px;width:670px;height:260px"></i>
+            <i class="s05-blk s05-pill" id="s05-b4" style="left:40px;top:550px;width:190px;height:50px"></i>
+            <i class="s05-blk s05-pill" id="s05-b5" style="left:250px;top:550px;width:190px;height:50px"></i>
+            <img class="s05-img" id="s05-img" src="../images/portfolio/fleuriste.jpg" alt="" width="750" height="1458">
+            <i class="s05-sw" id="s05-sw"></i>
+          </div>
+        </div>
+      </div></div>
+
+      <!-- bulle de discussion -->
+      <div class="s05-bub" id="s05-bub"><i class="s05-bd" style="--i:0;left:79px"></i><i class="s05-bd" style="--i:1;left:121px"></i><i class="s05-bd" style="--i:2;left:163px"></i></div>
+
+      <!-- confettis (sous le bouton : ils jaillissent de derrière) -->
+      <canvas class="s05-cf" id="s05-cf" width="1080" height="1920"></canvas>
+
+      <!-- bouton Publier -->
+      <div class="s05-btn" id="s05-btn"><div class="s05-btnp" id="s05-btnp">
+        <i class="s05-btnb" id="s05-btnb"></i>
+        <span class="s05-btnt" id="s05-btnt">Publier</span>
+        <svg class="s05-spin" id="s05-spin" viewBox="0 0 110 110" width="110" height="110" aria-hidden="true"><circle cx="55" cy="55" r="30" fill="none" stroke-width="8" stroke-linecap="round" stroke-dasharray="120 200"/></svg>
+        <svg class="s05-chk" id="s05-chk" viewBox="0 0 110 110" width="110" height="110" aria-hidden="true"><path id="s05-chkp" d="M33 57 L49 73 L79 41" fill="none" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div></div>
+
+      <!-- curseur -->
+      <div class="s05-cur" id="s05-cur">
+        <i class="s05-crg" id="s05-crg"></i>
+        <div class="s05-curk" id="s05-curk">
+          <svg viewBox="-4 -4 52 72" width="52" height="72" aria-hidden="true"><path d="M0 0 L0 50 L13 39 L22 60 L32 55.5 L23 35 L40 35 Z" fill="#c8ff3e" stroke="#0b0b10" stroke-width="4" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+
+    </div></div>
+  </div>
+
+  <!-- ligne encre de l'écrasement -->
+  <i class="s05-seam" id="s05-seam"></i>
+</section>
+
+<!-- ---- s06 ---- -->
+<section class="sc s06" style="--a:10s;--b:12s">
+  <!-- nuit (même nuit violette que la fin de S5) -->
+  <div class="s06-night"></div>
+
+  <!-- caméra : push + roulis autour de (485, 960) — point fixe = position finale du point lime -->
+  <div class="s06-cam" id="s06-cam"><div class="s06-kick" id="s06-kick">
+
+    <!-- lueur violette centrale (pulse sur les temps puis les croches) -->
+    <div class="s06-glow" id="s06-glow"><i class="s06-glowp" id="s06-glowp"></i></div>
+
+    <!-- vortex : 3 anneaux de texte « COMBIEN ? » (canvas piloté par onSeek, flou de bougé) -->
+    <canvas class="s06-vx" id="s06-vx" width="1080" height="1920"></canvas>
+
+    <!-- « Et ça coûte » : lettres qui montent dans un masque -->
+    <div class="s06-etca" id="s06-etca"><div class="s06-etm"><div class="s06-ett" id="s06-ett">Et ça coûte</div></div></div>
+
+
+    <!-- COMBIEN : aspiration > slam > tremblement + aberration > 7 boîtes de largeur fixe -->
+    <div class="s06-cws" id="s06-cws"><div class="s06-cw" id="s06-cw"><div class="s06-cw2" id="s06-cw2"><span class="s06-lb" style="width:112px">C</span><span class="s06-lb" style="width:120px">O</span><span class="s06-lb" style="width:145px">M</span><span class="s06-lb" style="width:111px">B</span><span class="s06-lb" style="width:52px">I</span><span class="s06-lb" style="width:103px">E</span><span class="s06-lb" style="width:118px">N</span></div></div></div>
+
+    <!-- onde au sol à l’atterrissage du « ? » -->
+    <i class="s06-rip" id="s06-rip"></i>
+    <i class="s06-rip" id="s06-rip2"></i>
+
+    <!-- « ? » : chute/rebond (qf) > crochet (aspiré, ressort) + point (disque lime) -->
+    <div class="s06-qf" id="s06-qf">
+      <div class="s06-q" id="s06-q"><div class="s06-qw" id="s06-qw"><span class="s06-qg" id="s06-qg">?</span></div></div>
+      <div class="s06-dot" id="s06-dot"><i class="s06-dotc" id="s06-dotc"><i class="s06-dh" id="s06-dh"></i><i class="s06-dd"></i></i></div>
+    </div>
+
+    <!-- LE TROU : anneau fin lime autour du point -->
+    <i class="s06-hole" id="s06-hole"></i>
+
+  </div></div>
+</section>
+
+<!-- ---- s07 ---- -->
+<section class="sc s07" style="--a:12s;--b:14s">
+  <div class="s07-cam" id="s07-cam">
+    <div class="s07-shk" id="s07-shk">
+      <div class="s07-lime" id="s07-lime"></div>
+      <div class="s07-sun s07-sunrot"></div>
+      <svg class="s07-svg s07-rings" viewBox="0 0 1080 1920" width="1080" height="1920">
+        <circle id="s07-rl" cx="485" cy="960" r="0"/>
+        <circle class="s07-ri" cx="485" cy="960" r="0"/>
+        <circle class="s07-ri" cx="485" cy="960" r="0"/>
+        <circle class="s07-ri" cx="485" cy="960" r="0"/>
+      </svg>
+      <div class="s07-gl" id="s07-gback"></div>
+      <div class="s07-shw" id="s07-shw"><i class="s07-shadow" id="s07-shadow"></i></div>
+      <i class="s07-shw2" id="s07-shw2"></i>
+      <svg class="s07-svg s07-wave" viewBox="0 0 1080 1920" width="1080" height="1920">
+        <ellipse id="s07-w1" cx="485" cy="1075" rx="0" ry="0"/>
+        <ellipse id="s07-w2" cx="485" cy="1075" rx="0" ry="0"/>
+      </svg>
+      <div class="s07-stage">
+        <div class="s07-orbit" id="s07-orbit">
+          <div class="s07-price" id="s07-price">
+            <div class="s07-refl" id="s07-refl">
+              <div class="s07-face s07-rface">85</div>
+              <div class="s07-ey s07-rey"><div class="s07-er s07-rer"><span class="s07-eg">€</span></div></div>
+            </div>
+            <div class="s07-echo"><span class="s07-e85">85</span><span class="s07-eeu">€</span></div>
+            <div class="s07-echo"><span class="s07-e85">85</span><span class="s07-eeu">€</span></div>
+            <div class="s07-echo"><span class="s07-e85">85</span><span class="s07-eeu">€</span></div>
+            <div class="s07-face" id="s07-face">85<span class="s07-sheen">85</span></div>
+            <div class="s07-ey" id="s07-ey"><div class="s07-er" id="s07-er"></div></div>
+          </div>
+        </div>
+      </div>
+      <canvas class="s07-dust" id="s07-dust" width="1080" height="1920"></canvas>
+      <div class="s07-gl" id="s07-gfront"></div>
+    </div>
+    <div class="s07-unsite" id="s07-un">Un site dès</div>
+    <div class="s07-star"><svg viewBox="-50 -50 100 100" width="100" height="100"><path d="M0-50C3-12 12-3 50 0C12 3 3 12 0 50C-3 12-12 3-50 0C-12-3-3-12 0-50Z"/></svg></div>
+    <div class="s07-star s07-star2"><svg viewBox="-50 -50 100 100" width="100" height="100"><path d="M0-50C3-12 12-3 50 0C12 3 3 12 0 50C-3 12-12 3-50 0C-12-3-3-12 0-50Z"/></svg></div>
+    <div class="s07-cut" id="s07-cut">
+      <div class="s07-inkbase"></div>
+      <div class="s07-half s07-top" id="s07-top"></div>
+      <div class="s07-half s07-bot" id="s07-bot"></div>
+    </div>
+    <div class="s07-bladeR"><i class="s07-blade" id="s07-blade"></i></div>
+  </div>
+</section>
+
+<!-- ---- s08 ---- -->
+<section class="sc s08" style="--a:14s;--b:16s">
+  <div class="s08-bg">
+    <i class="s08-gv" id="s08-gv"></i>
+    <i class="s08-gb" id="s08-gb"></i>
+    <i class="s08-teal" id="s08-teal"></i>
+  </div>
+  <div class="s08-euout" id="s08-euout">
+    <div class="s08-eustage">
+      <div class="s08-eurot" id="s08-eurot">
+        <span class="s08-eu s08-eu3">€</span>
+        <span class="s08-eu s08-eu2">€</span>
+        <span class="s08-eu s08-eu1">€</span>
+      </div>
+    </div>
+  </div>
+  <div class="s08-cam" id="s08-cam">
+    <div class="s08-shk" id="s08-shk">
+      <i class="s08-halo" id="s08-halo"></i>
+      <svg class="s08-fxs" viewBox="0 0 1080 1920" width="1080" height="1920">
+        <circle id="s08-wv1" cx="0" cy="0" r="0"/>
+        <circle id="s08-wv2" cx="0" cy="0" r="0"/>
+        <g id="s08-ticks"></g>
+      </svg>
+      <div class="s08-b1" id="s08-b1">
+        <div class="s08-echo" id="s08-echo">PRIX</div>
+        <div class="s08-prixw" id="s08-prixw"><div class="s08-prix s08-mb" id="s08-prix">PRIX</div></div>
+        <i class="s08-base s08-mb" id="s08-base"></i>
+        <div class="s08-pl s08-pl1" id="s08-pl1">
+          <div class="s08-ann s08-mb" id="s08-ann">annoncé à l’avance.</div>
+          <i class="s08-nib s08-nib1" id="s08-nib1"></i>
+        </div>
+      </div>
+      <div class="s08-b2" id="s08-b2">
+        <div class="s08-row" id="s08-row">RETOUCHES</div>
+        <div class="s08-incf" id="s08-incf">
+          <div class="s08-pl s08-pl2" id="s08-pl2">
+            <div class="s08-inc" id="s08-inc">incluses.</div>
+            <i class="s08-nib s08-nib2" id="s08-nib2"></i>
+          </div>
+        </div>
+      </div>
+      <svg class="s08-osvg" viewBox="0 0 1080 1920" width="1080" height="1920">
+        <path id="s08-op" d="" fill="#c8ff3e" fill-rule="evenodd"/>
+      </svg>
+    </div>
+  </div>
+  <svg class="s08-ring" viewBox="0 0 1080 1920" width="1080" height="1920">
+    <circle id="s08-ringc" cx="485" cy="900" r="265"/>
+  </svg>
+  <i class="s08-shim" id="s08-shim"></i>
+  <svg class="s08-defs" width="0" height="0" aria-hidden="true">
+    <filter id="s08-hb" x="-30%" y="-10%" width="160%" height="120%" color-interpolation-filters="sRGB">
+      <feGaussianBlur id="s08-hbg" stdDeviation="0 0"/>
+    </filter>
+  </svg>
+</section>
+
+<!-- ---- fx ---- -->
+
+</div>
+<button class="ui" id="replay">Rejouer</button>
+<script>
+/* ===== Pub 10 — moteur commun (chargé avant les scripts des scènes) =====
+   Règles : aucune horloge réelle. Tout mouvement = animation CSS (animation-delay ABSOLU en s),
+   ou element.animate(...) avec delay ABSOLU en ms, ou dessin canvas via onSeek(t => ...).
+   Aléatoire : uniquement mkRnd(graine) (déterministe). */
+window.mkRnd = seed => { let s = seed % 2147483647; if (s <= 0) s += 2147483646; return () => (s = (s * 16807) % 2147483647) / 2147483647; };
+window.SEEK_HOOKS = [];
+window.onSeek = fn => SEEK_HOOKS.push(fn);            // fn(tSeconds) doit tout redessiner pour l'instant t
+/* split(el, t0, dt) : découpe le texte de el en lettres <span class="ch"> avec --i et --t = t0 + i*dt (s).
+   Les espaces restent des espaces. Retourne la liste des spans. */
+window.split = (el, t0 = 0, dt = 0.03) => {
+  const txt = el.textContent; el.textContent = ""; const out = []; let i = 0;
+  for (const c of txt) { const s = document.createElement("span"); s.className = "ch"; s.textContent = c;
+    s.style.setProperty("--i", i); s.style.setProperty("--t", (t0 + i * dt).toFixed(3) + "s"); el.append(s); out.push(s); if (c !== " ") i++; }
+  return out;
+};
+window.$ = (sel, root = document) => root.querySelector(sel);
+window.$$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+
+/* ---- s01 ---- */
+(function(){
+/* Scène 01 — 0 → 2 s. Tout est piloté par le temps absolu (WAAPI à delay absolu + onSeek). */
+const S = document.querySelector('.s01');
+const q = sel => S.querySelector(sel), qa = sel => [...S.querySelectorAll(sel)];
+
+/* ---------- courbes ---------- */
+const bz = (x1, y1, x2, y2) => {
+  const cx = s => ((1 - 3 * x2 + 3 * x1) * s + (3 * x2 - 6 * x1)) * s * s + 3 * x1 * s;
+  const cy = s => ((1 - 3 * y2 + 3 * y1) * s + (3 * y2 - 6 * y1)) * s * s + 3 * y1 * s;
+  return x => { if (x <= 0) return 0; if (x >= 1) return 1; let lo = 0, hi = 1, s = x;
+    for (let i = 0; i < 48; i++) { s = (lo + hi) / 2; if (cx(s) < x) lo = s; else hi = s; } return cy(s); };
+};
+const EX = bz(.16, 1, .3, 1), SLIDE = bz(.3, 0, .2, 1), LAND = bz(.34, 1.56, .64, 1);
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, k) => a + (b - a) * k;
+/* animation échantillonnée (keyframes linéaires très serrées) entre t0 et t1 (s absolues) */
+const samp = (el, t0, t1, f, n = 40, fill = 'forwards') => {
+  const k = []; for (let i = 0; i <= n; i++) { const u = i / n; k.push(Object.assign({ offset: u }, f(u))); }
+  return el.animate(k, { delay: t0 * 1000, duration: (t1 - t0) * 1000, fill, easing: 'linear' });
+};
+
+/* ---------- repères ---------- */
+const O = { x: 237.5, y: 900.2 };                 // centre de l’encre du O (repère caméra, mesuré dans Chromium)
+const CAMEND = 1.03, CX = 485, CY = 900;          // caméra à l'arrêt (1,75 s)
+const OZ = { x: CX + (O.x - CX) * CAMEND, y: CY + (O.y - CY) * CAMEND }; // centre du O à l'écran pendant la plongée
+const ORX = 46, ORY = 66;                          // demi-taille de l’encre du O à l’écran (caméra ×1,03)
+
+/* ---------- 1. rolodex : position de la bande (px) à l'instant t ---------- */
+const stripY = t => {
+  let y = 0;
+  for (let k = 1; k <= 6; k++) {
+    const s = k / 6 - .1, e = k / 6;
+    if (t >= e) { y = -260 * k; continue; }
+    if (t > s) y = -260 * (k - 1) - 260 * (k === 6 ? LAND : SLIDE)((t - s) / .1);
+    break;
+  }
+  return y;
+};
+const MS = q('.mstrip'), GS = q('.gstrip'), mbg = document.getElementById('s01-mbg'), ghb = document.getElementById('s01-ghb');
+onSeek(t => {
+  const y = stripY(t), h = 1 / 240, v = (stripY(t + h) - stripY(t - h)) / (2 * h); // px/s
+  const sig = Math.min(16, Math.abs(v) / 60 / 2.4);                               // flou de bougé vertical (obturateur 180°)
+  for (const s of [MS, GS]) s.style.transform = `translateY(${y.toFixed(2)}px)`;
+  MS.style.filter = sig > .25 ? 'url(#s01-mb)' : 'none';
+  mbg.setAttribute('stdDeviation', `0 ${sig.toFixed(2)}`);
+  ghb.setAttribute('stdDeviation', `0 ${(sig > .25 ? sig : 0).toFixed(2)}`);
+});
+
+/* ---------- 2. COMMERCE : large et maigre → haut et gras, largeur constante (1,00 → 1,25) ---------- */
+// largeur mesurée (Chromium, Archivo 183 px, −0,03 em) pour p = 0 … 1 (stretch 125→62 %, graisse 400→900)
+const WT = [1370.9, 1330.8, 1290, 1252.1, 1210.2, 1171.7, 1129, 1085.5, 1046, 1023.2, 1002.2, 979.2, 954.4, 934.3, 910.4, 888.5, 863.7, 839.7, 816.5, 790.8, 765.5];
+const wAt = p => { const x = clamp(p) * 20, i = Math.min(19, Math.floor(x)); return lerp(WT[i], WT[i + 1], x - i); };
+const WC = 765.5;
+samp(document.getElementById('s01-com'), 1.0, 1.25, u => {
+  const pc = 1 - Math.pow(1 - u, 3), sx = WC / wAt(pc);   // verrouillage : sortie cubique, rien ne déborde
+  const b = clamp((u - .3) / .7), pop = .07 * Math.sin(Math.PI * b) * Math.sqrt(1 - b);
+  return { fontStretch: (125 - 63 * pc).toFixed(2) + '%', fontWeight: Math.round(400 + 500 * pc), transform: `scale(${sx.toFixed(4)},${(sx * (1 + pop)).toFixed(4)})` };
+}, 40, 'both');
+
+/* ---------- 3. caméra, secousse, « Ton », halo ---------- */
+q('.cam').animate([
+  { offset: 0, transform: 'scale(1.08) rotate(-3deg)', easing: 'cubic-bezier(.2,.8,.2,1)' },
+  { offset: 1 / 1.75, transform: 'scale(1) rotate(0deg)', easing: 'cubic-bezier(.45,0,.55,1)' },
+  { offset: 1, transform: `scale(${CAMEND}) rotate(0deg)` }
+], { delay: 0, duration: 1750, fill: 'both' });
+
+q('.shk').animate([
+  { offset: 0, transform: 'translate(0px,0px) scale(1)' },
+  { offset: .08, transform: 'translate(4px,-3px) scale(1.018)' },
+  { offset: .3, transform: 'translate(-4px,2px) scale(1.008)' },
+  { offset: .6, transform: 'translate(2px,-1px) scale(1.002)' },
+  { offset: 1, transform: 'translate(0px,0px) scale(1)' }
+], { delay: 1000, duration: 200, fill: 'forwards' });
+
+q('.tonin').animate([
+  { offset: 0, transform: 'translateY(0px) rotate(0deg)', easing: 'cubic-bezier(.2,.8,.3,1)' },
+  { offset: .3, transform: 'translateY(-18px) rotate(-3deg)', easing: 'cubic-bezier(.34,1.56,.64,1)' },
+  { offset: 1, transform: 'translateY(0px) rotate(0deg)' }
+], { delay: 1000, duration: 320, fill: 'forwards' });
+
+/* légère séparation des plans pendant la lecture (profondeur) */
+q('.ton').animate([{ transform: 'translateY(0px)' }, { transform: 'translateY(-10px)' }],
+  { delay: 1150, duration: 600, easing: 'cubic-bezier(.45,0,.55,1)', fill: 'forwards' });
+q('.merite').animate([{ transform: 'translateY(0px)' }, { transform: 'translateY(8px)' }],
+  { delay: 1300, duration: 450, easing: 'cubic-bezier(.45,0,.55,1)', fill: 'forwards' });
+
+q('.halo').animate([
+  { offset: 0, transform: 'scale(1)', opacity: .8, easing: 'linear' },
+  { offset: .5, transform: 'scale(1.04)', opacity: .8, easing: 'cubic-bezier(.16,1,.3,1)' },
+  { offset: .53, transform: 'scale(1.14)', opacity: 1, easing: 'cubic-bezier(.3,0,.3,1)' },
+  { offset: .8, transform: 'scale(1.08)', opacity: .9, easing: 'linear' },
+  { offset: 1, transform: 'scale(1.12)', opacity: .95 }
+], { delay: 0, duration: 2000, fill: 'both' });
+
+/* ---------- 4. rangées : défilent, stoppées net à 1,00, rebond, dérive ---------- */
+[[q('.r1'), -1, 1250], [q('.r2'), 1, 1050], [q('.r3'), -1, 1350], [q('.r4'), 1, 1150]].forEach(([el, d, A]) => {
+  el.animate([
+    { offset: 0, transform: `translateX(${-d * A}px)`, easing: 'linear' },
+    { offset: .5, transform: 'translateX(0px)', easing: 'cubic-bezier(.2,.9,.4,1)' },
+    { offset: .535, transform: `translateX(${d * 24}px)`, easing: 'cubic-bezier(.45,0,.55,1)' },
+    { offset: .6, transform: `translateX(${d * 14}px)`, easing: 'cubic-bezier(.4,0,.8,1)' },
+    { offset: 1, transform: `translateX(${d * 62}px)` }
+  ], { delay: 0, duration: 2000, fill: 'both' });
+});
+
+/* ---------- 5. ondes (onSeek) ---------- */
+const W1 = document.getElementById('s01-w1'), W2 = document.getElementById('s01-w2'), W3 = document.getElementById('s01-w3');
+for (const c of [W1, W2, W3]) { c.setAttribute('cx', O.x); c.setAttribute('cy', O.y); }
+const ring = (c, t, t0, dur, r0, r1, sw0, a0) => {
+  const u = (t - t0) / dur;
+  if (u <= 0 || u >= 1) { c.style.opacity = 0; return; }
+  const e = EX(u);
+  c.setAttribute('r', lerp(r0, r1, e).toFixed(1)); c.setAttribute('stroke-width', (sw0 * (1 - e)).toFixed(2));
+  c.style.opacity = (a0 * (1 - u) * (1 - u)).toFixed(3);
+};
+onSeek(t => {
+  ring(W1, t, 1.0, .55, 40, 920, 16, 1);
+  ring(W2, t, 1.05, .5, 30, 640, 5, 1);
+  ring(W3, t, 1.5, .3, 56, 200, 6, 1);
+});
+
+/* ---------- 6. « mérite d’être vu. » (1,25) et le point (1,625) ---------- */
+q('.mclip').animate([
+  { clipPath: 'inset(0px 100% 0px 0px)' }, { clipPath: 'inset(0px 0% 0px 0px)' }
+], { delay: 1250, duration: 200, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'both' });
+q('.mtxt').animate([
+  { transform: 'translateX(-46px)' }, { transform: 'translateX(0px)' }
+], { delay: 1250, duration: 260, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'both' });
+document.getElementById('s01-dot').animate([
+  { offset: 0, opacity: 0, transform: 'translateY(-130px) scale(.9,1.1)', easing: 'cubic-bezier(.55,0,1,.45)' },
+  { offset: .14, opacity: 1, transform: 'translateY(-110px) scale(.9,1.12)', easing: 'cubic-bezier(.55,0,1,.45)' },
+  { offset: .5, opacity: 1, transform: 'translateY(0px) scale(1.35,.66)', easing: 'cubic-bezier(.2,.7,.4,1)' },
+  { offset: .72, opacity: 1, transform: 'translateY(-20px) scale(.94,1.08)', easing: 'cubic-bezier(.6,0,.9,.6)' },
+  { offset: .86, opacity: 1, transform: 'translateY(0px) scale(1.12,.9)', easing: 'cubic-bezier(.2,.7,.4,1)' },
+  { offset: 1, opacity: 1, transform: 'translateY(0px) scale(1,1)' }
+], { delay: 1500, duration: 250, fill: 'forwards' });
+
+/* ---------- 7. le O s'allume (1,50) ---------- */
+const OEL = document.getElementById('s01-o');
+OEL.animate([{ color: '#ffffff' }, { color: '#c8ff3e' }], { delay: 1500, duration: 100, easing: 'ease-out', fill: 'forwards' });
+document.getElementById('s01-glow').animate([            // 1,50 → 1,95 : bloom, repos, puis s’efface pendant la plongée
+  { offset: 0, opacity: 0, transform: 'scale(.55)', easing: 'cubic-bezier(.16,1,.3,1)' },
+  { offset: .1667, opacity: 1, transform: 'scale(1.18)', easing: 'cubic-bezier(.45,0,.55,1)' },
+  { offset: .5556, opacity: .8, transform: 'scale(1)', easing: 'ease-in' },
+  { offset: 1, opacity: .2, transform: 'scale(1)' }
+], { delay: 1500, duration: 450, fill: 'forwards' });
+document.getElementById('s01-oi').animate([
+  { transform: 'scale(0)' }, { transform: 'scale(1)' }
+], { delay: 1500, duration: 150, easing: 'cubic-bezier(.34,1.56,.64,1)', fill: 'forwards' });
+
+/* ---------- 8. plongée dans le O (1,75 → 2,00) ---------- */
+const T0 = 1.75, TF = 1.9667, ZMAX = 32;
+const qz = t => Math.pow(clamp((t - T0) / (TF - T0)), 1.6);
+// pendant la plongée, la caméra recentre le O sur 485/960 (centre des anneaux qui ouvrent la scène 02)
+const DX = 485 - OZ.x, DY = 960 - OZ.y;
+const pan = t => { const u = clamp((t - T0) / (TF - T0)); return u * u * (3 - 2 * u); };
+samp(q('.zoom'), T0, 2.0, u => { const t = T0 + u * .25, g = pan(t);
+  return { transform: `translate(${(DX * g).toFixed(2)}px,${(DY * g).toFixed(2)}px) scale(${Math.pow(ZMAX, qz(t)).toFixed(4)})` }; }, 60);
+samp(q('.rig'), T0, 2.0, u => { const t = T0 + u * .25, g = pan(t) * .35;
+  return { transform: `translate(${(DX * g).toFixed(2)}px,${(DY * g).toFixed(2)}px) scale(${Math.pow(1.9, qz(t)).toFixed(4)})` }; }, 60);
+samp(q('#s01-iris'), T0, 2.0, u => {
+  const t = T0 + u * .25, s = Math.pow(ZMAX, qz(t)), m = .9, g = pan(t);
+  const rx = Math.max(.5, ORX * s * m), ry = Math.max(.5, ORY * s * m);
+  return { clipPath: `ellipse(${rx.toFixed(1)}px ${ry.toFixed(1)}px at ${(OZ.x + DX * g).toFixed(1)}px ${(OZ.y + DY * g).toFixed(1)}px)` };
+}, 60);
+q('.merite').animate([
+  { filter: 'blur(0px)', opacity: 1 }, { filter: 'blur(10px)', opacity: 0 }
+], { delay: 1800, duration: 100, easing: 'ease-in', fill: 'forwards' });
+
+/* traînées d’aspiration : rayons qui fusent depuis le O (au-dessus de la plongée, sous l’iris) */
+const WARP = document.getElementById('s01-warp'), NS = 'http://www.w3.org/2000/svg', rw = mkRnd(101);
+const streaks = Array.from({ length: 18 }, (_, i) => {
+  const a = (i / 18) * Math.PI * 2 + (rw() - .5) * .3, l = document.createElementNS(NS, 'polygon');
+  l.setAttribute('fill', i % 3 === 1 ? '#c8ff3e' : '#ffffff'); WARP.append(l);
+  return { l, a, r0: 170 + rw() * 240, k: .75 + rw() * .5, len: 120 + rw() * 200, w: 5 + rw() * 6, d: rw() * .3 };
+});
+onSeek(t => {
+  const u = clamp((t - 1.77) / .18);
+  for (const s of streaks) {
+    const v = clamp((u - s.d) / (1 - s.d));
+    if (v <= 0 || v >= 1) { s.l.style.opacity = 0; continue; }
+    const r1 = s.r0 + 1400 * Math.pow(v, 1.6) * s.k, r2 = r1 + s.len * (.5 + 2.5 * v), hw = s.w * (.5 + v) / 2;
+    const g = pan(t), c = Math.cos(s.a), n = Math.sin(s.a), X = r => OZ.x + DX * g + c * r, Y = r => OZ.y + DY * g + n * r;
+    s.l.setAttribute('points', `${X(r1).toFixed(1)},${Y(r1).toFixed(1)} ${(X(r2) - n * hw).toFixed(1)},${(Y(r2) + c * hw).toFixed(1)} ${(X(r2) + n * hw).toFixed(1)},${(Y(r2) - c * hw).toFixed(1)}`);
+    s.l.style.opacity = (.6 * Math.sin(Math.PI * Math.pow(v, .8))).toFixed(3);
+  }
+});
+
+})();
+/* ---- s02 ---- */
+(function(){
+/* Scène 02 (2 → 4 s) — DROP 1 : « On te crée un beau SITE. » → le mot devient un site dans un téléphone.
+   Tout est en délais ABSOLUS (ms depuis le début de la vidéo). */
+const S = $(".s02");
+const EX = "cubic-bezier(.16,1,.3,1)", E = "cubic-bezier(.2,.8,.2,1)", E2 = "cubic-bezier(.7,0,.2,1)";
+const A = (el, kf, t0, dur, easing = "linear", fill = "both") =>
+  el.animate(kf, { delay: Math.round(t0 * 1000), duration: Math.round(dur * 1000), easing, fill });
+
+/* ---- « On te crée » : chute 3D lettre à lettre (CSS, --t absolu) ---- */
+split($("#s02-on"), 2.0, 0.025);
+
+/* ---- soulignement main levée sous « beau » ---- */
+$("#s02-ul").setAttribute("d", "M452 549C532 537 632 535 718 541C682 546 632 551 598 558");
+
+/* ---- SLAM de « SITE. » : 2,50 → impact 2,575 → rebond → 2,80 ---- */
+const site = $("#s02-site");
+A(site, [
+  { transform: "scale(3)", easing: "cubic-bezier(.3,.55,.55,1)" },
+  { transform: "scale(.93)", offset: .25, easing: "cubic-bezier(.45,0,.55,1)" },
+  { transform: "scale(1.025)", offset: .55, easing: "cubic-bezier(.45,0,.55,1)" },
+  { transform: "scale(1)" }
+], 2.5, 0.3);
+A(site, [{ opacity: 0 }, { opacity: 1 }], 2.5, 0.06);
+const letters = $$(".s02-L", site), sdot = $(".s02-sdot", site);
+[...letters, sdot].forEach(el => A(el, [{ filter: "blur(16px)" }, { filter: "blur(0px)" }], 2.5, 0.12, "cubic-bezier(.3,.6,.5,1)"));
+
+/* impact : petite inspiration avant le coup, puis secousse courte (≤ 4 px) + punch d'échelle */
+A($(".s02-shk"), [
+  { transform: "translate(0,0) scale(1)", easing: "cubic-bezier(.4,0,.6,1)" },
+  { transform: "translate(0,0) scale(.984)", offset: .25, easing: "cubic-bezier(.5,0,.9,.5)" },
+  { transform: "translate(-4px,3px) scale(1.024)", offset: .42 },
+  { transform: "translate(3px,-3px) scale(1.014)", offset: .5 },
+  { transform: "translate(-2px,2px) scale(1.007)", offset: .62 },
+  { transform: "translate(1px,-1px) scale(1.002)", offset: .76 },
+  { transform: "translate(0,0) scale(1)" }
+], 2.4, 0.4, "linear");
+
+/* onde de choc fine (SVG redessiné à chaque image) */
+const wave = $("#s02-wave");
+onSeek(t => {
+  const p = (t - 2.567) / 0.4;
+  if (p <= 0 || p >= 1) { wave.setAttribute("r", 0); wave.style.opacity = 0; return; }
+  const e = 1 - Math.pow(1 - p, 4);
+  wave.setAttribute("r", (170 + 640 * e).toFixed(1));
+  wave.style.strokeWidth = (14 * Math.pow(1 - p, 1.5) + 1).toFixed(2);
+  wave.style.opacity = (0.7 * Math.pow(1 - p, 1.6)).toFixed(3);
+});
+
+/* 12 éclats projetés depuis le centre du mot (485, 880) */
+{
+  const r = mkRnd(22), box = $("#s02-shards");
+  const g = ["S", "●", "T", "I", "E", "●", "S", "E", "T", "●", "I", "E"];
+  for (let k = 0; k < 12; k++) {
+    const sh = document.createElement("div"); sh.className = "s02-sh";
+    const b = document.createElement("b"); const size = Math.round(40 + 50 * r());
+    if (g[k] === "●") { b.className = "d"; b.style.width = b.style.height = Math.round(size * .5) + "px"; }
+    else { b.textContent = g[k]; b.style.fontSize = size + "px"; if (k === 2 || k === 7 || k === 10) b.className = "o"; }
+    sh.append(b); box.append(sh);
+    const a = ((k + .5) / 12) * Math.PI * 2 + (r() - .5) * .5, d = 360 + 420 * r();
+    const x0 = (r() - .5) * 260, y0 = (r() - .5) * 60;
+    const dx = Math.cos(a) * d * 1.15, dy = Math.sin(a) * d, z = Math.round((r() - .3) * 700), rot = Math.round((r() * 2 - 1) * 400);
+    A(sh, [
+      { transform: `translate3d(${x0.toFixed(1)}px,${y0.toFixed(1)}px,0) rotate(0deg) scale(.6)`, opacity: 1 },
+      { opacity: 1, offset: .5 },
+      { transform: `translate3d(${(x0 + dx).toFixed(1)}px,${(y0 + dy).toFixed(1)}px,${z}px) rotate(${rot}deg) scale(1.1)`, opacity: 0 }
+    ], 2.55 + (k % 3) * 0.01, 0.9, "cubic-bezier(.08,.85,.25,1)", "forwards");
+  }
+}
+
+/* ---- 3,00 LE MOT DEVIENT L'IMAGE ---- */
+const blks = $$(".s02-blk", S);
+const to = [
+  { left: "300px", top: "714px", width: "370px", height: "52px", borderRadius: "10px" },  /* S → barre de menu */
+  { left: "307px", top: "920px", width: "243px", height: "130px", borderRadius: "6px" },  /* I → titre */
+  { left: "307px", top: "1076px", width: "354px", height: "105px", borderRadius: "6px" }, /* T → paragraphe */
+  { left: "307px", top: "1218px", width: "168px", height: "51px", borderRadius: "8px" }   /* E → bouton */
+];
+blks.forEach((b, i) => {
+  const t0 = 3.0 + i * 0.04;
+  // la lettre s'efface pendant que son bloc apparaît (2 images)
+  A(letters[i], [{ opacity: 1 }, { opacity: 0 }], t0, 0.05, "linear", "forwards");
+  // bloc : apparaît, reste, puis s'efface sous la vraie maquette (3,60 → 3,70)
+  const tot = 3.70 - t0;
+  A(b, [{ opacity: 0 }, { opacity: 1, offset: .05 / tot }, { opacity: 1, offset: (3.60 - t0) / tot }, { opacity: 0 }], t0, tot, "linear", "forwards");
+  // petit punch au « clac »
+  A(b, [{ transform: "scale(1.07)" }, { transform: "scale(1)" }], t0, 0.14, EX, "forwards");
+  // glissement vers la maquette
+  const from = [
+    { left: "120px", top: "794px", width: "184px", height: "185px", borderRadius: "0px" },
+    { left: "325px", top: "797px", width: "60px", height: "179px", borderRadius: "0px" },
+    { left: "403px", top: "797px", width: "191px", height: "179px", borderRadius: "0px" },
+    { left: "613px", top: "797px", width: "171px", height: "179px", borderRadius: "0px" }
+  ][i];
+  A(b, [from, to[i]], 3.06 + i * 0.04, 0.34, EX);
+});
+
+/* le point de « SITE. » saute en haut du téléphone et devient la pointe qui le trace */
+A(sdot, [{ opacity: 1 }, { opacity: 0 }], 3.0, 0.001, "linear", "forwards");
+const dx = $(".s02-dx", S), dy = $(".s02-dy", S), dd = $(".s02-dd", S);
+A(dx, [{ opacity: 0 }, { opacity: 1 }], 3.0, 0.001, "linear", "forwards");
+A(dx, [{ transform: "translateX(0)" }, { transform: "translateX(-350px)" }], 3.02, 0.23, "cubic-bezier(.45,0,.4,1)");
+A(dy, [
+  { transform: "translateY(0)", easing: "cubic-bezier(.2,.7,.4,1)" },
+  { transform: "translateY(-345px)", offset: .62, easing: "cubic-bezier(.6,0,.8,.5)" },
+  { transform: "translateY(-263px)" }
+], 3.02, 0.23);
+A(dd, [{ transform: "scale(1)" }, { transform: "scale(.27)" }], 3.02, 0.23, "cubic-bezier(.4,0,.2,1)");
+
+/* 3,25 : le téléphone se trace depuis le point (deux moitiés symétriques) */
+$$(".s02-ph", S).forEach(p => A(p, [{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], 3.25, 0.25, E2));
+
+/* 3,50 : la vraie maquette apparaît */
+const scr = $(".s02-screen", S);
+/* le corps encre suit le bord de l’écran avec 14 px d’avance (ligne de balayage) */
+A($(".s02-body", S), [{ clipPath: "inset(0 0 832px 0)" }, { clipPath: "inset(0 0 0px 0)" }], 3.5, 0.2, E2, "forwards");
+A($(".s02-shadow", S), [{ opacity: 0 }, { opacity: 1 }], 3.46, 0.25, E, "forwards");
+A(scr, [{ clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0% 0)" }], 3.5, 0.2, E2);
+A($(".s02-scroll", S), [{ transform: "translateY(0)" }, { transform: "translateY(-16px)" }], 3.5, 0.5, "cubic-bezier(.4,0,.6,1)");
+A($(".s02-glare", S), [{ transform: "translateX(-300px)", opacity: 1 }, { transform: "translateX(560px)", opacity: 1 }], 3.6, 0.35, "cubic-bezier(.4,0,.3,1)", "forwards");
+/* 3,625 : tap sur « Précommander » */
+A($(".s02-tap", S), [{ transform: "scale(0)", opacity: 1 }, { transform: "scale(3)", opacity: 0 }], 3.625, 0.3, E, "forwards");
+A($(".s02-tap2", S), [{ transform: "scale(.4)", opacity: .7 }, { transform: "scale(1)", opacity: .55, offset: .3 }, { transform: "scale(.8)", opacity: 0 }], 3.625, 0.2, "linear", "forwards");
+
+/* le téléphone dérive (pendule doux) */
+A($("#s02-dev"), [
+  { transform: "translateY(0) rotate(0deg)", easing: "cubic-bezier(.3,.6,.4,1)" },
+  { transform: "translateY(-6px) rotate(-4deg)", offset: .36, easing: "cubic-bezier(.45,0,.55,1)" },
+  { transform: "translateY(-20px) rotate(2deg)" }
+], 3.0, 1.0);
+
+/* ---- 3,75 → 3,95 : le « + » arrive du fond et traverse la caméra ---- */
+const plus = $(".s02-plus", S);
+/* profondeur calée image par image : largeur apparente ≈ 170 → 190 → 250 → 350 → 540 → 1000 → 3000 px, puis traversée */
+A(plus, [
+  { transform: "translateZ(-6000px)" }, { transform: "translateZ(-5232px)", offset: 1 / 12 }, { transform: "translateZ(-3640px)", offset: 3 / 12 },
+  { transform: "translateZ(-2200px)", offset: 5 / 12 }, { transform: "translateZ(-933px)", offset: 7 / 12 }, { transform: "translateZ(140px)", offset: 9 / 12 },
+  { transform: "translateZ(1029px)", offset: 11 / 12 }, { transform: "translateZ(1300px)" }
+], 3.75, 0.2, "linear");
+A(plus, [{ opacity: 0 }, { opacity: 1, offset: 1 / 12 }, { opacity: 1, offset: .99 }, { opacity: 0 }], 3.75, 0.2, "linear", "forwards");
+A($(".s02-prot", S), [{ transform: "rotate(-75deg)" }, { transform: "rotate(0deg)" }], 3.75, 0.15, "cubic-bezier(.25,.6,.35,1)");
+/* la caméra s'avance doucement vers le téléphone (3,30 → 3,75), puis est aspirée avec le « + » */
+A($(".s02-zoom", S), [
+  { transform: "scale(1)", easing: "cubic-bezier(.45,0,.55,1)" },
+  { transform: "scale(1.05)", offset: .45 / .65, easing: "cubic-bezier(.7,0,.84,0)" },
+  { transform: "scale(1.16)" }
+], 3.3, 0.65, "linear", "forwards");
+
+})();
+/* ---- s03 ---- */
+(function(){
+/* Scène 03 (4 → 6 s) — « ton LOGO · tes PUBS · tes RÉSEAUX » : tambour 3D à 4 faces.
+   Tout est en délais ABSOLUS (secondes depuis le début de la vidéo, converties en ms). */
+const S = $(".s03");
+const EX = "cubic-bezier(.16,1,.3,1)", E = "cubic-bezier(.2,.8,.2,1)", BO = "cubic-bezier(.34,1.56,.64,1)";
+const IO = "cubic-bezier(.45,.05,.55,.95)", SUCK = "cubic-bezier(.7,0,.84,0)";
+const A = (el, kf, t0, dur, easing = "linear", fill = "both") =>
+  el.animate(kf, { delay: Math.round(t0 * 1000), duration: Math.round(dur * 1000), easing, fill });
+/* keyframes posés en temps absolus : [[t, {props}], …] entre t0 et t1 */
+const AT = (el, t0, t1, list, fill = "both") =>
+  A(el, list.map(([t, p]) => Object.assign({ offset: +((t - t0) / (t1 - t0)).toFixed(5) }, p)), t0, t1 - t0, "linear", fill);
+
+/* ---------- contenus des faces ---------- */
+{
+  const strip = $("#s03-strip");
+  const L = ["bella-pizza", "fitzone", "le-reflet", "horizon-immo", "green-clean", "vestir"];
+  for (let k = 0; k < 12; k++) {
+    const c = document.createElement("div"); c.className = "s03-card";
+    const im = document.createElement("img"); im.src = `../images/logos/${L[k % 6]}.jpg`; im.alt = "";
+    c.append(im); strip.append(c);
+  }
+  const cols = $("#s03-cols");
+  const C = [
+    ["fleuriste", "restaurant", "boutique"],
+    ["esthetique", "pizzeria", "tatoueur"],
+    ["coach", "photographe", "cave"],
+    ["boulangerie", "barbier", "garage"]
+  ];
+  C.forEach((list, i) => {
+    const col = document.createElement("div"); col.className = "s03-col " + (i % 2 ? "s03-cb" : "s03-ca");
+    col.style.left = (40 + i * 190) + "px";
+    list.forEach(n => { const im = document.createElement("img"); im.src = `../images/portfolio/${n}-mobile.jpg`; im.alt = ""; col.append(im); });
+    cols.append(col);
+  });
+}
+
+/* ---------- tambour ---------- */
+const drum = $("#s03-drum"), arrive = $(".s03-arrive", S), cam = $(".s03-cam", S);
+const R = a => ({ transform: `translateZ(-300px) rotateX(${a}deg)` });
+AT(drum, 4.0, 6.0, [
+  [4.00, { ...R(0) }],
+  [4.40, { ...R(0), easing: "cubic-bezier(.4,0,.6,1)" }],
+  [4.50, { ...R(-6), easing: BO }],           /* petite prise d'élan */
+  [4.80, { ...R(90) }],
+  [4.90, { ...R(90), easing: "cubic-bezier(.4,0,.6,1)" }],
+  [5.00, { ...R(84), easing: BO }],
+  [5.30, { ...R(180), easing: "cubic-bezier(.4,0,.6,1)" }],
+  [6.00, { ...R(183) }]                       /* dérive infime : jamais figé */
+]);
+/* arrivée du fond en roulant (axe du tambour) */
+A(arrive, [{ transform: "translateZ(-900px) rotateX(-60deg)" }, { transform: "translateZ(0px) rotateX(0deg)" }], 4.0, 0.35, BO);
+/* caméra qui dérive en permanence */
+A(cam, [
+  { transform: "translateZ(0px) rotateY(6deg) rotateZ(-1deg)" },
+  { transform: "translateZ(36px) rotateY(-4deg) rotateZ(.8deg)" }
+], 4.0, 2.0, IO);
+
+/* flou de bougé par face pendant les rotations */
+$$(".s03-face", S).forEach(f => AT(f, 4.0, 6.0, [
+  [4.00, { filter: "blur(0px)" }], [4.50, { filter: "blur(0px)" }], [4.56, { filter: "blur(6px)" }], [4.68, { filter: "blur(1.5px)" }], [4.78, { filter: "blur(0px)" }],
+  [5.00, { filter: "blur(0px)" }], [5.06, { filter: "blur(6px)" }], [5.18, { filter: "blur(1.5px)" }], [5.28, { filter: "blur(0px)" }], [6.00, { filter: "blur(0px)" }]
+]));
+
+/* ---------- halos colorés (la face avant éclaire la nuit) ---------- */
+{
+  const [h0, h1, h2] = $$(".s03-halo", S);
+  AT(h0, 4.0, 6.0, [[4.0, { opacity: 0 }], [4.12, { opacity: 1 }], [4.5, { opacity: 1 }], [4.66, { opacity: 0 }], [6.0, { opacity: 0 }]]);
+  AT(h1, 4.0, 6.0, [[4.0, { opacity: 0 }], [4.52, { opacity: 0 }], [4.68, { opacity: 1 }], [5.0, { opacity: 1 }], [5.16, { opacity: 0 }], [6.0, { opacity: 0 }]]);
+  AT(h2, 4.0, 6.0, [[4.0, { opacity: 0 }], [5.02, { opacity: 0 }], [5.18, { opacity: 1 }], [5.5, { opacity: .9 }], [5.56, { opacity: 1 }], [6.0, { opacity: .85 }]]);
+  /* échos en contour au moment où chaque face se pose (impacts du rebond) */
+  $$(".s03-echo", S).forEach((e, i) => A(e, [
+    { transform: "scale(1)", opacity: .6 }, { transform: "scale(1.16)", opacity: 0 }
+  ], [4.13, 4.61, 5.11][i], 0.4, EX, "forwards"));
+}
+
+/* reflet lumineux qui balaie chaque face juste après qu'elle s'est posée */
+$$(".s03-sheen", S).forEach((el, k) => A(el, [
+  { transform: "translateX(-400px) rotate(18deg)" }, { transform: "translateX(1000px) rotate(18deg)" }
+], [4.16, 4.64, 5.14][k], 0.42, "cubic-bezier(.45,0,.25,1)"));
+
+/* ---------- secousses caméra : « chunk » 4,50 / 5,00, coup de cœur 5,50 ---------- */
+const shk = $("#s03-shk");
+AT(shk, 4.0, 6.0, [
+  [4.00, { transform: "translate(0px,0px) scale(1)" }],
+  [4.50, { transform: "translate(0px,0px) scale(1)" }],
+  [4.53, { transform: "translate(0px,-4px) scale(1.006)" }],
+  [4.62, { transform: "translate(0px,2px) scale(1)" }],
+  [4.72, { transform: "translate(0px,0px) scale(1)" }],
+  [5.00, { transform: "translate(0px,0px) scale(1)" }],
+  [5.03, { transform: "translate(0px,-4px) scale(1.006)" }],
+  [5.12, { transform: "translate(0px,2px) scale(1)" }],
+  [5.22, { transform: "translate(0px,0px) scale(1)" }],
+  [5.50, { transform: "translate(0px,0px) scale(1)", easing: "cubic-bezier(.2,.7,.3,1)" }],
+  [5.56, { transform: "translate(-3px,2px) scale(1.05)", easing: "cubic-bezier(.4,0,.3,1)" }],
+  [5.62, { transform: "translate(2px,-2px) scale(1.035)", easing: "cubic-bezier(.4,0,.3,1)" }],
+  [5.75, { transform: "translate(0px,0px) scale(1.02)" }],
+  [6.00, { transform: "translate(0px,0px) scale(1.02)" }]
+]);
+
+/* ---------- whip pan 5,75 → 6,00 ---------- */
+const whip = $("#s03-whip");
+A(whip, [{ transform: "translateX(0px) skewX(0deg)" }, { transform: "translateX(-1400px) skewX(-10deg)" }], 5.75, 0.25, SUCK, "forwards");
+A($(".s03-bgw", S), [{ transform: "translateX(0px)" }, { transform: "translateX(-420px)" }], 5.75, 0.25, SUCK, "forwards");
+
+/* ---------- cœurs qui montent (5,05 + i·0,08) ---------- */
+{
+  const r = mkRnd(33), box = $("#s03-hearts");
+  const HP = "M12 21.2l-1.5-1.3C5.4 15.3 2 12.3 2 8.6 2 5.5 4.4 3.1 7.5 3.1c1.7 0 3.4.8 4.5 2.1 1.1-1.3 2.8-2.1 4.5-2.1 3.1 0 5.5 2.4 5.5 5.5 0 3.7-3.4 6.7-8.5 11.3z";
+  const xs = [190, 700, 330, 560, 250, 790, 440, 160, 630, 380];
+  for (let i = 0; i < 10; i++) {
+    const s = Math.round(40 + 30 * r()), x = xs[i] + (r() - .5) * 40, y = 1200 + (r() - .5) * 60;
+    const col = i % 3 === 1 ? "#c8ff3e" : "#ff4d6d";
+    const h = document.createElement("div"); h.className = "s03-ht";
+    h.style.cssText = `left:${(x - s / 2).toFixed(1)}px;top:${(y - s / 2).toFixed(1)}px;width:${s}px;height:${s}px`;
+    h.innerHTML = `<svg viewBox="0 0 24 24"><path d="${HP}" fill="${col}"/></svg>`;
+    box.append(h);
+    const H = 500 + 300 * r(), amp = 18 + 12 * r(), ph = r() * Math.PI * 2, rot = (r() * 2 - 1) * 20, f = .9 + .5 * r();
+    const kf = [];
+    for (let k = 0; k <= 16; k++) {
+      const p = k / 16, ty = -H * (1 - Math.pow(1 - p, 2.2));
+      const tx = amp * Math.sin(ph + p * Math.PI * 2 * f) - amp * Math.sin(ph);
+      const ro = rot * Math.sin(ph + p * Math.PI * 2 * f + .8);
+      const sc = p < .18 ? .4 + .6 * (1 - Math.pow(1 - p / .18, 3)) * 1.08 : 1.08 - .08 * Math.min(1, (p - .18) / .2);
+      const op = p < .1 ? p / .1 : p > .7 ? Math.max(0, 1 - (p - .7) / .3) : 1;
+      kf.push({ offset: p, transform: `translate(${tx.toFixed(1)}px,${ty.toFixed(1)}px) rotate(${ro.toFixed(1)}deg) scale(${sc.toFixed(3)})`, opacity: +op.toFixed(3) });
+    }
+    A(h, kf, 5.05 + i * 0.08, 0.9, "linear", "forwards");
+  }
+}
+
+/* ---------- 3 notifications sur les pops (5,10 / 5,20 / 5,30) ---------- */
+$$(".s03-nt", S).forEach((n, i) => {
+  const t0 = 5.1 + i * 0.1;
+  AT(n, t0, 6.0, [
+    [t0, { transform: "translateY(0px) scale(0)", easing: "cubic-bezier(.3,1.6,.5,1)" }],
+    [t0 + .2, { transform: "translateY(-6px) scale(1)", easing: "cubic-bezier(.4,0,.6,1)" }],
+    [6.0, { transform: `translateY(${-26 + i * 4}px) scale(1)` }]
+  ]);
+});
+
+/* ---------- 5,50 MOMENT FORT : gros cœur lime + onde ---------- */
+const bh = $(".s03-bh", S);
+A(bh, [
+  { transform: "scale(0) rotate(-14deg)", easing: "cubic-bezier(.2,.9,.35,1)" },
+  { transform: "scale(1.2) rotate(4deg)", offset: .5, easing: "cubic-bezier(.45,0,.4,1)" },
+  { transform: "scale(.96) rotate(-1deg)", offset: .78, easing: "cubic-bezier(.45,0,.55,1)" },
+  { transform: "scale(1) rotate(0deg)" }
+], 5.5, 0.3);
+
+const ring1 = $("#s03-ring1"), ring2 = $("#s03-ring2"), sparks = $("#s03-sparks");
+const SP = [];
+{
+  const r = mkRnd(55);
+  for (let k = 0; k < 10; k++) {
+    const ln = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    sparks.append(ln);
+    SP.push({ el: ln, a: (k / 10) * Math.PI * 2 + (r() - .5) * .4, d: 150 + 70 * r(), w: 4 + 3 * r() });
+  }
+}
+const ringAt = (el, t, t0, dur, r1, w0, o0) => {
+  const p = (t - t0) / dur;
+  if (p <= 0 || p >= 1) { el.setAttribute("r", 0); el.style.opacity = 0; return; }
+  const e = 1 - Math.pow(1 - p, 3);
+  el.setAttribute("r", (r1 * e).toFixed(1));
+  el.style.strokeWidth = (w0 * Math.pow(1 - p, 1.2) + .8).toFixed(2);
+  el.style.opacity = (o0 * Math.pow(1 - p, 1.4)).toFixed(3);
+};
+
+/* ---------- traînées verticales (canvas) ---------- */
+const cv = $("#s03-streaks"), cx = cv.getContext("2d");
+const ST = [];
+{
+  const r = mkRnd(303);
+  for (let c = 0; c < 13; c++) for (let j = 0; j < 3; j++)
+    ST.push({ x: 15 + c * 90 + (j === 0 ? 0 : (r() - .5) * 36), y: r() * 2600, len: 90 + 360 * r(), a: .05 + .08 * r(), w: j === 0 ? 2 : 1 + r(), k: .6 + .9 * r() });
+}
+const sm = x => x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x);
+/* déplacement : croisière 260 px/s + deux accélérations de 400 px en 0,2 s (4,50 et 5,00) */
+const D = t => 260 * (t - 4) + 400 * sm((t - 4.5) / .2) + 400 * sm((t - 5.0) / .2);
+const V = t => { const h = 1 / 60; return (D(t + h) - D(t - h)) / (2 * h); };
+/* courbe exacte du whip : cubic-bezier(.7,0,.84,0) résolue numériquement */
+const bez = (x1, y1, x2, y2) => x => {
+  if (x <= 0) return 0; if (x >= 1) return 1;
+  const cx = s => 3 * x1 * s * (1 - s) * (1 - s) + 3 * x2 * s * s * (1 - s) + s * s * s;
+  let lo = 0, hi = 1, s = x; for (let k = 0; k < 40; k++) { s = (lo + hi) / 2; if (cx(s) < x) lo = s; else hi = s; }
+  return 3 * y1 * s * (1 - s) * (1 - s) + 3 * y2 * s * s * (1 - s) + s * s * s;
+};
+const suck = bez(.7, 0, .84, 0);
+const whipX = t => -1400 * suck((t - 5.75) / .25);
+
+/* lecture de l'angle courant (après seek) pour éclairer chaque face */
+const faces = $$(".s03-face", S).map(f => ({ shade: $(".s03-shade", f), gloss: $(".s03-gloss", f) }));
+const angX = el => { const m = new DOMMatrix(getComputedStyle(el).transform); return Math.atan2(m.m23, m.m22) * 180 / Math.PI; };
+const mbg = $("#s03-mbg"), stage = $(".s03-stage", S);
+
+onSeek(t => {
+  /* --- traînées --- */
+  cx.clearRect(0, 0, 1080, 1920);
+  if (t >= 3.99 && t <= 6.05) {
+    const d = D(t), v = V(t), stretch = 1 + Math.min(2.2, Math.max(0, (v - 260) / 900));
+    const ox = whipX(t) * .55;
+    for (const s of ST) {
+      const L = s.len * stretch * (.7 + .3 * s.k);
+      const span = 1920 + 900;
+      let y = ((s.y - d * s.k) % span + span) % span - 450;
+      const x = s.x + ox * s.k;
+      if (x < -20 || x > 1100) continue;
+      const g = cx.createLinearGradient(0, y, 0, y + L);
+      const a = Math.min(.16, s.a * (.8 + .25 * stretch));
+      g.addColorStop(0, "rgba(255,255,255,0)"); g.addColorStop(.5, `rgba(255,255,255,${a.toFixed(3)})`); g.addColorStop(1, "rgba(255,255,255,0)");
+      cx.fillStyle = g; cx.fillRect(x, y, s.w, L);
+    }
+  }
+  /* --- éclairage des faces --- */
+  const th = angX(drum) + angX(arrive);
+  faces.forEach((f, k) => {
+    let ph = th - 90 * k; ph = ((ph + 180) % 360 + 360) % 360 - 180;     /* angle de la normale (0 = de face) */
+    const c = Math.cos(ph * Math.PI / 180);
+    f.shade.style.opacity = Math.min(.92, Math.max(0, (1 - c) * 1.15)).toFixed(3);
+    if (f.gloss) {
+      const g = Math.exp(-Math.pow((ph - 22) / 16, 2));                   /* reflet quand la face bascule vers le haut */
+      f.gloss.style.opacity = (g * .9).toFixed(3);
+      f.gloss.style.transform = `translateY(${(170 + ph * 9).toFixed(1)}px)`;
+    }
+  });
+  /* --- reflet au sol : apparaît une fois le tambour posé, s'atténue pendant les rotations rapides --- */
+  const kr = sm((t - 4.14) / .2) * (1 - .92 * Math.exp(-Math.pow((t - 4.59) / .09, 2)) - .92 * Math.exp(-Math.pow((t - 5.09) / .09, 2)));
+  stage.style.webkitBoxReflect = kr < .01 ? "none" :
+    `below 0px linear-gradient(rgba(0,0,0,0) 85%,rgba(0,0,0,${(.07 * kr).toFixed(3)}) 93%,rgba(0,0,0,${(.24 * kr).toFixed(3)}))`;
+  /* --- flou directionnel du whip --- */
+  const pw = (t - 5.75) / .25;
+  if (pw > 0 && t < 6.05) {
+    const v = Math.abs(whipX(t) - whipX(t - 1 / 30));                    /* px parcourus pendant l'image */
+    const sx = Math.min(38, v * .16);
+    mbg.setAttribute("stdDeviation", `${sx.toFixed(2)} 0`);
+    whip.style.filter = sx > .3 ? "url(#s03-mb)" : "none";
+  } else { mbg.setAttribute("stdDeviation", "0 0"); whip.style.filter = "none"; }
+  /* --- onde + étincelles du gros cœur --- */
+  ringAt(ring1, t, 5.5, .5, 210, 10, .7);
+  ringAt(ring2, t, 5.58, .45, 150, 5, .45);
+  const ps = (t - 5.52) / .32;
+  SP.forEach(s => {
+    if (ps <= 0 || ps >= 1) { s.el.style.opacity = 0; return; }
+    const e = 1 - Math.pow(1 - ps, 3), r0 = 80 + s.d * e * .55, r1 = 80 + s.d * e;
+    const ca = Math.cos(s.a), sa = Math.sin(s.a);
+    s.el.setAttribute("x1", (785 + ca * r0).toFixed(1)); s.el.setAttribute("y1", (650 + sa * r0).toFixed(1));
+    s.el.setAttribute("x2", (785 + ca * r1).toFixed(1)); s.el.setAttribute("y2", (650 + sa * r1).toFixed(1));
+    s.el.style.strokeWidth = (s.w * (1 - ps * .7)).toFixed(2);
+    s.el.style.opacity = (1 - Math.pow(ps, 2)).toFixed(3);
+  });
+});
+
+})();
+/* ---- s04 ---- */
+(function(){
+/* Scène 04 (6 → 8 s) — survol en drone d’un mur de 16 vrais sites ; le point lime saute de tuile en tuile ;
+   « Un style / pour chaque / MÉTIER. » ; vague de tuiles à 7,0 ; iris papier bordé de lime 7,75 → 8,0.
+   Tout est en délais ABSOLUS. Les trajectoires sont des fonctions de t échantillonnées (120 /s) en WAAPI linéaire. */
+const S = $(".s04");
+const ms = s => Math.round(s * 1000);
+const A = (el, kf, t0, dur, easing = "linear", fill = "both") =>
+  el.animate(kf, { delay: ms(t0), duration: ms(dur), easing, fill });
+
+/* courbes de Bézier (mêmes valeurs que base.css) évaluées en JS */
+const bez = (x1, y1, x2, y2) => {
+  const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx, cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+  const X = s => ((ax * s + bx) * s + cx) * s, Yb = s => ((ay * s + by) * s + cy) * s;
+  return p => {
+    if (p <= 0) return 0; if (p >= 1) return 1;
+    let lo = 0, hi = 1, s = p;
+    for (let i = 0; i < 40; i++) { if (X(s) < p) lo = s; else hi = s; s = (lo + hi) / 2; }
+    return Yb(s);
+  };
+};
+const EX = bez(.16, 1, .3, 1), E2 = bez(.7, 0, .2, 1), BO = bez(.34, 1.56, .64, 1), IO = bez(.45, 0, .55, 1);
+const OUT3 = p => 1 - Math.pow(1 - Math.min(1, Math.max(0, p)), 3);
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, p) => a + (b - a) * p;
+const f2 = v => (+v).toFixed(2);
+const BOc = "cubic-bezier(.34,1.56,.64,1)", EXc = "cubic-bezier(.16,1,.3,1)", E2c = "cubic-bezier(.7,0,.2,1)", Ec = "cubic-bezier(.2,.8,.2,1)";
+
+/* échantillonnage d'une fonction du temps → keyframes linéaires */
+const SR = 120;
+const samp = (el, fn, t0, t1, fill = "both") => {
+  const n = Math.max(1, Math.round((t1 - t0) * SR)), kf = [];
+  for (let i = 0; i <= n; i++) kf.push(fn(t0 + (t1 - t0) * i / n));
+  return A(el, kf, t0, t1 - t0, "linear", fill);
+};
+
+/* ================= CAMÉRA (identique sur les plateaux A et B) ================= */
+const DY = 280;                                                   // le mur est posé un peu plus bas dans le cadre
+const slideP = t => EX(cl((t - 6) / .35));                        // fin du whip : arrive de la droite et freine
+const Yf = t => -700 + 400 * (t - 6) + 60 * (1 - Math.exp(-(t - 6) / .12));  // vol vers l'avant : élan puis croisière
+const Xf = t => 230 * bez(.42, 0, .38, 1)(cl((t - 6.12) / 1.88)); // la caméra suit le point vers la gauche
+const RZ = t => t < 7.5 ? lerp(-6, 4, IO(cl((t - 6) / 1.5))) : lerp(4, -2, IO(cl((t - 7.5) / .5)));
+const RX = t => t < 7 ? 0 : t < 7.07 ? 3 * OUT3((t - 7) / .07) : 3 * (1 - IO(cl((t - 7.07) / .45)));
+
+const camSlide = t => { const e = slideP(t); return { transform: `translateX(${f2(1400 * (1 - e))}px) skewX(${f2(-12 * (1 - e))}deg)` }; };
+const camRoll = t => ({ transform: `rotateZ(${RZ(t).toFixed(3)}deg) rotateX(${RX(t).toFixed(3)}deg)` });
+const camFly = t => ({ transform: `translate3d(${f2(Xf(t))}px,${DY}px,-700px) rotateX(58deg) translateY(${f2(Yf(t))}px)` });
+$$(".s04-slide", S).forEach(el => samp(el, camSlide, 6, 6.5));
+$$(".s04-roll", S).forEach(el => samp(el, camRoll, 6, 8));
+$$(".s04-fly", S).forEach(el => samp(el, camFly, 6, 8));
+
+/* flou de bougé horizontal sur les tuiles pendant l'arrivée du whip */
+const mbg = $("#s04-mbg");
+
+/* ================= LE MUR : 16 tuiles 4 × 4 ================= */
+const NAMES = ["restaurant", "boutique", "barbier", "coach", "artisan", "fromagerie", "pizzeria", "boucherie",
+  "boulangerie", "fleuriste", "garage", "plombier", "esthetique", "photographe", "cave", "tatoueur"];
+const fly = $("#s04-fly"), flyB = $("#s04-flyb");
+const CTR = (r, c) => [202.5 + 445 * c, 394 + 828 * r];          // centre d'une tuile (repère du mur)
+const ORIGIN = [2, 0];                                            // boulangerie : départ de la vague
+const JUMP = { pizzeria: 6.25, garage: 6.5, fleuriste: 6.75 };   // tuiles où le point rebondit
+const WAVE0 = 7.0, WDT = .035;
+
+const jumpLift = (t, tl) => {
+  const u = t - tl; if (u < 0) return 0;
+  if (u < .2) return 60 * BO(u / .2);
+  if (u < .3) return 60;
+  if (u < .55) return 60 * (1 - IO((u - .3) / .25));
+  return 0;
+};
+const waveLift = (t, d) => {
+  const u = (t - (WAVE0 + WDT * d)) / .45; if (u < 0) return 0; if (u >= 1) return 40;
+  return u < .32 ? 110 * OUT3(u / .32) : 110 - 70 * BO((u - .32) / .68);
+};
+const jumpGlow = (t, tl) => { const u = t - tl; return u < 0 ? 0 : u < .06 ? u / .06 : u < .25 ? 1 : u < .45 ? 1 - (u - .25) / .2 : 0; };
+const waveGlow = (t, d) => { const u = t - (WAVE0 + WDT * d); return u < 0 ? 0 : u < .1 ? u / .1 : u < .22 ? 1 : u < .55 ? 1 - (u - .22) / .33 : 0; };
+const shadowOf = I => I <= 0 ? "0 0 0 0px rgba(200,255,62,0), 0 0 0px 0px rgba(200,255,62,0)"
+  : `0 0 0 ${f2(6 * I)}px rgba(200,255,62,${f2(I)}), 0 0 ${f2(60 * I)}px ${f2(4 * I)}px rgba(200,255,62,${f2(.5 * I)})`;
+
+const TILES = {};
+NAMES.forEach((n, k) => {
+  const r = Math.floor(k / 4), c = k % 4, d = Math.hypot(r - ORIGIN[0], c - ORIGIN[1]);
+  const el = document.createElement("div"); el.className = "s04-tile"; el.id = "s04-t-" + n;
+  el.style.left = 445 * c + "px"; el.style.top = 828 * r + "px";
+  el.style.backgroundImage = `url(../images/portfolio/${n}.jpg)`;
+  el.style.setProperty("--sd", (WAVE0 + WDT * d + .04).toFixed(3) + "s");
+  fly.append(el);
+  const tl = JUMP[n];
+  const lift = t => Math.max(tl ? jumpLift(t, tl) : 0, waveLift(t, d));
+  const glow = t => Math.max(tl ? jumpGlow(t, tl) : 0, waveGlow(t, d));
+  const t0 = tl ? tl - .02 : WAVE0;
+  samp(el, t => ({ transform: `translateZ(${f2(lift(t))}px)` }), t0, 8);
+  samp(el, t => ({ boxShadow: shadowOf(glow(t)) }), t0, 8);
+  TILES[n] = { el, r, c, d, lift };
+});
+
+/* ================= LE POINT LIME ================= */
+const LAND = [[6.25, "pizzeria"], [6.5, "garage"], [6.75, "fleuriste"], [7.0, "boulangerie"]].map(([t, n]) => {
+  const T = TILES[n]; return { t, n, p: CTR(T.r, T.c), lift: T.lift };
+});
+const H0 = 31, HJ = 200;                                          // hauteur du centre au repos (rayon 36 × sin 58°), arc
+const START = [CTR(1, 3)[0] + 140, CTR(1, 3)[1] - 330], Z0 = 360; // arrive du ciel, côté droit (suite du whip)
+const dotState = t => {
+  // renvoie {x, y, z} du centre de la balle (repère du mur)
+  if (t < 6.25) {
+    const p = cl((t - 6) / .25), L = LAND[0];
+    return { x: lerp(START[0], L.p[0], p), y: lerp(START[1], L.p[1], p), z: H0 + (Z0 - H0) * (1 - p * p) };
+  }
+  if (t < 7.0) {
+    const i = Math.min(2, Math.floor((t - 6.25) / .25)), a = LAND[i], b = LAND[i + 1], p = cl((t - a.t) / .25);
+    return { x: lerp(a.p[0], b.p[0], p), y: lerp(a.p[1], b.p[1], p), z: H0 + HJ * 4 * p * (1 - p) };
+  }
+  const L = LAND[3];
+  return { x: L.p[0], y: L.p[1], z: L.lift(t) + H0 };
+};
+const dotP = $("#s04-dotp"), dotS = $("#s04-dots");
+samp(dotP, t => { const s = dotState(t); return { transform: `translate3d(${f2(s.x)}px,${f2(s.y)}px,${f2(s.z)}px)` }; }, 6, 7.2);
+/* écrasement / étirement de la balle */
+const squash = t => {
+  let sx = 1, sy = 1;
+  for (const L of LAND) {
+    const u = t - L.t;
+    if (u > -.07 && u < 0) { const k = 1 + u / .07; sy = 1 + .2 * k; sx = 1 - .1 * k; }
+    else if (u >= 0 && u < .16 && L.t < 7) { const k = u / .16, a = Math.exp(-3 * k) * Math.cos(k * Math.PI * 1.6); sy = 1 - .38 * a; sx = 1 + .3 * a; }
+  }
+  if (t >= 7) {                                                    // dernier impact : la balle s'écrase et part dans la vague
+    const u = t - 7;
+    if (u < .045) { sx = 1.7; sy = .42; }
+    else { const k = cl((u - .045) / .08); sx = 1.7 * (1 - E2(k)); sy = .42 * (1 - E2(k)); }
+  }
+  return { transform: `scale(${sx.toFixed(3)},${sy.toFixed(3)})` };
+};
+samp(dotS, squash, 6, 7.2);
+A(dotS, [{ opacity: 1 }, { opacity: 1, offset: .55 }, { opacity: 0 }], 7.0, .13, "linear", "forwards");
+
+/* ombre + flaque lime sous le point (plateau A, dans le plan de la tuile) */
+{
+  const shp = document.createElement("div"); shp.className = "s04-shp";
+  shp.innerHTML = '<i class="s04-pool"></i><i class="s04-shd"></i>'; fly.append(shp);
+  const surf = t => {
+    if (t < 6.25) return 0;
+    if (t < 7) { const i = Math.min(2, Math.floor((t - 6.25) / .25)), a = LAND[i], b = LAND[i + 1], p = cl((t - a.t) / .25); return lerp(a.lift(t), b.lift(t), p); }
+    return LAND[3].lift(t);
+  };
+  const h = t => Math.max(0, dotState(t).z - surf(t) - H0);
+  samp(shp, t => { const s = dotState(t), k = 1 + h(t) / 260; return { transform: `translate3d(${f2(s.x)}px,${f2(s.y)}px,${f2(surf(t) + 2)}px) scale(${k.toFixed(3)})` }; }, 6, 7.2);
+  samp($(".s04-shd", shp), t => ({ opacity: f2((t < 7.05 ? 1 : 1 - cl((t - 7.05) / .08)) * cl(.85 - h(t) / 420, .12, .85)) }), 6, 7.2);
+  samp($(".s04-pool", shp), t => ({ opacity: f2((t < 7.06 ? 1 : 1 - cl((t - 7.06) / .1)) * cl(1 - h(t) / 330, .25, 1)) }), 6, 7.2);
+}
+
+/* anneaux d'impact (plan des tuiles) */
+const ALL = Object.values(TILES);
+LAND.forEach((L, i) => {
+  const big = i === 3, g = document.createElement("div"); g.className = "s04-rg" + (big ? " big" : "");
+  g.innerHTML = "<i></i>"; fly.append(g);
+  const dur = big ? .55 : .34;
+  samp(g, t => {
+    const p = cl((t - L.t) / dur), s = big ? lerp(.04, 1.25, OUT3(p)) : lerp(.12, 1.05, OUT3(p));
+    const z = big ? Math.max(...ALL.map(T => T.lift(t))) + 4 : L.lift(t) + 3;   // la grande onde reste au-dessus de la vague
+    return { transform: `translate3d(${L.p[0]}px,${L.p[1]}px,${f2(z)}px) scale(${s.toFixed(3)})` };
+  }, L.t, L.t + dur);
+  A($("i", g), [{ opacity: 1 }, { opacity: big ? .9 : .85, offset: .35 }, { opacity: 0 }], L.t, dur, "linear", "forwards");
+});
+
+/* ================= TEXTE ================= */
+/* « Un style » : 6,25 — scale .2 → 1 + largeur 125 % → 90 % (rebond) */
+const l1 = $("#s04-l1");
+A(l1, [{ transform: "scale(.2)" }, { transform: "scale(1)" }], 6.25, .25, BOc);
+A(l1, [{ fontStretch: "125%" }, { fontStretch: "90%" }], 6.25, .25, BOc);
+A(l1, [{ opacity: 0 }, { opacity: 1 }], 6.25, .05);
+/* « pour chaque » : balayage gauche → droite 6,50 → 6,65 */
+const l2 = $("#s04-l2");
+A(l2, [{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)" }], 6.5, .15, Ec);
+A(l2, [{ transform: "translateX(-26px)" }, { transform: "translateX(0px)" }], 6.5, .4, EXc);
+/* « MÉTIER » : chute 3D lettre à lettre à 7,00 (split 0,03 s) */
+const met = split($("#s04-met"), 7.0, .03);
+met.forEach((ch, i) => {
+  const t0 = 7.0 + .03 * i;
+  A(ch, [{ transform: "translateY(-46px) rotateX(-92deg)" }, { transform: "translateY(0px) rotateX(0deg)" }], t0, .36, BOc);
+  A(ch, [{ opacity: 0 }, { opacity: 1, offset: .16 }, { opacity: 1 }], t0, .36);
+});
+/* échos en contour lime qui reculent en Z (7,25 → 7,75), lettre par lettre */
+[["#s04-echo1", 7.25, -200, .5], ["#s04-echo2", 7.4, -380, .38]].forEach(([sel, t0, z, o]) => {
+  split($(sel), t0, .03).forEach((ch, i) => {
+    const ti = t0 + .03 * i;
+    A(ch, [{ transform: "translateZ(0px)" }, { transform: `translateZ(${z}px)` }], ti, .5, Ec, "forwards");
+    A(ch, [{ opacity: o }, { opacity: 0 }], ti, .5, "cubic-bezier(.3,0,.7,1)", "forwards");
+  });
+});
+/* le point de « MÉTIER. » : 7,125 */
+const pt = $("#s04-pt");
+A(pt, [{ transform: "translateY(-80px)" }, { transform: "translateY(0px)" }], 7.125, .3, BOc);
+A(pt, [{ opacity: 0 }, { opacity: 1 }], 7.125, .06);
+/* calque texte : poussée lente + petit choc à 7,0 (≤ 4 px) */
+samp($("#s04-txt"), t => {
+  const s = 1 + .028 * cl((t - 6.2) / 1.8);
+  const u = t - 7, dy = u < 0 ? 0 : 4 * Math.exp(-u / .07) * Math.cos(u * Math.PI * 2 / .11);
+  return { transform: `translateY(${f2(dy)}px) scale(${s.toFixed(4)})` };
+}, 6, 8);
+
+/* ================= DÉCOR ================= */
+A($(".s04-fogm"), [{ opacity: 0 }, { opacity: 1 }], 6.96, .16, "cubic-bezier(.3,0,.3,1)");
+A($(".s04-glow"), [{ transform: "translate(-30px,10px) scale(1)" }, { transform: "translate(30px,-6px) scale(1.12)" }], 6, 2, "linear");
+A($(".s04-hz"), [{ transform: "translateX(40px) scaleX(.94)" }, { transform: "translateX(-40px) scaleX(1.06)" }], 6, 2, "linear");
+
+/* ================= IRIS PAPIER 7,75 → 7,96 ================= */
+const IR0 = 7.75, IR1 = 7.96, IK = 4.0;
+const irisR = t => { const p = cl((t - IR0) / (IR1 - IR0)); return 1320 * (Math.exp(IK * p) - 1) / (Math.exp(IK) - 1); };
+samp($("#s04-iris"), t => ({ clipPath: `circle(${f2(irisR(t))}px at 485px 1000px)` }), IR0, IR1, "forwards");
+const ring = $("#s04-ring"), ringSvg = $(".s04-ring", S);
+const tiles = Object.values(TILES).map(T => T.el);
+let mbOn = "";
+onSeek(t => {
+  /* anneau lime collé au bord de l'iris */
+  const on = t >= IR0 && t < IR1 - .005;
+  ringSvg.style.opacity = on ? 1 : 0;
+  ring.setAttribute("r", on ? f2(irisR(t)) : 0);
+  ring.style.strokeWidth = on ? f2(Math.min(28, 10 + irisR(t) * .6)) : 28;
+  /* flou de bougé : proportionnel à la vitesse du whip (repère du mur) */
+  const v = Math.abs(1400 * (slideP(t + 1 / 60) - slideP(t - 1 / 60)));   // px par image (1/30 s)
+  const sd = t >= 6 && t < 6.4 ? Math.min(36, v * .09) : 0;
+  mbg.setAttribute("stdDeviation", `${f2(sd)} 0`);
+  const fl = sd > .4 ? "url(#s04-mb)" : "none";
+  if (fl !== mbOn) { mbOn = fl; tiles.forEach(el => { el.style.filter = fl; }); }
+});
+
+})();
+/* ---- s05 ---- */
+(function(){
+/* Scène 05 (8 → 10 s) — COMMENT (simple) : « Tu nous écris. → On crée. → C’est en ligne. »
+   Respiration papier : une ligne masquée change à chaque temps pendant qu’un site se monte dans une fenêtre ;
+   clic sur « Publier » à 9,0 ; écrasement en ligne encre à 9,625 ; paupière sur la nuit 9,8 → 10,0.
+   Tout est en délais ABSOLUS (WAAPI) ; trajectoires échantillonnées ; confettis dessinés par onSeek. */
+const S = $(".s05");
+const ms = s => Math.round(s * 1000);
+const A = (el, kf, t0, dur, easing = "linear", fill = "both") =>
+  el.animate(kf, { delay: ms(t0), duration: ms(dur), easing, fill });
+/* K(el, [[t, props, easingVersLeSuivant], ...]) : chronologie à instants absolus dans UNE animation */
+const K = (el, steps, fill = "both") => {
+  const t0 = steps[0][0], d = steps[steps.length - 1][0] - t0;
+  const kf = steps.map(([t, p, e]) => Object.assign({}, p, { offset: (t - t0) / d, easing: e || "linear" }));
+  return el.animate(kf, { delay: ms(t0), duration: ms(d), fill });
+};
+const bez = (x1, y1, x2, y2) => {
+  const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx, cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+  const X = s => ((ax * s + bx) * s + cx) * s, Yb = s => ((ay * s + by) * s + cy) * s;
+  return p => {
+    if (p <= 0) return 0; if (p >= 1) return 1;
+    let lo = 0, hi = 1, s = p;
+    for (let i = 0; i < 40; i++) { if (X(s) < p) lo = s; else hi = s; s = (lo + hi) / 2; }
+    return Yb(s);
+  };
+};
+const EX = bez(.16, 1, .3, 1), E2 = bez(.7, 0, .2, 1), BO = bez(.34, 1.56, .64, 1), IO = bez(.45, 0, .55, 1);
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, p) => a + (b - a) * p;
+const f2 = v => (+v).toFixed(2);
+const BOc = "cubic-bezier(.34,1.56,.64,1)", EXc = "cubic-bezier(.16,1,.3,1)", E2c = "cubic-bezier(.7,0,.2,1)",
+  Ec = "cubic-bezier(.2,.8,.2,1)", IOc = "cubic-bezier(.45,0,.55,1)";
+const SR = 120;
+const samp = (el, fn, t0, t1, fill = "both") => {
+  const n = Math.max(1, Math.round((t1 - t0) * SR)), kf = [];
+  for (let i = 0; i <= n; i++) kf.push(fn(t0 + (t1 - t0) * i / n));
+  return A(el, kf, t0, t1 - t0, "linear", fill);
+};
+const id = n => document.getElementById("s05-" + n);
+
+/* ================= DÉCOR PAPIER ================= */
+/* la grille de points se révèle en cercle depuis le centre de l’iris de S4 (485, 1000), puis glisse */
+$$(".s05-dots", S).forEach(el => {
+  K(el, [[8.0, { clipPath: "circle(0px at 525px 1040px)" }, EXc], [8.55, { clipPath: "circle(1500px at 525px 1040px)" }]]);
+  K(el, [[8.0, { transform: "translate(0px,0px)" }], [10.0, { transform: "translate(-12px,-40px)" }]]);
+});
+$$(".s05-glow", S).forEach(el => {
+  K(el, [[8.0, { transform: "translate(0px,30px) scale(.8)" }, "cubic-bezier(.3,.6,.4,1)"], [10.0, { transform: "translate(0px,-40px) scale(1.06)" }]]);
+  K(el, [[8.0, { opacity: 0 }, "cubic-bezier(.3,0,.4,1)"], [8.5, { opacity: 1 }]]);
+});
+
+/* ================= CAMÉRA : dérive permanente + coup au clic ================= */
+K(id("cam"), [[8.0, { transform: "translate(6px,18px) scale(1) rotate(-.6deg)" }, IOc],
+  [9.8, { transform: "translate(-6px,-14px) scale(1.04) rotate(.5deg)" }]]);
+K(id("kick"), [[8.5, { transform: "scale(1)" }, "cubic-bezier(.2,.9,.3,1)"], [8.56, { transform: "scale(1.006)" }, IOc],
+  [8.8, { transform: "scale(1)" }],
+  [9.0, { transform: "scale(1)" }, "cubic-bezier(.2,.9,.3,1)"], [9.07, { transform: "scale(1.022)" }, "cubic-bezier(.4,0,.3,1)"],
+  [9.45, { transform: "scale(1)" }]]);
+
+/* ================= LIGNE MASQUÉE : poussée verticale sur chaque temps ================= */
+const IN = "translateY(120%)", ON = "translateY(0%)", OUT = "translateY(-120%)";
+K(id("l1"), [[8.0, { transform: IN }, EXc], [8.25, { transform: ON }], [8.5, { transform: ON }, EXc], [8.75, { transform: OUT }]]);
+K(id("l2"), [[8.5, { transform: IN }, EXc], [8.75, { transform: ON }], [9.0, { transform: ON }, EXc], [9.25, { transform: OUT }]]);
+K(id("l3"), [[9.0, { transform: IN }, EXc], [9.25, { transform: ON }]]);
+
+/* ================= FENÊTRE ================= */
+const win = id("win");
+K(win, [[8.0, { transform: "translateY(1900px) rotateX(26deg) scale(.9)" }, "cubic-bezier(.18,.9,.25,1)"],
+  [8.42, { transform: "translateY(0px) rotateX(0deg) scale(1)" }]]);
+/* lente dérive 3D de la fenêtre (parallaxe) */
+K(id("wtilt"), [[8.0, { transform: "rotateY(-5deg) rotateX(2deg)" }, IOc], [9.8, { transform: "rotateY(4deg) rotateX(-1.5deg)" }]]);
+/* contour lime au clic (box-shadow : autre propriété) */
+const SH = "0 40px 80px rgba(60,40,140,.18)";
+K(win, [[9.0, { boxShadow: `${SH},0 0 0 0px rgba(200,255,62,1)` }, EXc],
+  [9.1, { boxShadow: `${SH},0 0 0 10px rgba(200,255,62,1)` }, "cubic-bezier(.4,0,.6,1)"],
+  [9.4, { boxShadow: `${SH},0 0 0 22px rgba(200,255,62,0)` }]]);
+
+/* 4 blocs gris qui tombent : les impacts (« tocs ») tombent sur 8,50 / 8,56 / 8,62 / 8,68 */
+const drop = (el, ti) => { const t = ti - .155; K(el, [
+  [t, { transform: "translateY(-700px) scale(1,1)" }, "cubic-bezier(.55,0,.9,.5)"],
+  [ti, { transform: "translateY(0px) scale(1.04,.9)" }, "cubic-bezier(.2,.7,.4,1)"],
+  [t + .2, { transform: "translateY(-18px) scale(.98,1.03)" }, IOc],
+  [t + .25, { transform: "translateY(0px) scale(1,1)" }]]); };
+drop(id("b1"), 8.5); drop(id("b2"), 8.56); drop(id("b3"), 8.62); drop(id("b4"), 8.68); drop(id("b5"), 8.71);
+/* onde « message reçu » là où la bulle se pose */
+K(id("rip"), [[8.46, { transform: "scale(.15)", opacity: 1 }, Ec], [8.74, { transform: "scale(1.6)", opacity: 0 }]], "forwards");
+
+/* la vraie maquette balaie 8,80 → 9,00 puis défile */
+const img = id("img");
+K(img, [[8.8, { clipPath: "inset(0% 100% 0% 0%)" }, E2c], [9.0, { clipPath: "inset(0% 0% 0% 0%)" }]]);
+K(img, [[9.08, { transform: "translateY(0px)" }, "cubic-bezier(.45,0,.35,1)"], [9.9, { transform: "translateY(-240px)" }]]);
+const sw = id("sw");
+K(sw, [[8.8, { transform: "translateX(0px)" }, E2c], [9.0, { transform: "translateX(750px)" }]]);
+K(sw, [[8.8, { opacity: 1 }], [8.98, { opacity: 1 }], [9.02, { opacity: 0 }]], "forwards");
+
+/* barre d’adresse : progression pendant la création, cadenas qui passe au lime à 9,0 */
+K(id("pf"), [[8.5, { transform: "scaleX(0)" }, "cubic-bezier(.3,.5,.4,1)"], [8.97, { transform: "scaleX(.8)" }],
+  [9.0, { transform: "scaleX(.8)" }, EXc], [9.12, { transform: "scaleX(1)" }]]);
+K(id("pf"), [[9.0, { backgroundColor: "#c8ff3e" }], [9.05, { backgroundColor: "#c8ff3e" }]], "forwards");
+K(id("lkf"), [[9.0, { fill: "#c8ff3e", stroke: "#0b0b10", strokeWidth: "1.6px" }], [9.05, { fill: "#c8ff3e", stroke: "#0b0b10", strokeWidth: "1.6px" }]], "forwards");
+K($(".s05-lkb", S), [[9.0, { stroke: "#0b0b10" }], [9.05, { stroke: "#0b0b10" }]], "forwards");
+K(id("lock"), [[9.0, { transform: "scale(1)" }, EXc], [9.08, { transform: "scale(1.4)" }, IOc], [9.3, { transform: "scale(1)" }]]);
+
+/* ================= BULLE : pop (8,00) puis s’envole dans la fenêtre (8,30 → 8,50) ================= */
+samp(id("bub"), t => {
+  const s = BO(cl((t - 8) / .25)), q = E2(cl((t - 8.3) / .2));
+  /* arc : on monte d’abord, puis on plonge vers le milieu de la fenêtre */
+  const x = 2 * (1 - q) * q * 40 + q * q * 260, y = 2 * (1 - q) * q * -470 + q * q * -480;
+  const sc = s * lerp(1, .2, q), rot = lerp(0, 14, q);
+  return { transform: `translate(${f2(x)}px,${f2(y)}px) rotate(${f2(rot)}deg) scale(${sc.toFixed(4)})`, opacity: f2(1 - q * q) };
+}, 8.0, 8.5);
+
+/* ================= BOUTON « Publier » ================= */
+K(id("btn"), [[8.5, { transform: "scale(0)" }, BOc], [8.8, { transform: "scale(1)" }]]);
+K(id("btnp"), [[9.0, { transform: "scale(1)" }, "cubic-bezier(.3,0,.5,1)"], [9.06, { transform: "scale(.92)" }, EXc],
+  [9.22, { transform: "scale(1)" }], [9.5, { transform: "scale(1)" }, "cubic-bezier(.3,0,.4,1)"],
+  [9.56, { transform: "scale(1.15)" }, IOc], [9.66, { transform: "scale(1)" }]]);
+K(id("btnb"), [[9.06, { left: "0px", width: "360px" }, E2c], [9.18, { left: "125px", width: "110px" }]]);
+K(id("btnt"), [[9.0, { opacity: 1, transform: "scale(1)" }, "cubic-bezier(.4,0,.7,1)"], [9.06, { opacity: 0, transform: "scale(.82)" }]]);
+const spin = id("spin");
+K(spin, [[9.18, { opacity: 1 }], [9.3, { opacity: 1 }], [9.301, { opacity: 0 }]], "forwards");
+K(spin, [[9.18, { transform: "rotate(-90deg)" }, "cubic-bezier(.3,0,.6,1)"], [9.3, { transform: "rotate(330deg)" }]]);
+K(id("chk"), [[9.3, { opacity: 1 }], [9.35, { opacity: 1 }]], "forwards");
+K(id("chkp"), [[9.3, { strokeDashoffset: "72px" }, "cubic-bezier(.5,0,.3,1)"], [9.42, { strokeDashoffset: "0px" }]]);
+
+/* ================= CURSEUR ================= */
+const P0 = [1140, 1760], PC = [800, 1480], P1 = [520, 1365], P2 = [590, 1450];
+samp(id("cur"), t => {
+  let x, y;
+  if (t < 9.1) {
+    const q = bez(.45, 0, .15, 1)(cl((t - 8.42) / .53));
+    x = (1 - q) * (1 - q) * P0[0] + 2 * (1 - q) * q * PC[0] + q * q * P1[0];
+    y = (1 - q) * (1 - q) * P0[1] + 2 * (1 - q) * q * PC[1] + q * q * P1[1];
+  } else {
+    const q = IO(cl((t - 9.1) / .5));
+    x = lerp(P1[0], P2[0], q); y = lerp(P1[1], P2[1], q);
+  }
+  return { transform: `translate(${f2(x)}px,${f2(y)}px)` };
+}, 8.4, 9.65);
+K(id("curk"), [[9.0, { transform: "scale(1)" }, "cubic-bezier(.3,0,.6,1)"], [9.06, { transform: "scale(.82)" }, BOc], [9.16, { transform: "scale(1)" }]]);
+K(id("crg"), [[9.0, { transform: "scale(.15)", opacity: 1 }, Ec], [9.36, { transform: "scale(1)", opacity: 0 }]], "forwards");
+
+/* ================= CONFETTIS (canvas, 9 ≤ t < 10) ================= */
+const cv = id("cf"), g = cv.getContext("2d");
+const COLS = ["#c8ff3e", "#7c5cff", "#0b0b10", "#ff4d6d"];
+const R = mkRnd(50), PARTS = [];
+for (let i = 0; i < 120; i++) {
+  const a = (-90 + (R() * 2 - 1) * 62) * Math.PI / 180, v = (600 + R() * 800) * 1.55;
+  PARTS.push({
+    x0: 485 + Math.cos(a) * 40, y0: 1345 + Math.sin(a) * 40,
+    vx: Math.cos(a) * v, vy: Math.sin(a) * v,
+    k: .8 + R() * .9,                     // traînée de l’air
+    r0: R() * Math.PI * 2, vr: (R() * 2 - 1) * 14,
+    fl: 8 + R() * 10, ph: R() * 6.28,      // retournement (papier qui tourne)
+    w: 11 + R() * 4, h: 18 + R() * 6, c: COLS[i % 4], d: R() * .04
+  });
+}
+const G = 2400;
+onSeek(t => {
+  g.clearRect(0, 0, 1080, 1920);
+  if (t < 9 || t >= 10) return;
+  for (const p of PARTS) {
+    const u = t - 9 - p.d; if (u < 0 || u > 1) continue;
+    const e = 1 - Math.exp(-p.k * u), gk = G / p.k;
+    const x = p.x0 + p.vx * e / p.k + Math.sin(u * 7 + p.ph) * 10 * u;
+    const y = p.y0 + gk * u + (p.vy - gk) * e / p.k;
+    const sy = Math.cos(p.ph + u * p.fl);
+    g.save(); g.translate(x, y); g.rotate(p.r0 + p.vr * u); g.scale(1, Math.abs(sy) < .12 ? .12 * Math.sign(sy || 1) : sy);
+    g.fillStyle = p.c; g.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); g.restore();
+  }
+});
+
+/* ================= ÉCRASEMENT 9,625 → 9,80 ================= */
+const crush = id("crush");
+K(crush, [[9.625, { transform: "scale(1,1)" }, E2c], [9.775, { transform: "scale(1.15,.02)" }, "cubic-bezier(.4,0,1,1)"],
+  [9.8, { transform: "scale(1.15,.002)" }]]);
+K(crush, [[9.8, { opacity: 0 }], [9.81, { opacity: 0 }]], "forwards");
+const seam = id("seam"), halves = $$(".s05-sh", S);
+[seam, ...halves].forEach(el => {
+  K(el, [[9.7, { transform: "scaleX(.6)" }, EXc], [9.8, { transform: "scaleX(1)" }]]);
+});
+K(seam, [[9.7, { opacity: 1 }], [9.8, { opacity: 1 }], [9.801, { opacity: 0 }]], "forwards");
+halves.forEach(el => K(el, [[9.7, { opacity: 1 }], [9.75, { opacity: 1 }]], "forwards"));
+
+/* ================= PAUPIÈRE 9,80 → 10,00 ================= */
+K(id("lidT"), [[9.8, { transform: "translateY(0px)" }, E2c], [10.0, { transform: "translateY(-980px)" }]]);
+K(id("lidB"), [[9.8, { transform: "translateY(0px)" }, E2c], [10.0, { transform: "translateY(980px)" }]]);
+
+})();
+/* ---- s06 ---- */
+(function(){
+/* Scène 06 (10 → 12 s) — MONTÉE / SUSPENSE : « Et ça coûte COMBIEN ? »
+   10,00 « Et ça coûte » monte lettre à lettre, le vortex s’ouvre et accélère.
+   10,50 SLAM de COMBIEN (respire en largeur/graisse, 2 Hz puis 4 Hz, tremble, aberration).
+   10,625 le « ? » tombe, atterrit à 10,75, rebondit (10,905) et se pose sur 11,0 ; le crochet fait ressort.
+   11,50 tout est aspiré dans le point ; 11,60 → 11,75 le point glisse en (485, 960) et passe à Ø 60.
+   11,75 → 12,00 LE TROU : nuit, le point lime tremble seul dans un anneau fin.
+   Tout est en délais ABSOLUS (WAAPI échantillonnées) ou recalculé par onSeek à partir de t seul. */
+const id = n => document.getElementById("s06-" + n);
+const ms = s => Math.round(s * 1000);
+const A = (el, kf, t0, dur, easing = "linear", fill = "both") =>
+  el.animate(kf, { delay: ms(t0), duration: ms(dur), easing, fill });
+/* K(el, [[t, props, easingVersLeSuivant], ...]) : chronologie à instants absolus dans UNE animation */
+const K = (el, steps, fill = "both") => {
+  const t0 = steps[0][0], d = steps[steps.length - 1][0] - t0;
+  const kf = steps.map(([t, p, e]) => Object.assign({}, p, { offset: (t - t0) / d, easing: e || "linear" }));
+  return el.animate(kf, { delay: ms(t0), duration: ms(d), fill });
+};
+const bez = (x1, y1, x2, y2) => {
+  const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx, cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+  const X = s => ((ax * s + bx) * s + cx) * s, Yb = s => ((ay * s + by) * s + cy) * s;
+  return p => {
+    if (p <= 0) return 0; if (p >= 1) return 1;
+    let lo = 0, hi = 1, s = p;
+    for (let i = 0; i < 40; i++) { if (X(s) < p) lo = s; else hi = s; s = (lo + hi) / 2; }
+    return Yb(s);
+  };
+};
+const EX = bez(.16, 1, .3, 1), E2 = bez(.7, 0, .2, 1), E = bez(.2, .8, .2, 1), IO = bez(.45, 0, .55, 1);
+const RB = bez(.55, 0, 1, .45);         // accélération des anneaux
+const PU = bez(.55, 0, .75, 1);         // push caméra (accélère jusqu’à ~11,5 puis se pose)
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, p) => a + (b - a) * p;
+const f3 = v => (+v).toFixed(3);
+const BOc = "cubic-bezier(.34,1.56,.64,1)", Ec = "cubic-bezier(.2,.8,.2,1)";
+const SR = 120;                         // échantillons WAAPI par seconde
+const samp = (el, fn, t0, t1, fill = "both") => {
+  const n = Math.max(1, Math.round((t1 - t0) * SR)), kf = [];
+  for (let i = 0; i <= n; i++) kf.push(fn(t0 + (t1 - t0) * i / n));
+  return A(el, kf, t0, t1 - t0, "linear", fill);
+};
+/* tirage déterministe par image (on jette les premières valeurs : graines voisines → valeurs voisines) */
+const rnd = seed => { const r = mkRnd(seed * 7919 + 17); r(); r(); r(); return r; };
+
+/* ---- point lime : centre local D(t) — (493, 1070) puis glisse en (485, 960) de 11,60 à 11,75 ---- */
+const D = t => { const p = E2(cl((t - 11.6) / .15)); return [lerp(493, 485, p), lerp(1070, 960, p)]; };
+const CAMS = 1.06;                      // échelle caméra finale (le point fait Ø 60 À L’ÉCRAN)
+/* ---- aspiration ---- */
+/* courbe : accélération continue (u^2,6) plutôt que (.7,0,.84,0) qui garde tout immobile puis vide l’écran en 2 images.
+   Spirale : l’élément orbite AUTOUR du point en rapetissant → X ↦ D + R(orb·e)·(1−e)·(X − D), et tourne sur lui-même de 140°.
+   Textes : orbite 70° seulement (sinon ils sortent à droite de x = 900 pendant l’aspiration) ; anneaux : 140°.
+   Anticipation : 0,1 s avant son départ, l’élément « inspire » (+3,5 %). */
+const SUe = u => Math.pow(cl(u), 2.6);
+const spiral = (C, t, e, pre = 1, rot = 140, orb = rot) => {
+  const d = D(t), s = Math.max(.0001, pre * (1 - e)), a = orb * e * Math.PI / 180, c = Math.cos(a), sn = Math.sin(a);
+  const vx = C[0] - d[0], vy = C[1] - d[1];
+  const tx = d[0] + s * (c * vx - sn * vy) - C[0], ty = d[1] + s * (sn * vx + c * vy) - C[1];
+  return { tx, ty, s, deg: rot * e };
+};
+
+/* ================= CAMÉRA (origine 485/960 = point fixe) ================= */
+samp(id("cam"), t => {
+  const s = 1 + (CAMS - 1) * PU(cl((t - 10) / 1.75));
+  const r = -0.8 + 1.9 * IO(cl((t - 10) / 2));
+  return { transform: `rotate(${f3(r)}deg) scale(${(s).toFixed(4)})` };
+}, 10, 12);
+/* coups : slam (10,6) en échelle, atterrissages (10,75 / 10,905 / 11,0) en vertical */
+samp(id("kick"), t => {
+  let s = 1, y = 0;
+  const k0 = t - 10.58; if (k0 > 0) s += 0.024 * Math.sin(Math.min(1, k0 / .05) * Math.PI / 2) * Math.exp(-Math.max(0, k0 - .05) / .07);
+  for (const [ti, a] of [[10.75, 13], [10.905, 5], [11.0, 2.5]]) {
+    const k = t - ti; if (k > 0) y += a * Math.exp(-k / .055) * Math.sin(2 * Math.PI * k / .11);
+  }
+  return { transform: `translate(0px,${f3(y)}px) scale(${(s).toFixed(4)})` };
+}, 10, 11.5);
+
+/* ================= LUEUR VIOLETTE ================= */
+/* descend de (485, 900) [raccord S5] à (485, 960), grossit pendant le riser, puis est aspirée dans le point */
+samp(id("glow"), t => {
+  const cy = 900 + 60 * E(cl((t - 10) / .5)), cx = 485;
+  let g = 1 + .14 * Math.pow(cl((t - 11) / .5), 2), x = cx, y = cy, o = 1;
+  if (t > 11.5) {
+    const e = SUe((t - 11.5) / .22), d = D(t);
+    x = lerp(cx, d[0], e); y = lerp(cy, d[1], e); g *= Math.max(.0001, 1 - e); o = 1 - cl((e - .6) / .4);
+  }
+  return { transform: `translate(${f3(x - 485)}px,${f3(y - 900)}px) scale(${g.toFixed(4)})`, opacity: f3(o) };
+}, 10, 11.75);
+/* pulse : 1 sur chaque temps (10 / 10,5 / 11), puis sur chaque croche (11,25 / 11,5) ; creux à .6 */
+(() => {
+  const B = [10, 10.5, 11, 11.25, 11.5], lo = [.6, .6, .62, .66], st = [];
+  B.forEach((b, i) => {
+    st.push([b, { opacity: 1 }, "cubic-bezier(.25,.7,.4,1)"]);
+    if (i < B.length - 1) st.push([B[i + 1] - 2 / 30, { opacity: lo[i] }, "cubic-bezier(.5,0,.8,.6)"]);
+  });
+  st.push([11.75, { opacity: .7 }]);
+  K(id("glowp"), st);
+})();
+
+/* ================= VORTEX : 3 anneaux de texte (canvas, flou de bougé) ================= */
+const RINGS = [{ r: 360, n: 11, dir: 1, w: 1 }, { r: 520, n: 16, dir: -1, w: .9 }, { r: 700, n: 22, dir: 1, w: .8 }];
+const WORD = "COMBIEN ? ";
+const FONT = '500 34px "DM Mono"';
+try { document.fonts.load(FONT); } catch (e) { }
+/* angle (degrés) : 0 → courbe (.55,0,1,.45) sur 10,0 → 11,5 (900° visés), vitesse plafonnée à OMAX
+   pour que le texte file en traînées au lieu de « stroboscoper » ; continue à OMAX pendant l’aspiration */
+const OMAX = 1300, NT = 2001, TH = new Float64Array(NT);
+{
+  let acc = 0, prev = 0;
+  for (let i = 1; i < NT; i++) {
+    const tb = 10 + i / 1000, cur = 900 * RB(cl((tb - 10) / 1.5));
+    const w = tb <= 11.5 ? Math.min((cur - prev) * 1000, OMAX) : OMAX;
+    prev = cur; acc += w / 1000; TH[i] = acc;
+  }
+}
+const theta = t => {
+  if (t <= 10) return 0;
+  const x = (t - 10) * 1000, i = Math.floor(x);
+  if (i >= NT - 1) return TH[NT - 1] + OMAX * (t - 12);
+  return TH[i] + (TH[i + 1] - TH[i]) * (x - i);
+};
+let sprites = null, spritesOk = false;
+const mkSprites = () => {
+  spritesOk = document.fonts.check(FONT);
+  sprites = RINGS.map(R => {
+    const h = R.r + 30, c = document.createElement("canvas"); c.width = c.height = 2 * h;
+    const x = c.getContext("2d"); x.font = FONT; x.fillStyle = "#fff"; x.textAlign = "center"; x.textBaseline = "alphabetic";
+    const txt = WORD.repeat(R.n), N = txt.length;
+    for (let k = 0; k < N; k++) {
+      const ch = txt[k]; if (ch === " " || ch === " ") continue;
+      x.save(); x.translate(h, h); x.rotate(k / N * Math.PI * 2); x.fillText(ch, 0, -R.r + 12); x.restore();
+    }
+    return c;
+  });
+};
+const vx = id("vx"), vctx = vx.getContext("2d");
+const ringState = (R, i, t) => {
+  const ts = 10 + .07 * i, p = cl((t - ts) / .5);
+  let s = .5 + .5 * EX(p), a = EX(cl((t - ts) / .3)), cx = 485, cy = 960, ang = R.dir * theta(t);
+  if (t > 11.5) {
+    const k = spiral([485, 960], t, SUe((t - 11.5) / .2));
+    cx = 485 + k.tx; cy = 960 + k.ty; s *= k.s; ang += k.deg;
+  }
+  return { s, a, cx, cy, ang };
+};
+const SH = 1 / 120;                     // obturateur 90° (texte lisible au départ, traînées à pleine vitesse)
+onSeek(t => {
+  vctx.setTransform(1, 0, 0, 1, 0, 0); vctx.clearRect(0, 0, 1080, 1920);
+  if (t < 10 || t >= 11.7) return;
+  if (!sprites || (!spritesOk && document.fonts.check(FONT))) mkSprites();
+  vctx.globalCompositeOperation = "lighter";
+  RINGS.forEach((R, i) => {
+    const h = R.r + 30, s0 = ringState(R, i, t), s1 = ringState(R, i, t - SH);
+    const mv = Math.abs(s0.ang - s1.ang) * Math.PI / 180 * R.r * s0.s + Math.abs(s0.s - s1.s) * R.r + Math.hypot(s0.cx - s1.cx, s0.cy - s1.cy);
+    const N = Math.max(1, Math.min(48, Math.ceil(mv / 2.5)));
+    /* le texte étalé par le flou perd de la densité : on « charge » l’anneau avec la vitesse (×1,6 au maximum) */
+    const boost = 1 + .6 * cl(Math.abs(s0.ang - s1.ang) / SH / OMAX);
+    for (let k = 0; k < N; k++) {
+      const st = N === 1 ? s0 : ringState(R, i, t - SH * k / (N - 1));
+      if (st.s <= .001 || st.a <= 0) continue;
+      const c = Math.cos(st.ang * Math.PI / 180) * st.s, sn = Math.sin(st.ang * Math.PI / 180) * st.s;
+      vctx.setTransform(c, sn, -sn, c, st.cx, st.cy);
+      vctx.globalAlpha = Math.min(1, R.w * boost * st.a / N);
+      vctx.drawImage(sprites[i], -h, -h);
+    }
+  });
+  vctx.globalAlpha = 1; vctx.globalCompositeOperation = "source-over";
+});
+
+/* ================= ASPIRATION (11,50 → 11,75) : spirale vers le point, rotation 140°, échelle 0 ================= */
+const suck = (C, t0, dur, pa = .035) => t => {
+  const e = SUe((t - t0) / dur), pre = 1 + pa * E(cl((t - t0 + .1) / .1));
+  const k = spiral(C, t, e, pre, 140, 70);
+  return {
+    transform: `translate(${f3(k.tx)}px,${f3(k.ty)}px) rotate(${f3(k.deg)}deg) scale(${k.s.toFixed(4)})`,
+    opacity: f3(1 - cl((e - .7) / .3))
+  };
+};
+
+/* ================= « Et ça coûte » ================= */
+split(id("ett"), 10.0, .03);
+samp(id("etca"), suck([485.5, 495], 11.52, .23), 11.42, 11.75, "forwards");
+const etm = $(".s06-etm");
+
+/* ================= COMBIEN ================= */
+const cw = id("cw"), cw2 = id("cw2"), LB = $$(".s06-lb");
+A(cw, [{ transform: "scale(2.4)", opacity: 0 }, { transform: "scale(1)", opacity: 1 }], 10.5, .3, BOc, "both");
+LB.forEach(el => A(el, [{ filter: "blur(14px)" }, { filter: "blur(0px)" }], 10.5, .3, Ec, "both"));
+samp(id("cws"), suck([485.5, 685], 11.56, .19, .02), 11.46, 11.75, "forwards");   // +2 % seulement : reste dans x 70–900
+
+/* ================= « ? » : chute, atterrissage, rebonds ================= */
+/* hauteur Y(t) (px, négatif = en l’air), vitesse pour l’étirement, ressort d’écrasement après chaque contact */
+const FALL0 = 10.625, LAND1 = 10.75, UP1 = 10.775, LAND2 = 10.905, UP2 = 10.92, LAND3 = 11.0, H0 = 1150, H1 = 84, H2 = 22;
+const qY = t => {
+  if (t <= FALL0) return -H0;
+  if (t < LAND1) { const u = (t - FALL0) / (LAND1 - FALL0); return -H0 * (1 - u * u); }
+  if (t < UP1) return 0;
+  if (t < LAND2) { const p = (t - UP1) / (LAND2 - UP1); return -H1 * 4 * p * (1 - p); }
+  if (t < UP2) return 0;
+  if (t < LAND3) { const p = (t - UP2) / (LAND3 - UP2); return -H2 * 4 * p * (1 - p); }
+  return 0;
+};
+samp(id("qf"), t => {
+  const y = qY(t), v = Math.abs(qY(t + .002) - qY(t - .002)) / .004;     // px/s
+  let st = .2 * Math.min(1, v / 18400);                                   // étirement (vitesse)
+  let sq = 0;
+  for (const [ti, a] of [[LAND1, .2], [LAND2, .1], [LAND3, .045]]) {
+    const k = t - ti; if (k >= 0) sq += a * Math.exp(-k / .04) * Math.cos(2 * Math.PI * k / .1);
+  }
+  const sx = 1 + .6 * sq - .45 * st, sy = 1 - sq + st;
+  const rot = t < LAND1 ? -6 * Math.pow(1 - cl((t - FALL0) / (LAND1 - FALL0)), 2) : 0;
+  return { transform: `translate(0px,${f3(y)}px) rotate(${f3(rot)}deg) scale(${sx.toFixed(4)},${sy.toFixed(4)})` };
+}, 10.6, 11.2);
+K(id("qf"), [[10.625, { opacity: 1 }], [10.64, { opacity: 1 }]], "forwards");
+/* crochet : ressort autour du point après l’atterrissage (« boing ») */
+samp(id("qw"), t => {
+  const k = t - LAND1;
+  const r = k <= 0 ? 0 : 8 * Math.exp(-k / .2) * Math.sin(2 * Math.PI * k / .24) * cl(1 - (t - 11.4) / .1);
+  return { transform: `rotate(${f3(r)}deg)` };
+}, 10.75, 11.5);
+samp(id("q"), suck([493, 910], 11.62, .13), 11.52, 11.75, "forwards");
+/* ondes au sol (ellipses) */
+K(id("rip"), [[LAND1, { width: "90px", height: "26px", borderWidth: "6px", opacity: .75 }, Ec],
+  [LAND1 + .42, { width: "520px", height: "140px", borderWidth: "1px", opacity: 0 }]], "forwards");
+K(id("rip2"), [[LAND2, { width: "90px", height: "26px", borderWidth: "4px", opacity: .45 }, Ec],
+  [LAND2 + .3, { width: "300px", height: "82px", borderWidth: "1px", opacity: 0 }]], "forwards");
+
+/* ================= LE POINT ================= */
+/* 11,50 inspire (Ø 84 → 92), 11,60 → 11,75 glisse en (485, 960) et passe à Ø 60 à l’écran */
+samp(id("dot"), t => {
+  const d = D(t);
+  let s = 1 + .1 * E(cl((t - 11.5) / .1));
+  s = lerp(s, 60 / CAMS / 84, E2(cl((t - 11.6) / .15)));
+  return { transform: `translate(${f3(d[0] - 493)}px,${f3(d[1] - 1070)}px) scale(${s.toFixed(4)})` };
+}, 11.5, 11.75);
+/* battement de sub à 11,875 */
+K(id("dotc"), [[11.875, { transform: "scale(1)" }, "cubic-bezier(.2,.8,.3,1)"], [11.91, { transform: "scale(1.14)" }, "cubic-bezier(.4,0,.4,1)"],
+  [12.0, { transform: "scale(1)" }]]);
+K(id("dh"), [[11.6, { opacity: 0 }], [11.75, { opacity: .8 }], [11.875, { opacity: .8 }, Ec], [11.91, { opacity: 1 }], [12.0, { opacity: .75 }]], "forwards");
+/* anneau du trou */
+K(id("hole"), [[11.75, { transform: "scale(1)" }, Ec], [12.0, { transform: "scale(1.3)" }]], "forwards");
+K(id("hole"), [[11.75, { opacity: 0 }], [11.8, { opacity: 1 }]], "forwards");
+
+/* ================= onSeek : respiration, tremblements, aberration ================= */
+const qg = id("qg"), dotc = id("dotc");
+onSeek(t => {
+  const f = Math.round(t * 30);
+  /* COMBIEN respire : 2 Hz (10,5 → 11) puis 4 Hz, jusqu’à sa disparition */
+  const on = t >= 10.5 && t < 11.75;
+  const phi = t <= 11 ? 4 * Math.PI * (t - 10.5) : 2 * Math.PI + 8 * Math.PI * (t - 11);
+  LB.forEach((el, i) => {
+    el.style.fontStretch = on ? (75 + 12 * Math.sin(phi - .6 * i)).toFixed(2) + "%" : "75%";
+    el.style.fontWeight = on ? (825 + 75 * Math.sin(phi - .6 * i + 1)).toFixed(1) : "825";
+  });
+  /* tremblement + aberration (≤ 4 px) */
+  const Am = on ? Math.min(4, 4 * (t - 10.5)) : 0;
+  if (on) {
+    const r = rnd(1000 + f);
+    cw2.style.translate = `${f3((r() * 2 - 1) * Am)}px ${f3((r() * 2 - 1) * Am)}px`;
+    cw2.style.textShadow = `${f3(-Am)}px 0 #19c6b0, ${f3(Am)}px 0 #ff4d6d`;
+  } else { cw2.style.translate = "0px 0px"; cw2.style.textShadow = "none"; }
+  /* le riser fait aussi vibrer « Et ça coûte » et le crochet (moitié moins) */
+  const Ah = t >= 11 && t < 11.75 ? Math.min(2, 4 * (t - 11)) : 0;
+  if (Ah > 0) {
+    const r = rnd(3000 + f), r2 = rnd(4000 + f);
+    etm.style.translate = `${f3((r() * 2 - 1) * Ah)}px ${f3((r() * 2 - 1) * Ah)}px`;
+    qg.style.translate = `${f3((r2() * 2 - 1) * Ah)}px ${f3((r2() * 2 - 1) * Ah)}px`;
+  } else { etm.style.translate = "0px 0px"; qg.style.translate = "0px 0px"; }
+  /* LE TROU : le point tremble de ±2 px (à l’écran) */
+  if (t >= 11.75 && t < 12) {
+    const r = rnd(5000 + f), a = 2 / CAMS;
+    dotc.style.translate = `${f3((r() * 2 - 1) * a)}px ${f3((r() * 2 - 1) * a)}px`;
+  } else dotc.style.translate = "0px 0px";
+});
+
+})();
+/* ---- s07 ---- */
+(function(){
+/* Scène 07 (12 → 14 s) — DROP 2 : le point lime explose et devient le prix « Un site dès 85 € ».
+   Tout est en délais ABSOLUS (secondes depuis le début de la vidéo → ms dans A()). */
+const S = $(".s07");
+const A = (el, kf, t0, dur, easing = "linear", fill = "both") =>
+  el.animate(kf, { delay: Math.round(t0 * 1000), duration: Math.round(dur * 1000), easing, fill });
+const EX = "cubic-bezier(.16,1,.3,1)", E = "cubic-bezier(.2,.8,.2,1)", E2 = "cubic-bezier(.7,0,.2,1)", BO = "cubic-bezier(.34,1.56,.64,1)";
+/* courbe de Bézier évaluée en JS (pour les dessins onSeek) */
+const bez = (x1, y1, x2, y2) => {
+  const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx, cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+  const X = u => ((ax * u + bx) * u + cx) * u, Y = u => ((ay * u + by) * u + cy) * u;
+  return x => {
+    if (x <= 0) return 0; if (x >= 1) return 1;
+    let lo = 0, hi = 1, u = x;
+    for (let i = 0; i < 28; i++) { u = (lo + hi) / 2; if (X(u) < x) lo = u; else hi = u; }
+    return Y(u);
+  };
+};
+const fEX = bez(.16, 1, .3, 1);
+/* perspective de .s07-stage : un plan à z = −d se projette en scale(P/(P+d)) autour de (485, 900) */
+const P = 1500, KZ = d => +(P / (P + d)).toFixed(5);
+const ECH = [{ d: 90, o: 1 }, { d: 180, o: .7 }, { d: 270, o: .45 }];   // échos en contour (extrusion)
+const CZ = [0, -3, -6, -9, -12, -15];                                    // épaisseur de la pièce « € »
+
+/* ---------- caméra : poussée + roulis permanents, secousse d’impact ---------- */
+A($("#s07-cam"), [{ transform: "scale(1) rotate(-.35deg)" }, { transform: "scale(1.04) rotate(.35deg)" }], 12.0, 2.0, "linear");
+A($("#s07-shk"), [
+  { transform: "translate(0px,0px) scale(1)" },
+  { transform: "translate(0px,0px) scale(1.04)", offset: .07 },     /* 12,03 souffle de l’explosion */
+  { transform: "translate(0px,0px) scale(1.012)", offset: .35 },
+  { transform: "translate(0px,4px) scale(1.026)", offset: .39 },    /* 12,155 thud au sol */
+  { transform: "translate(-3px,-3px) scale(1.016)", offset: .47 },
+  { transform: "translate(3px,2px) scale(1.008)", offset: .56 },
+  { transform: "translate(-2px,-1px) scale(1.004)", offset: .67 },
+  { transform: "translate(1px,1px) scale(1.001)", offset: .8 },
+  { transform: "translate(0px,0px) scale(1)" }
+], 12.0, .4);
+
+/* ---------- 12,00 EXPLOSION DU POINT ---------- */
+/* le disque lime Ø 60 de S6 s’ouvre (départ un demi-image avant le temps : la 1re image de S7 est déjà l’explosion) */
+A($("#s07-lime"), [{ clipPath: "circle(30px at 545px 1020px)" }, { clipPath: "circle(1400px at 545px 1020px)" }], 11.983, .22, EX);
+/* anneau lime du raccord + 3 anneaux encre (SVG redessinés à chaque image) */
+{
+  const rl = $("#s07-rl"), ri = $$(".s07-ri", S);
+  onSeek(t => {
+    const p = (t - 11.983) / .25;
+    if (p > 0 && p < 1) {
+      rl.setAttribute("r", (60 + 1800 * fEX(p)).toFixed(1));
+      rl.style.strokeWidth = (6 * (1 - p) + 1).toFixed(2); rl.style.opacity = (.6 * (1 - p)).toFixed(3);
+    } else { rl.setAttribute("r", 0); rl.style.opacity = 0; }
+    ri.forEach((c, k) => {
+      const q = (t - (11.995 + k * .045)) / .6;
+      if (q <= 0 || q >= 1) { c.setAttribute("r", 0); c.style.opacity = 0; return; }
+      c.setAttribute("r", (24 + 1550 * fEX(q)).toFixed(1));
+      c.style.strokeWidth = (17 * Math.pow(1 - q, 1.3) + 1.5).toFixed(2);
+      c.style.opacity = Math.pow(1 - q, 1.2).toFixed(3);
+    });
+  });
+}
+
+/* ---------- confettis de glyphes (40, mkRnd(77)) ---------- */
+{
+  const r = mkRnd(77), back = $("#s07-gback"), front = $("#s07-gfront");
+  const G = ["€", "8", "5", "●"], C = ["#0b0b10", "#0b0b10", "#7c5cff", "#ffffff"];
+  const ce = bez(.1, .7, .2, 1), items = [];
+  for (let k = 0; k < 40; k++) {
+    const b = document.createElement("b"), g = G[k % 4], size = 30 + 50 * r(), col = C[Math.floor(r() * 4)];
+    if (g === "●") { b.className = "d"; b.style.width = b.style.height = Math.round(size * .42) + "px"; b.style.background = col; }
+    else { b.textContent = g; b.style.fontSize = Math.round(size) + "px"; b.style.color = col; }
+    const a = (k / 40) * Math.PI * 2 + (r() - .5) * .55;
+    items.push({ b, a, D: 400 + 500 * r(), rot: (r() * 2 - 1) * 600, t0: 11.99 + r() * .05, g: 300 + 500 * r() });
+    (k % 3 === 0 ? front : back).append(b);
+  }
+  onSeek(t => items.forEach(o => {
+    const tau = t - o.t0, p = tau / 1.1;
+    if (p <= 0 || p >= 1) { o.b.style.opacity = 0; return; }
+    const e = ce(p), x = 485 + Math.cos(o.a) * o.D * e * 1.1, y = 960 + Math.sin(o.a) * o.D * e + .5 * o.g * tau * tau;
+    const sc = .35 + .65 * Math.min(1, p * 5);
+    o.b.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) translate(-50%,-50%) rotate(${(o.rot * e).toFixed(1)}deg) scale(${sc.toFixed(3)})`;
+    o.b.style.opacity = (p < .45 ? 1 : 1 - (p - .45) / .55).toFixed(3);
+  }));
+}
+
+/* ---------- PRIX ---------- */
+const price = $("#s07-price"), face = $("#s07-face"), rface = $(".s07-rface", S);
+/* largeur de l’Archivo : 62 % → 70 % en atterrissant, flexion 13,0 → 13,3 */
+A(price, [
+  { fontStretch: "62%", easing: BO },
+  { fontStretch: "70%", offset: .3 / 1.3 },
+  { fontStretch: "70%", offset: 1.0 / 1.3, easing: "cubic-bezier(.55,0,.45,1)" },
+  { fontStretch: "62%", offset: 1.15 / 1.3, easing: BO },
+  { fontStretch: "70%" }
+], 12.0, 1.3);
+/* SLAM : chute depuis la caméra sur la ligne de base, écrasement à 12,15, rebond */
+const SLAM = [
+  { transform: "scale(2.75)" },
+  { transform: "scale(2.38)", offset: .11 },                        /* 12,033 */
+  { transform: "scale(1.86)", offset: .22 },                        /* 12,067 */
+  { transform: "scale(1.4)", offset: .33 },                         /* 12,10 */
+  { transform: "scale(1.1)", offset: .44 },                         /* 12,133 */
+  { transform: "scale(1.07,.86)", offset: .5, easing: "cubic-bezier(.25,0,.4,1)" },   /* 12,15 écrasement au sol */
+  { transform: "scale(.975,1.045)", offset: .73, easing: "cubic-bezier(.45,0,.55,1)" },
+  { transform: "scale(1)" }
+];
+[face, rface].forEach(f => { A(f, SLAM, 12.0, .3); A(f, [{ opacity: 0 }, { opacity: 1 }], 12.0, .03); });
+A(face, [{ filter: "blur(15px)" }, { filter: "blur(0px)" }], 12.0, .14);
+/* reflet de verre sur le 85 */
+A($(".s07-sheen", face), [{ backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0" }], 13.0, .4, "cubic-bezier(.4,0,.6,1)");
+
+/* « € » : pièce épaisse (6 couches) qui tombe en tournant, se pose à 12,70 */
+const er = $("#s07-er");
+CZ.forEach((z, k) => {
+  const g = document.createElement("span"); g.className = "s07-eg"; g.textContent = "€";
+  if (k === 0) { g.classList.add("f"); const sh = document.createElement("span"); sh.className = "s07-sheen"; sh.textContent = "€"; g.append(sh); }
+  else if (k === CZ.length - 1) { g.classList.add("b"); g.style.transform = `translateZ(${z}px) rotateY(180deg)`; }   /* revers lisible */
+  else g.style.transform = `translateZ(${z}px)`;
+  er.append(g);
+});
+const FALL = [
+  { transform: "translateY(-600px)", easing: "cubic-bezier(.3,.15,.7,.6)" },
+  { transform: "translateY(0px)", offset: .45 / .6, easing: "cubic-bezier(.25,.7,.45,1)" },   /* 12,70 clink */
+  { transform: "translateY(-30px)", offset: .51 / .6, easing: "cubic-bezier(.55,0,.85,.45)" },
+  { transform: "translateY(0px)" }
+];
+const SPIN = [
+  { transform: "rotateY(1080deg)", easing: "cubic-bezier(.3,.45,.45,1)" },
+  { transform: "rotateY(-14deg)", offset: .5 / .6, easing: "cubic-bezier(.45,0,.55,1)" },
+  { transform: "rotateY(0deg)" }
+];
+[[$("#s07-ey"), er], [$(".s07-rey", S), $(".s07-rer", S)]].forEach(([y, rr]) => {
+  A(y, FALL, 12.25, .6); A(rr, SPIN, 12.25, .6);
+  $$(".s07-eg", rr).forEach(g => A(g, [{ opacity: 0 }, { opacity: 1 }], 12.25, .08));
+});
+A($(".s07-sheen", er), [{ backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0" }], 13.12, .38, "cubic-bezier(.4,0,.6,1)");
+/* étincelles au « clink » */
+const stars = $$(".s07-star", S);
+A(stars[0], [
+  { transform: "scale(0) rotate(0deg)", easing: "cubic-bezier(.2,.8,.4,1)" },
+  { transform: "scale(1) rotate(40deg)", offset: .4, easing: "cubic-bezier(.6,0,.8,.4)" },
+  { transform: "scale(0) rotate(90deg)" }
+], 12.62, .2, "linear", "forwards");
+A(stars[1], [
+  { transform: "scale(0) rotate(0deg)", easing: "cubic-bezier(.2,.8,.4,1)" },
+  { transform: "scale(.55) rotate(-40deg)", offset: .4, easing: "cubic-bezier(.6,0,.8,.4)" },
+  { transform: "scale(0) rotate(-90deg)" }
+], 12.68, .18, "linear", "forwards");
+
+/* 13,25 : l’extrusion sort par l’arrière (3 échos en contour, « whomp » en cascade) */
+$$(".s07-echo", S).forEach((e, k) => A(e, [
+  { transform: "translateZ(-4px)", opacity: 0 },
+  { transform: `translateZ(${-ECH[k].d}px)`, opacity: ECH[k].o }
+], 13.25 + k * .06, .25, BO, "forwards"));
+/* 12,9 → 13,75 : la caméra pivote autour du prix (on voit l’épaisseur), puis revient de face */
+A($("#s07-orbit"), [
+  { transform: "rotateY(0deg) rotateX(0deg)", easing: E },
+  { transform: "rotateY(-16deg) rotateX(6deg)", offset: .55 / .85 },
+  { transform: "rotateY(-17deg) rotateX(6.4deg)", offset: .6 / .85, easing: E2 },
+  { transform: "rotateY(0deg) rotateX(0deg)" }
+], 12.9, .85);
+
+/* ---------- SOL ---------- */
+A($("#s07-shw"), [{ transform: "scaleX(0)", opacity: 0 }, { transform: "scaleX(1)", opacity: 1 }], 12.1, .22, EX);
+A($("#s07-shadow"), [
+  { transform: "scaleX(1)", easing: "cubic-bezier(.55,0,.45,1)" },
+  { transform: "scaleX(.88)", offset: .5, easing: BO },
+  { transform: "scaleX(1)" }
+], 13.0, .3);
+/* ombre de la pièce : grandit pendant la chute, se rétracte au rebond */
+A($("#s07-shw2"), [
+  { transform: "scaleX(.3)", opacity: 0, easing: "cubic-bezier(.4,0,.8,.6)" },
+  { transform: "scaleX(1)", opacity: 1, offset: .25 / .4, easing: "cubic-bezier(.2,.6,.4,1)" },
+  { transform: "scaleX(.86)", opacity: .75, offset: .31 / .4, easing: "cubic-bezier(.6,0,.8,.4)" },
+  { transform: "scaleX(1)", opacity: 1 }
+], 12.45, .4);
+A($("#s07-refl"), [{ opacity: 0 }, { opacity: .12 }], 12.12, .26, E);
+/* ondes de choc au sol */
+{
+  const wave = (el, t0, dur, rx, ry, sw, o) => onSeek(t => {
+    const q = (t - t0) / dur;
+    if (q <= 0 || q >= 1) { el.setAttribute("rx", 0); el.setAttribute("ry", 0); el.style.opacity = 0; return; }
+    const e = fEX(q);
+    el.setAttribute("rx", (rx * e).toFixed(1)); el.setAttribute("ry", (ry * e).toFixed(1));
+    el.style.strokeWidth = (sw * (1 - q) + .5).toFixed(2); el.style.opacity = (o * Math.pow(1 - q, .8)).toFixed(3);
+  });
+  wave($("#s07-w1"), 12.15, .6, 700, 90, 10, .9);
+  wave($("#s07-w2"), 12.22, .55, 540, 66, 5, .55);
+}
+/* poussière encre (canvas) : 120 grains mkRnd(707) + bouffées, seulement 12,15 ≤ t < 13,2 */
+{
+  const cv = $("#s07-dust"), ctx = cv.getContext("2d"), r = mkRnd(707), F = 1067, pts = [], puffs = [];
+  for (let i = 0; i < 120; i++) {
+    const x = 140 + 700 * r();
+    pts.push({ x, vx: (x - 490) / 350 * 240 + (r() * 2 - 1) * 200, vy: -(300 + 600 * r()), a: .4 + .3 * r(), s: 3 + 6 * r(), d: .07 * r() });
+  }
+  for (let i = 0; i < 18; i++) {
+    const x = 130 + 720 * r();
+    puffs.push({ x, vx: (x - 490) / 350 * 340 + (r() - .5) * 140, r0: 40 + 30 * r(), r1: 140 + 110 * r(), a: .16 + .14 * r(), d: .05 * r() });
+  }
+  onSeek(t => {
+    ctx.clearRect(0, 0, 1080, 1920);
+    if (t < 12.15 || t >= 13.2) return;
+    puffs.forEach(o => {
+      const tau = t - 12.15 - o.d, p = tau / .95; if (tau <= 0 || p >= 1) return;
+      const e = 1 - Math.pow(1 - p, 3), x = o.x + o.vx * e * .9, y = F - 14 - 46 * e, rad = o.r0 + (o.r1 - o.r0) * e, al = o.a * (1 - p) * (1 - p);
+      ctx.save(); ctx.translate(x, y); ctx.scale(1, .5);
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, rad);
+      g.addColorStop(0, `rgba(11,11,16,${al.toFixed(3)})`); g.addColorStop(1, "rgba(11,11,16,0)");
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, rad, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+    });
+    ctx.fillStyle = "#0b0b10";
+    pts.forEach(o => {
+      const tau = t - 12.15 - o.d; if (tau <= 0 || tau >= .9) return;
+      const x = o.x + o.vx * (1 - Math.exp(-2.2 * tau)) / 2.2, y = F + o.vy * tau + 1200 * tau * tau;
+      if (y > F + 4) return;
+      const life = tau / .9; ctx.globalAlpha = o.a * (1 - life * life);
+      ctx.beginPath(); ctx.arc(x, y, o.s / 2, 0, Math.PI * 2); ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+  });
+}
+
+/* ---------- « Un site dès » lettre à lettre (12,50) ---------- */
+const un = $("#s07-un");
+split(un, 12.5, .025);
+
+/* ---------- 13,75 → 14,00 COUP DE LAME ---------- */
+const blade = $("#s07-blade");
+A(blade, [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], 13.75, .06, "cubic-bezier(.55,0,.3,1)", "forwards");
+A(blade, [{ opacity: 1 }, { opacity: 1, offset: .25 }, { opacity: 0 }], 13.81, .12, "linear", "forwards");
+/* deux moitiés plates de l’image (copie exacte de l’état à 13,81) qui glissent de part et d’autre de la coupe */
+{
+  const tan = Math.tan(12 * Math.PI / 180), ly = x => (860 - tan * (x - 485)).toFixed(2), X0 = -700, X1 = 1800;
+  const flat = () => {
+    const f = document.createElement("div"); f.className = "s07-flat";
+    let h = `<div class="s07-lime s07-limeX"></div><div class="s07-sun s07-sunrot"></div>
+      <div class="s07-shw"><i class="s07-shadow"></i></div><i class="s07-shw2"></i>
+      <div class="s07-price" style="font-stretch:70%">
+        <div class="s07-refl"><div class="s07-face">85</div><div class="s07-ey"><div class="s07-er"><span class="s07-eg">€</span></div></div></div>`;
+    ECH.forEach(o => { h += `<div class="s07-echo" style="opacity:${o.o};transform:scale(${KZ(o.d)});transform-origin:485px 900px"><span class="s07-e85">85</span><span class="s07-eeu">€</span></div>`; });
+    CZ.slice(1, -1).reverse().forEach(z => { h += `<div class="s07-ey" style="transform:scale(${KZ(-z)});transform-origin:-197px 104px"><span class="s07-eg" style="color:#262630">€</span></div>`; });
+    h += `<div class="s07-face">85</div><div class="s07-ey"><span class="s07-eg">€</span></div></div>`;
+    f.innerHTML = h;
+    const u = un.cloneNode(true); u.removeAttribute("id"); f.append(u);
+    const edge = document.createElement("i"); edge.className = "s07-edge"; f.append(edge);
+    return f;
+  };
+  const top = $("#s07-top"), bot = $("#s07-bot");
+  top.append(flat()); bot.append(flat());
+  top.style.clipPath = `polygon(${X0}px -900px,${X1}px -900px,${X1}px ${ly(X1)}px,${X0}px ${ly(X0)}px)`;
+  bot.style.clipPath = `polygon(${X0}px ${ly(X0)}px,${X1}px ${ly(X1)}px,${X1}px 2900px,${X0}px 2900px)`;
+  A($("#s07-cut"), [{ opacity: 1 }, { opacity: 1 }], 13.81, .2, "linear", "forwards");
+  A(top, [{ transform: "translate(0px,0px) rotate(0deg)" }, { transform: "translate(-1650px,-320px) rotate(-8deg)" }], 13.81, .19, E2, "forwards");
+  A(bot, [{ transform: "translate(0px,0px) rotate(0deg)" }, { transform: "translate(1650px,320px) rotate(8deg)" }], 13.81, .19, E2, "forwards");
+}
+
+})();
+/* ===== Pub 10 — démarrage (après les scripts des scènes) ===== */
+(function(){
+  const vp = document.getElementById("vp"), DUR = 24;
+  const fit = () => { const k = Math.min(innerWidth / 1080, innerHeight / 1920); vp.style.transform = `scale(${k})`; vp.style.margin = `${(1920 * k - 1920) / 2}px ${(1080 * k - 1080) / 2}px`; };
+  addEventListener("resize", fit); fit();
+  const all = () => document.getAnimations();
+  const hooks = t => SEEK_HOOKS.forEach(f => { try { f(t); } catch (e) { console.error(e); } });
+  if (/[?&]capture/.test(location.search)) {
+    document.body.classList.add("capture");
+    window.seek = ms => { all().forEach(a => { a.pause(); a.currentTime = ms; }); hooks(ms / 1000); };
+    window.seek(0);
+  } else {
+    let t0 = performance.now();
+    const restart = () => { all().forEach(a => { a.currentTime = 0; a.play(); }); t0 = performance.now(); };
+    document.getElementById("replay").onclick = restart;
+    const loop = () => { const t = (performance.now() - t0) / 1000; if (t >= DUR) restart(); hooks(Math.min(t, DUR)); requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+  }
+})();
+
+</script>
+</body></html>
