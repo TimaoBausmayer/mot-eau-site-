@@ -14,7 +14,7 @@ r.setProperty("--hw", T.headWeight||600); r.setProperty("--r", (T.radius==null?1
 r.setProperty("--hcase", T.upper ? "uppercase" : "none"); if (T.upper) r.setProperty("--hls", ".01em");
 const single = ["Anton","Bebas Neue","Archivo Black"], ital = ["Cormorant Garamond","Playfair Display","Fraunces"];
 const fam = f => "family="+f.replace(/ /g,"+")+(single.includes(f)?"":ital.includes(f)?":ital,wght@0,400;0,500;0,600;0,700;1,500":":wght@400;500;600;700");
-const lk = document.createElement("link"); lk.rel="stylesheet"; lk.href="https://fonts.googleapis.com/css2?"+fam(T.headFont)+"&"+fam(T.bodyFont)+"&family=DM+Mono:wght@400;500&display=swap"; document.head.appendChild(lk);
+const lk = document.createElement("link"); lk.rel="stylesheet"; lk.href="/fonts/demos.css"; /* polices hébergées sur le site (aucune requête vers Google) */ document.head.appendChild(lk);
 document.body.classList.add("L-"+(T.layout||"A"));
 const pageTitle = {home:S.name, offre:S.offers.label+" — "+S.name, contact:"Contact — "+S.name}[page];
 document.title = pageTitle;

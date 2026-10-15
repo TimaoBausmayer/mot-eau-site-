@@ -7,6 +7,7 @@
 window.SITE_CONFIG = {
 
   /* ---------- IDENTITÉ ---------- */
+  siteUrl: "https://l-t-digital.vercel.app",   /* adresse du site (sert au plan du site et au résumé pour les IA) */
   brand: "L&T Digital",
   tagline: "Création & modernisation de sites web",
   logo: "images/logo-small.jpg",          // petit logo (barre du haut)
@@ -31,11 +32,12 @@ window.SITE_CONFIG = {
      Remplis ce que tu peux : ce qui manque s'affiche "[à compléter]" sur les pages légales.
      ⚠ Ce sont des modèles : fais-les relire par un professionnel (expert-comptable, juriste). */
   legal: {
-    company: { name: "L&T Digital", status: "", capital: "", address: "", siret: "", rcs: "", vatNumber: "", publisher: "", email: "l.t.digital.rb@gmail.com", phone: "" },
-    hosting: { name: "", address: "", website: "" },
+    /* ⚠️ À compléter dès que la micro-entreprise est immatriculée (SIRET, adresse, nom du responsable). */
+    company: { name: "L&T Digital", status: "Entrepreneur individuel (micro-entreprise)", capital: "", address: "", siret: "", rcs: "", vatNumber: "", publisher: "", email: "l.t.digital.rb@gmail.com", phone: "" },
+    hosting: { name: "Vercel Inc.", address: "340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis", website: "https://vercel.com", phone: "" },
     mediator: { name: "", address: "", website: "" },
     cgv: { paymentMethods: "", city: "", extra: "" },
-    updated: ""
+    updated: "14 octobre 2026"
   },
 
   /* ---------- MONNAIE ---------- */

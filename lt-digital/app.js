@@ -82,7 +82,7 @@ $("h-cta2").textContent = C.hero.cta2;
     $("h-offer").innerHTML = `<b>${esc(v)}</b><span>${esc(pr.label||T.hero_offer||"Offre en cours")} avec le code</span><code>${esc(pr.code)}</code><em aria-hidden="true">→</em>`; $("h-offer").hidden = false; }
   const pop = (C.plans||[]).find(p=>p.popular && p.price!=null) || priced[0];
   if (pop) setTimeout(()=>{ const vi = document.querySelector("#hero-vis .vis-in"); if (!vi) return;
-    vi.insertAdjacentHTML("beforeend", `<a href="#tarifs" class="h-price"><span class="hpp-t">${esc(T.badge_pop||"Le plus choisi")}</span><b>${esc(pop.name)}</b><span class="hpp-p">${pop.from?esc(T.hero_from||"dès")+" ":""}<strong>${esc(fmt(pop.price))}</strong></span><small>${esc(TX.label_delivery)} ${esc(delayOf(pop))}</small><span class="hpp-go">${esc(T.hero_price_btn||"Je le veux")} →</span></a>`); }, 0); })();
+    vi.insertAdjacentHTML("beforeend", `<a href="#tarifs" class="h-price" tabindex="-1"><span class="hpp-t">${esc(T.badge_pop||"Le plus choisi")}</span><b>${esc(pop.name)}</b><span class="hpp-p">${pop.from?esc(T.hero_from||"dès")+" ":""}<strong>${esc(fmt(pop.price))}</strong></span><small>${esc(TX.label_delivery)} ${esc(delayOf(pop))}</small><span class="hpp-go">${esc(T.hero_price_btn||"Je le veux")} →</span></a>`); }, 0); })();
 $("stats").innerHTML = C.stats.map(s=>`<div class="stat"><dt data-v="${esc(s.value)}">${esc(s.value)}</dt><dd>${esc(s.label)}</dd></div>`).join("");
 /* visuel du haut : tes propres maquettes dans des fenêtres de navigateur */
 (function(){ const v = C.hero.visual || {}, vis = $("hero-vis");
@@ -210,7 +210,7 @@ drawPlans();
       <label class="ct-switch"><input type="checkbox" id="ct-diff" ${diffOnly?"checked":""}><span class="ct-track"><i></i></span>${esc(T.cmp_diff||"Seulement les différences")}</label>`;
     const vis = rows.filter(r=>{ if(!diffOnly || cols.length<2) return true; const vals = cols.map(p=>JSON.stringify(r.values[p.id])); return new Set(vals).size > 1; });
     $("cmp").style.minWidth = (small() ? 110 + cols.length*118 : 170 + cols.length*150) + "px";
-    $("cmp").innerHTML = `<thead><tr><th></th>${cols.map(p=>`<th class="${p.popular?"pop-col":""}" data-c="${esc(p.id)}">${p.popular?`<span class="cmp-badge">${esc(TX.badge_pop)}</span>`:""}<b>${esc(p.name)}</b><small>${priceTxt(p)}</small></th>`).join("")}</tr></thead>
+    $("cmp").innerHTML = `<thead><tr><th scope="col"><span class="sr-only">Fonctionnalité</span></th>${cols.map(p=>`<th class="${p.popular?"pop-col":""}" data-c="${esc(p.id)}">${p.popular?`<span class="cmp-badge">${esc(TX.badge_pop)}</span>`:""}<b>${esc(p.name)}</b><small>${priceTxt(p)}</small></th>`).join("")}</tr></thead>
       <tbody>${vis.map(r=>`<tr><td>${esc(r.label)}</td>${cols.map(p=>`<td class="${p.popular?"pop-col":""}" data-c="${esc(p.id)}">${cell(r.values[p.id])}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${cols.length+1}" class="cmp-same">${esc(T.cmp_same||"Ces gammes ont les mêmes caractéristiques : seul le prix change.")}</td></tr>`}
       <tr class="cmp-price"><td>Prix</td>${cols.map(p=>`<td class="${p.popular?"pop-col":""}" data-c="${esc(p.id)}"><b>${priceTxt(p)}</b></td>`).join("")}</tr>
       <tr class="cmp-act"><td></td>${cols.map(p=>`<td class="${p.popular?"pop-col":""}" data-c="${esc(p.id)}"><a href="#commande" class="btn btn-sm ${p.popular?"":"btn-ghost"}" data-plan="${esc(p.id)}">${esc(T.cmp_choose||"Choisir")}</a></td>`).join("")}</tr></tbody>`;
@@ -240,20 +240,20 @@ function drawAddons(){
   $("addons").innerHTML = C.addons.filter(a=>addonSel==="Populaires" ? a.popular : aGroup(a)===addonSel).map(a=>{
     const exc = (a.plans&&a.plans.length) ? C.plans.filter(p=>!a.plans.includes(p.id)).map(p=>p.id) : [];
     const note = [a.plans&&a.plans.length ? (exc.length<=a.plans.length ? "Pas avec : "+names(exc) : "Disponible avec : "+names(a.plans)) : "", a.included&&a.included.length?"Inclus dans : "+names(a.included):""].filter(Boolean).join(" · ");
-    return `<div class="addon"><h4>${esc(a.name)}${aTag(a)?` <em class="otag">${esc(aTag(a))}</em>`:""}</h4><p>${esc(a.desc)}${note?`<span class="avail">${esc(note)}</span>`:""}</p><div class="aprice"><strong>${aPrice(a)}</strong><button type="button" class="add-btn" data-add="${esc(a.id)}">Ajouter</button></div></div>`; }).join("");
+    return `<div class="addon"><h3 class="h4">${esc(a.name)}${aTag(a)?` <em class="otag">${esc(aTag(a))}</em>`:""}</h3><p>${esc(a.desc)}${note?`<span class="avail">${esc(note)}</span>`:""}</p><div class="aprice"><strong>${aPrice(a)}</strong><button type="button" class="add-btn" data-add="${esc(a.id)}">Ajouter</button></div></div>`; }).join("");
   try { syncAddButtons(state()); } catch(e) {}
 }
 $("addon-filters").addEventListener("click",e=>{ const b=e.target.closest("[data-ag]"); if(b){ addonSel=b.dataset.ag; drawAddons(); } });
 drawAddons();
 
 /* processus */
-$("steps").innerHTML = C.process.map(s=>`<li class="step"><h4>${esc(s.title)}</h4><p>${esc(s.text)}</p></li>`).join("");
+$("steps").innerHTML = C.process.map(s=>`<li class="step"><h3 class="h4">${esc(s.title)}</h3><p>${esc(s.text)}</p></li>`).join("");
 
 /* réalisations : filtre par catégorie + "voir plus" */
 const LIMIT = 6; let tagSel = "Tous", showAll = false, curList = [];
 const workHTML = (w,i)=>{
   const shot = w.image
-    ? `<div class="shot"><img src="${esc(w.image)}" alt="Aperçu du site ${esc(w.name)}" loading="lazy">${w.mobile?`<div class="phone"><img src="${esc(w.mobile)}" alt="" loading="lazy"></div>`:""}</div>`
+    ? `<div class="shot"><img src="${esc(w.image)}" alt="Aperçu du site ${esc(w.name)}" loading="lazy">${w.mobile?`<div class="phone"><img src="${esc(w.mobile)}" alt="Version téléphone du site ${esc(w.name)}" loading="lazy"></div>`:""}</div>`
     : `<div class="shot s${esc(w.style||1)}"></div>`;
   const dom = (w.url||"").replace(/^https?:\/\//,"").replace(/^demos\//,"").replace(/\/?index\.html$/,"").replace(/\.html$/,"") || "ton-site.fr";
   const inner = `<div class="frame"><div class="fbar"><i></i><i></i><i></i><span>${esc(dom)}</span></div>${shot}</div><div class="work-in"><div><strong>${esc(w.name)}</strong><br><span>${esc(w.category)}</span></div>${w.url?"<em>Voir l'aperçu →</em>":""}</div>${(w.features||[]).length?`<div class="work-ft">${w.features.map(f=>`<b>${esc(f)}</b>`).join("")}</div>`:""}`;
@@ -358,7 +358,7 @@ const stars = n => { const r = Math.max(0, Math.min(5, Math.round(+n||0))); retu
   $("rv-copy").onclick = async ()=>{ if(!f.reportValidity()) return; try { await navigator.clipboard.writeText(msg()); } catch { const ta=document.createElement("textarea"); ta.value=msg(); document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
     toastR("Avis copié ! Colle-le en message privé sur Instagram "+(ct.instagramHandle||"")+", avec ton logo."); if (ct.instagram) window.open(ct.instagram, "_blank", "noopener"); };
 })();
-$("guar").innerHTML = C.guarantees.map(g=>`<div class="g"><span class="g-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span><h4>${esc(g.title)}</h4><p>${esc(g.text)}</p></div>`).join("");
+$("guar").innerHTML = C.guarantees.map(g=>`<div class="g"><span class="g-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span><h3 class="h4">${esc(g.title)}</h3><p>${esc(g.text)}</p></div>`).join("");
 $("faq-list").innerHTML = C.faq.map(f=>`<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join("");
 
 /* ---------- COMMANDE ---------- */
@@ -478,7 +478,8 @@ function message(){
     s.promo?"Promo : "+(s.promo.code||s.promo.label||"")+" ("+promoLabel(s.promo)+")":"",
     "TOTAL : "+(s.plan.price==null?"à définir (devis)":totalText(s)), s.monthly.length ? "Abonnement : "+monthText(s).replace(/^\+ /,"") : "",
     dp>0&&s.total>0&&s.plan.price!=null?"Acompte ("+dp+" %) : "+fmt(grand(s)*dp/100):"", vatNote, "",
-    O.askProject===false?"":"Projet : "+(d.get("desc")||"—")].filter((l,i,arr)=>l!==""||(arr[i-1]!==""&&i>0)).join("\n");
+    O.askProject===false?"":"Projet : "+(d.get("desc")||"—"),
+    d.get("start_now") ? "Démarrage avant la fin du délai de rétractation : demandé (particulier, conditions acceptées)" : ""].filter((l,i,arr)=>l!==""||(arr[i-1]!==""&&i>0)).join("\n");
 }
 function toast(t){ $("toast").textContent=t; setTimeout(()=>$("toast").textContent="",3500); }
 
@@ -561,7 +562,7 @@ drawOpts(); drawSvcOpts(); render();
   const sec = $("histoire"); sec.querySelector(".eyebrow").textContent = st.eyebrow||"Notre histoire"; sec.querySelector("h2").textContent = st.title||"";
   $("story-text").innerHTML = (st.paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join("");
   $("founders").innerHTML = (st.founders||[]).map(f=>`<article class="founder">${f.photo?`<img src="${esc(f.photo)}" alt="${esc(f.name)}" width="88" height="88">`:`<span class="fi" aria-hidden="true">${esc(f.initial||(f.name||"?").trim()[0]||"?")}</span>`}<div><h3>${esc(f.name)}</h3><span class="role">${esc(f.role||"")}</span><p>${esc(f.text||"")}</p></div></article>`).join("");
-  $("values").innerHTML = (st.values||[]).map(v=>`<div class="val"><h4>${esc(v.title)}</h4><p>${esc(v.text)}</p></div>`).join(""); })();
+  $("values").innerHTML = (st.values||[]).map(v=>`<div class="val"><h3 class="h4">${esc(v.title)}</h3><p>${esc(v.text)}</p></div>`).join(""); })();
 
 /* barre du haut : offre + contact, moderne et animée (desktop : une ligne ; mobile : messages qui alternent) */
 (function(){ const ct = C.contact||{}, T = C.texts||{}; const promo = C.announce||""; if(!promo && !ct.instagram && !ct.email) return;
@@ -665,11 +666,7 @@ $("vat-note").textContent = vatNote;
   links.forEach(a=>{ const s = document.querySelector(a.getAttribute("href")); if (s) map.set(s, a); });
   if ("IntersectionObserver" in window) { const io = new IntersectionObserver(es=>es.forEach(e=>{ const a = map.get(e.target); if (a && e.isIntersecting){ links.forEach(l=>l.classList.remove("on")); a.classList.add("on"); } }), {rootMargin:"-45% 0px -50% 0px"});
     map.forEach((a,s)=>io.observe(s)); }
-  /* fiche pour Google (données structurées), tirée de config.js */
-  try { const ld = {"@context":"https://schema.org","@type":"ProfessionalService", name: C.brand, description: C.tagline, image: new URL("images/og.jpg", location.href).href, logo: new URL(C.logoBig||C.logo, location.href).href,
-      email: ct.email||undefined, sameAs: ct.instagram ? [ct.instagram] : undefined, areaServed: "FR", priceRange: "€€",
-      makesOffer: (C.plans||[]).filter(p=>p.price!=null).map(p=>({"@type":"Offer", name: p.name, price: p.price, priceCurrency: "EUR"})) };
-    const sc = document.createElement("script"); sc.type = "application/ld+json"; sc.textContent = JSON.stringify(ld); document.head.appendChild(sc); } catch {}
+  /* (données structurées : voir le bloc schema.org en fin de fichier) */
 })();
 
 /* bandeau « Pas de belles photos ? » sous les tarifs → ouvre l'onglet Photos des services */
@@ -759,7 +756,8 @@ $("vat-note").textContent = vatNote;
 /* ---------- animations : clarté et mouvement ---------- */
 (function(){ const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
   /* écran d'accueil express (une seule fois par visite, jamais dans l'aperçu de l'admin) */
-  const intro = $("intro"); let seen = false; try { seen = sessionStorage.getItem("ltd_intro")==="1"; sessionStorage.setItem("ltd_intro","1"); } catch {}
+  /* sans aucun stockage dans le navigateur : on ne rejoue pas l'écran d'accueil quand on revient d'une autre page du site */
+  const intro = $("intro"); let seen = false; try { seen = !!document.referrer && new URL(document.referrer).origin === location.origin; } catch(e){}
   if (seen || still || PREVIEW) intro.remove(); else { $("intro").querySelector("span").textContent = C.brand; intro.querySelector("img").src = C.logo; setTimeout(()=>intro.remove(), 1500); }
   /* onglets : un indicateur glisse jusqu'à l'onglet choisi */
   document.querySelectorAll(".filters").forEach(box=>{
@@ -843,7 +841,7 @@ document.querySelectorAll(".links a.nq[data-g]").forEach(a=>a.addEventListener("
   (C.faq||[]).forEach((f,i)=>IDX.push({type:"Question", ic:"❓", t:strip(f.q), s:strip(f.a).slice(0,90)+"…", k:f.q+" "+f.a, run:()=>go("faq",()=>{ const d = $("faq-list").children[i]; if (d){ d.open = true; flash(d); } })}));
   (C.portfolio||[]).forEach((w,i)=>IDX.push({type:"Maquette", ic:"🖼️", t:w.name+" — "+String(w.category||"").split("·")[0].trim(), s:"Ouvrir l'aperçu en grand", k:[w.name,w.category,w.tag].join(" "), run:()=>openDemo(i)}));
   [["Instagram","@l.t_digital",(C.contact||{}).instagram],["E-mail",(C.contact||{}).email,(C.contact||{}).email&&"mailto:"+C.contact.email]].forEach(([t,s,u])=>{ if(u) IDX.push({type:"Contact", ic:"💬", t:"Nous écrire : "+t, s:s, k:"contact ecrire message "+t+" "+s, run:()=>{ location.href = u; }}); });
-  [["Mentions légales","mentions-legales.html"],["Conditions générales de vente","cgv.html"],["Confidentialité","confidentialite.html"]].forEach(([t,u])=>IDX.push({type:"Légal", ic:"📄", t, s:"Page légale", k:t+" legal cgv rgpd", run:()=>{ location.href = u; }}));
+  [["Mentions légales","mentions-legales.html"],["Conditions générales de vente","cgv.html"],["Conditions d'utilisation","cgu.html"],["Confidentialité","confidentialite.html"],["Cookies","cookies.html"],["Rétractation et remboursement","retractation.html"]].forEach(([t,u])=>IDX.push({type:"Légal", ic:"📄", t, s:"Page légale", k:t+" legal cgv rgpd", run:()=>{ location.href = u; }}));
   const WORDS = {"pub":"pubs publicite video reel tiktok","prix":"tarif tarifs euros combien cout","logo":"identite marque","photo":"photos shooting produit equipe"};
   IDX.forEach(x=>{ x.n = norm(x.k+" "+x.t+" "+x.type); });
 
@@ -943,4 +941,16 @@ document.querySelectorAll(".links a.nq[data-g]").forEach(a=>a.addEventListener("
     snd.textContent = v.muted ? "🔇 Activer le son" : "🔊 Couper le son"; snd.setAttribute("aria-pressed", String(!v.muted)); };
   v.addEventListener("click", () => snd.click());
 })();
+
+/* données structurées (schema.org) pour les moteurs de recherche et les agents IA — générées depuis config.js, donc toujours à jour */
+(function(){ try { const C = window.SITE_CONFIG, ct = C.contact||{}, base = (C.siteUrl||location.origin).replace(/\/$/,"");
+  const vis = l => (Array.isArray(l)?l:[]).filter(x=>x&&x.hidden!==true);
+  const offer = (name, price, desc, from) => Object.assign({ "@type":"Offer", name, priceCurrency:"EUR", description: desc||undefined },
+    price==null ? {} : from ? { priceSpecification:{ "@type":"PriceSpecification", minPrice: price, priceCurrency:"EUR" } } : { price });
+  const data = { "@context":"https://schema.org", "@type":"ProfessionalService", name: C.brand, url: base+"/", logo: base+"/"+(C.logoBig||C.logo),
+    image: base+"/images/og.jpg", description: (C.hero&&C.hero.text||"").replace("{delivery}", C.delivery||""), email: ct.email||undefined,
+    sameAs: ct.instagram ? [ct.instagram] : undefined, areaServed: { "@type":"Country", name:"France" }, knowsLanguage:"fr",
+    makesOffer: [...vis(C.plans).map(p=>offer(p.name,p.price,p.tagline,p.from)), ...vis((C.services||{}).items).map(x=>offer(x.name,x.price,x.desc,x.from))] };
+  const el = document.createElement("script"); el.type = "application/ld+json"; el.textContent = JSON.stringify(data); document.head.appendChild(el);
+} catch(e){} })();
 })();

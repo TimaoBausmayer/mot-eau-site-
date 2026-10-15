@@ -115,3 +115,13 @@ Ouvre le fichier (ex : `config.js`), clique sur le crayon ✏️, change le text
 
 **Maquettes (restaurant, pizzeria…)** : `demos/<métier>/site.js` (textes, prix, horaires, couleurs). Photos : `demos/photos.html`.
 **Images et logos** : dépose-les dans le dossier `images/` puis écris leur chemin dans l'admin.
+
+
+## Conformité (RGPD, cookies, consommation, accessibilité) — mise à jour du 15 octobre 2026
+- **Pages légales** : mentions légales, CGV, CGU, confidentialité, cookies, rétractation & remboursement (avec le formulaire type officiel). Leur texte est dans `legal.js` et les infos de l'entreprise dans `config.js` › `legal`. Après une modification de `legal`, lance `node tools/build-legal.js` (met à jour la version « en dur » lue par Google et les IA).
+- **À compléter avant de vendre** (cases jaunes « à compléter » sur les pages) : prénom et nom de l'entrepreneur, adresse, SIRET, téléphone, moyens de paiement, ville du tribunal, et **médiateur de la consommation** (obligatoire si tu vends à des particuliers ; adhésion à prendre auprès d'un médiateur agréé).
+- **Aucun cookie ni traceur** pour les visiteurs : pas de bandeau de consentement nécessaire. Les polices sont hébergées dans `fonts/` (script `tools/self-host-fonts.py`), JSZip dans `vendor/`. ⚠️ Si tu ajoutes un jour Google Analytics, un pixel Meta/TikTok, une vidéo YouTube ou une carte Google intégrée, il faudra un bandeau de consentement et mettre à jour la page Cookies.
+- **Formulaire de commande** : mention d'information RGPD + case « démarrage avant la fin du délai de rétractation » pour les particuliers (elle apparaît dans le récapitulatif envoyé).
+- **Agents IA / moteurs** : `/llms.txt` (généré en direct depuis `config.js` par `api/llms.js`), données structurées schema.org (dans `app.js`), `sitemap.xml`, `robots.txt`, version sans JavaScript (`<noscript>`).
+- **Accessibilité** : audit axe-core (WCAG 2.1 AA) sans erreur sur toutes les pages ; textes alternatifs sur les images utiles ; contrastes vérifiés.
+- Les dossiers internes `promo/` et `tools/` ne sont plus accessibles en ligne (voir `vercel.json`).

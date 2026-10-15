@@ -17,21 +17,28 @@
 <meta property="og:image" content="images/og.jpg">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="canonical" href="https://l-t-digital.vercel.app/">
+<link rel="alternate" type="text/plain" href="llms.txt" title="Résumé pour les agents IA">
+<link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <a class="skip" href="#top">Aller au contenu</a>
+<noscript><section class="lp" aria-label="Présentation (version sans JavaScript)">
+  <h1>L&amp;T Digital — création de sites internet, logos, pubs vidéo et réseaux sociaux</h1>
+  <p>L&amp;T Digital est une petite entreprise française qui crée des sites internet (page unique, site vitrine, site complet avec boutique ou réservation, refonte de site existant), des logos et identités visuelles, des publicités vidéo, des affiches, des photos, et qui gère les réseaux sociaux des commerçants, artisans et indépendants. Les prix sont annoncés à l'avance et les sites sont livrés en 48 à 72 h.</p>
+  <p>Liste complète des offres et des prix : <a href="llms.txt">llms.txt</a>. Contact : <a href="mailto:l.t.digital.rb@gmail.com">l.t.digital.rb@gmail.com</a> · Instagram <a href="https://www.instagram.com/l.t_digital">@l.t_digital</a>.</p>
+  <p><a href="mentions-legales.html">Mentions légales</a> · <a href="cgv.html">CGV</a> · <a href="cgu.html">CGU</a> · <a href="confidentialite.html">Confidentialité</a> · <a href="cookies.html">Cookies</a> · <a href="retractation.html">Rétractation et remboursement</a></p>
+  <p>Pour voir les tarifs détaillés et composer une commande, active JavaScript dans ton navigateur.</p>
+</section></noscript>
 <div class="progress" id="progress" aria-hidden="true"></div>
 <div class="intro" id="intro" aria-hidden="true"><div class="intro-in"><img src="images/logo-small.jpg" alt="" width="64" height="64"><span>L&amp;T Digital</span></div></div>
-<div class="topbar" id="topbar" hidden><div class="wrap tb-in" id="tb-in"></div></div>
+<div class="topbar" id="topbar" role="region" aria-label="Annonce et contact" hidden><div class="wrap tb-in" id="tb-in"></div></div>
 
 <header class="nav" id="nav">
   <div class="wrap nav-in">
     <a href="#top" class="logo" id="logo"></a>
-    <nav class="links" id="links">
+    <nav class="links" id="links" aria-label="Menu principal">
       <a href="#tarifs">Tarifs</a>
       <div class="dd" id="dd-svc"><a href="#services">Services</a><button type="button" class="dd-tg" id="dd-tg" aria-expanded="false" aria-controls="dd-menu" aria-label="Ouvrir le menu des services"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg></button><div class="dd-menu" id="dd-menu" role="menu"></div></div>
       <a href="#logos" class="nq">Logos</a>
@@ -185,14 +192,16 @@
           <div id="svc-block"><h3 id="svc-h"></h3><div class="opts" id="svc-opts"></div></div>
           <h3>Tes informations</h3>
           <div class="fields">
-            <label>Ton nom<input name="pseudo" required placeholder="Ex : Jean Dupont"></label>
-            <label>Nom de ton activité<input name="biz" placeholder="Ex : Boulangerie Martin"></label>
+            <label>Ton nom<input name="pseudo" required placeholder="Ex : Jean Dupont" autocomplete="name"></label>
+            <label>Nom de ton activité <small>(facultatif)</small><input name="biz" placeholder="Ex : Boulangerie Martin" autocomplete="organization"></label>
             <label class="full">Ton Instagram ou e-mail<input name="contact" required placeholder="@toncompte ou toi@mail.fr"></label>
-            <label class="full">Décris ton projet<textarea name="desc" rows="4" placeholder="Style, couleurs, ton activité, ce que tu veux sur le site…"></textarea></label>
+            <label class="full">Décris ton projet <small>(facultatif)</small><textarea name="desc" rows="4" placeholder="Style, couleurs, ton activité, ce que tu veux sur le site…"></textarea></label>
           </div>
           <label class="cgv"><input type="checkbox" name="cgv" required><span><span id="cgv-pre"></span> <a href="cgv.html" target="_blank" rel="noopener" id="cgv-link"></a>.</span></label>
+          <label class="cgv"><input type="checkbox" name="start_now"><span><b>Si tu es un particulier :</b> je demande que la prestation commence avant la fin du délai de rétractation de 14 jours. J'ai compris que, si je me rétracte, je paierai la partie déjà réalisée, et que je perds mon droit de rétractation une fois la prestation entièrement réalisée (<a href="retractation.html" target="_blank" rel="noopener">droit de rétractation</a>).</span></label>
+          <p class="form-privacy">🔒 Tes informations servent uniquement à préparer ta commande et à te répondre. Rien n'est envoyé automatiquement : c'est toi qui nous transmets ta commande (copier, Instagram ou e-mail). <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a>.</p>
         </form>
-        <aside class="summary">
+        <section class="summary" aria-label="Récapitulatif de la commande">
           <h3>Récapitulatif</h3>
           <div id="sum-lines"></div>
           <div class="promo"><input id="promo" placeholder="Code promo"><button type="button" class="btn btn-sm btn-ghost" id="promo-btn">Appliquer</button></div>
@@ -208,7 +217,7 @@
           <a class="btn btn-ghost full-w" id="mail-btn">Envoyer par e-mail</a>
           <p class="small" id="contact-line"></p>
           <p class="toast" id="toast" role="status"></p>
-        </aside>
+        </section>
       </div>
     </div>
   </section>
@@ -259,7 +268,8 @@
       <label>Ton Instagram<input name="insta" placeholder="@toncompte"></label>
     </div>
     <p class="small rv-logo-note">📎 Ton logo ou une capture de ton site ? Joins-les à l'e-mail (ou envoie-les en message privé sur Instagram).</p>
-    <label class="cgv"><input type="checkbox" name="ok" required><span>J'accepte que mon avis, mon nom, mon activité, mon logo et le lien de mon site soient publiés sur le site L&amp;T Digital.</span></label>
+    <label class="cgv"><input type="checkbox" name="ok" required><span>J'accepte que mon avis, mon nom, mon activité, mon logo et le lien de mon site soient publiés sur le site L&amp;T Digital. Je peux demander son retrait à tout moment par message.</span></label>
+    <p class="form-privacy">Avis vérifiés : nous publions uniquement les avis de personnes qui ont réellement commandé chez nous, sans contrepartie, avec leur date, qu'ils soient positifs ou négatifs. <a href="confidentialite.html" target="_blank" rel="noopener">Confidentialité</a>.</p>
     <div class="rv-m-btns"><button type="button" class="btn" id="rv-mail">Envoyer par e-mail</button><button type="button" class="btn btn-ghost" id="rv-copy">Copier pour Instagram</button></div>
     <p class="toast" id="rv-toast" role="status"></p>
   </form>
@@ -278,14 +288,14 @@
       <div class="fb-id"><img id="f-logo" alt="" width="56" height="56"><div><strong id="f-brand"></strong><span id="f-text"></span></div></div>
       <div class="f-contact"><a id="f-mail"></a><a id="f-insta" target="_blank" rel="noopener"></a></div>
     </div>
-    <nav class="f-col" aria-label="Le site"><h4 id="f-h1">Le site</h4><div id="f-nav"></div></nav>
-    <nav class="f-col" aria-label="Nos services"><h4 id="f-h2">Nos services</h4><div id="f-svc"></div></nav>
-    <div class="f-col"><h4 id="f-h3">Ton projet</h4><p class="f-note" id="f-note">Un message suffit : on te répond en général dans la journée.</p><a href="#commande" class="btn btn-sm btn-arrow" id="f-cta">Commander mon site</a></div>
+    <nav class="f-col" aria-label="Le site"><h2 class="h4" id="f-h1">Le site</h2><div id="f-nav"></div></nav>
+    <nav class="f-col" aria-label="Nos services"><h2 class="h4" id="f-h2">Nos services</h2><div id="f-svc"></div></nav>
+    <div class="f-col"><h2 class="h4" id="f-h3">Ton projet</h2><p class="f-note" id="f-note">Un message suffit : on te répond en général dans la journée.</p><a href="#commande" class="btn btn-sm btn-arrow" id="f-cta">Commander mon site</a></div>
   </div>
   <div class="foot-word" id="foot-word" aria-hidden="true"></div>
   <div class="wrap foot-bottom">
     <span class="f-copy" id="f-copy"></span>
-    <nav class="legal-nav" id="legal-nav"><a href="mentions-legales.html" id="lg-m"></a><a href="cgv.html" id="lg-c"></a><a href="confidentialite.html" id="lg-p"></a><a href="admin.html" id="lg-a" rel="nofollow">🔒 Admin</a></nav>
+    <nav class="legal-nav" id="legal-nav"><a href="mentions-legales.html" id="lg-m"></a><a href="cgv.html" id="lg-c"></a><a href="confidentialite.html" id="lg-p"></a><a href="cgu.html">CGU</a><a href="cookies.html">Cookies</a><a href="retractation.html">Rétractation</a><a href="admin.html" id="lg-a" rel="nofollow">🔒 Admin</a></nav>
     <p class="legal-id" id="legal-id"></p>
   </div>
 </footer>

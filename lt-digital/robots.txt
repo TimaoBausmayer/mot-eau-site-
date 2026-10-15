@@ -1,5 +1,11 @@
+# Les moteurs de recherche et les agents IA peuvent lire les pages publiques.
+# Résumé lisible par les machines : /llms.txt
 User-agent: *
 Allow: /
-Disallow: /admin.html
 Disallow: /admin
+Disallow: /admin.html
 Disallow: /api/
+Disallow: /promo/
+Disallow: /tools/
+
+Sitemap: https://l-t-digital.vercel.app/sitemap.xml
