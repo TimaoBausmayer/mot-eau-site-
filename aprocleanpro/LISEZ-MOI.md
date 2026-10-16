@@ -58,6 +58,11 @@ Le badge jaune « à compléter » du mode édition compte les informations qui 
 - [ ] Si tu es déclaré « services à la personne » : coche la case dans Réglages, affiche la section « Tarifs » et indique tes prix TTC.
 - [ ] Sur tes devis signés chez un client particulier : remettre le formulaire de rétractation et **ne rien encaisser pendant 7 jours**. Les CGV du site détaillent ces règles.
 
+## Image de partage et icône
+
+- `og-image.png` est l'image qui s'affiche quand quelqu'un partage le lien du site (WhatsApp, Facebook, SMS…). Elle reprend le logo et le titre de l'accueil. Si tu changes beaucoup l'accueil, demande à la refaire.
+- `apple-touch-icon.png` est l'icône utilisée quand on ajoute le site à l'écran d'accueil d'un téléphone. Elle est faite à partir du logo actuel, qui est petit (88 pixels) : avec un logo en meilleure qualité, l'icône sera plus nette.
+
 ## Ce qu'il ne faut PAS ajouter sans précaution
 
 Google Analytics, une carte Google Maps, une vidéo YouTube, des boutons de réseaux sociaux, un chat en ligne, un reCAPTCHA ou des polices Google Fonts. Tous déposent des traceurs ou envoient des données à des tiers. Il faudrait alors un bandeau de consentement aux cookies et une mise à jour de la politique cookies. Aujourd'hui, le site n'en a pas besoin, car il ne dépose **aucun cookie ni traceur**.
