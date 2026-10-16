@@ -7,16 +7,22 @@ Le téléphone, l'email et la zone d'intervention à jour figurent dans la secti
 
 ## Prestations
 
-- Bureaux et entreprises : sols, sanitaires, espaces communs, consommables, passage quotidien ou hebdomadaire.
-- Logements et particuliers : ménage régulier, grand nettoyage, entrée ou sortie de logement.
-- Vitres et vitrines : vitrines de commerces, baies vitrées, vérandas.
-- Fin de chantier : poussières fines, traces de peinture, retrait des protections.
-- Remise en état : décapage, lustrage et traitement des sols et moquettes.
-- Copropriétés : halls, escaliers, ascenseurs, parties communes.
+- Bureaux et commerces : bureaux, sanitaires, coin cuisine, corbeilles, consommables, désinfection des poignées et interrupteurs.
+- Logements et particuliers : ménage régulier ou ponctuel, cuisine et salle de bains en profondeur, entrée ou sortie de logement.
+- Vitres et vitrines : vitrines de commerces, baies vitrées et vérandas, cadres et rebords.
+- Fin de chantier : poussières fines et gravats légers, traces de peinture, de plâtre et de colle, sols, vitres et menuiseries.
+- Remise en état : décapage et lustrage des sols, moquettes et surfaces encrassées, dégraissage et détartrage.
+- Copropriétés : halls, escaliers, paliers, ascenseurs, vitres communes, local poubelles.
+
+## Comment ça marche
+
+1. Le client décrit son besoin : formulaire en 3 étapes (type de prestation ; fréquence, ville et surface approximative ; nom et téléphone ou email), ou par téléphone.
+2. A-Proclean envoie un devis gratuit et sans engagement.
+3. Le nettoyage a lieu aux horaires convenus, avec le matériel de l'entreprise.
 
 ## Demander un devis
 
-- Formulaire : https://aprocleanpro.fr/#contact (il ouvre la messagerie du visiteur ; rien n'est envoyé à un serveur).
+- Formulaire : https://aprocleanpro.fr/#contact (3 étapes ; à la fin, il ouvre la messagerie du visiteur avec la demande pré-remplie ; rien n'est envoyé à un serveur).
 - Téléphone et email : voir https://aprocleanpro.fr/#contact
 
 ## Informations légales

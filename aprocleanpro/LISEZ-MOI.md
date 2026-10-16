@@ -52,8 +52,9 @@ Le badge jaune « à compléter » du mode édition compte les informations qui 
 - [ ] **Adhérer à un médiateur de la consommation**, puis renseigner ses coordonnées. C'est obligatoire dès que tu as des clients particuliers : jusqu'à 3 000 € d'amende (15 000 € pour une société). La liste officielle est sur le site du ministère de l'Économie (CECMC).
 - [ ] Renseigner le téléphone, l'email (qui reçoit les demandes de devis), la zone et les horaires.
 - [ ] Remplacer « Commune 1… 5 » par tes vraies communes.
-- [ ] Vérifier que chaque promesse affichée est vraie : délais, horaires, « 24 h », « 6 j/7 »… Une fausse promesse est une pratique commerciale trompeuse.
-- [ ] Ajouter tes photos et leur description.
+- [ ] Vérifier que chaque promesse affichée est vraie : horaires (« tôt le matin, le soir ou le samedi »), « matériel fourni », « un seul interlocuteur », « réponse rapide », « visite possible », et les listes « ce qui est inclus » de chaque service. Corrige ou supprime ce qui ne correspond pas à ta façon de travailler : une fausse promesse est une pratique commerciale trompeuse.
+- [ ] Ajouter tes photos et leur description : touche le dessin de la fenêtre sur l'accueil pour le remplacer par une vraie photo, puis affiche « Avant / après » et « Galerie photos » dans *Réglages › Sections* quand tu as tes photos.
+- [ ] « Avis clients » est masqué : affiche-le seulement avec de **vrais** avis, recopiés tels quels, avec l'accord du client.
 - [ ] Si tu es déclaré « services à la personne » : coche la case dans Réglages, affiche la section « Tarifs » et indique tes prix TTC.
 - [ ] Sur tes devis signés chez un client particulier : remettre le formulaire de rétractation et **ne rien encaisser pendant 7 jours**. Les CGV du site détaillent ces règles.
 
