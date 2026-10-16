@@ -1572,7 +1572,8 @@ function onScroll(){
   hd.classList.toggle('solid',y>30);
   hd.classList.toggle('hide',y>420&&y>lastY&&!$('#menu').classList.contains('open')&&!editing()&&!hd.contains(document.activeElement));
   lastY=y;
-  up.classList.toggle('show',y>900);cb.classList.toggle('show',y>480);
+  const cr=$('#contact').getBoundingClientRect(),inForm=cr.top<innerHeight*.7&&cr.bottom>innerHeight*.3;
+  up.classList.toggle('show',y>900);cb.classList.toggle('show',y>480&&!inForm);
   let cur=-1;secs.forEach((s,i)=>{if(s&&!s.hidden&&s.getBoundingClientRect().top<innerHeight*.45)cur=i});
   links.forEach((a,i)=>a.setAttribute('aria-current',i===cur?'true':'false'));
   if(!calm())$$('[data-par]').forEach(el=>{const r=el.getBoundingClientRect(),img=$('img',el);if(img&&img.getAttribute('src'))img.style.translate=`0 ${(r.top-innerHeight/2)*-el.dataset.par}px`});
