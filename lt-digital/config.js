@@ -74,6 +74,7 @@ window.SITE_CONFIG = {
      show:false => section cachée. src = la vidéo (format vertical), poster = l'image affichée avant la lecture. */
   promoVideo: {
     show: true,
+    hero: true, // true = la vidéo est tout en haut du site, à côté du titre
     eyebrow: "Notre pub en 24 secondes",
     title: "Regarde ce qu'on sait faire.",
     text: "Cette vidéo, on l'a entièrement créée nous-mêmes : animations, musique et bruitages. On peut faire la même pour ton commerce.",

@@ -1496,3 +1496,7 @@ label small{margin-left:.35em}
 .svc-tabs .chip i{opacity:1}
 .fbar span{color:#4a5368}
 .foot .legal-id{color:#9aa3c0}
+
+/* vidéo en tête d'affiche (promoVideo.hero) */
+.vid-phone.in-hero{width:min(330px,74vw)}
+@media (max-width:960px){.vid-phone.in-hero{width:min(300px,72vw)}}

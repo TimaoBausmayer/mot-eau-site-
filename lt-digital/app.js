@@ -924,7 +924,9 @@ document.querySelectorAll(".links a.nq[data-g]").forEach(a=>a.addEventListener("
 (function(){ let C = window.SITE_CONFIG; if (/[?&]preview/.test(location.search)) { try { const d = localStorage.getItem("ltd_draft"); if (d) C = JSON.parse(d); } catch(e){} }
   const $ = id => document.getElementById(id);
   const V = C.promoVideo, sec = $("video"); if (!sec || !V || V.show === false || !V.src) return;
-  sec.hidden = false;
+  /* hero: true → la vidéo s'affiche tout en haut, à la place des maquettes (et la section plus bas reste cachée) */
+  const hv = $("hero-vis"), phone = sec.querySelector(".vid-phone");
+  if (V.hero && hv && phone) { hv.hidden = true; phone.classList.add("in-hero"); hv.after(phone); } else sec.hidden = false;
   $("pv-eyebrow").textContent = V.eyebrow || ""; $("pv-title").textContent = V.title || ""; $("pv-text").textContent = V.text || "";
   const cta = $("pv-cta"); if (V.cta) cta.textContent = V.cta; else cta.hidden = true;
   const v = $("pv"), snd = $("pv-snd"); if (V.poster) v.poster = V.poster;
