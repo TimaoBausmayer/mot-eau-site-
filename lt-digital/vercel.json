@@ -1,10 +1,46 @@
 {
   "routes": [
-    { "src": "/admin/", "status": 308, "headers": { "Location": "/admin" } },
-    { "src": "/admin-avance(?:\\.html)?", "status": 308, "headers": { "Location": "/admin?avance=1" } },
-    { "src": "/admin(?:\\.html)?", "dest": "/api/admin" },
-    { "src": "/llms\\.txt", "dest": "/api/llms" },
-    { "src": "/(?:promo|tools)(?:/.*)?|/api/_.*|/LISEZ-MOI\\.md|/package(?:-lock)?\\.json", "status": 404, "dest": "/404.html" },
-    { "handle": "filesystem" }
+    {
+      "src": "/admin/",
+      "status": 308,
+      "headers": {
+        "Location": "/admin"
+      }
+    },
+    {
+      "src": "/admin-avance(?:\\.html)?",
+      "status": 308,
+      "headers": {
+        "Location": "/admin?avance=1"
+      }
+    },
+    {
+      "src": "/admin(?:\\.html)?",
+      "dest": "/api/admin"
+    },
+    {
+      "src": "/llms\\.txt",
+      "dest": "/api/llms"
+    },
+    {
+      "src": "/insta/?",
+      "dest": "/api/go?to=insta"
+    },
+    {
+      "src": "/tiktok/?",
+      "dest": "/api/go?to=tiktok"
+    },
+    {
+      "src": "/site/?",
+      "dest": "/api/go?to=site"
+    },
+    {
+      "src": "/(?:promo|tools)(?:/.*)?|/api/_.*|/LISEZ-MOI\\.md|/package(?:-lock)?\\.json",
+      "status": 404,
+      "dest": "/404.html"
+    },
+    {
+      "handle": "filesystem"
+    }
   ]
 }

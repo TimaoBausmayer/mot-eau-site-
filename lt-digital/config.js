@@ -456,6 +456,7 @@ window.SITE_CONFIG = {
   contact: {
     instagram: "https://www.instagram.com/l.t_digital",
     instagramHandle: "@l.t_digital",
+    tiktok: "https://www.tiktok.com/@lenytimao",   /* compte TikTok (les QR codes et puces NFC des affiches passent par /tiktok) */
     email: "l.t.digital.rb@gmail.com"   // laisse "" pour cacher le bouton e-mail
   },
 

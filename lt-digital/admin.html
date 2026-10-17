@@ -158,7 +158,8 @@ function contact(p){
   p.append(h("p",{class:"help"},"Comment tes clients peuvent te joindre."),
     field("Ton e-mail", cfg.contact, "email", {hint:"Laisse vide pour cacher le bouton e-mail."}),
     field("Lien de ton Instagram", cfg.contact, "instagram", {ph:"https://www.instagram.com/…"}),
-    field("Ton nom Instagram", cfg.contact, "instagramHandle", {ph:"@toncompte"}));
+    field("Ton nom Instagram", cfg.contact, "instagramHandle", {ph:"@toncompte"}),
+    field("Lien de ton TikTok", cfg.contact, "tiktok", {ph:"https://www.tiktok.com/@…", hint:"Les QR codes et puces NFC de tes affiches mènent ici (via l'adresse /tiktok de ton site)."}));
 }
 
 /* ---- publier ---- */
