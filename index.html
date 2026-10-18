@@ -5462,7 +5462,7 @@ function renderProducts(){
   grid.innerHTML = pairs.map(([p, idx]) => {
     const imgs = p.images || [];
     const cur = Math.min(productImgIndex[idx] || 0, Math.max(imgs.length-1, 0));
-    const bg = imgs[cur] ? `background-image:url('${imgs[cur]}')` : ''; const bgAlt = imgs[cur] ? `role="img" aria-label="${escSearch((p.name||'Produit')+' — photo '+(cur+1)+' sur '+imgs.length)}"` : 'aria-hidden="true"';
+    const bg = imgs[cur] ? `background-image:url('${imgs[cur]}')` : ''; const bgAlt = imgs[cur] ? `<span class="sr-only">${escSearch((p.name||'Produit')+' — photo '+(cur+1)+' sur '+imgs.length)}</span>` : '';
     const colors = p.colors || [];
     const sizes = p.sizes || [];
     const sel = productSelection[idx] || {};
@@ -5475,7 +5475,7 @@ function renderProducts(){
     const canBuy = stock !== 'stock_rupture' && stock !== 'stock_bientot' && !isConcept;
     return `
     <div class="product-card" data-idx="${idx}">
-      <div class="product-thumb" ${bgAlt} style="${bg}">
+      <div class="product-thumb" style="${bg}">${bgAlt}
         <span class="stock-badge ${stock}">${stockInfo.short}</span>
         <button type="button" class="fav-heart ${isFav?'active':''}" data-action="toggle-fav" title="Ajouter aux favoris">${isFav?'♥':'♡'}</button>
         ${imgs.length ? '' : `<span>${(p.name||'??').slice(0,2).toUpperCase()}</span>`}
