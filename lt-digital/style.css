@@ -1519,3 +1519,20 @@ label small{margin-left:.35em}
   .why-ic{width:38px;height:38px;border-radius:11px;margin-bottom:12px}.why-ic svg{width:20px;height:20px}
   .why h3{font-size:1rem;line-height:1.25;margin-bottom:6px}.why p{font-size:.84rem;line-height:1.5}
 }
+/* tarifs (ordinateur) : titres, prix, listes et boutons alignés d'une carte à l'autre */
+.plan-head,.plan-price{display:flex;flex-direction:column}
+.plan-price{justify-content:flex-start}
+.plan-price .price:not(:has(>small:first-child))::before{content:"";display:block;height:19px}
+@media(min-width:961px){
+  .plans{grid-template-rows:auto auto 1fr auto}
+  .plan{display:grid;grid-row:span 4;grid-template-rows:subgrid;row-gap:0}
+  .plan-head{justify-content:flex-start}
+}
+.plan .btn{white-space:nowrap;padding-inline:16px}
+/* commande : chaque option tient sur une ligne claire (nom à gauche, prix à droite) */
+.opt .o-p{flex:none;white-space:nowrap;text-align:right;font-weight:600;color:var(--ink);font-size:.86rem}
+.opt.inc .o-p{white-space:normal;max-width:42%;font-weight:500;color:var(--mut)}
+.og-pop .otag{display:none}
+.ogl{gap:8px}
+@media(max-width:560px){.opt{padding:11px 12px;gap:10px}.opt b{font-size:.9rem;line-height:1.3}.opt .otag{margin-left:4px}}
+.promo input{flex:1;min-width:0}.promo .btn{flex:none;white-space:nowrap}

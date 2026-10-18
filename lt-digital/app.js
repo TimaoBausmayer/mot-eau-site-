@@ -13,7 +13,8 @@ const fmt = n => { const r = Math.round(n*100)/100, v = Number.isInteger(r) ? r.
   C.plans = vis(C.plans); C.addons = vis(C.addons); if (C.services) C.services.items = vis(C.services.items); C.portfolio = vis(C.portfolio); if (C.logos) C.logos.items = vis(C.logos.items); })();
 /* {delivery} : le délai de livraison réglé dans config.delivery */
 (function tok(o){ const f = s => String(s).replace(/\{delivery\}/g, C.delivery||""); (function w(x){ if(Array.isArray(x)) x.forEach((v,i)=>{ if(typeof v==="string") x[i]=f(v); else w(v); }); else if(x&&typeof x==="object") Object.keys(x).forEach(k=>{ if(typeof x[k]==="string") x[k]=f(x[k]); else w(x[k]); }); })(C); })();
-const TX = Object.assign({ badge_pop:"Le plus choisi", label_delivery:"Livraison :", label_from:"À partir de", label_delay_est:"Délai estimé :" }, C.texts||{});
+const TX = Object.assign({ badge_pop:"Notre conseil", label_delivery:"Livraison :", label_from:"À partir de", label_delay_est:"Délai estimé :" }, C.texts||{});
+const POPG = TX.group_pop || "Nos conseils"; /* rubrique des options mises en avant */
 const VAT = Object.assign({mode:"ttc",rate:20,note:""}, C.vat||{}); const vr = (+VAT.rate||0)/100;
 const vtag = VAT.mode==="ttc" ? "TTC" : VAT.mode==="ht" ? "HT" : "";
 const vt = vtag ? ` <small class="vt">${vtag}</small>` : "";
@@ -82,7 +83,7 @@ $("h-cta2").textContent = C.hero.cta2;
     $("h-offer").innerHTML = `<b>${esc(v)}</b><span>${esc(pr.label||T.hero_offer||"Offre en cours")} avec le code</span><code>${esc(pr.code)}</code><em aria-hidden="true">→</em>`; $("h-offer").hidden = false; }
   const pop = (C.plans||[]).find(p=>p.popular && p.price!=null) || priced[0];
   if (pop) setTimeout(()=>{ const vi = document.querySelector("#hero-vis .vis-in"); if (!vi) return;
-    vi.insertAdjacentHTML("beforeend", `<a href="#tarifs" class="h-price" tabindex="-1"><span class="hpp-t">${esc(T.badge_pop||"Le plus choisi")}</span><b>${esc(pop.name)}</b><span class="hpp-p">${pop.from?esc(T.hero_from||"dès")+" ":""}<strong>${esc(fmt(pop.price))}</strong></span><small>${esc(TX.label_delivery)} ${esc(delayOf(pop))}</small><span class="hpp-go">${esc(T.hero_price_btn||"Je le veux")} →</span></a>`); }, 0); })();
+    vi.insertAdjacentHTML("beforeend", `<a href="#tarifs" class="h-price" tabindex="-1"><span class="hpp-t">${esc(T.badge_pop||"Notre conseil")}</span><b>${esc(pop.name)}</b><span class="hpp-p">${pop.from?esc(T.hero_from||"dès")+" ":""}<strong>${esc(fmt(pop.price))}</strong></span><small>${esc(TX.label_delivery)} ${esc(delayOf(pop))}</small><span class="hpp-go">${esc(T.hero_price_btn||"Je le veux")} →</span></a>`); }, 0); })();
 $("stats").innerHTML = C.stats.map(s=>`<div class="stat"><dt data-v="${esc(s.value)}">${esc(s.value)}</dt><dd>${esc(s.label)}</dd></div>`).join("");
 /* visuel du haut : tes propres maquettes dans des fenêtres de navigateur */
 (function(){ const v = C.hero.visual || {}, vis = $("hero-vis");
@@ -170,9 +171,9 @@ function drawPlans(){
   $("plan-filters").innerHTML = groups.length>1 ? ["Tous"].concat(groups).map(g=>`<button class="chip ${g===groupSel?"on":""}" data-g="${esc(g)}">${esc(g)}</button>`).join("") : "";
   $("plans").innerHTML = C.plans.filter(p=>groupSel==="Tous"||!p.group||p.group===groupSel).map(p=>`
   <article class="plan ${p.popular?"pop":""}">
-    ${p.popular?`<span class="ribbon">${esc(TX.badge_pop)}</span>`:""}
-    <h3>${esc(p.name)}</h3><p class="tag">${esc(p.tagline)}</p>
-    ${priceHTML(p)}<div class="delay">${esc(TX.label_delivery)} ${esc(delayOf(p))}</div>
+    <div class="plan-head">${p.popular?`<span class="ribbon">${esc(TX.badge_pop)}</span>`:""}
+    <h3>${esc(p.name)}</h3><p class="tag">${esc(p.tagline)}</p></div>
+    <div class="plan-price">${priceHTML(p)}<div class="delay">${esc(TX.label_delivery)} ${esc(delayOf(p))}</div></div>
     <ul>${p.features.map(f=>f[0]==="!"?`<li class="no">${esc(f.slice(1))}</li>`:`<li>${esc(f)}</li>`).join("")}</ul>
     <a href="#commande" class="btn ${p.popular?"":"btn-ghost"}" data-plan="${esc(p.id)}">${esc(p.cta)}</a>
   </article>`).join("");
@@ -238,18 +239,18 @@ drawPlans();
   draw();
 })();
 
-/* options : rangées par rubrique (Populaires d'abord) */
-const aTag = a => a.tag || (a.popular ? "Populaire" : "");
+/* options : rangées par rubrique (nos conseils d'abord) */
+const aTag = a => a.tag || (a.popular ? (TX.tag_pop || "Conseillé") : "");
 const aGroup = a => a.group || "Autres";
 const groupsOf = list => { const out=[]; list.forEach(a=>{ if(!out.includes(aGroup(a))) out.push(aGroup(a)); }); return out; };
 const aPrice = a => a.price==null ? "Sur devis" : "+ "+(a.from?"dès ":"")+fmt(a.price)+(vtag?" "+vtag:"")+(a.qty?" / unité":"");
 const hasPop = C.addons.some(a=>a.popular);
-let addonSel = hasPop ? "Populaires" : groupsOf(C.addons)[0];
+let addonSel = hasPop ? POPG : groupsOf(C.addons)[0];
 function drawAddons(){
-  const gs = (hasPop?["Populaires"]:[]).concat(groupsOf(C.addons));
+  const gs = (hasPop?[POPG]:[]).concat(groupsOf(C.addons));
   $("addon-filters").innerHTML = gs.length>1 ? gs.map(g=>`<button class="chip ${g===addonSel?"on":""}" data-ag="${esc(g)}">${esc(g)}</button>`).join("") : "";
   const names = ids => ids.map(id=>(C.plans.find(p=>p.id===id)||{}).name).filter(Boolean).join(", ");
-  $("addons").innerHTML = C.addons.filter(a=>addonSel==="Populaires" ? a.popular : aGroup(a)===addonSel).map(a=>{
+  $("addons").innerHTML = C.addons.filter(a=>addonSel===POPG ? a.popular : aGroup(a)===addonSel).map(a=>{
     const exc = (a.plans&&a.plans.length) ? C.plans.filter(p=>!a.plans.includes(p.id)).map(p=>p.id) : [];
     const note = [a.plans&&a.plans.length ? (exc.length<=a.plans.length ? "Pas avec : "+names(exc) : "Disponible avec : "+names(a.plans)) : "", a.included&&a.included.length?"Inclus dans : "+names(a.included):""].filter(Boolean).join(" · ");
     return `<div class="addon"><h3 class="h4">${esc(a.name)}${aTag(a)?` <em class="otag">${esc(aTag(a))}</em>`:""}</h3><p>${esc(a.desc)}${note?`<span class="avail">${esc(note)}</span>`:""}</p><div class="aprice"><strong>${aPrice(a)}</strong><button type="button" class="add-btn" data-add="${esc(a.id)}">Ajouter</button></div></div>`; }).join("");
@@ -397,16 +398,16 @@ const openG = new Set(); let gTouched = false;
 function optHTML(a, plan){
   const inc = included(a,plan), on = inc || sel[a.id]>0;
   const price = inc ? "Inclus avec "+esc(plan.name) : aPrice(a);
-  return `<label class="opt ${inc?"inc":""}"><input type="checkbox" data-a="${esc(a.id)}" ${on?"checked":""} ${inc?"disabled":""}><div><b>${esc(a.name)}</b>${aTag(a)?` <em class="otag">${esc(aTag(a))}</em>`:""}<br><small>${price}</small></div>${a.qty&&!inc?`<input type="number" min="1" max="${a.max||50}" value="${sel[a.id]||1}" data-q="${esc(a.id)}" aria-label="Quantité">`:""}</label>`;
+  return `<label class="opt ${inc?"inc":""}"><input type="checkbox" data-a="${esc(a.id)}" ${on?"checked":""} ${inc?"disabled":""}><div><b>${esc(a.name)}</b>${aTag(a)?` <em class="otag">${esc(aTag(a))}</em>`:""}</div><small class="o-p">${price}</small>${a.qty&&!inc?`<input type="number" min="1" max="${a.max||50}" value="${sel[a.id]||1}" data-q="${esc(a.id)}" aria-label="Quantité">`:""}</label>`;
 }
 function groupCounts(){ document.querySelectorAll("#opts details.og, #svc-opts details.og").forEach(d=>{ const n = d.querySelectorAll("input[data-a]:checked:not(:disabled), input[data-s]:checked").length; const c = d.querySelector("[data-cnt]"); if(c) c.textContent = n ? n+(n>1?" choisies":" choisie") : ""; }); }
 function drawOpts(){
   const plan = curPlan(), list = C.addons.filter(a=>allowed(a,plan));
   const pop = list.filter(a=>a.popular), rest = list.filter(a=>!a.popular), groups = [];
-  if (pop.length) groups.push(["Populaires", pop]); groupsOf(rest).forEach(g=>groups.push([g, rest.filter(a=>aGroup(a)===g)]));
+  if (pop.length) groups.push([POPG, pop]); groupsOf(rest).forEach(g=>groups.push([g, rest.filter(a=>aGroup(a)===g)]));
   if (!gTouched && groups.length) openG.add(groups[0][0]);
   $("opts").innerHTML = groups.length ? groups.map(([g,arr])=>{ const open = openG.has(g) || arr.some(a=>sel[a.id]>0);
-    return `<details class="og" data-g="${esc(g)}" ${open?"open":""}><summary><span>${esc(g)} <i>${arr.length}</i></span><small data-cnt></small></summary><div class="ogl">${arr.map(a=>optHTML(a,plan)).join("")}</div></details>`; }).join("") : `<p class="small">${plan.none ? esc(T0.opts_none||"Les options concernent les sites : choisis une gamme pour en ajouter.") : "Aucune option disponible pour cette gamme."}</p>`;
+    return `<details class="og${g===POPG?" og-pop":""}" data-g="${esc(g)}" ${open?"open":""}><summary><span>${esc(g)} <i>${arr.length}</i></span><small data-cnt></small></summary><div class="ogl">${arr.map(a=>optHTML(a,plan)).join("")}</div></details>`; }).join("") : `<p class="small">${plan.none ? esc(T0.opts_none||"Les options concernent les sites : choisis une gamme pour en ajouter.") : "Aucune option disponible pour cette gamme."}</p>`;
   groupCounts();
 }
 $("opts").addEventListener("toggle", e=>{ const d = e.target; if (d.classList && d.classList.contains("og")){ gTouched = true; d.open ? openG.add(d.dataset.g) : openG.delete(d.dataset.g); } }, true);
@@ -417,7 +418,7 @@ function drawSvcOpts(){
   $("svc-h").textContent = T0.label_services || "Logo, affiches & réseaux";
   const plan = curPlan();
   $("svc-opts").innerHTML = groupsOf(SI).map((g,i)=>{ const arr = SI.filter(it=>aGroup(it)===g), open = svOpen.has(g) || arr.some(it=>svcSel[it.id]) || (plan.none && i===0 && !svOpen.size);
-    return `<details class="og" data-g="${esc(g)}" ${open?"open":""}><summary><span>${esc(g)} <i>${arr.length}</i></span><small data-cnt></small></summary><div class="ogl">${arr.map(it=>`<label class="opt"><input type="checkbox" data-s="${esc(it.id)}" ${svcSel[it.id]?"checked":""}><div><b>${esc(it.name)}</b>${it.unit?` <em class="otag">${esc(T0.badge_monthly||"Abonnement")}</em>`:it.popular?` <em class="otag">Populaire</em>`:""}<br><small>${svPrice(it)}</small></div>${it.qty?`<input type="number" min="1" max="${it.max||50}" value="${svcSel[it.id]||1}" data-sq="${esc(it.id)}" aria-label="Quantité">`:""}</label>`).join("")}</div></details>`; }).join("");
+    return `<details class="og" data-g="${esc(g)}" ${open?"open":""}><summary><span>${esc(g)} <i>${arr.length}</i></span><small data-cnt></small></summary><div class="ogl">${arr.map(it=>`<label class="opt"><input type="checkbox" data-s="${esc(it.id)}" ${svcSel[it.id]?"checked":""}><div><b>${esc(it.name)}</b>${it.unit?` <em class="otag">${esc(T0.badge_monthly||"Abonnement")}</em>`:it.popular?` <em class="otag">${esc(TX.tag_pop||"Conseillé")}</em>`:""}</div><small class="o-p">${svPrice(it)}</small>${it.qty?`<input type="number" min="1" max="${it.max||50}" value="${svcSel[it.id]||1}" data-sq="${esc(it.id)}" aria-label="Quantité">`:""}</label>`).join("")}</div></details>`; }).join("");
 }
 $("svc-opts").addEventListener("toggle", e=>{ const d = e.target; if (d.classList && d.classList.contains("og")) d.open ? svOpen.add(d.dataset.g) : svOpen.delete(d.dataset.g); }, true);
 function readSel(){
@@ -852,7 +853,7 @@ document.querySelectorAll(".links a.nq[data-g]").forEach(a=>a.addEventListener("
   const IDX = [];
   SECS.forEach(([id,t,ic])=>{ if ($(id) && !$(id).hidden) IDX.push({type:"Page", ic, t, s:"Aller à cette section", k:t+" "+id, run:()=>go(id)}); });
   (C.plans||[]).forEach(p=>IDX.push({type:"Tarif", ic:"💶", t:p.name+" — "+price(p.price)+(p.from?" (dès)":""), s:p.tagline||"", k:[p.name,p.tagline,(p.features||[]).join(" ")].join(" "), run:()=>go("tarifs",()=>{ groupSel="Tous"; drawPlans(); flash([...document.querySelectorAll("#plans .plan")].find(c=>c.querySelector(`[data-plan="${p.id}"]`))); })}));
-  (C.addons||[]).forEach(a=>IDX.push({type:"Option", ic:"➕", t:a.name+" — "+(a.price==null?"Sur devis":"+ "+fmt(a.price)), s:a.desc||"", k:[a.name,a.desc,a.group].join(" "), run:()=>go("options",()=>{ addonSel = a.popular ? "Populaires" : aGroup(a); drawAddons(); flash($("addons")); })}));
+  (C.addons||[]).forEach(a=>IDX.push({type:"Option", ic:"➕", t:a.name+" — "+(a.price==null?"Sur devis":"+ "+fmt(a.price)), s:a.desc||"", k:[a.name,a.desc,a.group].join(" "), run:()=>go("options",()=>{ addonSel = a.popular ? POPG : aGroup(a); drawAddons(); flash($("addons")); })}));
   (SI||[]).forEach(it=>IDX.push({type:"Service", ic: /pub/i.test(aGroup(it))?"🎬":/photo/i.test(aGroup(it))?"📸":/logo/i.test(aGroup(it))?"✏️":/print|affiche/i.test(aGroup(it))?"🖼️":"📱", t:it.name+" — "+price(it.price)+(it.unit?" "+it.unit:"")+(it.from?" (dès)":""), s:aGroup(it)+(it.desc?" · "+it.desc:""), k:[it.name,it.desc,aGroup(it),(it.features||[]).join(" ")].join(" "), run:()=>go("services",()=>{ svTab = aGroup(it); drawSvcs(); flash(document.querySelector(`.svc[data-sid="${it.id}"]`)); })}));
   (C.faq||[]).forEach((f,i)=>IDX.push({type:"Question", ic:"❓", t:strip(f.q), s:strip(f.a).slice(0,90)+"…", k:f.q+" "+f.a, run:()=>go("faq",()=>{ const d = $("faq-list").children[i]; if (d){ d.open = true; flash(d); } })}));
   (C.portfolio||[]).forEach((w,i)=>IDX.push({type:"Maquette", ic:"🖼️", t:w.name+" — "+String(w.category||"").split("·")[0].trim(), s:"Ouvrir l'aperçu en grand", k:[w.name,w.category,w.tag].join(" "), run:()=>openDemo(i)}));

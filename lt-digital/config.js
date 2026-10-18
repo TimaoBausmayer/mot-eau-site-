@@ -158,7 +158,7 @@ window.SITE_CONFIG = {
      id        : identifiant unique (sans espace)
      price     : prix (nombre) — null pour afficher "Sur devis"
      from      : true => affiche "À partir de"
-     popular   : true => mise en avant "Le plus choisi"
+     popular   : true => mise en avant "Notre conseil"
      features  : liste ; "!" au début = ligne barrée (non incluse)
   */
   plans: [
@@ -200,7 +200,7 @@ window.SITE_CONFIG = {
     },
     {
       id: "refonte", name: "Refaire mon site", tagline: "On rajeunit ton site qui existe déjà.",
-      price: 159, from: true, delay: "selon le site", popular: false, cta: "Moderniser mon site",
+      price: 159, from: true, delay: "selon le site", popular: false, cta: "Moderniser",
       features: [
         "On regarde ce qui ne va pas sur ton site",
         "Un nouveau design, joli sur téléphone",
@@ -238,11 +238,11 @@ window.SITE_CONFIG = {
   /* ---------- OPTIONS / SUPPLÉMENTS ----------
      price    : prix (null => sur devis) ; from:true => affiché "dès"
      group    : rubrique (les options sont rangées par rubrique pour rester lisibles)
-     popular  : true => mise en avant dans "Populaires" (affichée en premier)
+     popular  : true => mise en avant dans "Nos conseils" (affichée en premier)
      qty      : true => le client choisit une quantité (max = plafond)
      plans    : liste d'id de gammes pour lesquelles l'option existe ([] = toutes)
      included : liste d'id de gammes où l'option est déjà incluse (gratuite)
-     tag      : badge facultatif (sinon "Populaire" si popular) */
+     tag      : badge facultatif (sinon "Conseillé" si popular) */
   addons: [
     { id: "reservation", name: "Réserver en ligne", price: 115, from: true, group: "Fonctionnalités", popular: true, qty: false, plans: ["vitrine","complet","refonte","surmesure"], included: [], tag: "", desc: "Tes clients réservent une table ou un rendez-vous sur ton site." },
     { id: "carte", name: "Google Maps + bouton itinéraire", price: 25, group: "Fonctionnalités", popular: true, qty: false, plans: [], included: [], tag: "", desc: "Une carte sur ton site, avec un bouton qui montre le chemin jusqu'à chez toi." },
@@ -433,7 +433,7 @@ window.SITE_CONFIG = {
      Modifie le texte que tu veux. Tout se change aussi depuis admin.html ▸ Textes du site. */
   texts: {
     nav_tarifs: "Tarifs", nav_comparatif: "Comparatif", nav_process: "Comment ça marche", nav_realisations: "Réalisations", nav_avis: "Avis", cmp_link: "Comparer les gammes côte à côte", cmp_pick: "Gammes à comparer", cmp_diff: "Seulement les différences", cmp_choose: "Choisir", mcta_btn: "Commander mon site", nav_faq: "Questions", nav_histoire: "Notre histoire", nav_insta: "Instagram", nav_cta: "Commander",
-    badge_pop: "Le plus choisi", nav_services: "Services", nav_search: "Rechercher", search_ph: "Cherche un prix, un service, une question…", search_empty: "Aucun résultat. Essaie « logo », « pub », « photo », « prix »…", pub_cta: "Envie d'une pub vidéo pour tes réseaux ? Animée, sans voix, avec musique : à partir de 125 €.", pub_cta_btn: "Voir les pubs vidéo", photo_cta: "Pas de belles photos ? On se déplace pour photographier tes produits et ton équipe, ou on retouche les tiennes.", photo_cta_btn: "Voir les offres photo", pick_none: "Pas de site", pick_none_sub: "Services seuls", label_monthly: "Abonnement mensuel", label_monthly_note: "Payé chaque mois, sans engagement au-delà du 1er mois.", label_services: "Photos, logo, affiches & réseaux", label_delivery: "Livraison :", label_from: "À partir de", label_delay_est: "Délai estimé :",
+    badge_pop: "Notre conseil", nav_services: "Services", nav_search: "Rechercher", search_ph: "Cherche un prix, un service, une question…", search_empty: "Aucun résultat. Essaie « logo », « pub », « photo », « prix »…", pub_cta: "Envie d'une pub vidéo pour tes réseaux ? Animée, sans voix, avec musique : à partir de 125 €.", pub_cta_btn: "Voir les pubs vidéo", photo_cta: "Pas de belles photos ? On se déplace pour photographier tes produits et ton équipe, ou on retouche les tiennes.", photo_cta_btn: "Voir les offres photo", pick_none: "Pas de site", pick_none_sub: "Services seuls", label_monthly: "Abonnement mensuel", label_monthly_note: "Payé chaque mois, sans engagement au-delà du 1er mois.", label_services: "Photos, logo, affiches & réseaux", label_delivery: "Livraison :", label_from: "À partir de", label_delay_est: "Délai estimé :",
     order_plan: "1. Choisis ton site", order_opts: "2. Ajoute ce que tu veux", order_info: "3. Dis-nous qui tu es",
     f_name: "Ton nom", f_biz: "Nom de ton activité", f_contact: "Ton Instagram ou e-mail", f_project: "Décris ton projet",
     sum_title: "Récapitulatif", promo_btn: "Appliquer", sum_total: "Total", copy_btn: "Copier ma commande", insta_btn: "Ouvrir Instagram", mail_btn: "Envoyer par e-mail", cart_btn: "Voir ma commande",
