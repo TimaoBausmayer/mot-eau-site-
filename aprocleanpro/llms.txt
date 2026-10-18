@@ -14,6 +14,19 @@ Le téléphone, l'email et la zone d'intervention à jour figurent dans la secti
 - Remise en état : décapage et lustrage des sols, moquettes et surfaces encrassées, dégraissage et détartrage.
 - Copropriétés : halls, escaliers, paliers, ascenseurs, vitres communes, local poubelles.
 
+## Pages du site
+
+- Accueil : https://aprocleanpro.fr/
+- Nettoyage de bureaux et de commerces : https://aprocleanpro.fr/#nettoyage-bureaux
+- Ménage et nettoyage à domicile : https://aprocleanpro.fr/#menage-domicile
+- Nettoyage de vitres et de vitrines : https://aprocleanpro.fr/#nettoyage-vitres
+- Nettoyage de fin de chantier : https://aprocleanpro.fr/#fin-de-chantier
+- Remise en état et nettoyage en profondeur : https://aprocleanpro.fr/#remise-en-etat
+- Entretien des parties communes de copropriété : https://aprocleanpro.fr/#copropriete
+- Qui sommes-nous : https://aprocleanpro.fr/#a-propos
+
+Toutes ces pages sont dans le même fichier HTML : leur texte complet est lisible sans exécuter de JavaScript.
+
 ## Comment ça marche
 
 1. Le client décrit son besoin : formulaire en 3 étapes (type de prestation ; fréquence, ville et surface approximative ; nom et téléphone ou email), ou par téléphone.

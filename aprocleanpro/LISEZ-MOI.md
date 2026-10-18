@@ -4,6 +4,7 @@
 
 1. Va sur **`https://ton-site/admin`** et connecte-toi avec ton email et ton mot de passe.
 2. Le site s'ouvre en **mode édition** :
+   - **Changer de page** : la liste « 🏠 Accueil » dans la barre noire ouvre les autres pages (une page par service, Qui sommes-nous, pages légales).
    - **Textes** : touche un texte et écris.
    - **Photos** : touche une photo, puis « Choisir une photo… ». Ajoute une courte description : elle sert aux personnes malvoyantes et à Google.
    - **Ajouter ou supprimer un bloc** (service, question, photo, commune, tarif) : boutons « ＋ Dupliquer » et « Supprimer ».
@@ -53,6 +54,7 @@ Le badge jaune « à compléter » du mode édition compte les informations qui 
 - [ ] Renseigner le téléphone, l'email (qui reçoit les demandes de devis), la zone et les horaires.
 - [ ] Remplacer « Commune 1… 5 » par tes vraies communes.
 - [ ] Vérifier que chaque promesse affichée est vraie : horaires (« tôt le matin, le soir ou le samedi »), « matériel fourni », « un seul interlocuteur », « réponse rapide », « visite possible », et les listes « ce qui est inclus » de chaque service. Corrige ou supprime ce qui ne correspond pas à ta façon de travailler : une fausse promesse est une pratique commerciale trompeuse.
+- [ ] Relire les pages de service et la page « Qui sommes-nous » : chaque tâche listée doit correspondre à ce que tu fais vraiment. Dans *Réglages › Sections*, affiche « Notre histoire » quand tu as écrit quelques lignes sur l'entreprise.
 - [ ] Ajouter tes photos et leur description : touche le dessin de la fenêtre sur l'accueil pour le remplacer par une vraie photo, puis affiche « Avant / après » et « Galerie photos » dans *Réglages › Sections* quand tu as tes photos.
 - [ ] « Avis clients » est masqué : affiche-le seulement avec de **vrais** avis, recopiés tels quels, avec l'accord du client.
 - [ ] Si tu es déclaré « services à la personne » : coche la case dans Réglages, affiche la section « Tarifs » et indique tes prix TTC.
