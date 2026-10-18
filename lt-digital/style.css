@@ -1536,3 +1536,13 @@ label small{margin-left:.35em}
 .ogl{gap:8px}
 @media(max-width:560px){.opt{padding:11px 12px;gap:10px}.opt b{font-size:.9rem;line-height:1.3}.opt .otag{margin-left:4px}}
 .promo input{flex:1;min-width:0}.promo .btn{flex:none;white-space:nowrap}
+/* téléphone : les 4 étapes sur 2 colonnes compactes */
+@media(max-width:560px){
+  .steps{grid-template-columns:1fr 1fr!important;gap:10px}
+  .step,.step+.step{padding:16px 14px;border-radius:14px}
+  .step::before{width:38px;height:38px;border-radius:11px;margin-bottom:12px;font-size:.9rem}
+  .step:not(:last-child)::after{display:none}
+  .step h3{font-size:1rem;line-height:1.25}.step p{font-size:.84rem;line-height:1.5}
+}
+/* logos (grand écran) : 2 rangées de 6, plus compact */
+@media(min-width:1100px){.logos{grid-template-columns:repeat(6,1fr);gap:14px}.logos .lgc-in{flex-direction:column;align-items:flex-start;gap:2px;padding:10px 12px}}
