@@ -60,7 +60,7 @@ window.SITE_CONFIG = {
     /* barre « demande » qui s'écrit toute seule (clic = page de commande). Vide = pas de barre */
     prompts: ["Je veux un site pour ma boulangerie", "Je veux un logo pour mon salon", "Je veux une vidéo pour Instagram", "Je veux refaire mon site", "Je veux de belles photos"],
     /* petites coches sous les boutons */
-    trust: ["Le prix est écrit à l'avance", "Tu peux demander des changements", "Prêt en {delivery}"],
+    trust: ["Le prix est écrit à l'avance", "Tu peux demander des changements", "Tu paies le reste quand ton site te plaît"],
     /* petites notifications animées autour des images (exemples de ce que le site apporte) */
     notes: [
       { icon: "🔔", title: "Nouvelle réservation", text: "Un client a réservé" }
@@ -107,7 +107,7 @@ window.SITE_CONFIG = {
   /* ---------- CHIFFRES CLÉS (supprime les lignes inutiles) ---------- */
   stats: [
     { value: "{delivery}",  label: "pour recevoir ton site" },
-    { value: "1", label: "personne qui s'occupe de tout" },
+    { value: "1", label: "seul contact, du début à la fin" },
     { value: "100%", label: "Marche sur téléphone et tablette" },
     { value: "7j/7", label: "On t'aide après la livraison" }
   ],

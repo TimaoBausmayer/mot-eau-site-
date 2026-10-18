@@ -253,7 +253,7 @@ function drawAddons(){
   $("addons").innerHTML = C.addons.filter(a=>addonSel===POPG ? a.popular : aGroup(a)===addonSel).map(a=>{
     const exc = (a.plans&&a.plans.length) ? C.plans.filter(p=>!a.plans.includes(p.id)).map(p=>p.id) : [];
     const note = [a.plans&&a.plans.length ? (exc.length<=a.plans.length ? "Pas avec : "+names(exc) : "Disponible avec : "+names(a.plans)) : "", a.included&&a.included.length?"Inclus dans : "+names(a.included):""].filter(Boolean).join(" · ");
-    return `<div class="addon"><h3 class="h4">${esc(a.name)}${aTag(a)?` <em class="otag">${esc(aTag(a))}</em>`:""}</h3><p>${esc(a.desc)}${note?`<span class="avail">${esc(note)}</span>`:""}</p><div class="aprice"><strong>${aPrice(a)}</strong><button type="button" class="add-btn" data-add="${esc(a.id)}">Ajouter</button></div></div>`; }).join("");
+    return `<div class="addon"><h3 class="h4">${esc(a.name)}${aTag(a)&&!(addonSel===POPG&&!a.tag)?` <em class="otag">${esc(aTag(a))}</em>`:""}</h3><p>${esc(a.desc)}${note?`<span class="avail">${esc(note)}</span>`:""}</p><div class="aprice"><strong>${aPrice(a)}</strong><button type="button" class="add-btn" data-add="${esc(a.id)}">Ajouter</button></div></div>`; }).join("");
   try { syncAddButtons(state()); } catch(e) {}
 }
 $("addon-filters").addEventListener("click",e=>{ const b=e.target.closest("[data-ag]"); if(b){ addonSel=b.dataset.ag; drawAddons(); } });

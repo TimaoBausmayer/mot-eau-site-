@@ -877,7 +877,7 @@ body.has-mcta .foot{padding-bottom:110px}
 .steps.tl::after{background:linear-gradient(90deg,var(--accent),#7a5cff,#22b8ff);transform:scaleX(var(--p,0));transform-origin:left;transition:transform .15s linear}
 .steps.tl .step::marker{content:none}
 .steps.tl .step{transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .4s,opacity .4s}
-.steps.tl .step:not(.lit){opacity:.55}
+.steps.tl .step:not(.lit){opacity:.88}
 .steps.tl .step.lit{border-color:color-mix(in srgb,var(--accent) 45%,var(--rule))}
 .steps.tl .step::before{transition:transform .5s cubic-bezier(.2,.8,.2,1),filter .4s}
 .steps.tl .step:not(.lit)::before{filter:grayscale(1) opacity(.5);transform:scale(.85)}
