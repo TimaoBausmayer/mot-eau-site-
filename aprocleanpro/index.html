@@ -65,6 +65,7 @@ section[id],article[id],#top{scroll-margin-top:84px}
 html:not(.js) #f{display:none}
 .sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+p,li,dd,figcaption,blockquote{text-wrap:pretty}
 h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:-.025em;line-height:1.06;text-wrap:balance}
 h1{font-size:clamp(2.35rem,5.3vw,4.25rem);font-weight:800;letter-spacing:-.035em;line-height:1.02}
 h2{font-size:clamp(1.9rem,3.6vw,2.85rem)}
@@ -476,7 +477,7 @@ footer .logo{color:#fff}
 }
 
 /* ---------- Tablette et téléphone ---------- */
-@media(max-width:1080px){.nav-tel{display:none}nav.menu ul{gap:22px}.float-card{left:-8px}}
+@media(max-width:1080px){.nav-tel{display:none}nav.menu ul{gap:22px}.float-card{left:-8px}.trust{grid-template-columns:1fr 1fr}}
 @media(max-width:980px){
   section{padding:76px 0}
   .hero{padding:118px 0 56px}
@@ -485,6 +486,7 @@ footer .logo{color:#fff}
   .trust{grid-template-columns:1fr 1fr;margin-top:48px}
   .services,.reviews{grid-template-columns:1fr 1fr}
   .faq-side{position:static}
+  .map{max-width:560px;margin:0 auto}
   .foot{grid-template-columns:1fr 1fr}
   .gallery{grid-template-columns:1fr 1fr}
   .gallery .ph:nth-child(n){grid-column:span 1;height:220px}
@@ -1049,7 +1051,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
           </div>
           <p class="err" id="f-err" role="alert"></p>
           <div class="f-nav"><button type="button" class="btn-back" data-prev="">← Retour</button><button class="btn btn-sky" type="submit">Préparer ma demande <span class="ar" aria-hidden="true">→</span></button></div>
-          <div class="notice" id="f-notice"><p>Ce site n'enregistre rien : le formulaire prépare simplement un e-mail que vous envoyez vous-même depuis votre messagerie ; votre nom et un moyen de vous répondre sont nécessaires, le reste est facultatif. <span data-k="nom">A-Proclean</span> utilise ces informations uniquement pour répondre à votre demande de devis, les conserve au plus 3 ans sans suite, et vous pouvez y accéder, les corriger ou les faire supprimer (<a href="#confidentialite">politique de confidentialité</a>). Votre numéro de téléphone sert seulement à vous rappeler au sujet de votre demande : il ne sera jamais utilisé pour du démarchage téléphonique sans votre accord préalable, ni transmis à des tiers.</p></div>
+          <div class="notice" id="f-notice"><p>Ce site n'enregistre rien : le formulaire prépare simplement un e-mail que vous envoyez vous-même depuis votre messagerie ; le type de prestation, votre nom et un moyen de vous répondre sont nécessaires, le reste est facultatif. <span data-k="nom">A-Proclean</span> utilise ces informations uniquement pour répondre à votre demande de devis, les conserve au plus 3 ans sans suite, et vous pouvez y accéder, les corriger ou les faire supprimer (<a href="#confidentialite">politique de confidentialité</a>). Votre numéro de téléphone sert seulement à vous rappeler au sujet de votre demande : il ne sera jamais utilisé pour du démarchage téléphonique sans votre accord préalable, ni transmis à des tiers.</p></div>
         </fieldset>
       </form>
       <noscript><p class="notice" style="background:#fff;padding:24px;border-radius:20px">Pour demander un devis, appelez-nous ou écrivez-nous : nos coordonnées sont indiquées sur cette page.</p></noscript>
@@ -1146,8 +1148,8 @@ Téléphone : <span data-k="hebergeur_contact" class="missing">[à compléter]</
 
 <h2>Comment fonctionne le formulaire de devis ?</h2>
 <p>Quand vous cliquez sur le bouton d'envoi, le site ouvre votre logiciel ou service de messagerie avec un message déjà rédigé à partir de ce que vous avez saisi. <strong>Rien n'est transmis à notre site ni stocké par lui.</strong> C'est vous qui décidez d'envoyer cet e-mail. Nous recevons alors votre message dans notre boîte de réception, comme n'importe quel e-mail.</p>
-<p>Nous ne demandons que le strict nécessaire : votre nom, un moyen de vous répondre (e-mail ou téléphone, au choix), et, si vous le souhaitez, votre code postal ou votre ville, le type de prestation, des précisions utiles au devis (fréquence souhaitée, surface approximative) et un message. Merci de ne pas nous communiquer d'informations sensibles (santé, opinions, etc.) qui ne seraient pas utiles à votre demande.</p>
-<p>Votre nom et au moins un moyen de vous répondre (e-mail ou téléphone) sont nécessaires : sans eux, nous ne pouvons pas traiter votre demande ni vous répondre. Les autres informations sont facultatives ; elles nous aident seulement à préparer un devis plus précis. Si vous devenez client, les informations nécessaires à la réalisation et à la facturation de la prestation (identité, adresse d'intervention, coordonnées) conditionnent la conclusion et l'exécution du contrat : sans elles, nous ne pouvons pas conclure le contrat ni réaliser la prestation.</p>
+<p>Nous ne demandons que le strict nécessaire : votre nom, un moyen de vous répondre (e-mail ou téléphone, au choix), le type de prestation souhaitée et, si vous le souhaitez, votre code postal ou votre ville, des précisions utiles au devis (fréquence souhaitée, surface approximative) et un message. Merci de ne pas nous communiquer d'informations sensibles (santé, opinions, etc.) qui ne seraient pas utiles à votre demande.</p>
+<p>Votre nom, au moins un moyen de vous répondre (e-mail ou téléphone) et le type de prestation souhaitée sont nécessaires : sans eux, nous ne pouvons pas traiter votre demande ni vous répondre. Les autres informations sont facultatives ; elles nous aident seulement à préparer un devis plus précis. Si vous devenez client, les informations nécessaires à la réalisation et à la facturation de la prestation (identité, adresse d'intervention, coordonnées) conditionnent la conclusion et l'exécution du contrat : sans elles, nous ne pouvons pas conclure le contrat ni réaliser la prestation.</p>
 <p>Votre fournisseur de messagerie (celui que vous utilisez pour nous écrire) traite votre message sous sa propre responsabilité, selon ses propres règles.</p>
 
 <h2>Quelles données traitons-nous, pourquoi et sur quelle base ?</h2>
@@ -1508,7 +1510,7 @@ Téléphone : <span data-k="hebergeur_contact" class="missing">[à compléter]</
 <li>structurer les pages avec des titres et des repères de navigation clairs ;</li>
 <li>permettre la navigation complète au clavier, avec un indicateur de focus visible ;</li>
 <li>associer à chaque champ du formulaire une étiquette explicite et des messages d'erreur compréhensibles ;</li>
-<li>respecter le réglage «&nbsp;réduire les animations&nbsp;» de votre appareil ;</li>
+<li>respecter le réglage «&nbsp;réduire les animations&nbsp;» de votre appareil, et proposer un bouton «&nbsp;Réduire les animations&nbsp;» en bas de chaque page ;</li>
 <li>permettre l'agrandissement du texte et l'affichage sur petit écran sans perte d'information.</li>
 </ul>
 
