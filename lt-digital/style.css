@@ -1500,3 +1500,22 @@ label small{margin-left:.35em}
 /* vidéo en tête d'affiche (promoVideo.hero) */
 .vid-phone.in-hero{width:min(330px,74vw)}
 @media (max-width:960px){.vid-phone.in-hero{width:min(300px,72vw)}}
+/* notre histoire sans fiches fondateurs (pas encore remplies) : le texte prend toute la largeur */
+.no-founders .story{grid-template-columns:1fr;max-width:780px}
+/* téléphone : rangées à faire glisser (services, exemples, logos) au lieu de longues colonnes */
+.car-dots{display:none!important}
+@media(max-width:700px){
+  .car{display:flex!important;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;position:relative;
+    margin-inline:-24px;padding:4px 24px 8px;scroll-padding-inline:24px}
+  .car::-webkit-scrollbar{display:none}
+  .car>.svc,.car>.work{flex:0 0 84%;scroll-snap-align:center;min-width:0}
+  .car>.lgc{flex:0 0 46%;scroll-snap-align:start;min-width:0}
+  .car-dots{display:flex!important;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:14px}
+}
+/* téléphone : les 6 raisons tiennent sur 2 colonnes compactes */
+@media(max-width:560px){
+  .why-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .why{padding:16px 14px;border-radius:14px}
+  .why-ic{width:38px;height:38px;border-radius:11px;margin-bottom:12px}.why-ic svg{width:20px;height:20px}
+  .why h3{font-size:1rem;line-height:1.25;margin-bottom:6px}.why p{font-size:.84rem;line-height:1.5}
+}

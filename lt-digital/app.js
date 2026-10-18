@@ -186,12 +186,24 @@ drawPlans();
   const sync = () => { const c = cards(), mid = box.scrollLeft + box.clientWidth/2; let k = 0;
     c.forEach((el,i)=>{ if (Math.abs(el.offsetLeft+el.offsetWidth/2-mid) < Math.abs(c[k].offsetLeft+c[k].offsetWidth/2-mid)) k = i; });
     [...dots.children].forEach((d,i)=>d.classList.toggle("on", i===k)); };
-  const build = () => { dots.innerHTML = cards().map((_,i)=>`<button type="button" data-i="${i}"></button>`).join(""); sync(); };
+  const build = () => { dots.innerHTML = cards().map((_,i)=>`<button type="button" tabindex="-1" data-i="${i}"></button>`).join(""); sync(); };
   dots.addEventListener("click", e=>{ const b = e.target.closest("[data-i]"); if(!b) return; const el = cards()[+b.dataset.i]; box.scrollTo({left: el.offsetLeft - (box.clientWidth-el.offsetWidth)/2, behavior:"smooth"}); });
   box.addEventListener("scroll", ()=>requestAnimationFrame(sync), {passive:true});
   new MutationObserver(build).observe(box, {childList:true}); build();
   const pop = box.querySelector(".plan.pop"); if (pop && box.scrollWidth > box.clientWidth) box.scrollLeft = pop.offsetLeft - (box.clientWidth-pop.offsetWidth)/2; sync();
 })();
+
+/* téléphone : services, exemples de sites et logos se parcourent en faisant glisser (beaucoup moins de défilement), avec des points de repère */
+(function(){ [["svcs",".svc"],["works",".work"],["logos-grid",".lgc"]].forEach(([id,sel])=>{ const box = $(id); if (!box) return;
+  const dots = document.createElement("div"); dots.className = "plans-dots car-dots"; dots.setAttribute("aria-hidden","true"); box.classList.add("car"); box.after(dots);
+  const cards = () => [...box.children].filter(el=>el.matches(sel) && !el.hidden);
+  const sync = () => { const c = cards(); if (!c.length || !dots.children.length) return; const mid = box.scrollLeft + box.clientWidth/2; let k = 0;
+    c.forEach((el,i)=>{ if (Math.abs(el.offsetLeft+el.offsetWidth/2-mid) < Math.abs(c[k].offsetLeft+c[k].offsetWidth/2-mid)) k = i; });
+    [...dots.children].forEach((d,i)=>d.classList.toggle("on", i===k)); };
+  const build = () => { const n = cards().length; dots.innerHTML = n > 1 ? Array.from({length:n},(_,i)=>`<button type="button" tabindex="-1" data-i="${i}"></button>`).join("") : ""; box.scrollLeft = 0; sync(); };
+  dots.addEventListener("click", e=>{ const b = e.target.closest("[data-i]"); if(!b) return; const el = cards()[+b.dataset.i]; if (el) box.scrollTo({left: el.offsetLeft - (box.clientWidth-el.offsetWidth)/2, behavior:"smooth"}); });
+  box.addEventListener("scroll", ()=>requestAnimationFrame(sync), {passive:true});
+  new MutationObserver(build).observe(box, {childList:true}); build(); }); })();
 
 /* comparatif : choisir les gammes à mettre côte à côte + « seulement les différences » */
 (function(){ const T = C.texts||{}, P = C.plans, rows = C.compare||[];
@@ -327,7 +339,8 @@ drawWorks();
 /* avis clients : note moyenne, cartes avec logo / site, formulaire pour laisser un avis */
 const stars = n => { const r = Math.max(0, Math.min(5, Math.round(+n||0))); return `<span class="stars" aria-label="${r} sur 5">${"★".repeat(r)}<i>${"★".repeat(5-r)}</i></span>`; };
 (function(){ const R = (C.testimonials||[]).filter(t=>t&&t.text), F = C.reviewsForm||{}, T = C.texts||{};
-  if (!R.length && F.show===false) return;
+  /* pas encore de vrais avis : la section reste cachée (pas de cartes vides avec des étoiles), sauf si on arrive par le lien #avis pour en laisser un */
+  if (!R.length && (F.show===false || location.hash!=="#avis")) { document.querySelectorAll('a[href="#avis"]').forEach(l=>l.hidden=true); return; }
   $("avis").hidden = false;
   const rated = R.filter(t=>+t.rating>0), avg = rated.length ? rated.reduce((s,t)=>s+(+t.rating),0)/rated.length : 0;
   $("rv-top").innerHTML = `${rated.length?`<div class="rv-score"><b>${avg.toFixed(1).replace(".",",")}</b><div>${stars(avg)}<small>${rated.length} avis client${rated.length>1?"s":""}</small></div></div>`:""}${F.show!==false?`<div class="rv-cta"><div><strong>${esc(F.title||"Laisse ton avis")}</strong><span>${esc(F.text||"")}</span></div><button type="button" class="btn" id="rv-open">${esc(T.rv_btn||"Laisser un avis")}</button></div>`:""}`;
@@ -337,7 +350,7 @@ const stars = n => { const r = Math.max(0, Math.min(5, Math.round(+n||0))); retu
     <div class="rv-head">${t.logo?`<img class="rv-logo" src="${esc(t.logo)}" alt="Logo ${esc(t.role||"")}" loading="lazy">`:`<span class="rv-logo rv-ini">${esc((t.role||t.name||"?").trim()[0]||"?")}</span>`}<div><strong>${esc(t.role||t.name)}</strong>${t.role?`<span>${esc(t.name)}</span>`:""}</div>${+t.rating>0?stars(t.rating):""}</div>
     <p>“${esc(t.text)}”</p>
     <div class="rv-foot">${t.site?`<a class="rv-link" href="${esc(t.site)}" target="_blank" rel="noopener">${esc(T.rv_site||"Voir son site")} · ${esc(host(t.site))} ↗</a>`:""}${t.insta?`<a class="rv-link" href="https://www.instagram.com/${esc(String(t.insta).replace(/^@/,""))}" target="_blank" rel="noopener">${esc(t.insta.startsWith("@")?t.insta:"@"+t.insta)}</a>`:""}${t.date?`<time>${esc(t.date)}</time>`:""}</div>
-  </article>`).join("") : [0,1,2].map(k=>`<article class="review rv-ghost reveal" style="--d:${k*90}ms"><div class="rv-head"><span class="rv-logo rv-ini rv-q">${k===0?"?":k===1?"★":"✎"}</span><div><strong>${esc(k===0?(T.rv_ghost1||"Ton commerce ici"):k===1?(T.rv_ghost2||"Ton logo, ton site"):(T.rv_ghost3||"Ton avis compte"))}</strong><span>${esc(T.rv_ghost_sub||"Bientôt sur cette page")}</span></div><span class="stars"><i>★★★★★</i></span></div><div class="rv-lines"><i></i><i></i><i style="width:60%"></i></div><div class="rv-foot"><button type="button" class="rv-link rv-open2">${esc(T.rv_btn||"Laisser un avis")} →</button></div></article>`).join("");
+  </article>`).join("") : "";
   /* formulaire */
   const dlg = $("rv-modal"), f = $("rv-form"); let note = 5;
   $("rv-m-text").textContent = F.text||"";
@@ -561,7 +574,10 @@ drawOpts(); drawSvcOpts(); render();
 (function(){ const st = C.story; if(!st){ $("histoire").hidden = true; document.querySelectorAll('a[href="#histoire"]').forEach(l=>l.hidden=true); return; }
   const sec = $("histoire"); sec.querySelector(".eyebrow").textContent = st.eyebrow||"Notre histoire"; sec.querySelector("h2").textContent = st.title||"";
   $("story-text").innerHTML = (st.paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join("");
-  $("founders").innerHTML = (st.founders||[]).map(f=>`<article class="founder">${f.photo?`<img src="${esc(f.photo)}" alt="${esc(f.name)}" width="88" height="88">`:`<span class="fi" aria-hidden="true">${esc(f.initial||(f.name||"?").trim()[0]||"?")}</span>`}<div><h3>${esc(f.name)}</h3><span class="role">${esc(f.role||"")}</span><p>${esc(f.text||"")}</p></div></article>`).join("");
+  /* une fiche fondateur encore "à compléter" ne s'affiche pas (elle apparaîtra dès qu'elle sera remplie dans l'admin) */
+  const fd = (st.founders||[]).filter(f=>f && f.name && !/^\s*pr[ée]nom\b|à compléter/i.test(f.name+" "+(f.text||"")));
+  $("founders").hidden = !fd.length; sec.classList.toggle("no-founders", !fd.length);
+  $("founders").innerHTML = fd.map(f=>`<article class="founder">${f.photo?`<img src="${esc(f.photo)}" alt="${esc(f.name)}" width="88" height="88">`:`<span class="fi" aria-hidden="true">${esc(f.initial||(f.name||"?").trim()[0]||"?")}</span>`}<div><h3>${esc(f.name)}</h3><span class="role">${esc(f.role||"")}</span><p>${esc(f.text||"")}</p></div></article>`).join("");
   $("values").innerHTML = (st.values||[]).map(v=>`<div class="val"><h3 class="h4">${esc(v.title)}</h3><p>${esc(v.text)}</p></div>`).join(""); })();
 
 /* barre du haut : offre + contact, moderne et animée (desktop : une ligne ; mobile : messages qui alternent) */
