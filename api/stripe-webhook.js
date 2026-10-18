@@ -38,6 +38,7 @@ async function googleToken(sa){
 }
 const sha256 = t => crypto.createHash('sha256').update(t).digest('hex');
 const normEmail = e => String(e || '').trim().toLowerCase();
+const publicName = n => { const w = String(n || '').trim().split(/\s+/); return w.length > 1 ? w[0] + ' ' + w[w.length - 1].charAt(0).toUpperCase() + '.' : (w[0] || ''); };
 
 module.exports = async (req, res) => {
   if(req.method !== 'POST'){ res.status(405).end(); return; }
@@ -70,7 +71,7 @@ module.exports = async (req, res) => {
     if(coll === 'memberships' && rec.email){
       await db('PUT', `memberHashes/${sha256(normEmail(rec.email))}`, true);
       const all = await db('GET', 'memberships');
-      await db('PUT', 'memberNames', Object.values(all || {}).filter(m => m && m.paid && m.name).map(m => m.name));
+      await db('PUT', 'memberNames', Object.values(all || {}).filter(m => m && m.paid && m.name).map(m => publicName(m.name)));
     }
     if(rec.uid && LOYALTY_COLLS.includes(coll)){
       const cfg = await db('GET', 'loyaltyConfig') || {};

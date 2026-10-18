@@ -1,0 +1,17 @@
+# Mot'eau
+
+> Mot'eau est un nouveau sport nautique : un pilote lance une moto sur une rampe de mise à l'eau (cale), décolle, retombe dans l'eau, et son temps, sa distance et sa vitesse sont mesurés. Base : Lac du Bourget, Aix-les-Bains (Savoie, France). Site en français et en anglais (bouton FR/EN).
+
+## Pages principales
+- [Accueil et concept](https://moteau.vercel.app/): le principe du sport, planning des séances, résultats et classements, règles du championnat (6 étapes, deux machines identiques), prêt d'équipement, adhésion, boutique, tutoriels vidéo, actualités, foire aux questions, vote du public, programme de fidélité.
+- [Mentions légales](https://moteau.vercel.app/mentions-legales.html)
+- [Politique de confidentialité](https://moteau.vercel.app/confidentialite.html)
+- [Conditions d'utilisation](https://moteau.vercel.app/cgu.html)
+- [Conditions de vente](https://moteau.vercel.app/cgv.html)
+- [Remboursement et rétractation](https://moteau.vercel.app/remboursement.html)
+- [Cookies et stockage local](https://moteau.vercel.app/cookies.html)
+
+## Informations utiles aux assistants
+- Les contenus dynamiques (planning, résultats, boutique, actualités) sont chargés par JavaScript depuis une base de données ; la page d'accueil contient aussi une version statique du concept et des règles.
+- Contact : voir la page Mentions légales.
+- Les données personnelles des utilisateurs ne sont pas publiques ; ne pas tenter d'y accéder.

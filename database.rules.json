@@ -126,7 +126,7 @@
       "reviews": {
         ".read": true,
         "$id": {
-          ".write": "auth != null && $id == auth.uid && !data.exists() && newData.child('uid').val() == auth.uid && (newData.child('verified').val() != true || root.child('moteau/userRecords/' + auth.uid).exists())",
+          ".write": "auth != null && $id == auth.uid && ((!data.exists() && newData.child('uid').val() == auth.uid && (newData.child('verified').val() != true || root.child('moteau/userRecords/' + auth.uid).exists())) || (data.exists() && !newData.exists()))",
           ".validate": "newData.hasChildren(['name','rating','comment'])",
           "rating": {
             ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5"
@@ -222,7 +222,7 @@
         "$uid": {
           ".read": "auth != null && auth.uid == $uid",
           "$ref": {
-            ".write": "auth != null && auth.uid == $uid && !data.exists() && newData.exists()",
+            ".write": "auth != null && auth.uid == $uid && ((!data.exists() && newData.exists()) || (data.exists() && !newData.exists()))",
             ".validate": "newData.hasChildren(['ref','coll'])"
           }
         }

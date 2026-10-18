@@ -1,0 +1,11 @@
+{
+  "editeur": "[À COMPLÉTER : nom et prénom, ou dénomination sociale, de l'éditeur]",
+  "statut": "[À COMPLÉTER : statut juridique, ex. entrepreneur individuel (micro-entreprise), société, association]",
+  "siren": "[À COMPLÉTER : n° SIREN ou SIRET (n° RNA pour une association)]",
+  "adresse": "[À COMPLÉTER : adresse postale complète]",
+  "email": "[À COMPLÉTER : adresse e-mail de contact]",
+  "tel": "[À COMPLÉTER : téléphone (facultatif)]",
+  "directeur": "[À COMPLÉTER : nom du directeur ou de la directrice de la publication]",
+  "mediateur": "[À COMPLÉTER : nom, adresse postale et site internet du médiateur de la consommation choisi]",
+  "maj": "18 octobre 2026"
+}

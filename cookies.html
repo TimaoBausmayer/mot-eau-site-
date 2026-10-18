@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cookies et stockage local — Mot'eau</title><meta name="description" content="Cookies et stockage local utilisés par le site Mot&#x27;eau.">
+<link rel="canonical" href="https://moteau.vercel.app/cookies.html"><meta name="robots" content="index, follow">
+<link rel="icon" type="image/png" href="/icon-192.png"><meta name="theme-color" content="#0a0a09">
+<link rel="preload" href="/fonts/SpaceGrotesk.ttf" as="font" type="font/ttf" crossorigin>
+<style>
+:root{--black:#0a0a09;--surface:#141311;--line:#4a443c;--orange:#ff5a1f;--cream:#f4efe6;--grey:#b3ada1}
+@font-face{font-family:'Anton';src:url('/fonts/Anton.ttf') format('truetype');font-display:swap}
+@font-face{font-family:'Space Grotesk';src:url('/fonts/SpaceGrotesk.ttf') format('truetype');font-weight:300 700;font-display:swap}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--black);color:var(--cream);font-family:'Space Grotesk',system-ui,sans-serif;line-height:1.65;font-size:17px}
+a{color:var(--orange);text-underline-offset:3px}a:hover{color:var(--cream)}
+.skip{position:absolute;left:12px;top:-60px;background:var(--orange);color:#0a0a09;padding:10px 16px;font-weight:700;z-index:9}.skip:focus{top:12px}
+header{border-bottom:1px solid var(--line);padding:16px 24px;display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+header .logo{font-family:'Anton',sans-serif;font-size:1.6rem;letter-spacing:.02em;color:var(--cream);text-decoration:none}header .logo span{color:var(--orange)}
+header a.back{margin-left:auto}
+main{max-width:820px;margin:0 auto;padding:36px 24px 70px}
+h1{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;font-size:2.4rem;line-height:1.05;margin:0 0 8px}
+h2{font-size:1.25rem;margin:2.2em 0 .5em;color:var(--orange)}h3{font-size:1.05rem;margin:1.5em 0 .3em}
+p,li{color:var(--cream)}.muted{color:var(--grey);font-size:.92rem}
+ul{padding-left:1.2em}li{margin:.3em 0}
+table{width:100%;border-collapse:collapse;margin:1em 0;font-size:.93rem}th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}th{background:var(--surface)}
+.todo{background:#ffe08a;color:#2a1c00;padding:0 4px;border-radius:3px}
+.box{border:1px solid var(--line);background:var(--surface);padding:16px 18px;margin:1.2em 0;border-radius:6px}
+footer{border-top:1px solid var(--line);padding:22px 24px;text-align:center;font-size:.9rem}footer a{margin:0 9px;white-space:nowrap}
+@media (max-width:600px){body{font-size:16px}h1{font-size:1.9rem}table{display:block;overflow-x:auto}}
+@media print{body{background:#fff;color:#000}a{color:#000}.todo{background:none}header,footer,.skip{display:none}}
+</style></head><body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+<header><a class="logo" href="/" aria-label="Mot'eau — retour à l'accueil">MOT<span>'</span>EAU</a><a class="back" href="/">← Retour au site</a></header>
+<main id="contenu"><h1>Cookies et stockage local</h1><p class="muted">Dernière mise à jour : 18 octobre 2026</p>
+<div class="box"><strong>Information pour l'éditeur du site :</strong> les passages surlignés en jaune doivent être remplis dans <code>legal/info.json</code> avant la publication définitive ; ils disparaissent ensuite automatiquement.</div>
+<p>Cette page indique ce que le site Mot'eau enregistre dans votre navigateur (cookies et stockage local), pourquoi, et pourquoi il n'y a pas de bandeau de consentement.</p>
+<h2>1. Ce que nous utilisons</h2>
+<table><thead><tr><th>Nom</th><th>Type</th><th>Rôle</th><th>Durée</th><th>Nature</th></tr></thead><tbody><tr><td><code>moteau_admin_rt</code></td><td>Stockage local</td><td>Garder votre session de connexion à votre compte (jeton d'authentification)</td><td>Jusqu'à votre déconnexion</td><td>Nécessaire au service demandé</td></tr><tr><td><code>moteau_lang</code></td><td>Stockage local</td><td>Mémoriser la langue choisie (FR/EN)</td><td>Jusqu'à effacement</td><td>Préférence demandée par vous</td></tr><tr><td><code>moteau_favorites</code></td><td>Stockage local</td><td>Mémoriser vos produits favoris</td><td>Jusqu'à effacement</td><td>Fonction demandée par vous</td></tr><tr><td><code>moteau_voter</code></td><td>Stockage local</td><td>Identifiant aléatoire pour ne voter qu'une fois (si vous n'avez pas de compte)</td><td>Jusqu'à effacement</td><td>Nécessaire au service demandé</td></tr><tr><td><code>moteau_push</code></td><td>Stockage local</td><td>Se souvenir que vous avez activé les notifications</td><td>Jusqu'à effacement</td><td>Fonction demandée par vous</td></tr><tr><td><code>moteau_visit, moteau_sec_…</code></td><td>Stockage de session</td><td>Ne compter qu'une fois votre visite dans les statistiques anonymes</td><td>Supprimé à la fermeture de l'onglet</td><td>Mesure d'audience anonyme (exemptée de consentement)</td></tr></tbody></table>
+<p>Le site ne dépose <strong>aucun cookie publicitaire</strong>, aucun traceur de réseau social et aucun outil de statistiques tiers.</p>
+<h2>2. Pourquoi pas de bandeau ?</h2>
+<p>Selon les règles européennes et les lignes directrices de la CNIL, le consentement n'est pas requis pour les traceurs strictement nécessaires au service que vous demandez (connexion, langue, panier, vote) ni pour une mesure d'audience anonyme et limitée à un usage statistique strict. C'est le cas ici : les statistiques ne sont que des compteurs globaux (visites par jour, parties vues, site d'origine, type d'appareil), sans identifiant ni suivi d'une personne d'un jour à l'autre. Si cela change, un bandeau de choix sera ajouté <em>avant</em> tout nouveau traceur.</p>
+<h2>3. Contenus d'autres services</h2>
+<p>Les vidéos YouTube (mode sans cookie), Vimeo, TikTok et Instagram ne sont chargées <strong>qu'après votre clic</strong> sur la vidéo ; la mention « Au clic, la vidéo est chargée depuis… » vous en informe. Ces services appliquent leurs propres règles. Les paiements se font sur les pages de Stripe.</p>
+<h2>4. Notifications</h2>
+<p>Les notifications sur téléphone ou ordinateur ne s'activent que si vous cliquez sur « Activer les notifications » puis acceptez la demande de votre navigateur. Vous pouvez les couper à tout moment dans les réglages du navigateur ou de l'appareil.</p>
+<h2>5. Effacer ou bloquer</h2>
+<p>Dans votre navigateur : réglages, confidentialité, « Effacer les données de navigation » (cochez « cookies et données de sites »). Effacer ces données vous déconnecte et réinitialise vos préférences.</p>
+<h2>6. Plus d'informations</h2><p><a href="/confidentialite.html">Politique de confidentialité</a> · <a href="https://www.cnil.fr/fr/cookies-et-autres-traceurs">cnil.fr — cookies et autres traceurs</a></p>
+</main>
+<footer><nav aria-label="Informations légales"><a href="/mentions-legales.html">Mentions légales</a><a href="/confidentialite.html">Politique de confidentialité</a><a href="/cgu.html">Conditions d'utilisation</a><a href="/cgv.html">Conditions de vente</a><a href="/remboursement.html">Remboursement et rétractation</a><a href="/cookies.html">Cookies et stockage local</a></nav></footer></body></html>

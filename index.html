@@ -26,9 +26,8 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"SportsOrganization","name":"Mot'eau","alternateName":["Moteau","Mot eau"],"url":"https://moteau.vercel.app/","sport":"Mot'eau","description":"Nouveau sport nautique : une moto lancée sur une rampe de mise à l'eau, un décollage et un vol mesuré.","areaServed":"Lac du Bourget, Savoie, France","sameAs":["https://www.instagram.com/mot_eau/"]}
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="/fonts/Anton.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="/fonts/SpaceGrotesk.ttf" as="font" type="font/ttf" crossorigin>
 <style>
 :root{
   --black:#0a0a09; --surface:#141311; --surface-2:#1c1a17; --line:#332f29;
@@ -747,6 +746,26 @@ body.results-hidden #resultsHiddenMsg{display:block;}
 #previewBanner{display:none; position:fixed; left:50%; bottom:18px; transform:translateX(-50%); z-index:9999; background:var(--orange); color:#000; padding:10px 18px; font-weight:600; box-shadow:0 4px 20px rgba(0,0,0,0.5); align-items:center; gap:12px;}
 #previewBanner button{background:#000; color:#fff; border:0; padding:6px 12px; cursor:pointer; font-family:inherit;}
 body.preview-visitor #previewBanner{display:flex;}
+/* ---------- POLICES (hébergées sur le site : aucune connexion à Google) ---------- */
+@font-face{font-family:'Anton'; src:url('/fonts/Anton.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap;}
+@font-face{font-family:'Space Grotesk'; src:url('/fonts/SpaceGrotesk.ttf') format('truetype'); font-weight:300 700; font-style:normal; font-display:swap;}
+/* ---------- ACCESSIBILITÉ ---------- */
+.skip-link{position:absolute; left:12px; top:-60px; z-index:10000; background:var(--orange); color:#0a0a09; padding:10px 16px; font-weight:700; border-radius:4px; transition:top .15s;}
+.skip-link:focus{top:12px;}
+.sr-only{position:absolute !important; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;}
+::placeholder{color:#a8a296; opacity:1;}
+:focus-visible{outline:2px solid var(--orange); outline-offset:2px;}
+.pw-modal input:focus, .form-field input:focus{outline:2px solid var(--orange); outline-offset:1px;}
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important;} }
+.legal-note{font-size:0.74rem; color:var(--grey); margin:10px 0 0; line-height:1.5;}
+.legal-note a{color:var(--cream); text-decoration:underline;}
+.consent-row{display:flex; gap:10px; align-items:flex-start; margin:12px 0; font-size:0.82rem; color:var(--cream); line-height:1.45;}
+.consent-row input{flex:0 0 auto; width:18px; height:18px; margin-top:2px; accent-color:var(--orange);}
+.consent-row a{color:var(--orange); text-decoration:underline;}
+.foot-legal{display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:14px; font-size:0.8rem;}
+.foot-legal a{color:var(--grey); text-decoration:underline;}
+.foot-legal a:hover{color:var(--orange);}
+.lazy-note{display:block; font-size:0.68rem; color:var(--cream); opacity:0.9; margin-top:2px;}
 /* ---------- PROSPECTION SPONSORS (admin) ---------- */
 .pros-pipe{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:22px;}
 .pros-stat{display:flex; align-items:center; gap:7px; border:1px solid var(--line); background:var(--surface);
@@ -869,6 +888,8 @@ body.edit-mode .view-only{display:none;}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+<noscript><p style="padding:70px 20px 10px; color:#f4efe6;">Mot'eau : un nouveau sport nautique (moto, rampe de mise à l'eau, décollage, chrono) au Lac du Bourget. Le planning, les résultats et la boutique nécessitent JavaScript. Informations légales : <a href="/mentions-legales.html">mentions légales</a>, <a href="/confidentialite.html">confidentialité</a>, <a href="/cgv.html">conditions de vente</a>.</p></noscript>
 
 <div class="announce-bar" id="announceBar">
   <div class="view-only">
@@ -979,11 +1000,13 @@ body.edit-mode .view-only{display:none;}
         <span class="lang-switch-opt">🇬🇧</span>
       </button>
       <button class="cart-btn account-btn" id="accountBtn" type="button">Se connecter</button>
-      <button class="cart-btn" id="cartOpenBtn" aria-label="Ouvrir le panier">Panier <span class="cart-count" id="cartCount">0</span></button>
+      <button class="cart-btn" id="cartOpenBtn">Panier <span class="cart-count" id="cartCount">0</span></button>
       <button class="burger" id="burgerBtn" aria-label="Menu">☰</button>
     </div>
   </div>
 </header>
+
+<main id="contenu" tabindex="-1">
 
 <div id="searchPanel" role="search" aria-label="Recherche sur le site">
   <div class="search-inner">
@@ -1147,7 +1170,7 @@ body.edit-mode .view-only{display:none;}
 <section id="runs" style="display:none;">
   <div class="wrap">
     <div class="sec-head"><h2 class="display">Les runs</h2><p class="sub">Les plus beaux passages en vidéo.</p></div>
-    <div class="admin-filters" id="runsFilterBox" style="margin-bottom:18px;"><input type="search" id="runsSearch" placeholder="Chercher un pilote ou une compétition…"><select id="runsSort"><option value="date">Plus récents</option><option value="speed">Plus rapides</option></select></div>
+    <div class="admin-filters" id="runsFilterBox" style="margin-bottom:18px;"><input type="search" id="runsSearch" placeholder="Chercher un pilote ou une compétition…"><select id="runsSort" aria-label="Trier les runs"><option value="date">Plus récents</option><option value="speed">Plus rapides</option></select></div>
     <div class="news-grid" id="runsGrid"></div>
     <button class="add-row-btn edit-only block" id="addRunBtn" style="margin-top:20px; max-width:360px;">+ Ajouter un run</button>
   </div>
@@ -1189,8 +1212,8 @@ body.edit-mode .view-only{display:none;}
     <div class="signup-card" style="max-width:480px; margin-bottom:40px;">
       <div class="form-field"><label>Votre nom</label><input type="text" id="loanName" placeholder="Votre nom"></div>
       <div class="form-field"><label>Email</label><input type="email" id="loanEmail" placeholder="vous@exemple.fr"></div>
-      <div class="form-field"><label>Équipement</label><select id="loanEquipment"></select></div>
-      <div class="form-field"><label>Date souhaitée</label><input type="date" id="loanDate"></div>
+      <div class="form-field"><label>Équipement</label><select id="loanEquipment" aria-label="Équipement"></select></div>
+      <div class="form-field"><label>Date souhaitée</label><input type="date" id="loanDate" aria-label="Date souhaitée"></div>
       <div class="promo-apply-row">
         <input type="text" id="loanGiftInput" placeholder="Code carte cadeau (facultatif)">
         <button type="button" class="small-btn" id="loanGiftApplyBtn">Appliquer</button>
@@ -1256,7 +1279,7 @@ body.edit-mode .view-only{display:none;}
         <div class="form-field"><label>Nom complet</label><input type="text" id="regName" placeholder="Votre nom"></div>
         <div class="form-field"><label>Email</label><input type="email" id="regEmail" placeholder="vous@exemple.fr"></div>
         <div class="form-field"><label>Téléphone</label><input type="tel" id="regPhone" placeholder="06 12 34 56 78"></div>
-        <div class="form-field"><label>Compétition</label><select id="regCompetition"></select></div>
+        <div class="form-field"><label>Compétition</label><select id="regCompetition" aria-label="Compétition"></select></div>
         <div class="member-check-row"><input type="checkbox" id="regMemberCheck"><label for="regMemberCheck">Je suis déjà adhérent Mot'eau (vérifié par email)</label></div>
         <div class="promo-apply-row">
           <input type="text" id="regGiftInput" placeholder="Code carte cadeau (facultatif)">
@@ -1289,7 +1312,7 @@ body.edit-mode .view-only{display:none;}
       </div>
       <p class="hint-text">Recevez un email ou un SMS à chaque nouveauté (nouvelle session au planning, compétition ajoutée...). Facultatif, désinscription possible à tout moment en nous contactant.</p>
       <div class="signup-card" style="max-width:460px;">
-        <div class="form-field"><label>Nom</label><input type="text" id="notifName" placeholder="Votre nom"></div>
+        <div class="form-field"><label>Prénom (facultatif)</label><input type="text" id="notifName" placeholder="Votre prénom"></div>
         <div class="form-field"><label>Email (si notification par email)</label><input type="email" id="notifEmail" placeholder="vous@exemple.fr"></div>
         <div class="form-field"><label>Téléphone (si notification par SMS)</label><input type="tel" id="notifPhone" placeholder="06 12 34 56 78"></div>
         <div class="member-check-row"><input type="checkbox" id="notifEmailCheck"><label for="notifEmailCheck">Me notifier par email</label></div>
@@ -1369,7 +1392,7 @@ body.edit-mode .view-only{display:none;}
       </div>
 
       <button class="btn btn-solid" style="width:100%;" id="waiverSubmitBtn">Valider</button>
-      <p class="hint-text" style="margin-top:12px; margin-bottom:0;">Signature électronique simple (nom tapé + case cochée), suffisante pour un usage associatif courant mais non équivalente à une signature électronique qualifiée au sens juridique strict.</p>
+      <p class="hint-text" style="margin-top:12px; margin-bottom:0;">Signature électronique simple (nom tapé + case cochée), suffisante pour un usage courant mais non équivalente à une signature électronique qualifiée au sens juridique strict.</p>
     </div>
 
     <div class="edit-only block" style="margin-top:50px;">
@@ -1692,6 +1715,8 @@ body.edit-mode .view-only{display:none;}
 
 
 
+</main>
+
 <footer>
   <div class="wrap">
     <div class="foot-top">
@@ -1724,6 +1749,14 @@ body.edit-mode .view-only{display:none;}
         </div>
       </div>
     </div>
+    <nav class="foot-legal" aria-label="Informations légales">
+      <a href="/mentions-legales.html">Mentions légales</a>
+      <a href="/confidentialite.html">Politique de confidentialité</a>
+      <a href="/cgu.html">Conditions d'utilisation</a>
+      <a href="/cgv.html">Conditions de vente</a>
+      <a href="/remboursement.html">Remboursement &amp; rétractation</a>
+      <a href="/cookies.html">Cookies &amp; stockage</a>
+    </nav>
     <div class="foot-bottom">
       <span>© 2026 Mot'eau. Tous droits réservés. · <a href="#adhesion" class="push-foot" style="color:var(--grey);">🔔 Notifications</a> · <a href="#" id="adminLoginLink" style="color:var(--grey);">🔒 Espace admin</a></span>
       <span id="contactLocation" data-editable data-section="contact" data-field="location"></span>
@@ -1755,7 +1788,7 @@ body.edit-mode .view-only{display:none;}
       <button type="button" class="pay-mode-btn active" data-cartmode="en_ligne">Payer en ligne</button>
       <button type="button" class="pay-mode-btn" data-cartmode="sur_place">Payer sur place</button>
     </div>
-    <button class="btn btn-solid" style="width:100%;" id="cartCheckoutBtn">Valider la commande</button>
+    <button class="btn btn-solid" style="width:100%;" id="cartCheckoutBtn">Commander avec obligation de paiement</button>
     <p class="cart-note">En ligne : redirection vers un lien de paiement sécurisé. Sur place : votre commande est enregistrée, à régler au club.</p>
   </div>
 </div>
@@ -2153,6 +2186,7 @@ async function sha256Hex(text){
 }
 const normEmail = e => String(e||'').trim().toLowerCase();
 
+function publicMemberName(n){ const w = String(n||'').trim().split(/\s+/); return w.length > 1 ? w[0] + ' ' + w[w.length-1].charAt(0).toUpperCase() + '.' : (w[0] || ''); }
 async function saveSection(key){
   try{
     if(key === 'giftCards'){
@@ -2167,7 +2201,7 @@ async function saveSection(key){
       const hashes = {};
       for(const m of STATE.memberships){ if(m && m.paid && m.email) hashes[await sha256Hex(normEmail(m.email))] = true; }
       await dbRequest('memberHashes', 'PUT', hashes);
-      STATE.memberNames = STATE.memberships.filter(m => m && m.paid && m.name).map(m => m.name);
+      STATE.memberNames = STATE.memberships.filter(m => m && m.paid && m.name).map(m => publicMemberName(m.name));
       await dbRequest('memberNames', 'PUT', STATE.memberNames);
     }
     if(key === 'equipmentLoans' && isAdmin()){
@@ -2198,7 +2232,7 @@ async function loadSection(key){
   }catch(err){ /* clé absente, accès réservé à l'admin ou hors-ligne : on garde les valeurs actuelles */ }
 }
 /* Ajout d'un élément par un visiteur (création seule, jamais de modification) */
-async function addItem(key, item){
+var addItem = async function addItemImpl(key, item){
   try{
     if(isLoggedIn() && !isAdmin()) item.uid = AUTH.uid;
     await dbRequest(encodeURIComponent(key), 'POST', item);
@@ -2557,7 +2591,7 @@ Object.assign(TRANSLATE_MAP, {
 "Nom du signataire": "Signatory's name",
 "Je signe en tant que parent/tuteur d'un mineur": "I am signing as the parent/guardian of a minor",
 "J'ai lu et j'accepte cette attestation. Taper mon nom ci-dessus vaut signature.": "I have read and accept this waiver. Typing my name above counts as my signature.",
-"Signature électronique simple (nom tapé + case cochée), suffisante pour un usage associatif courant mais non équivalente à une signature électronique qualifiée au sens juridique strict.": "Simple electronic signature (typed name + ticked box), sufficient for ordinary club use but not equivalent to a qualified electronic signature in the strict legal sense.",
+"Signature électronique simple (nom tapé + case cochée), suffisante pour un usage courant mais non équivalente à une signature électronique qualifiée au sens juridique strict.": "Simple electronic signature (typed name + ticked box), sufficient for ordinary club use but not equivalent to a qualified electronic signature in the strict legal sense.",
 "Aucun avis pour le moment": "No reviews yet",
 "🔒 Pour garantir de": "🔒 To guarantee",
 "vrais avis": "genuine reviews",
@@ -2773,6 +2807,9 @@ Object.assign(TRANSLATE_MAP, {
 "Impossible de publier : vous avez peut-être déjà laissé un avis.": "Unable to post: you may have already left a review.",
 "Indiquez un montant valide.": "Enter a valid amount.",
 "Indiquez votre nom et choisissez au moins un mode de notification.": "Enter your name and choose at least one notification method.",
+"Choisissez au moins un mode de notification.": "Choose at least one notification method.",
+"Prénom (facultatif)": "First name (optional)",
+"Votre prénom": "Your first name",
 "Inscription aux notifications enregistrée !": "Notification sign-up saved!",
 "Inscription confirmée !": "Registration confirmed!",
 "Merci ! Votre don sera remis sur place.": "Thank you! Your donation will be handed over on site.",
@@ -2847,6 +2884,8 @@ Object.assign(TRANSLATE_MAP, {
 });
 
 Object.assign(TRANSLATE_MAP, {"Les résultats seront publiés prochainement.":"Results will be published soon.","👁️ Aperçu visiteur":"👁️ Visitor preview","Revenir à l'édition":"Back to editing"});
+
+Object.assign(TRANSLATE_MAP, {"Commander avec obligation de paiement":"Order with obligation to pay","Aller au contenu":"Skip to content","Merci de cocher la case d'acceptation des conditions.":"Please tick the box to accept the conditions.","télécharger mes données":"download my data","supprimer mon compte":"delete my account","confidentialité":"privacy","Mentions légales":"Legal notice","Politique de confidentialité":"Privacy policy","Conditions d'utilisation":"Terms of use","Conditions de vente":"Terms of sale","Remboursement & rétractation":"Refunds & withdrawal","Cookies & stockage":"Cookies & storage"});
 
 /* ---- Moteur de traduction FR → EN ----
    - dictionnaire intégré (TRANSLATE_MAP) + traductions saisies par l'admin (i18nEn, onglet « Anglais »)
@@ -3168,8 +3207,18 @@ document.querySelectorAll('.nav-group-btn').forEach(btn => {
     const wasOpen = group.classList.contains('open');
     document.querySelectorAll('.nav-group').forEach(g => g.classList.remove('open'));
     if(!wasOpen) group.classList.add('open');
+    document.querySelectorAll('.nav-group-btn').forEach(b => b.setAttribute('aria-expanded', b.closest('.nav-group').classList.contains('open') ? 'true' : 'false'));
   });
 });
+document.querySelectorAll('.nav-group-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
+/* Associe automatiquement chaque libellé à son champ (lecteurs d'écran) */
+function linkLabels(root){
+  (root || document).querySelectorAll('.form-field').forEach(ff => {
+    const lab = ff.querySelector('label'), inp = ff.querySelector('input,select,textarea');
+    if(lab && inp && inp.id && !lab.htmlFor) lab.htmlFor = inp.id;
+  });
+}
+linkLabels();
 document.addEventListener('click', () => document.querySelectorAll('.nav-group').forEach(g => g.classList.remove('open')));
 
 /* ============================================================
@@ -4070,7 +4119,7 @@ document.getElementById('notifSubmitBtn').addEventListener('click', async () => 
   const phone = document.getElementById('notifPhone').value.trim();
   const wantEmail = document.getElementById('notifEmailCheck').checked;
   const wantSms = document.getElementById('notifSmsCheck').checked;
-  if(!name || (!wantEmail && !wantSms)){ showToast("Indiquez votre nom et choisissez au moins un mode de notification."); return; }
+  if(!wantEmail && !wantSms){ showToast("Choisissez au moins un mode de notification."); return; }
   if(wantEmail && !email){ showToast("Renseignez votre email pour être notifié par email."); return; }
   if(wantSms && !phone){ showToast("Renseignez votre téléphone pour être notifié par SMS."); return; }
   if(!await addItem('notifications', { name, email, phone, wantEmail, wantSms, date: new Date().toLocaleDateString('fr-FR') })) return;
@@ -4917,7 +4966,7 @@ function renderPeople(key){
   const e = escSearch;
   grid.innerHTML = list.map((f, i) => `
     <div class="founder-card" data-fidx="${i}">
-      <div class="founder-photo" data-action="founder-photo" style="${f.photo ? `background-image:url('${f.photo}')` : ''}" title="${EDIT_MODE ? 'Changer la photo' : ''}">${f.photo ? '' : e((f.name||'?').trim().charAt(0).toUpperCase())}</div>
+      <div class="founder-photo" data-action="founder-photo" ${f.photo ? `role="img" aria-label="Photo de ${e(f.name||'ce fondateur')}"` : 'aria-hidden="true"'} style="${f.photo ? `background-image:url('${f.photo}')` : ''}" title="${EDIT_MODE ? 'Changer la photo' : ''}">${f.photo ? '' : e((f.name||'?').trim().charAt(0).toUpperCase())}</div>
       ${EDIT_MODE ? `
         <input type="text" data-ffield="name" value="${e(f.name||'')}" placeholder="Prénom Nom">
         <input type="text" data-ffield="role" value="${e(f.role||'')}" placeholder="Poste (ex : Responsable boutique, pilote…)">
@@ -4937,7 +4986,7 @@ function openPersonPage(key, i){
   const f = (STATE[key] || [])[i]; if(!f) return;
   const e = escSearch;
   document.getElementById('personModal').innerHTML = `
-    <div class="founder-photo" style="${f.photo ? `background-image:url('${f.photo}')` : ''}">${f.photo ? '' : e((f.name||'?').trim().charAt(0).toUpperCase())}</div>
+    <div class="founder-photo" ${f.photo ? `role="img" aria-label="Photo de ${e(f.name||'ce membre')}"` : 'aria-hidden="true"'} style="${f.photo ? `background-image:url('${f.photo}')` : ''}">${f.photo ? '' : e((f.name||'?').trim().charAt(0).toUpperCase())}</div>
     <h3>${e(f.name||'')}</h3>
     ${f.role ? `<div class="founder-role">${e(f.role)}</div>` : ''}
     <div class="person-bio">${f.bio ? e(f.bio) : '<span style="color:var(--grey);">Sa présentation arrive bientôt.</span>'}</div>
@@ -4990,7 +5039,7 @@ function renderHistory(){
   if(footLink) footLink.style.display = (EDIT_MODE || hasContent) ? '' : 'none';
   if(document.activeElement !== titleEl) titleEl.textContent = h.title || 'Notre histoire';
   if(document.activeElement !== textEl) textEl.innerHTML = sanitizeHistoryHtml(h.text);
-  imgWrap.innerHTML = h.image ? `<img src="${h.image}" alt="">` : '';
+  imgWrap.innerHTML = h.image ? `<img src="${h.image}" alt="${escSearch((h.title || 'Notre histoire') + ' — illustration')}">` : '';
   imgWrap.style.display = h.image ? '' : 'none';
   const rm = document.getElementById('historyRemoveImgBtn');
   if(rm) rm.style.display = h.image ? '' : 'none';
@@ -5196,14 +5245,14 @@ function renderGallery(){
   grid.innerHTML = STATE.gallery.map((g, realIdx) => [g, realIdx]).filter(([g]) => galleryFilter==='all' || g.type===galleryFilter).map(([g, idx]) => {
     const filename = `moteau-${(g.tag||'photo').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-')}.jpg`;
     return `
-    <div class="gallery-item" data-idx="${idx}" style="${g.image?`background-image:url('${g.image}')`:''}">
+    <div class="gallery-item" data-idx="${idx}" ${g.image ? `role="img" aria-label="${escSearch((g.type==='video'?'Vidéo':'Photo')+' Mot\'eau — '+(g.tag||'galerie'))}"` : ''} style="${g.image?`background-image:url('${g.image}')`:''}">
       ${g.image ? '' : '<span class="empty-hint edit-only block">Cliquez pour ajouter une image</span>'}
       <span class="badge" data-editable data-field="tag">${g.tag}</span>
       ${g.image ? `<a class="gallery-dl-btn" href="${g.image}" download="${filename}" title="Télécharger" onclick="event.stopPropagation()">⬇</a>` : ''}
       ${g.type==='video' && g.image ? '<div class="play-mark"><div class="play-mark-bg"></div></div>' : ''}
       <div class="upload-overlay" data-action="upload">Changer l'image</div>
       <div class="gallery-controls edit-only">
-        <select data-action="type" style="background:var(--black); color:var(--cream); border:1px solid var(--line); font-size:0.72rem;">
+        <select data-action="type" aria-label="Type de séance" style="background:var(--black); color:var(--cream); border:1px solid var(--line); font-size:0.72rem;">
           <option value="photo" ${g.type==='photo'?'selected':''}>Photo</option>
           <option value="video" ${g.type==='video'?'selected':''}>Vidéo</option>
         </select>
@@ -5252,7 +5301,7 @@ document.getElementById('addGalleryBtn').addEventListener('click', () => {
 });
 const lightbox = document.getElementById('lightbox');
 function openLightbox(src){
-  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightboxImg').src = src; document.getElementById('lightboxImg').alt = 'Photo Mot\'eau en grand';
   const dl = document.getElementById('lightboxDownload');
   dl.href = src;
   dl.setAttribute('download', 'moteau-photo.jpg');
@@ -5413,7 +5462,7 @@ function renderProducts(){
   grid.innerHTML = pairs.map(([p, idx]) => {
     const imgs = p.images || [];
     const cur = Math.min(productImgIndex[idx] || 0, Math.max(imgs.length-1, 0));
-    const bg = imgs[cur] ? `background-image:url('${imgs[cur]}')` : '';
+    const bg = imgs[cur] ? `background-image:url('${imgs[cur]}')` : ''; const bgAlt = imgs[cur] ? `role="img" aria-label="${escSearch((p.name||'Produit')+' — photo '+(cur+1)+' sur '+imgs.length)}"` : 'aria-hidden="true"';
     const colors = p.colors || [];
     const sizes = p.sizes || [];
     const sel = productSelection[idx] || {};
@@ -5426,7 +5475,7 @@ function renderProducts(){
     const canBuy = stock !== 'stock_rupture' && stock !== 'stock_bientot' && !isConcept;
     return `
     <div class="product-card" data-idx="${idx}">
-      <div class="product-thumb" style="${bg}">
+      <div class="product-thumb" ${bgAlt} style="${bg}">
         <span class="stock-badge ${stock}">${stockInfo.short}</span>
         <button type="button" class="fav-heart ${isFav?'active':''}" data-action="toggle-fav" title="Ajouter aux favoris">${isFav?'♥':'♡'}</button>
         ${imgs.length ? '' : `<span>${(p.name||'??').slice(0,2).toUpperCase()}</span>`}
@@ -5899,7 +5948,7 @@ function renderCart(){
       const variantLabel = [line.color, line.size].filter(Boolean).join(' / ');
       return `
         <div class="cart-line">
-          <div class="cart-line-thumb" style="${(p.images&&p.images[0])?`background-image:url('${p.images[0]}')`:''}">${(p.images&&p.images[0])?'':`<span>${(p.name||'??').slice(0,2).toUpperCase()}</span>`}</div>
+          <div class="cart-line-thumb" aria-hidden="true" style="${(p.images&&p.images[0])?`background-image:url('${p.images[0]}')`:''}">${(p.images&&p.images[0])?'':`<span>${(p.name||'??').slice(0,2).toUpperCase()}</span>`}</div>
           <div class="cart-line-info">
             <h4>${p.name}${variantLabel?` <span style="color:var(--grey); font-weight:400;">— ${variantLabel}</span>`:''}</h4>
             <div class="qty-row"><button class="qty-btn" data-dec="${key}">−</button><span class="qty-val">${line.qty}</span><button class="qty-btn" data-inc="${key}">+</button></div>
@@ -6226,6 +6275,7 @@ async function renderAccountModal(){
       ${signup ? '<input type="text" id="accName" placeholder="Prénom et nom" autocomplete="name">' : ''}
       <input type="email" id="accEmail" placeholder="Adresse e-mail" autocomplete="username">
       <input type="password" id="accPassword" placeholder="Mot de passe${signup?' (6 caractères minimum)':''}" autocomplete="${signup?'new-password':'current-password'}">
+      ${signup ? `<label class="consent-row"><input type="checkbox" id="accAccept"><span>J'ai lu et j'accepte les ${LEGAL_LINKS.cgu} et la ${LEGAL_LINKS.conf}. Je confirme avoir 15 ans ou plus (ou l'accord de mes parents).</span></label>` : ''}
       <div class="pw-actions"><button class="btn btn-solid" id="accSubmit" style="flex:1;">${signup ? 'Créer mon compte' : 'Se connecter'}</button><button class="btn btn-ghost" id="accCancel" style="flex:1;">Fermer</button></div>
       ${signup ? '' : '<p style="margin:14px 0 0;"><button class="acc-link" id="accForgot">Mot de passe oublié ?</button></p>'}`;
     return;
@@ -6239,6 +6289,7 @@ async function renderAccountModal(){
     <div id="accPoints" style="margin-bottom:18px;"></div>
     <h4 style="margin-bottom:10px;">Mes inscriptions, commandes et documents</h4>
     <div id="accRecords"><p style="color:var(--grey);">Chargement…</p></div>
+    <p class="legal-note" style="margin-top:14px;">Vos droits : <button class="acc-link" id="accExport" type="button">télécharger mes données</button> · <button class="acc-link" id="accDelete" type="button">supprimer mon compte</button> · <a href="/confidentialite.html" target="_blank" rel="noopener">confidentialité</a></p>
     <div class="pw-actions" style="margin-top:16px;"><button class="btn btn-ghost" id="accLogout" style="flex:1;">Se déconnecter</button><button class="btn btn-solid" id="accCancel" style="flex:1;">Fermer</button></div>`;
   renderAccountModalPoints();
   let recs = [];
@@ -6267,6 +6318,8 @@ document.getElementById('accountOverlay').addEventListener('click', async e => {
     return;
   }
   if(e.target.id === 'accLogout'){ adminSignOut(); return; }
+  if(e.target.id === 'accExport'){ exportMyData(); return; }
+  if(e.target.id === 'accDelete'){ deleteMyAccount(); return; }
   if(e.target.id === 'accSaveProfile'){
     USER_PROFILE = { name: document.getElementById('accProfName').value.trim(), phone: document.getElementById('accProfPhone').value.trim() };
     try{ await dbRequest(`userProfiles/${AUTH.uid}`, 'PUT', USER_PROFILE); showToast('Infos enregistrées'); }
@@ -6285,6 +6338,7 @@ document.getElementById('accountOverlay').addEventListener('click', async e => {
     const email = normEmail(document.getElementById('accEmail').value);
     const password = document.getElementById('accPassword').value;
     if(!email || !password){ showToast("Entrez votre e-mail et votre mot de passe."); return; }
+    if(accountTab === 'signup' && !(document.getElementById('accAccept') || {}).checked){ showToast("Merci de cocher la case d'acceptation des conditions."); return; }
     e.target.disabled = true;
     try{
       if(accountTab === 'signup'){
@@ -7031,7 +7085,7 @@ function renderSponsors(){
   }
   grid.innerHTML = STATE.sponsors.map((s, idx) => `
     <div class="sponsor-card" data-idx="${idx}">
-      ${s.logo ? `<img src="${s.logo}" alt="${s.name||'Sponsor'}">` : `<span class="empty-hint">${s.name || 'Logo à ajouter'}</span>`}
+      ${s.logo ? `<img src="${s.logo}" alt="${escSearch('Logo ' + (s.name || 'du sponsor'))}">` : `<span class="empty-hint">${s.name || 'Logo à ajouter'}</span>`}
       <div class="sponsor-edit edit-only">
         <input type="text" data-field="name" value="${s.name||''}" placeholder="Nom du sponsor">
         <input type="text" data-field="url" value="${s.url||''}" placeholder="Lien (https://...)">
@@ -7167,8 +7221,8 @@ function lazyVideoHtml(url, poster){
   if(!info) return `<div class="tuto-novideo">${EDIT_MODE ? 'Ajoutez le lien de la vidéo' : 'Vidéo bientôt disponible'}</div>`;
   if(info.kind === 'link') return `<div class="tuto-novideo"><a href="${e(info.src)}" target="_blank" rel="noopener" style="color:var(--orange);">▶ Voir la vidéo</a></div>`;
   const bg = info.thumb || poster;
-  return `<button type="button" class="lazy-video ${info.tall ? 'tall' : ''}" data-lazysrc="${e(info.src)}" data-lazykind="${info.kind}" style="${bg ? `background-image:url('${e(bg)}')` : ''}" aria-label="Lire la vidéo">
-    <span class="lazy-play">▶</span><span class="lazy-label">${e(info.label)}</span></button>`;
+  return `<button type="button" class="lazy-video ${info.tall ? 'tall' : ''}" data-lazysrc="${e(info.src)}" data-lazykind="${info.kind}" style="${bg ? `background-image:url('${e(bg)}')` : ''}" >
+    <span class="lazy-play" aria-hidden="true">▶</span><span class="lazy-label">${e(info.label)}<span class="lazy-note">Au clic, la vidéo est chargée depuis ${e(info.label)}</span></span></button>`;
 }
 document.addEventListener('click', ev => {
   const b = ev.target.closest('.lazy-video'); if(!b) return;
@@ -7200,7 +7254,7 @@ function renderNews(){
     const long = String(n.text||'').length > 260 || String(n.text||'').split('\n').length > 5;
     const open = newsOpen.has(n.id);
     return `<article class="news-card ${n.published ? '' : 'draft'}" data-nid="${e(n.id)}">
-      ${n.image ? `<div class="news-img" style="background-image:url('${n.image}')"></div>` : ''}
+      ${n.image ? `<div class="news-img" role="img" aria-label="${e('Illustration : ' + (n.title || 'actualité'))}" style="background-image:url('${n.image}')"></div>` : ''}
       <div class="news-body">
         <div class="news-meta"><span>${e(fmtLongDate(n.ts))}</span>${n.pinned ? '<span class="news-badge">📌 À la une</span>' : ''}${n.published ? '' : '<span class="news-badge" style="color:var(--grey); border-color:var(--grey);">Brouillon</span>'}</div>
         <h3>${e(n.title || (EDIT_MODE ? '(sans titre)' : ''))}</h3>
@@ -7432,7 +7486,7 @@ const pilotKey = name => normSearch(name).replace(/[^a-z0-9]+/g, '-').replace(/^
 const pilotProfileOf = name => (STATE.pilotProfiles && !Array.isArray(STATE.pilotProfiles) && STATE.pilotProfiles[pilotKey(name)]) || {};
 function pilotAvatar(name, big){
   const pr = pilotProfileOf(name);
-  return `<span class="pilot-av" style="${pr.photo ? `background-image:url('${pr.photo}')` : ''}">${pr.photo ? '' : escSearch((name || '?').trim().charAt(0).toUpperCase())}</span>`;
+  return `<span class="pilot-av" aria-hidden="true" style="${pr.photo ? `background-image:url('${pr.photo}')` : ''}">${pr.photo ? '' : escSearch((name || '?').trim().charAt(0).toUpperCase())}</span>`;
 }
 const pilotLinkHtml = name => `<span class="pilot-link" data-pilot="${escSearch(name)}">${escSearch(name)}</span>`;
 function allPilotNames(){
@@ -7583,7 +7637,7 @@ function renderContests(){
         const n = st.counts[o.id] || 0, pct = st.total ? Math.round(n / st.total * 100) : 0;
         const win = !c.open && st.total > 0 && n === st.max;
         return `<div class="contest-opt ${win ? 'win' : ''} ${mine && mine.opt === o.id ? 'mine' : ''}" data-oid="${e(o.id)}">
-          <div class="contest-opt-img" style="${o.image ? `background-image:url('${o.image}')` : ''}">${o.image ? '' : e((o.label || '?').charAt(0).toUpperCase())}</div>
+          <div class="contest-opt-img" ${o.image ? `role="img" aria-label="${e('Photo : ' + (o.label || 'option'))}"` : 'aria-hidden="true"'} style="${o.image ? `background-image:url('${o.image}')` : ''}">${o.image ? '' : e((o.label || '?').charAt(0).toUpperCase())}</div>
           <div class="contest-opt-body">
             <div class="contest-opt-label">${win ? '🏆 ' : ''}${e(o.label || (EDIT_MODE ? '(option)' : ''))}${mine && mine.opt === o.id ? ' <span class="news-badge">Ton vote</span>' : ''}</div>
             ${o.video ? `<div class="tuto-video" style="aspect-ratio:16/9;">${lazyVideoHtml(o.video, o.image)}</div>` : ''}
@@ -7993,6 +8047,79 @@ document.getElementById('prosList').addEventListener('input', e => {
 });
 
 
+
+/* ============================================================
+   CONFORMITÉ — acceptation des conditions, informations aux formulaires, droits RGPD
+   (textes détaillés : pages /confidentialite.html, /cgv.html, /remboursement.html, /cgu.html)
+   ============================================================ */
+const LEGAL_VERSION = '2026-10-17';
+const LEGAL_LINKS = { cgv:'<a href="/cgv.html" target="_blank" rel="noopener">conditions de vente</a>', remb:'<a href="/remboursement.html" target="_blank" rel="noopener">politique de remboursement et de rétractation</a>', conf:'<a href="/confidentialite.html" target="_blank" rel="noopener">politique de confidentialité</a>', cgu:'<a href="/cgu.html" target="_blank" rel="noopener">conditions d\'utilisation</a>' };
+const CONSENT_TARGETS = {
+  cartCheckoutBtn:   `J'ai lu et j'accepte les ${LEGAL_LINKS.cgv} et la ${LEGAL_LINKS.remb}.`,
+  memSubmitBtn:      `J'ai lu et j'accepte les ${LEGAL_LINKS.cgv}. Je demande que mon adhésion commence immédiatement : si je me rétracte dans les 14 jours, je paierai la part correspondant à la période écoulée (voir la ${LEGAL_LINKS.remb}).`,
+  regSubmitBtn:      `J'ai lu et j'accepte les ${LEGAL_LINKS.cgv}. Je note qu'une activité à date fixe n'ouvre pas de droit de rétractation (voir la ${LEGAL_LINKS.remb}).`,
+  loanSubmitBtn:     `J'ai lu et j'accepte les ${LEGAL_LINKS.cgv}.`,
+  giftCustomBuyBtn:  `J'ai lu et j'accepte les ${LEGAL_LINKS.cgv} et la ${LEGAL_LINKS.remb}.`
+};
+function injectLegalUI(){
+  Object.entries(CONSENT_TARGETS).forEach(([btnId, html]) => {
+    const btn = document.getElementById(btnId); if(!btn || btn.dataset.consentDone) return; btn.dataset.consentDone = '1';
+    const row = document.createElement('label'); row.className = 'consent-row';
+    row.innerHTML = `<input type="checkbox" data-consent="${btnId}" required><span>${html}</span>`;
+    btn.parentNode.insertBefore(row, btn);
+  });
+  const reg = document.getElementById('regSubmitBtn');
+  if(reg && !document.getElementById('regImageOk')){
+    const row = document.createElement('label'); row.className = 'consent-row';
+    row.innerHTML = `<input type="checkbox" id="regImageOk"><span>(Facultatif) J'autorise le club à publier des photos et vidéos de ma participation sur son site et ses réseaux. Je peux retirer cet accord à tout moment.</span>`;
+    reg.parentNode.insertBefore(row, reg.previousElementSibling || reg);
+  }
+  const notes = {
+    notifSubmitBtn: `Votre e-mail ou numéro sert uniquement à vous envoyer les nouveautés du club. Désinscription à tout moment en nous écrivant. Voir la ${LEGAL_LINKS.conf}.`,
+    waiverSubmitBtn: `Ces informations servent à gérer la sécurité des activités et sont conservées 10 ans. Voir la ${LEGAL_LINKS.conf}.`,
+    reviewSubmitBtn: `Votre avis (nom affiché + texte) sera public. Vous pouvez demander sa suppression à tout moment. Voir la ${LEGAL_LINKS.conf}.`,
+    freeDonBtn: `Les dons sont volontaires. Les informations saisies servent à vous remettre un reçu. Voir la ${LEGAL_LINKS.conf}.`
+  };
+  Object.entries(notes).forEach(([id, html]) => { const b = document.getElementById(id); if(b && !b.dataset.noteDone){ b.dataset.noteDone = '1'; const p = document.createElement('p'); p.className = 'legal-note'; p.innerHTML = html; b.parentNode.insertBefore(p, b.nextSibling); } });
+}
+/* On bloque l'envoi tant que la case n'est pas cochée (avant tout autre traitement) */
+document.addEventListener('click', ev => {
+  const btn = ev.target.closest('button'); if(!btn) return;
+  const id = btn.id || (btn.closest('#giftCardTiers') ? 'giftCustomBuyBtn' : '');
+  if(!CONSENT_TARGETS[id]) return;
+  const cb = document.querySelector(`input[data-consent="${id}"]`);
+  if(cb && !cb.checked){ ev.preventDefault(); ev.stopImmediatePropagation(); showToast("Merci de cocher la case d'acceptation des conditions."); cb.focus(); }
+}, true);
+/* Preuve d'acceptation + autorisation d'image conservées avec la demande */
+const _addItemBase = addItem;
+addItem = async function(key, item){
+  if(['orders','registrations','memberships','equipmentLoans'].includes(key)) item.consent = { v: LEGAL_VERSION, ts: Date.now() };
+  if(key === 'registrations'){ const c = document.getElementById('regImageOk'); item.imageOk = !!(c && c.checked); }
+  return _addItemBase(key, item);
+};
+
+/* Droits RGPD : télécharger ses données / supprimer son compte */
+async function exportMyData(){
+  let recs = {}; try{ recs = await dbRequest(`userRecords/${AUTH.uid}`, 'GET') || {}; }catch(err){}
+  let loy = {}; try{ loy = await dbRequest(`loyalty/${AUTH.uid}`, 'GET') || {}; }catch(err){}
+  const data = { exporte_le: new Date().toISOString(), email: AUTH.email, profil: USER_PROFILE || {}, inscriptions_commandes_documents: recs, fidelite: loy };
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type:'application/json' }));
+  a.download = 'mes-donnees-moteau.json'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+async function deleteMyAccount(){
+  if(!isLoggedIn() || isAdmin()) return;
+  if(!confirm("Supprimer définitivement votre compte ?\n\nVotre profil, votre avis et la copie de vos documents dans « Mon compte » seront effacés. Les factures et justificatifs que le club doit légalement conserver (10 ans) restent archivés, sans lien avec un compte. Cette action est irréversible.")) return;
+  const uid = AUTH.uid, idToken = AUTH.idToken;
+  try{
+    await dbRequest(`userProfiles/${uid}`, 'DELETE');
+    await dbRequest(`userRecords/${uid}`, 'DELETE');
+    try{ await dbRequest(`reviews/${uid}`, 'DELETE'); }catch(err){}
+    await identityCall('delete', { idToken });
+  }catch(err){ showToast("La suppression n'a pas pu aboutir — écrivez-nous et nous la ferons pour vous."); return; }
+  try{ localStorage.removeItem('moteau_voter'); }catch(err){}
+  adminSignOut();
+}
+
 async function init(){
   await restoreAdminSession();
   await loadAll();
@@ -8022,7 +8149,7 @@ async function init(){
   renderHistory();
   renderGallery();
   renderTutorials();
-  renderNews(); renderCountdown(); renderLoyalty(); renderRuns(); renderPilotDirectory(); applyResultsHidden(); renderProspection();
+  renderNews(); renderCountdown(); renderLoyalty(); renderRuns(); renderPilotDirectory(); applyResultsHidden(); renderProspection(); injectLegalUI();
   await Promise.all([loadPolls(), loadVotes()]);
   renderContests();
   renderProducts();
