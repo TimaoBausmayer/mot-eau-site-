@@ -693,7 +693,12 @@ $("vat-note").textContent = vatNote;
     top.hidden = y < innerHeight*1.5;
     const cmd = $("commande").getBoundingClientRect(), nearCmd = cmd.top < innerHeight && cmd.bottom > 0;
     m.hidden = !(innerWidth <= 760 && y > heroEnd() && !nearCmd && $("cartbar").hidden && !lbIsOpen());
-    document.body.classList.toggle("has-mcta", !m.hidden); };
+    document.body.classList.toggle("has-mcta", !m.hidden);
+    /* téléphone, pendant la commande : le total reste visible en bas tant que le récapitulatif n'est pas à l'écran */
+    const sb = $("sumbar"), sm = document.querySelector("#commande .summary");
+    if (sb && sm) { const r = sm.getBoundingClientRect(), smVis = r.top < innerHeight - 40 && r.bottom > 0;
+      sb.hidden = !(innerWidth <= 760 && nearCmd && cmd.top < innerHeight*.5 && !smVis && !lbIsOpen()); if (!sb.hidden) $("sb-total").textContent = $("total").textContent; } };
+  if ($("sb-go")) $("sb-go").onclick = () => { const sm = document.querySelector("#commande .summary"); if (sm) sm.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"}); };
   addEventListener("scroll", ()=>{ if(!t) t = requestAnimationFrame(tick); }, {passive:true}); addEventListener("resize", tick); tick();
   top.onclick = ()=>scrollTo({top:0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
   /* menu : la rubrique en cours s'allume */

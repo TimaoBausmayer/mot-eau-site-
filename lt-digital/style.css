@@ -1574,3 +1574,12 @@ body.menu-open .nav{z-index:1000}
 .faq-more a{color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px}
 /* vidéo en tête : le téléphone tient toujours entier dans l'écran (portables 1280×720, 1366×768…) */
 @media(min-width:961px){.vid-phone.in-hero{align-self:start;margin-top:8px;width:min(330px,calc((100svh - 250px) * .5625 + 20px))}}
+/* téléphone, pendant la commande : barre du total */
+.sumbar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:58;display:flex;align-items:center;gap:10px;padding:8px 8px 8px 20px;border-radius:999px;
+  background:rgba(16,15,26,.94);border:1px solid rgba(255,255,255,.12);box-shadow:0 18px 40px -12px rgba(0,0,0,.7);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);animation:menuIn .3s cubic-bezier(.2,.8,.2,1)}
+.sumbar .sb-t{display:flex;flex-direction:column;line-height:1.1;margin-right:auto}
+.sumbar small{font:500 .72rem var(--mono);text-transform:uppercase;letter-spacing:.06em;color:#b9bbcc}
+.sumbar b{font:800 1.35rem var(--hf);color:var(--accent);letter-spacing:-.02em}
+.sumbar .btn{padding:12px 18px;font-size:.9rem;white-space:nowrap}
+@media(min-width:761px){.sumbar{display:none!important}}
+@media(prefers-reduced-motion:reduce){.sumbar{animation:none}}
