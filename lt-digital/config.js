@@ -10,6 +10,7 @@ window.SITE_CONFIG = {
   siteUrl: "https://l-t-digital.vercel.app",   /* adresse du site (sert au plan du site et au résumé pour les IA) */
   brand: "L&T Digital",
   tagline: "Création & modernisation de sites web",
+  seoTitle: "L&T Digital — Ton site internet dès 85 €, prêt en 48 à 72 h", // titre de l'onglet et dans Google
   logo: "images/logo-small.jpg",          // petit logo (barre du haut)
   logoBig: "images/logo.jpg",             // grand logo (pied de page)
   accent: "#c8ff3e",                      // vert citron (couleur principale du site)

@@ -27,7 +27,7 @@ document.documentElement.style.setProperty("--accent2", C.accent2);
 /* texte posé sur la couleur principale : foncé si la couleur est claire, blanc sinon */
 (function(){ const m = String(C.accent||"").match(/^#?([0-9a-f]{6})$/i); if (!m) return; const n = parseInt(m[1],16), L = (.299*(n>>16) + .587*(n>>8&255) + .114*(n&255))/255;
   document.documentElement.style.setProperty("--on-accent", L > .6 ? "#0a0912" : "#fff"); })();
-document.title = C.brand + " — " + C.tagline;
+document.title = C.seoTitle || (C.brand + " — " + C.tagline);
 
 /* en-tête */
 
