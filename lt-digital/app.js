@@ -702,7 +702,7 @@ $("vat-note").textContent = vatNote;
   addEventListener("scroll", ()=>{ if(!t) t = requestAnimationFrame(tick); }, {passive:true}); addEventListener("resize", tick); tick();
   top.onclick = ()=>scrollTo({top:0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
   /* menu : la rubrique en cours s'allume */
-  const links = [...document.querySelectorAll('.links a[href^="#"]')], map = new Map();
+  const links = [...document.querySelectorAll('.links a[href^="#"]:not(.menu-cta)')], map = new Map();
   links.forEach(a=>{ const s = document.querySelector(a.getAttribute("href")); if (s) map.set(s, a); });
   if ("IntersectionObserver" in window) { const io = new IntersectionObserver(es=>es.forEach(e=>{ const a = map.get(e.target); if (a && e.isIntersecting){ links.forEach(l=>l.classList.remove("on")); a.classList.add("on"); } }), {rootMargin:"-45% 0px -50% 0px"});
     map.forEach((a,s)=>io.observe(s)); }
@@ -775,7 +775,7 @@ $("vat-note").textContent = vatNote;
   if (T.final_kicker) $("final-kicker").lastChild.textContent = T.final_kicker;
   const fin = $("final"); if (!still && matchMedia("(hover:hover) and (pointer:fine)").matches) fin.addEventListener("pointermove", e=>{ const r = fin.getBoundingClientRect(); fin.style.setProperty("--fx", (e.clientX-r.left)+"px"); fin.style.setProperty("--fy", (e.clientY-r.top)+"px"); });
   /* pied de page : colonnes de liens */
-  $("f-nav").innerHTML = [...document.querySelectorAll('.links a[href^="#"]')].filter(a=>!a.hidden).map(a=>`<a href="${a.getAttribute("href")}">${esc(a.textContent)}</a>`).join("");
+  $("f-nav").innerHTML = [...document.querySelectorAll('.links a[href^="#"]')].filter(a=>!a.hidden && !a.classList.contains("menu-cta")).map(a=>`<a href="${a.getAttribute("href")}">${esc(a.textContent)}</a>`).join("");
   const sv = [`<a href="#tarifs">${esc(T.f_sites||"Sites internet")}</a>`, `<a href="#tarifs" data-cmp>${esc(T.f_refonte||"Refonte de site")}</a>`].concat(SV ? groupsOf(SI).map(g=>`<a href="#services" data-g="${esc(g)}">${esc(g)}</a>`) : []);
   $("f-svc").innerHTML = sv.join("");
   $("f-svc").addEventListener("click", e=>{ const a = e.target.closest("[data-g]"); if (a){ svTab = a.dataset.g; drawSvcs(); } });
@@ -845,10 +845,10 @@ $("vat-note").textContent = vatNote;
   tg.addEventListener("click", e=>{ e.stopPropagation(); const o = dd.classList.toggle("open"); tg.setAttribute("aria-expanded", o); });
   document.addEventListener("click", e=>{ if (!dd.contains(e.target)) close(); });
   document.addEventListener("keydown", e=>{ if (e.key==="Escape") close(); });
-  menu.addEventListener("click", e=>{ const b = e.target.closest("button,a"); if (!b) return; close(); $("links").classList.remove("open");
+  menu.addEventListener("click", e=>{ const b = e.target.closest("button,a"); if (!b) return; close(); menuSet(false);
     if (b.dataset.go){ e.preventDefault(); $(b.dataset.go).scrollIntoView({behavior:"smooth"}); }
     else if (b.dataset.g){ svTab = b.dataset.g; drawSvcs(); $("services").scrollIntoView({behavior:"smooth"}); } }); })();
-document.querySelectorAll(".links a.nq[data-g]").forEach(a=>a.addEventListener("click", e=>{ const g = a.dataset.g; if (!SV || !SI.some(it=>aGroup(it)===g)) return; e.preventDefault(); $("links").classList.remove("open"); svTab = g; drawSvcs(); $("services").scrollIntoView({behavior:"smooth"}); }));
+document.querySelectorAll(".links a.nq[data-g]").forEach(a=>a.addEventListener("click", e=>{ const g = a.dataset.g; if (!SV || !SI.some(it=>aGroup(it)===g)) return; e.preventDefault(); menuSet(false); svTab = g; drawSvcs(); $("services").scrollIntoView({behavior:"smooth"}); }));
 
 /* ---------- nos designs de logos ---------- */
 (function(){ const L = C.logos || {}, list = (L.items||[]).filter(x=>x && x.image); if (!list.length) return;
