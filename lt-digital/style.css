@@ -1593,3 +1593,11 @@ body.menu-open .nav{z-index:1000}
   .addon .aprice strong{font-size:.86rem;white-space:nowrap}
   .addon .add-btn{padding:7px 12px;font-size:.8rem}
 }
+/* téléphone : les 4 garanties sur 2 colonnes compactes */
+@media(max-width:560px){
+  .guar{grid-template-columns:1fr 1fr!important;gap:10px}
+  .guar .g{padding:14px 13px!important}
+  .guar .g .h4{font-size:.95rem;line-height:1.25}
+  .guar .g p{font-size:.82rem;line-height:1.45}
+  .guar .g-ic{margin-bottom:8px}
+}
