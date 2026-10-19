@@ -1,0 +1,47 @@
+<!doctype html>
+<!-- Image de partage (1200×630) — régénérer : node tools/og-render.js (serveur local sur 127.0.0.1:8123) -->
+<html lang="fr"><head><meta charset="utf-8"><link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+*{box-sizing:border-box;margin:0}
+body{width:1200px;height:630px;overflow:hidden;background:#0a0912;color:#f2f3fb;font-family:'Hanken Grotesk',sans-serif;position:relative}
+.bg{position:absolute;inset:0;background:
+ radial-gradient(520px 380px at 12% 8%,rgba(122,92,255,.45),transparent 70%),
+ radial-gradient(560px 420px at 92% 18%,rgba(34,184,255,.28),transparent 70%),
+ radial-gradient(520px 360px at 70% 105%,rgba(200,255,62,.16),transparent 70%)}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse at 30% 40%,#000 30%,transparent 75%)}
+.l{position:absolute;left:64px;top:56px;width:640px}
+.brand{display:flex;align-items:center;gap:14px;font:700 26px 'Bricolage Grotesque';letter-spacing:-.02em}
+.brand img{width:56px;height:56px;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,.12)}
+.kick{display:inline-flex;align-items:center;gap:10px;margin-top:40px;padding:8px 16px;border:1px solid rgba(255,255,255,.16);border-radius:999px;font:500 15px 'DM Mono';letter-spacing:.06em;text-transform:uppercase;color:#d9dbe8}
+.kick i{width:9px;height:9px;border-radius:50%;background:#c8ff3e;box-shadow:0 0 12px #c8ff3e}
+h1{margin-top:22px;font:800 76px/0.98 'Bricolage Grotesque';letter-spacing:-.045em}
+h1 em{display:block;font:italic 400 84px/1 'Instrument Serif';letter-spacing:-.01em;background:linear-gradient(90deg,#c8ff3e,#8fa2ff 60%,#5eead4);-webkit-background-clip:text;color:transparent;padding-bottom:6px}
+.u{height:6px;width:520px;border-radius:6px;background:#c8ff3e;margin-top:4px;box-shadow:0 0 18px rgba(200,255,62,.6)}
+.chips{display:flex;gap:12px;margin-top:30px}
+.chip{padding:12px 20px;border-radius:999px;font:700 21px 'Hanken Grotesk';border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05)}
+.chip.on{background:#c8ff3e;color:#0a0912;border-color:#c8ff3e}
+.r{position:absolute;right:-40px;top:70px;width:560px;height:520px;perspective:1600px}
+.win{position:absolute;border-radius:14px;overflow:hidden;background:#111;box-shadow:0 40px 80px -20px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.1)}
+.win .bar{height:30px;background:#1b1a24;display:flex;align-items:center;gap:7px;padding:0 12px}
+.win .bar i{width:10px;height:10px;border-radius:50%}
+.win .bar i:nth-child(1){background:#ff5f57}.win .bar i:nth-child(2){background:#febc2e}.win .bar i:nth-child(3){background:#28c840}
+.win img{display:block;width:100%}
+.w1{width:470px;left:60px;top:0;transform:rotateY(-14deg) rotateX(4deg)}
+.w2{width:430px;left:0;top:220px;transform:rotateY(-14deg) rotateX(4deg)}
+.ph{position:absolute;left:360px;top:250px;width:150px;height:300px;border-radius:26px;border:7px solid #15131f;overflow:hidden;background:#000;box-shadow:0 30px 60px -10px rgba(0,0,0,.85),0 0 60px -10px rgba(200,255,62,.45)}
+.ph img{width:100%;height:100%;object-fit:cover;object-position:top}
+</style></head><body>
+<div class="bg"></div><div class="grid"></div>
+<div class="l">
+  <div class="brand"><img src="../images/logo-small.jpg" alt="">L&amp;T Digital</div>
+  <div class="kick"><i></i>On crée ton site internet</div>
+  <h1>Le site qui fait venir <em>de nouveaux clients.</em></h1>
+  <div class="u"></div>
+  <div class="chips"><span class="chip on">Dès 85 €</span><span class="chip">Prêt en 48 à 72 h</span><span class="chip">Prix écrit à l'avance</span></div>
+</div>
+<div class="r">
+  <div class="win w1"><div class="bar"><i></i><i></i><i></i></div><img src="../images/portfolio/restaurant.jpg" alt=""></div>
+  <div class="win w2"><div class="bar"><i></i><i></i><i></i></div><img src="../images/portfolio/boutique.jpg" alt=""></div>
+  <div class="ph"><img src="../images/portfolio/coach-mobile.jpg" alt=""></div>
+</div>
+</body></html>
