@@ -444,8 +444,9 @@ window.SITE_CONFIG = {
 
   /* ---------- FAQ ---------- */
   faq: [
-    { q: "Combien de temps pour avoir mon site ?", a: "Ton site est prêt en {delivery}. Ça dépend du site que tu choisis et de la vitesse à laquelle tu nous réponds." },
+    { q: "Combien de temps pour avoir mon site ?", a: "En {delivery} pour la plupart des sites. Pour refaire un site ou un projet sur mesure, on te dit le délai avant de commencer. Plus tu nous réponds vite, plus c'est rapide." },
     { q: "Comment je paie ?", a: "Tu paies une partie au début (l'acompte). Le reste, tu le paies quand ton site te plaît. On t'explique comment payer quand on discute." },
+    { q: "Le site et le logo sont à moi ?", a: "Oui. Une fois tout payé, ce qu'on a créé pour toi (site, logo, vidéos, visuels) est à toi, pour ton activité. C'est écrit dans nos conditions de vente (article 10)." },
     { q: "Je veux juste un logo ou de l'aide sur mes réseaux. C'est possible ?", a: "Oui. Dans la commande, choisis « Pas de site », puis ce que tu veux (photos, logo, affiches, réseaux…). L'aide pour les réseaux se paie chaque mois." },
     { q: "Je n'ai pas de belles photos. C'est grave ?", a: "Non. On peut venir faire tes photos, ou arranger celles que tu as, ou te donner de belles photos en attendant (voir « Photos & vidéo »)." },
     { q: "Je peux demander des changements ?", a: "Oui. Chaque site inclut des changements gratuits. Après la livraison, l'option « On s'occupe de ton site » permet d'en faire d'autres." },
