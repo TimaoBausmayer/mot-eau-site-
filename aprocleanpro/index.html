@@ -153,7 +153,7 @@ nav.menu .m-cta a::after{display:none}
 .qbtn:hover::after{transform:translateX(3px)}
 
 .hero-visual{position:relative;width:100%;max-width:520px;aspect-ratio:5/6;justify-self:end}
-.hero-art{position:absolute;inset:0;border-radius:8%/6.667%;box-shadow:0 36px 60px -30px rgba(20,47,100,.42)}
+.hero-art{position:absolute;inset:0;border-radius:3.2%/2.667%;box-shadow:0 36px 60px -30px rgba(20,47,100,.42)}
 .off,.off *{animation-play-state:paused!important}
 .hero-visual:has(.hero-photo img[src]:not([src=""])) .hero-art{display:none}
 .hero-art .scene{position:absolute;inset:0;width:100%;height:100%}
@@ -343,8 +343,8 @@ dialog.lb button{position:absolute;top:8px;right:8px;z-index:1;width:46px;height
 .next{margin-top:30px;padding:22px 24px;border-radius:18px;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
 .next-t{font-family:var(--display);font-weight:700;font-size:1.12rem;margin-bottom:14px}
 .next ol{list-style:none;counter-reset:nx;display:grid;gap:12px}
-.next li{counter-increment:nx;position:relative;padding-left:40px;color:var(--on-dark);line-height:1.45}
-.next li::before{content:counter(nx);position:absolute;left:0;top:-3px;width:28px;height:28px;border-radius:50%;background:var(--sky);color:var(--ink);font:800 .85rem/28px var(--sans);text-align:center}
+.next li{counter-increment:nx;position:relative;padding-left:24px;color:var(--on-dark);line-height:1.45}
+.next li::before{content:counter(nx) ".";position:absolute;left:0;top:0;font-weight:800;color:#fff}
 .fbox{position:relative}
 form.devis{background:#fff;color:var(--ink);border-radius:26px;padding:34px;box-shadow:0 44px 90px -44px rgba(0,0,0,.65);transition:opacity .45s,transform .45s var(--ease)}
 form.devis.sent{opacity:0;transform:translateY(12px);visibility:hidden}
@@ -543,6 +543,64 @@ nav.menu .sub a::after{display:none}
   nav.menu .sub a:hover,nav.menu .sub a[aria-current=true]{background:var(--mist);color:var(--blue)}
 }
 
+
+/* ---------- Style sobre (« moins IA ») : fonds unis, coins discrets, pas d'effets de verre ni de lueurs ---------- */
+:root{--r:10px;--shadow:0 18px 40px -28px rgba(15,30,51,.45)}
+h1,h2,h3{letter-spacing:-.018em}
+h1{font-weight:700;letter-spacing:-.025em}
+.btn{border-radius:10px;box-shadow:none!important}
+.btn-navy:hover,.btn-sky:hover,.btn-ghost:hover{transform:none}
+.btn .ar{display:none}
+.qbtn,.tags li,.chips li,.opt,.pills .opt{border-radius:8px}
+.qbtn::after{content:none}
+.pill-k{padding:0;background:none;box-shadow:none;font-weight:700;color:var(--muted);text-transform:none;letter-spacing:0}
+.hero{background:#f3f7fb;padding-bottom:84px}
+.hero h1{font-size:clamp(2.2rem,4.6vw,3.6rem);max-width:640px}
+.quick{border-top:0;padding-top:0;margin-top:30px}
+.quick-t{font-family:var(--sans);font-size:.95rem;font-weight:700;color:var(--muted)}
+.hero-photo{border-radius:16px}
+.srv{box-shadow:inset 0 0 0 1px var(--line);border-radius:12px}
+.srv:hover{transform:none;box-shadow:inset 0 0 0 1px var(--ink)}
+.srv-ic{width:auto;height:auto;background:none;border-radius:0;justify-content:start;place-items:start;margin-bottom:2px}
+.srv-ic svg{width:40px;height:40px}
+.srv:hover .srv-ic{transform:none}
+.steps{gap:40px}
+.steps::before{display:none}
+.step{text-align:left;padding:24px 0 0;border-top:2px solid var(--ink)}
+.step .num{width:auto;height:auto;margin:0 0 10px;border-radius:0;background:none;box-shadow:none;display:block;place-items:normal}
+.step .num::after{position:static;display:block;width:auto;height:auto;border-radius:0;background:none;color:var(--blue);font:700 2.6rem/1 var(--display);text-align:left}
+.step p{margin:0;max-width:none}
+.steps-cta{justify-content:flex-start}
+.why::before,.contact::before,.pg-cta::before{display:none}
+.contact{background:var(--navy)}
+.why .lead{max-width:520px}
+.ben{padding:22px 0 0;border-radius:0;background:none;box-shadow:none;border-top:2px solid rgba(255,255,255,.35)}
+.ben:hover{background:none;transform:none}
+.next{background:none;box-shadow:none;border-top:1px solid rgba(255,255,255,.2);border-radius:0;padding:22px 0 0}
+.qa{border-radius:10px}
+.qa.open{box-shadow:inset 0 0 0 2px var(--ink)}
+.qa .x{border-radius:8px}
+.help-card,.map,form.devis,.ok{border-radius:14px}
+.task,.val{border-radius:12px;box-shadow:inset 0 0 0 1px var(--line)}
+.val{padding:24px 24px 26px}
+.pg-hero{background:#f3f7fb}
+.pg-art,.pg-photo{border-radius:16px}
+.pg-art{background:#dcecf8}
+.pg-art::before,.pg-art::after{display:none}
+.pg-art svg{filter:none;animation:none}
+.pg-note{border-radius:8px}
+.ed-btn{border-radius:10px}
+#bar{display:none}
+#up svg{display:none}
+#up{border-radius:10px}
+.js .rv{transform:translateY(16px);transition-duration:.7s}
+.js .sp:not(#h-hero) .wi{transform:none;transition:none}
+.js .sp:not(#h-hero){opacity:0;transform:translateY(14px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.js .sp.in:not(#h-hero){opacity:1;transform:none}
+.calm .sp,body.editing .sp{opacity:1!important;transform:none!important}
+@media(prefers-reduced-motion:reduce){.js .sp{opacity:1!important;transform:none!important}}
+@media(max-width:640px){.steps{gap:28px}.steps .step{display:block;padding-top:20px}.steps .step h3{margin:0 0 6px}}
+
 /* ---------- Impression ---------- */
 @media print{
   header.top,#bar,#up,.callbar,.ed-btn,.skip,.hero-visual,.map,.quick,.calm-btn,.f-bar,.burger{display:none!important}
@@ -735,17 +793,14 @@ body.editing .chips{row-gap:44px;padding-top:40px}
   <div class="wrap">
     <div class="hero-grid">
       <div>
-        <p class="pill-k rv"><span class="live" aria-hidden="true"></span><span data-e="">Entreprise de nettoyage professionnel</span><span data-if="zone" hidden="">&nbsp;· <span data-k="zone" class="missing">[à compléter]</span></span></p>
-        <h1 id="h-hero" class="sp" data-e="">Vos locaux impeccables, <em class="hl">sans vous en occuper.</em></h1>
-        <p class="lead rv" style="--d:.35s" data-e="">Bureaux, commerces, logements, vitres, fins de chantier : nous nettoyons à l'heure qui vous arrange, avec notre matériel et des produits professionnels.</p>
+        <p class="pill-k rv"><span data-e="">Entreprise de nettoyage professionnel</span><span data-if="zone" hidden="">&nbsp;· <span data-k="zone" class="missing">[à compléter]</span></span></p>
+        <h1 id="h-hero" class="sp" data-e="">Nettoyage de bureaux, commerces et logements</h1>
+        <p class="lead rv" style="--d:.35s" data-e="">Nous intervenons tôt le matin, le soir ou le samedi, avec notre matériel et nos produits. Vitres, fins de chantier et copropriétés aussi. Devis gratuit et sans engagement.</p>
         <div class="cta rv" style="--d:.5s">
-          <a href="#contact" class="btn btn-navy mg"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
-          <a href="#contact" class="btn btn-ghost mg" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a>
-          <a href="#services" class="btn btn-ghost mg" data-ifnot="tel"><span data-e="">Voir nos services</span></a>
+          <a href="#contact" class="btn btn-navy"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
+          <a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a>
+          <a href="#services" class="btn btn-ghost" data-ifnot="tel"><span data-e="">Voir nos services</span></a>
         </div>
-        <ul class="ticks rv" style="--d:.6s">
-          <li data-e="">Devis gratuit</li><li data-e="">Sans engagement</li><li data-e="">Matériel fourni</li>
-        </ul>
         <div class="quick rv" style="--d:.7s">
           <p class="quick-t" id="quick-t" data-e="">Que faut-il nettoyer ?</p>
           <div class="quick-list" id="quick-list" role="group" aria-labelledby="quick-t"><a class="qbtn" href="#contact" data-svc="Bureaux &amp; commerces">Bureaux &amp; commerces</a><a class="qbtn" href="#contact" data-svc="Logements &amp; particuliers">Logements &amp; particuliers</a><a class="qbtn" href="#contact" data-svc="Vitres &amp; vitrines">Vitres &amp; vitrines</a><a class="qbtn" href="#contact" data-svc="Fin de chantier">Fin de chantier</a><a class="qbtn" href="#contact" data-svc="Remise en état">Remise en état</a><a class="qbtn" href="#contact" data-svc="Copropriétés">Copropriétés</a></div>
@@ -761,7 +816,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
               <radialGradient id="hs-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff4c9"></stop><stop offset=".42" stop-color="#ffe082" stop-opacity=".9"></stop><stop offset="1" stop-color="#ffe082" stop-opacity="0"></stop></radialGradient>
               <linearGradient id="hs-frame" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1d4182"></stop><stop offset="1" stop-color="#10275a"></stop></linearGradient>
               <clipPath id="hs-glass"><rect x="90" y="70" width="320" height="330" rx="8"></rect></clipPath>
-              <clipPath id="hs-card"><rect width="500" height="600" rx="40"></rect></clipPath>
+              <clipPath id="hs-card"><rect width="500" height="600" rx="16"></rect></clipPath>
             </defs>
             <g clip-path="url(#hs-card)">
               <rect width="500" height="600" fill="url(#hs-wall)"></rect>
@@ -847,41 +902,28 @@ body.editing .chips{row-gap:44px;padding-top:40px}
           <span class="spark" style="left:44%;top:48%;width:6%;animation-delay:-2.2s"><svg viewBox="0 0 24 24"><path d="M12 0c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12z" fill="#fff"></path></svg></span>
         </div>
         <div class="ph hero-photo" data-img="" data-par=".04"><img alt="Locaux nettoyés par A-Proclean" fetchpriority="high"></div>
-        <div class="float-card" aria-hidden="true"><span class="fc-ic"><svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"></path><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"></path></svg></span><div><b data-e="">Votre demande en 2 minutes</b><small data-e="">Devis gratuit, sans engagement</small></div></div>
-        <div class="badge" aria-hidden="true">
-          <svg class="ring" viewBox="0 0 124 124"><defs><path id="circ" d="M62 62m-47 0a47 47 0 1 1 94 0a47 47 0 1 1-94 0"></path></defs><text><textPath href="#circ">Devis gratuit • Sans engagement • </textPath></text></svg>
-          <span class="core">↗</span>
-        </div>
       </div>
     </div>
-
-    <ul class="trust">
-      <li class="rv" style="--d:.05s" data-rep=""><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5M9 14l2 2 4-4"></path></svg></span><div><b data-e="">Devis gratuit</b><span class="s" data-e="">Clair, détaillé et sans engagement</span></div></li>
-      <li class="rv" style="--d:.12s" data-rep=""><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span><div><b data-e="">Horaires flexibles</b><span class="s" data-e="">Tôt le matin, le soir ou le samedi</span></div></li>
-      <li class="rv" style="--d:.19s" data-rep=""><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 7h6l2 4v9a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-9z"></path><path d="M10 7V3h5l3 2"></path><path d="M10 15h4"></path></svg></span><div><b data-e="">Matériel fourni</b><span class="s" data-e="">Produits professionnels adaptés</span></div></li>
-      <li class="rv" style="--d:.26s" data-rep=""><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg></span><div><b data-e="">Un seul interlocuteur</b><span class="s" data-e="">Qui connaît vos locaux</span></div></li>
-    </ul>
   </div>
 </section>
 
 <!-- ================= SERVICES ================= -->
 <section id="services" class="sec-mist" aria-labelledby="h-services" data-section="Services">
   <div class="wrap">
-    <div class="head center">
-      <p class="kicker rv" data-e="">Nos services</p>
-      <h2 id="h-services" class="sp" data-e="">Un nettoyage adapté à <em>chaque lieu.</em></h2>
-      <p class="lead rv" style="--d:.2s" data-e="">Ponctuel ou régulier, de jour comme de soir. Choisissez votre besoin : nous vous envoyons un devis clair et gratuit.</p>
+    <div class="head">
+      <h2 id="h-services" class="sp" data-e="">Nos prestations</h2>
+      <p class="lead rv" style="--d:.2s" data-e="">Ponctuel ou régulier, en journée comme le soir. Chaque prestation est détaillée sur sa page.</p>
     </div>
     <div class="services">
       <article class="srv rv" data-page="nettoyage-bureaux" data-rep="">
-        <span class="srv-ic" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 42V13l15-7 15 7v29" fill="#fff"></path><path d="M4 42h40"></path><g fill="#a8dcf8" stroke="none"><rect x="14" y="16" width="7" height="6" rx="1.5"></rect><rect x="27" y="16" width="7" height="6" rx="1.5"></rect><rect x="14" y="26" width="7" height="6" rx="1.5"></rect><rect x="27" y="26" width="7" height="6" rx="1.5"></rect></g><path d="M20 42v-6h8v6"></path><path d="M41 4c.5 3.2 1.6 4.3 4.8 4.8-3.2.5-4.3 1.6-4.8 4.8-.5-3.2-1.6-4.3-4.8-4.8 3.2-.5 4.3-1.6 4.8-4.8z" fill="#2cb3f3" stroke="none"></path></svg></span>
+        <span class="srv-ic" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 42V13l15-7 15 7v29" fill="#fff"></path><path d="M4 42h40"></path><g fill="#a8dcf8" stroke="none"><rect x="14" y="16" width="7" height="6" rx="1.5"></rect><rect x="27" y="16" width="7" height="6" rx="1.5"></rect><rect x="14" y="26" width="7" height="6" rx="1.5"></rect><rect x="27" y="26" width="7" height="6" rx="1.5"></rect></g><path d="M20 42v-6h8v6"></path></svg></span>
         <h3 data-e="">Bureaux &amp; commerces</h3>
         <p data-e="">Des espaces de travail propres et accueillants, pour vos équipes comme pour vos clients.</p>
         <ul class="inc" data-e=""><li>Bureaux, sanitaires, coin cuisine</li><li>Corbeilles vidées, consommables</li><li>Poignées et interrupteurs désinfectés</li></ul>
         <div class="srv-links"><a class="srv-more" href="#nettoyage-bureaux">En savoir plus<span class="sr"> sur ce service</span></a><a class="srv-cta" href="#contact">Demander un devis <span class="ar" aria-hidden="true">→</span></a></div>
       </article>
       <article class="srv rv" data-page="menage-domicile" style="--d:.08s" data-rep="">
-        <span class="srv-ic" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 23L24 8l18 15"></path><path d="M10 20v22h28V20" fill="#fff"></path><rect x="19" y="29" width="10" height="13" rx="1.5" fill="#a8dcf8"></rect><rect x="29" y="23" width="5" height="5" rx="1" fill="#a8dcf8" stroke="none"></rect><path d="M41 4c.5 3.2 1.6 4.3 4.8 4.8-3.2.5-4.3 1.6-4.8 4.8-.5-3.2-1.6-4.3-4.8-4.8 3.2-.5 4.3-1.6 4.8-4.8z" fill="#2cb3f3" stroke="none"></path></svg></span>
+        <span class="srv-ic" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 23L24 8l18 15"></path><path d="M10 20v22h28V20" fill="#fff"></path><rect x="19" y="29" width="10" height="13" rx="1.5" fill="#a8dcf8"></rect><rect x="29" y="23" width="5" height="5" rx="1" fill="#a8dcf8" stroke="none"></rect></svg></span>
         <h3 data-e="">Logements &amp; particuliers</h3>
         <p data-e="">Ménage régulier ou grand nettoyage : vous retrouvez une maison propre, sans y passer votre week-end.</p>
         <ul class="inc" data-e=""><li>Ménage régulier ou ponctuel</li><li>Cuisine et salle de bains à fond</li><li>Entrée ou sortie de logement</li></ul>
@@ -923,16 +965,15 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <!-- ================= COMMENT ÇA MARCHE ================= -->
 <section id="etapes" aria-labelledby="h-etapes" data-section="Comment ça marche">
   <div class="wrap">
-    <div class="head center">
-      <p class="kicker rv" data-e="">Comment ça marche</p>
-      <h2 id="h-etapes" class="sp" data-e="">Simple, rapide, <em>sans surprise.</em></h2>
+    <div class="head">
+      <h2 id="h-etapes" class="sp" data-e="">Comment ça se passe</h2>
     </div>
     <ol class="steps">
-      <li class="step rv" data-rep=""><span class="num" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"></rect><path d="M9 4V3h6v1M9 10h6M9 14h6M9 18h3"></path></svg></span><h3 data-e="">Vous décrivez votre besoin</h3><p data-e="">En 2 minutes avec le formulaire, ou directement par téléphone.</p></li>
-      <li class="step rv" style="--d:.15s" data-rep=""><span class="num" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5M9 14l2 2 4-4"></path></svg></span><h3 data-e="">Vous recevez votre devis</h3><p data-e="">Gratuit, clair et détaillé. Une visite est possible si nécessaire.</p></li>
-      <li class="step rv" style="--d:.3s" data-rep=""><span class="num" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3c.7 4.6 2.4 6.3 7 7-4.6.7-6.3 2.4-7 7-.7-4.6-2.4-6.3-7-7 4.6-.7 6.3-2.4 7-7z"></path><path d="M19 15c.3 1.9 1 2.6 3 3-2 .4-2.7 1.1-3 3-.3-1.9-1-2.6-3-3 2-.4 2.7-1.1 3-3z"></path></svg></span><h3 data-e="">Nous nettoyons</h3><p data-e="">Aux horaires convenus, avec notre matériel. Puis nous faisons le point avec vous.</p></li>
+      <li class="step rv" data-rep=""><span class="num" aria-hidden="true"></span><h3 data-e="">Vous décrivez votre besoin</h3><p data-e="">Par le formulaire ou par téléphone : le type de locaux, la surface, la fréquence.</p></li>
+      <li class="step rv" style="--d:.15s" data-rep=""><span class="num" aria-hidden="true"></span><h3 data-e="">Nous vous envoyons un devis</h3><p data-e="">Gratuit et détaillé. Si besoin, nous passons voir les lieux avant.</p></li>
+      <li class="step rv" style="--d:.3s" data-rep=""><span class="num" aria-hidden="true"></span><h3 data-e="">Nous intervenons</h3><p data-e="">Aux jours et aux horaires convenus. Si quelque chose ne vous convient pas, dites-le-nous : nous ajustons.</p></li>
     </ol>
-    <div class="steps-cta rv"><a href="#contact" class="btn btn-navy mg"><span data-e="">Commencer ma demande</span><span class="ar" aria-hidden="true">→</span></a></div>
+    <div class="steps-cta rv"><a href="#contact" class="btn btn-navy"><span data-e="">Demander un devis</span><span class="ar" aria-hidden="true">→</span></a></div>
   </div>
 </section>
 
@@ -940,18 +981,11 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <section id="pourquoi" class="why" aria-labelledby="h-why" data-section="Pourquoi nous">
   <div class="wrap why-grid">
     <div>
-      <p class="kicker rv" data-e="">Pourquoi nous choisir</p>
-      <h2 id="h-why" class="sp" data-e="">Un lieu propre, <em>ça change tout.</em></h2>
-      <p class="lead rv" style="--d:.2s" data-e="">Vous gagnez du temps, vos visiteurs ont une bonne première impression et vos équipes travaillent dans un endroit sain.</p>
-      <figure class="quote rv" style="--d:.3s"><blockquote><p data-e="">«&nbsp;Notre travail est réussi quand vous n'avez plus à y penser.&nbsp;»</p></blockquote><figcaption>— <span data-k="nom">A-Proclean</span></figcaption></figure>
+      <h2 id="h-why" class="sp" data-e="">Pourquoi faire appel à nous</h2>
+      <p class="lead rv" style="--d:.2s" data-e="">Vous n'avez plus à penser au ménage : les locaux sont propres à chaque passage, et vos clients comme vos équipes le remarquent.</p>
       <a class="why-more rv" href="#a-propos"><span data-e="">Qui sommes-nous ?</span><span class="ar" aria-hidden="true">→</span></a>
     </div>
-    <div class="bens">
-      <div class="ben rv" data-rep=""><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span><h3 data-e="">Du temps pour vous</h3><p data-e="">Plus besoin d'y penser : vous retrouvez des locaux propres à chaque passage.</p></div>
-      <div class="ben rv" style="--d:.1s" data-rep=""><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"></path></svg></span><h3 data-e="">Une meilleure image</h3><p data-e="">Clients et visiteurs remarquent tout de suite un lieu soigné.</p></div>
-      <div class="ben rv" style="--d:.2s" data-rep=""><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"></path><path d="M9 12l2 2 4-4"></path></svg></span><h3 data-e="">Un lieu plus sain</h3><p data-e="">Sanitaires, cuisines et points de contact nettoyés avec des produits adaptés.</p></div>
-      <div class="ben rv" style="--d:.3s" data-rep=""><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12l9-9h8v8l-9 9z"></path><circle cx="16" cy="8" r="1.5"></circle></svg></span><h3 data-e="">Des prix clairs</h3><p data-e="">Un devis détaillé avant de commencer, sans frais cachés.</p></div>
-    </div>
+    <div class="bens"><div class="ben rv" data-rep=""><h3 data-e="">Des horaires qui vous arrangent</h3><p data-e="">Tôt le matin, le soir ou le samedi : nous travaillons quand vos locaux sont vides.</p></div><div class="ben rv" style="--d:.1s" data-rep=""><h3 data-e="">Un devis détaillé</h3><p data-e="">Avant de commencer, vous savez ce qui sera fait et ce que ça coûte.</p></div><div class="ben rv" style="--d:.2s" data-rep=""><h3 data-e="">Notre matériel, nos produits</h3><p data-e="">Vous n'avez rien à acheter ni à stocker.</p></div><div class="ben rv" style="--d:.3s" data-rep=""><h3 data-e="">Un contact direct</h3><p data-e="">Une seule personne à appeler pour une question ou un changement.</p></div></div>
   </div>
 </section>
 
@@ -959,8 +993,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <section id="resultats" aria-labelledby="h-res" data-section="Avant / après" hidden="" data-nosnippet="">
   <div class="wrap">
     <div class="head center">
-      <p class="kicker rv" data-e="">Résultats</p>
-      <h2 id="h-res" class="sp" data-e="">Avant, <em>après.</em></h2>
+      <h2 id="h-res" class="sp" data-e="">Avant / après</h2>
       <p class="lead rv" style="--d:.2s" data-e="">Faites glisser le curseur pour voir la différence.</p>
     </div>
     <div class="ba rv" id="ba">
@@ -976,8 +1009,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <section aria-labelledby="h-gal" data-section="Galerie photos" hidden="" data-nosnippet="">
   <div class="wrap">
     <div class="head center">
-      <p class="kicker rv" data-e="">Sur le terrain</p>
-      <h2 id="h-gal" class="sp" data-e="">Notre travail, <em>en images.</em></h2>
+      <h2 id="h-gal" class="sp" data-e="">Nos réalisations en photos</h2>
     </div>
     <div class="gallery">
       <div class="ph wipe" data-img="" data-rep=""><img alt="" loading="lazy" decoding="async"></div>
@@ -992,8 +1024,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <section id="avis" class="sec-mist" aria-labelledby="h-avis" data-section="Avis clients" hidden="" data-nosnippet="">
   <div class="wrap">
     <div class="head center">
-      <p class="kicker rv" data-e="">Ils nous font confiance</p>
-      <h2 id="h-avis" class="sp" data-e="">Ce que disent <em>nos clients.</em></h2>
+      <h2 id="h-avis" class="sp" data-e="">L'avis de nos clients</h2>
     </div>
     <div class="reviews">
       <figure class="rev rv" data-rep=""><span class="stars" role="img" aria-label="5 étoiles sur 5">★★★★★</span><blockquote><p data-e="">«&nbsp;[Copiez ici l'avis réel d'un client]&nbsp;»</p></blockquote><figcaption class="who"><span data-e="">[Prénom, ville]</span><span data-e="">[Prestation réalisée]</span></figcaption></figure>
@@ -1008,8 +1039,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <section id="tarifs" aria-labelledby="h-tarifs" data-section="Tarifs" hidden="" data-nosnippet="">
   <div class="wrap">
     <div class="head center">
-      <p class="kicker rv" data-e="">Tarifs</p>
-      <h2 id="h-tarifs" class="sp" data-e="">Des prix <em>clairs.</em></h2>
+      <h2 id="h-tarifs" class="sp" data-e="">Nos tarifs</h2>
       <p class="lead rv" style="--d:.2s" data-e="">Prix indicatifs toutes taxes comprises. Le devis gratuit précise le prix exact selon vos locaux.</p>
     </div>
     <ul class="prices">
@@ -1025,14 +1055,13 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <section id="zone" class="sec-mist" aria-labelledby="h-zone" data-section="Zone d'intervention">
   <div class="wrap zone-grid">
     <div class="zone-txt">
-      <p class="kicker rv" data-e="">Zone d'intervention</p>
-      <h2 id="h-zone" class="sp" data-e="">Nous venons <em>jusqu'à vous.</em></h2>
+      <h2 id="h-zone" class="sp" data-e="">Zone d'intervention</h2>
       <p class="lead rv" style="--d:.2s" data-if="zone" hidden="">Nous intervenons à <b><span data-k="zone" class="missing">[à compléter]</span></b> et dans les communes alentour.</p>
       <p class="lead rv" style="--d:.2s" data-ifnot="zone" data-e="">Indiquez votre ville dans votre demande : nous vous confirmons rapidement si nous intervenons chez vous.</p>
       <ul class="chips" aria-label="Communes desservies" hidden="">
         <li style="--i:0" data-rep="" data-e="" hidden="">Commune 1</li><li style="--i:1" data-rep="" data-e="" hidden="">Commune 2</li><li style="--i:2" data-rep="" data-e="" hidden="">Commune 3</li><li style="--i:3" data-rep="" data-e="" hidden="">Commune 4</li><li style="--i:4" data-rep="" data-e="" hidden="">Commune 5</li>
       </ul>
-      <a href="#contact" class="btn btn-navy mg rv"><span data-e="">Vérifier pour ma ville</span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="#contact" class="btn btn-navy rv"><span data-e="">Vérifier pour ma ville</span><span class="ar" aria-hidden="true">→</span></a>
     </div>
     <div class="map rv" style="--d:.15s" aria-hidden="true">
       <svg viewBox="0 0 480 400" preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -1052,7 +1081,6 @@ body.editing .chips{row-gap:44px;padding-top:40px}
         </g>
         <circle cx="240" cy="200" r="132" fill="#2cb3f3" fill-opacity=".08" stroke="#2cb3f3" stroke-opacity=".55" stroke-width="2" stroke-dasharray="6 8"></circle>
       </svg>
-      <span class="pulse"></span><span class="pulse p2"></span><span class="pulse p3"></span>
       <span class="pin-dot"></span>
       <span class="pin"><span class="pin-b"></span><img class="logo-img" src="data:image/jpeg;base64,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" alt=""></span>
     </div>
@@ -1063,8 +1091,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <section id="faq" aria-labelledby="h-faq" data-section="Questions fréquentes">
   <div class="wrap faq-grid">
     <div class="faq-side">
-      <p class="kicker rv" data-e="">Questions fréquentes</p>
-      <h2 id="h-faq" class="sp" data-e="">Vous vous <em>demandez…</em></h2>
+      <h2 id="h-faq" class="sp" data-e="">Questions fréquentes</h2>
       <div class="help-card rv" style="--d:.2s">
         <b data-e="">Une autre question ?</b>
         <p data-e="">Nous vous répondons simplement, sans engagement.</p>
@@ -1088,10 +1115,8 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <section id="contact" class="contact" aria-labelledby="h-contact" data-section="Contact">
   <div class="wrap contact-grid">
     <div class="c-side">
-      <p class="kicker rv" data-e="">Devis gratuit</p>
-      <h2 id="h-contact" class="sp" data-e="">Parlons de <em>vos locaux.</em></h2>
-      <p class="lead rv" style="--d:.2s" data-e="">Trois questions rapides, et nous revenons vers vous avec une proposition claire.</p>
-      <ul class="ticks rv" style="--d:.3s"><li data-e="">Gratuit</li><li data-e="">Sans engagement</li><li data-e="">Réponse rapide</li></ul>
+      <h2 id="h-contact" class="sp" data-e="">Demander un devis gratuit</h2>
+      <p class="lead rv" style="--d:.2s" data-e="">Trois questions rapides. Nous revenons vers vous avec un devis détaillé.</p>
       <dl class="lines rv" style="--d:.35s">
         <div data-if="tel" hidden=""><dt data-e="">Téléphone</dt><dd><a data-link="tel" href="#contact"><span data-k="tel" class="missing">[à compléter]</span></a></dd></div>
         <div data-if="mail" hidden=""><dt data-e="">Email</dt><dd><a data-link="mail" href="#contact"><span data-k="mail" class="missing">[à compléter]</span></a></dd></div>
@@ -1165,28 +1190,27 @@ body.editing .chips{row-gap:44px;padding-top:40px}
       <nav class="crumbs rv" aria-label="Fil d'Ariane"><a href="#top">Accueil</a><span aria-hidden="true">›</span><a href="#services">Services</a><span aria-hidden="true">›</span><span aria-current="page">Bureaux &amp; commerces</span></nav>
       <h1 id="t-nettoyage-bureaux" class="sp" data-e="">Nettoyage de bureaux et de commerces</h1>
       <p class="lead rv" style="--d:.25s" data-e="">Des locaux propres et accueillants pour vos équipes comme pour vos clients. Nous intervenons tôt le matin, le soir ou le samedi, pour ne pas gêner votre activité.</p>
-      <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy mg" data-svc-of="nettoyage-bureaux"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
-      <ul class="ticks rv" style="--d:.45s"><li data-e="">Devis gratuit</li><li data-e="">Sans engagement</li><li data-e="">Matériel fourni</li></ul>
+      <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy" data-svc-of="nettoyage-bureaux"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
     </div>
-    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="nettoyage-bureaux" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 42V13l15-7 15 7v29" fill="#fff"></path><path d="M4 42h40"></path><g fill="#a8dcf8" stroke="none"><rect x="14" y="16" width="7" height="6" rx="1.5"></rect><rect x="27" y="16" width="7" height="6" rx="1.5"></rect><rect x="14" y="26" width="7" height="6" rx="1.5"></rect><rect x="27" y="26" width="7" height="6" rx="1.5"></rect></g><path d="M20 42v-6h8v6"></path><path d="M41 4c.5 3.2 1.6 4.3 4.8 4.8-3.2.5-4.3 1.6-4.8 4.8-.5-3.2-1.6-4.3-4.8-4.8 3.2-.5 4.3-1.6 4.8-4.8z" fill="#2cb3f3" stroke="none"></path></svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
+    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="nettoyage-bureaux" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 42V13l15-7 15 7v29" fill="#fff"></path><path d="M4 42h40"></path><g fill="#a8dcf8" stroke="none"><rect x="14" y="16" width="7" height="6" rx="1.5"></rect><rect x="27" y="16" width="7" height="6" rx="1.5"></rect><rect x="14" y="26" width="7" height="6" rx="1.5"></rect><rect x="27" y="26" width="7" height="6" rx="1.5"></rect></g><path d="M20 42v-6h8v6"></path></svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-nettoyage-bureaux-1"><div class="wrap">
-    <div class="head"><p class="kicker rv" data-e="">Ce qui est compris</p><h2 id="h-nettoyage-bureaux-1" class="sp" data-e="">Un entretien complet, pièce par pièce</h2></div>
+    <div class="head"><h2 id="h-nettoyage-bureaux-1" class="sp" data-e="">Ce qui est compris</h2></div>
     <div class="tasks"><div class="task rv" style="--d:0s" data-rep=""><h3 data-e="">Espaces de travail</h3><ul class="inc" data-e=""><li>Dépoussiérage des bureaux et du mobilier</li><li>Aspiration et lavage des sols</li><li>Vidage des corbeilles</li><li>Nettoyage des poignées et interrupteurs</li></ul></div><div class="task rv" style="--d:.08s" data-rep=""><h3 data-e="">Sanitaires</h3><ul class="inc" data-e=""><li>Nettoyage et désinfection des lavabos et toilettes</li><li>Détartrage de la robinetterie</li><li>Miroirs et carrelage</li><li>Remise en place des consommables</li></ul></div><div class="task rv" style="--d:.16s" data-rep=""><h3 data-e="">Cuisine et espaces communs</h3><ul class="inc" data-e=""><li>Plans de travail et évier</li><li>Tables et chaises</li><li>Extérieur de l'électroménager</li><li>Accueil et salle d'attente</li></ul></div></div>
     <p class="pg-note rv" data-e="">Le contenu exact, les horaires et la fourniture des consommables sont fixés ensemble dans le devis.</p>
   </div></section>
   <section class="pg-sec sec-mist" aria-labelledby="h-nettoyage-bureaux-2"><div class="wrap pg-two">
-    <div><p class="kicker rv" data-e="">Pour qui ?</p><h2 id="h-nettoyage-bureaux-2" class="sp" data-e="">Pour les professionnels</h2><ul class="tags rv"><li data-rep="" data-e="">Bureaux et open spaces</li><li data-rep="" data-e="">Agences et cabinets</li><li data-rep="" data-e="">Commerces et boutiques</li><li data-rep="" data-e="">Showrooms</li><li data-rep="" data-e="">Salles d'attente</li></ul></div>
-    <div><p class="kicker rv" data-e="">Fréquence</p><h2 class="sp" data-e="">Le rythme qui vous convient</h2><p class="lead rv" data-e="">Chaque jour, plusieurs fois par semaine, chaque semaine ou ponctuellement : nous adaptons la fréquence à la taille de vos locaux et à votre activité.</p></div>
+    <div><h2 id="h-nettoyage-bureaux-2" class="sp" data-e="">Pour qui ?</h2><ul class="tags rv"><li data-rep="" data-e="">Bureaux et open spaces</li><li data-rep="" data-e="">Agences et cabinets</li><li data-rep="" data-e="">Commerces et boutiques</li><li data-rep="" data-e="">Showrooms</li><li data-rep="" data-e="">Salles d'attente</li></ul></div>
+    <div><h2 class="sp" data-e="">À quelle fréquence ?</h2><p class="lead rv" data-e="">Chaque jour, plusieurs fois par semaine, chaque semaine ou ponctuellement : nous adaptons la fréquence à la taille de vos locaux et à votre activité.</p></div>
   </div></section>
   <section class="pg-sec" aria-labelledby="h-nettoyage-bureaux-3"><div class="wrap pg-faq">
-    <div class="head"><p class="kicker rv" data-e="">Questions</p><h2 id="h-nettoyage-bureaux-3" class="sp" data-e="">Vos questions sur ce service</h2></div>
+    <div class="head"><h2 id="h-nettoyage-bureaux-3" class="sp" data-e="">Questions fréquentes</h2></div>
     <div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Intervenez-vous en dehors des heures d'ouverture ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Oui : tôt le matin, le soir ou le samedi, selon ce qui vous arrange. Les horaires sont convenus dans le devis.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Faut-il fournir le matériel et les produits ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Non, nous venons avec notre matériel et nos produits de nettoyage. La fourniture des consommables (papier, savon…) se précise dans le devis.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Comment est calculé le prix ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Selon la surface, la fréquence et les tâches demandées. Le devis gratuit détaille tout avant de commencer.</p></div></div></div>
   </div></section>
   <section class="pg-cta" aria-labelledby="h-nettoyage-bureaux-cta"><div class="wrap">
-    <h2 id="h-nettoyage-bureaux-cta" class="sp" data-e="">Des bureaux impeccables, sans y penser ?</h2>
-    <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en 2 minutes : le devis est gratuit et sans engagement.</p>
-    <a href="#contact" class="btn btn-sky mg rv" data-svc-of="nettoyage-bureaux"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
+    <h2 id="h-nettoyage-bureaux-cta" class="sp" data-e="">Besoin d\'un devis ?</h2>
+    <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en quelques lignes. Le devis est gratuit et sans engagement.</p>
+    <a href="#contact" class="btn btn-sky rv" style="--d:.25s" data-svc-of="nettoyage-bureaux"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
     <div class="others-w rv" style="--d:.35s"><p class="others-t" data-e="">Découvrez aussi nos autres services</p><nav class="others" aria-label="Nos autres services"><a href="#menage-domicile" class="qbtn">Logements &amp; particuliers</a><a href="#nettoyage-vitres" class="qbtn">Vitres &amp; vitrines</a><a href="#fin-de-chantier" class="qbtn">Fin de chantier</a><a href="#remise-en-etat" class="qbtn">Remise en état</a><a href="#copropriete" class="qbtn">Copropriétés</a></nav></div>
   </div></section>
 </article>
@@ -1196,28 +1220,27 @@ body.editing .chips{row-gap:44px;padding-top:40px}
       <nav class="crumbs rv" aria-label="Fil d'Ariane"><a href="#top">Accueil</a><span aria-hidden="true">›</span><a href="#services">Services</a><span aria-hidden="true">›</span><span aria-current="page">Logements &amp; particuliers</span></nav>
       <h1 id="t-menage-domicile" class="sp" data-e="">Ménage et nettoyage à domicile</h1>
       <p class="lead rv" style="--d:.25s" data-e="">Retrouvez une maison propre sans y passer vos soirées : ménage régulier, grand nettoyage ou nettoyage avant un déménagement.</p>
-      <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy mg" data-svc-of="menage-domicile"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
-      <ul class="ticks rv" style="--d:.45s"><li data-e="">Devis gratuit</li><li data-e="">Sans engagement</li><li data-e="">Matériel fourni</li></ul>
+      <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy" data-svc-of="menage-domicile"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
     </div>
-    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="menage-domicile" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 23L24 8l18 15"></path><path d="M10 20v22h28V20" fill="#fff"></path><rect x="19" y="29" width="10" height="13" rx="1.5" fill="#a8dcf8"></rect><rect x="29" y="23" width="5" height="5" rx="1" fill="#a8dcf8" stroke="none"></rect><path d="M41 4c.5 3.2 1.6 4.3 4.8 4.8-3.2.5-4.3 1.6-4.8 4.8-.5-3.2-1.6-4.3-4.8-4.8 3.2-.5 4.3-1.6 4.8-4.8z" fill="#2cb3f3" stroke="none"></path></svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
+    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="menage-domicile" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 23L24 8l18 15"></path><path d="M10 20v22h28V20" fill="#fff"></path><rect x="19" y="29" width="10" height="13" rx="1.5" fill="#a8dcf8"></rect><rect x="29" y="23" width="5" height="5" rx="1" fill="#a8dcf8" stroke="none"></rect></svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-menage-domicile-1"><div class="wrap">
-    <div class="head"><p class="kicker rv" data-e="">Ce qui est compris</p><h2 id="h-menage-domicile-1" class="sp" data-e="">Toute la maison, du sol au plafond</h2></div>
+    <div class="head"><h2 id="h-menage-domicile-1" class="sp" data-e="">Ce qui est compris</h2></div>
     <div class="tasks"><div class="task rv" style="--d:0s" data-rep=""><h3 data-e="">Pièces de vie</h3><ul class="inc" data-e=""><li>Dépoussiérage des meubles et surfaces</li><li>Aspiration et lavage des sols</li><li>Miroirs et vitres intérieures accessibles</li><li>Chambres et entrée</li></ul></div><div class="task rv" style="--d:.08s" data-rep=""><h3 data-e="">Cuisine</h3><ul class="inc" data-e=""><li>Plans de travail, évier et plaques</li><li>Façades des placards</li><li>Extérieur de l'électroménager</li><li>Sol de la cuisine</li></ul></div><div class="task rv" style="--d:.16s" data-rep=""><h3 data-e="">Salle de bains et WC</h3><ul class="inc" data-e=""><li>Lavabo, douche et baignoire</li><li>Détartrage de la robinetterie</li><li>Toilettes</li><li>Carrelage et miroirs</li></ul></div></div>
     <p class="pg-note rv" data-e="">Vous nous indiquez vos priorités : la liste des tâches est fixée ensemble dans le devis.</p>
   </div></section>
   <section class="pg-sec sec-mist" aria-labelledby="h-menage-domicile-2"><div class="wrap pg-two">
-    <div><p class="kicker rv" data-e="">Pour qui ?</p><h2 id="h-menage-domicile-2" class="sp" data-e="">Pour votre logement</h2><ul class="tags rv"><li data-rep="" data-e="">Maisons et appartements</li><li data-rep="" data-e="">Familles</li><li data-rep="" data-e="">Entrée ou sortie de logement</li><li data-rep="" data-e="">Propriétaires et locataires</li></ul></div>
-    <div><p class="kicker rv" data-e="">Fréquence</p><h2 class="sp" data-e="">Régulier ou ponctuel</h2><p class="lead rv" data-e="">Chaque semaine, tous les quinze jours, ou une seule fois pour un grand nettoyage : c'est vous qui choisissez.</p><p class="pg-note rv" data-if="sap" hidden="">Notre activité de ménage à domicile est déclarée «&nbsp;services à la personne&nbsp;» : selon votre situation, vos dépenses peuvent ouvrir droit à un avantage fiscal. Les conditions sont précisées sur votre devis.</p></div>
+    <div><h2 id="h-menage-domicile-2" class="sp" data-e="">Pour qui ?</h2><ul class="tags rv"><li data-rep="" data-e="">Maisons et appartements</li><li data-rep="" data-e="">Familles</li><li data-rep="" data-e="">Entrée ou sortie de logement</li><li data-rep="" data-e="">Propriétaires et locataires</li></ul></div>
+    <div><h2 class="sp" data-e="">À quelle fréquence ?</h2><p class="lead rv" data-e="">Chaque semaine, tous les quinze jours, ou une seule fois pour un grand nettoyage : c'est vous qui choisissez.</p><p class="pg-note rv" data-if="sap" hidden="">Notre activité de ménage à domicile est déclarée «&nbsp;services à la personne&nbsp;» : selon votre situation, vos dépenses peuvent ouvrir droit à un avantage fiscal. Les conditions sont précisées sur votre devis.</p></div>
   </div></section>
   <section class="pg-sec" aria-labelledby="h-menage-domicile-3"><div class="wrap pg-faq">
-    <div class="head"><p class="kicker rv" data-e="">Questions</p><h2 id="h-menage-domicile-3" class="sp" data-e="">Vos questions sur ce service</h2></div>
+    <div class="head"><h2 id="h-menage-domicile-3" class="sp" data-e="">Questions fréquentes</h2></div>
     <div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Dois-je être présent pendant le ménage ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Pas forcément : nous convenons ensemble des modalités d'accès (clés, digicode) au moment du devis.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Apportez-vous les produits ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Oui, notre matériel et nos produits. Si vous préférez que nous utilisions les vôtres, dites-le-nous.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Faites-vous le nettoyage avant un état des lieux ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Oui, nous réalisons un nettoyage complet du logement avant une entrée ou une sortie.</p></div></div></div>
   </div></section>
   <section class="pg-cta" aria-labelledby="h-menage-domicile-cta"><div class="wrap">
-    <h2 id="h-menage-domicile-cta" class="sp" data-e="">Une maison propre, sans y passer vos soirées ?</h2>
-    <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en 2 minutes : le devis est gratuit et sans engagement.</p>
-    <a href="#contact" class="btn btn-sky mg rv" data-svc-of="menage-domicile"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
+    <h2 id="h-menage-domicile-cta" class="sp" data-e="">Besoin d\'un devis ?</h2>
+    <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en quelques lignes. Le devis est gratuit et sans engagement.</p>
+    <a href="#contact" class="btn btn-sky rv" style="--d:.25s" data-svc-of="menage-domicile"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
     <div class="others-w rv" style="--d:.35s"><p class="others-t" data-e="">Découvrez aussi nos autres services</p><nav class="others" aria-label="Nos autres services"><a href="#nettoyage-bureaux" class="qbtn">Bureaux &amp; commerces</a><a href="#nettoyage-vitres" class="qbtn">Vitres &amp; vitrines</a><a href="#fin-de-chantier" class="qbtn">Fin de chantier</a><a href="#remise-en-etat" class="qbtn">Remise en état</a><a href="#copropriete" class="qbtn">Copropriétés</a></nav></div>
   </div></section>
 </article>
@@ -1227,28 +1250,27 @@ body.editing .chips{row-gap:44px;padding-top:40px}
       <nav class="crumbs rv" aria-label="Fil d'Ariane"><a href="#top">Accueil</a><span aria-hidden="true">›</span><a href="#services">Services</a><span aria-hidden="true">›</span><span aria-current="page">Vitres &amp; vitrines</span></nav>
       <h1 id="t-nettoyage-vitres" class="sp" data-e="">Nettoyage de vitres et de vitrines</h1>
       <p class="lead rv" style="--d:.25s" data-e="">Des vitres nettes et sans traces laissent entrer la lumière et donnent envie d'entrer. Pour les commerces, les bureaux et les particuliers.</p>
-      <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy mg" data-svc-of="nettoyage-vitres"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
-      <ul class="ticks rv" style="--d:.45s"><li data-e="">Devis gratuit</li><li data-e="">Sans engagement</li><li data-e="">Matériel fourni</li></ul>
+      <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy" data-svc-of="nettoyage-vitres"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
     </div>
     <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="nettoyage-vitres" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="26" height="34" rx="3" fill="#a8dcf8"></rect><path d="M19 6v34M6 23h26"></path><path d="M10 18l5-5M23 34l5-5" stroke="#fff" stroke-width="2.6"></path><path d="M33 31l9 9" stroke-width="3.2"></path><path d="M28 36l10-10" stroke="#0b66ad" stroke-width="3.2"></path></svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-nettoyage-vitres-1"><div class="wrap">
-    <div class="head"><p class="kicker rv" data-e="">Ce qui est compris</p><h2 id="h-nettoyage-vitres-1" class="sp" data-e="">Des vitres nettes, cadres compris</h2></div>
+    <div class="head"><h2 id="h-nettoyage-vitres-1" class="sp" data-e="">Ce qui est compris</h2></div>
     <div class="tasks"><div class="task rv" style="--d:0s" data-rep=""><h3 data-e="">Vitrines de commerces</h3><ul class="inc" data-e=""><li>Faces intérieure et extérieure</li><li>Portes vitrées</li><li>Encadrements et rebords</li></ul></div><div class="task rv" style="--d:.08s" data-rep=""><h3 data-e="">Bureaux et logements</h3><ul class="inc" data-e=""><li>Fenêtres et portes-fenêtres</li><li>Baies vitrées et vérandas</li><li>Cloisons vitrées</li></ul></div><div class="task rv" style="--d:.16s" data-rep=""><h3 data-e="">Finitions</h3><ul class="inc" data-e=""><li>Séchage sans traces</li><li>Appuis de fenêtres</li><li>Joints et encadrements essuyés</li></ul></div></div>
     <p class="pg-note rv" data-e="">Pour les vitres en hauteur, l'accès est étudié au moment du devis : nous vous disons clairement ce qui peut être fait en sécurité.</p>
   </div></section>
   <section class="pg-sec sec-mist" aria-labelledby="h-nettoyage-vitres-2"><div class="wrap pg-two">
-    <div><p class="kicker rv" data-e="">Pour qui ?</p><h2 id="h-nettoyage-vitres-2" class="sp" data-e="">Pour toutes les surfaces vitrées</h2><ul class="tags rv"><li data-rep="" data-e="">Commerces et restaurants</li><li data-rep="" data-e="">Bureaux</li><li data-rep="" data-e="">Maisons et appartements</li><li data-rep="" data-e="">Vérandas</li></ul></div>
-    <div><p class="kicker rv" data-e="">Fréquence</p><h2 class="sp" data-e="">Ponctuel ou régulier</h2><p class="lead rv" data-e="">Une fois, chaque mois ou à chaque saison. Pour une vitrine de commerce, un passage régulier garde une image impeccable.</p></div>
+    <div><h2 id="h-nettoyage-vitres-2" class="sp" data-e="">Pour qui ?</h2><ul class="tags rv"><li data-rep="" data-e="">Commerces et restaurants</li><li data-rep="" data-e="">Bureaux</li><li data-rep="" data-e="">Maisons et appartements</li><li data-rep="" data-e="">Vérandas</li></ul></div>
+    <div><h2 class="sp" data-e="">À quelle fréquence ?</h2><p class="lead rv" data-e="">Une fois, chaque mois ou à chaque saison. Pour une vitrine de commerce, un passage régulier garde une image impeccable.</p></div>
   </div></section>
   <section class="pg-sec" aria-labelledby="h-nettoyage-vitres-3"><div class="wrap pg-faq">
-    <div class="head"><p class="kicker rv" data-e="">Questions</p><h2 id="h-nettoyage-vitres-3" class="sp" data-e="">Vos questions sur ce service</h2></div>
+    <div class="head"><h2 id="h-nettoyage-vitres-3" class="sp" data-e="">Questions fréquentes</h2></div>
     <div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Nettoyez-vous les vitres en hauteur ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Cela dépend de l'accès : nous l'étudions lors du devis et vous disons clairement ce que nous pouvons faire en sécurité.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Les cadres sont-ils compris ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Oui, les encadrements et les rebords sont nettoyés avec les vitres.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Intervenez-vous avant l'ouverture d'un commerce ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Oui, l'horaire est convenu avec vous pour ne pas gêner vos clients.</p></div></div></div>
   </div></section>
   <section class="pg-cta" aria-labelledby="h-nettoyage-vitres-cta"><div class="wrap">
-    <h2 id="h-nettoyage-vitres-cta" class="sp" data-e="">Des vitres qui brillent ?</h2>
-    <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en 2 minutes : le devis est gratuit et sans engagement.</p>
-    <a href="#contact" class="btn btn-sky mg rv" data-svc-of="nettoyage-vitres"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
+    <h2 id="h-nettoyage-vitres-cta" class="sp" data-e="">Besoin d\'un devis ?</h2>
+    <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en quelques lignes. Le devis est gratuit et sans engagement.</p>
+    <a href="#contact" class="btn btn-sky rv" style="--d:.25s" data-svc-of="nettoyage-vitres"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
     <div class="others-w rv" style="--d:.35s"><p class="others-t" data-e="">Découvrez aussi nos autres services</p><nav class="others" aria-label="Nos autres services"><a href="#nettoyage-bureaux" class="qbtn">Bureaux &amp; commerces</a><a href="#menage-domicile" class="qbtn">Logements &amp; particuliers</a><a href="#fin-de-chantier" class="qbtn">Fin de chantier</a><a href="#remise-en-etat" class="qbtn">Remise en état</a><a href="#copropriete" class="qbtn">Copropriétés</a></nav></div>
   </div></section>
 </article>
@@ -1258,28 +1280,27 @@ body.editing .chips{row-gap:44px;padding-top:40px}
       <nav class="crumbs rv" aria-label="Fil d'Ariane"><a href="#top">Accueil</a><span aria-hidden="true">›</span><a href="#services">Services</a><span aria-hidden="true">›</span><span aria-current="page">Fin de chantier</span></nav>
       <h1 id="t-fin-de-chantier" class="sp" data-e="">Nettoyage de fin de chantier</h1>
       <p class="lead rv" style="--d:.25s" data-e="">Après des travaux, la poussière est partout. Nous rendons des locaux propres, prêts à être livrés, visités ou habités.</p>
-      <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy mg" data-svc-of="fin-de-chantier"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
-      <ul class="ticks rv" style="--d:.45s"><li data-e="">Devis gratuit</li><li data-e="">Sans engagement</li><li data-e="">Matériel fourni</li></ul>
+      <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy" data-svc-of="fin-de-chantier"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
     </div>
     <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="fin-de-chantier" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="7" width="28" height="11" rx="3" fill="#a8dcf8"></rect><path d="M34 12h5v10H21v6"></path><rect x="18" y="28" width="6" height="14" rx="2" fill="#fff"></rect><path d="M8 26h6M10 32h4M8 38h4" stroke="#2cb3f3"></path></svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-fin-de-chantier-1"><div class="wrap">
-    <div class="head"><p class="kicker rv" data-e="">Ce qui est compris</p><h2 id="h-fin-de-chantier-1" class="sp" data-e="">Du sol aux plinthes, plus aucune trace des travaux</h2></div>
+    <div class="head"><h2 id="h-fin-de-chantier-1" class="sp" data-e="">Ce qui est compris</h2></div>
     <div class="tasks"><div class="task rv" style="--d:0s" data-rep=""><h3 data-e="">Dépoussiérage</h3><ul class="inc" data-e=""><li>Poussière fine sur toutes les surfaces</li><li>Plinthes, portes et interrupteurs</li><li>Intérieur des placards et rangements</li></ul></div><div class="task rv" style="--d:.08s" data-rep=""><h3 data-e="">Traces et résidus</h3><ul class="inc" data-e=""><li>Traces de peinture, de plâtre et de colle</li><li>Retrait des étiquettes et films de protection</li><li>Menuiseries et poignées</li></ul></div><div class="task rv" style="--d:.16s" data-rep=""><h3 data-e="">Sols, vitres et sanitaires</h3><ul class="inc" data-e=""><li>Aspiration et lavage des sols</li><li>Vitres et encadrements</li><li>Sanitaires et cuisine</li></ul></div></div>
     <p class="pg-note rv" data-e="">L'évacuation des déchets et des gravats se précise dans le devis.</p>
   </div></section>
   <section class="pg-sec sec-mist" aria-labelledby="h-fin-de-chantier-2"><div class="wrap pg-two">
-    <div><p class="kicker rv" data-e="">Pour qui ?</p><h2 id="h-fin-de-chantier-2" class="sp" data-e="">Après tous types de travaux</h2><ul class="tags rv"><li data-rep="" data-e="">Particuliers après rénovation</li><li data-rep="" data-e="">Artisans et entreprises du bâtiment</li><li data-rep="" data-e="">Promoteurs et constructeurs</li><li data-rep="" data-e="">Agences immobilières</li></ul></div>
-    <div><p class="kicker rv" data-e="">Fréquence</p><h2 class="sp" data-e="">Au bon moment</h2><p class="lead rv" data-e="">Une intervention à la fin des travaux, ou par étapes sur les grands chantiers. Prévenez-nous dès que vous connaissez la date de fin.</p></div>
+    <div><h2 id="h-fin-de-chantier-2" class="sp" data-e="">Pour qui ?</h2><ul class="tags rv"><li data-rep="" data-e="">Particuliers après rénovation</li><li data-rep="" data-e="">Artisans et entreprises du bâtiment</li><li data-rep="" data-e="">Promoteurs et constructeurs</li><li data-rep="" data-e="">Agences immobilières</li></ul></div>
+    <div><h2 class="sp" data-e="">À quelle fréquence ?</h2><p class="lead rv" data-e="">Une intervention à la fin des travaux, ou par étapes sur les grands chantiers. Prévenez-nous dès que vous connaissez la date de fin.</p></div>
   </div></section>
   <section class="pg-sec" aria-labelledby="h-fin-de-chantier-3"><div class="wrap pg-faq">
-    <div class="head"><p class="kicker rv" data-e="">Questions</p><h2 id="h-fin-de-chantier-3" class="sp" data-e="">Vos questions sur ce service</h2></div>
+    <div class="head"><h2 id="h-fin-de-chantier-3" class="sp" data-e="">Questions fréquentes</h2></div>
     <div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Quand faut-il prévoir le nettoyage ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Une fois les travaux terminés et les artisans partis. Prévenez-nous dès que vous connaissez la date de fin.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Pouvez-vous intervenir avant une livraison ou une visite ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Oui, indiquez-nous la date : nous l'intégrons au planning du devis.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Le matériel est-il fourni ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Oui, nous venons avec le matériel et les produits adaptés aux résidus de chantier.</p></div></div></div>
   </div></section>
   <section class="pg-cta" aria-labelledby="h-fin-de-chantier-cta"><div class="wrap">
-    <h2 id="h-fin-de-chantier-cta" class="sp" data-e="">Votre chantier se termine bientôt ?</h2>
-    <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en 2 minutes : le devis est gratuit et sans engagement.</p>
-    <a href="#contact" class="btn btn-sky mg rv" data-svc-of="fin-de-chantier"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
+    <h2 id="h-fin-de-chantier-cta" class="sp" data-e="">Besoin d\'un devis ?</h2>
+    <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en quelques lignes. Le devis est gratuit et sans engagement.</p>
+    <a href="#contact" class="btn btn-sky rv" style="--d:.25s" data-svc-of="fin-de-chantier"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
     <div class="others-w rv" style="--d:.35s"><p class="others-t" data-e="">Découvrez aussi nos autres services</p><nav class="others" aria-label="Nos autres services"><a href="#nettoyage-bureaux" class="qbtn">Bureaux &amp; commerces</a><a href="#menage-domicile" class="qbtn">Logements &amp; particuliers</a><a href="#nettoyage-vitres" class="qbtn">Vitres &amp; vitrines</a><a href="#remise-en-etat" class="qbtn">Remise en état</a><a href="#copropriete" class="qbtn">Copropriétés</a></nav></div>
   </div></section>
 </article>
@@ -1289,28 +1310,27 @@ body.editing .chips{row-gap:44px;padding-top:40px}
       <nav class="crumbs rv" aria-label="Fil d'Ariane"><a href="#top">Accueil</a><span aria-hidden="true">›</span><a href="#services">Services</a><span aria-hidden="true">›</span><span aria-current="page">Remise en état</span></nav>
       <h1 id="t-remise-en-etat" class="sp" data-e="">Remise en état et nettoyage en profondeur</h1>
       <p class="lead rv" style="--d:.25s" data-e="">Sols ternes, moquettes encrassées, cuisine grasse : un nettoyage en profondeur redonne de l'éclat à des surfaces fatiguées.</p>
-      <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy mg" data-svc-of="remise-en-etat"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
-      <ul class="ticks rv" style="--d:.45s"><li data-e="">Devis gratuit</li><li data-e="">Sans engagement</li><li data-e="">Matériel fourni</li></ul>
+      <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy" data-svc-of="remise-en-etat"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
     </div>
     <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="remise-en-etat" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18h14l4 6v15a3 3 0 0 1-3 3H17a3 3 0 0 1-3-3V22z" fill="#a8dcf8"></path><path d="M18 18v-6h11l6 3"></path><path d="M22 12V7h8"></path><rect x="18" y="27" width="12" height="8" rx="2" fill="#fff"></rect><g fill="#2cb3f3" stroke="none"><circle cx="40" cy="9" r="1.8"></circle><circle cx="44" cy="13" r="1.4"></circle><circle cx="43" cy="6" r="1.2"></circle></g></svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-remise-en-etat-1"><div class="wrap">
-    <div class="head"><p class="kicker rv" data-e="">Ce qui est compris</p><h2 id="h-remise-en-etat-1" class="sp" data-e="">Un vrai coup de neuf</h2></div>
+    <div class="head"><h2 id="h-remise-en-etat-1" class="sp" data-e="">Ce qui est compris</h2></div>
     <div class="tasks"><div class="task rv" style="--d:0s" data-rep=""><h3 data-e="">Sols</h3><ul class="inc" data-e=""><li>Décapage et lustrage des sols durs</li><li>Lavage en profondeur</li><li>Plinthes</li></ul></div><div class="task rv" style="--d:.08s" data-rep=""><h3 data-e="">Moquettes et surfaces</h3><ul class="inc" data-e=""><li>Nettoyage des moquettes et tapis</li><li>Surfaces encrassées</li><li>Portes et poignées</li></ul></div><div class="task rv" style="--d:.16s" data-rep=""><h3 data-e="">Cuisines et sanitaires</h3><ul class="inc" data-e=""><li>Dégraissage des cuisines</li><li>Détartrage des sanitaires</li><li>Joints et robinetterie</li></ul></div></div>
     <p class="pg-note rv" data-e="">Certaines taches ou usures sont définitives : nous vous le disons honnêtement avant de commencer.</p>
   </div></section>
   <section class="pg-sec sec-mist" aria-labelledby="h-remise-en-etat-2"><div class="wrap pg-two">
-    <div><p class="kicker rv" data-e="">Pour qui ?</p><h2 id="h-remise-en-etat-2" class="sp" data-e="">Quand un simple ménage ne suffit plus</h2><ul class="tags rv"><li data-rep="" data-e="">Après une longue période sans entretien</li><li data-rep="" data-e="">Avant une vente ou une location</li><li data-rep="" data-e="">Après le départ d'un locataire</li><li data-rep="" data-e="">Bureaux et commerces</li></ul></div>
-    <div><p class="kicker rv" data-e="">Fréquence</p><h2 class="sp" data-e="">Ponctuel, puis entretien</h2><p class="lead rv" data-e="">Une intervention ponctuelle, puis, si vous le souhaitez, un entretien régulier pour garder le résultat.</p></div>
+    <div><h2 id="h-remise-en-etat-2" class="sp" data-e="">Pour qui ?</h2><ul class="tags rv"><li data-rep="" data-e="">Après une longue période sans entretien</li><li data-rep="" data-e="">Avant une vente ou une location</li><li data-rep="" data-e="">Après le départ d'un locataire</li><li data-rep="" data-e="">Bureaux et commerces</li></ul></div>
+    <div><h2 class="sp" data-e="">À quelle fréquence ?</h2><p class="lead rv" data-e="">Une intervention ponctuelle, puis, si vous le souhaitez, un entretien régulier pour garder le résultat.</p></div>
   </div></section>
   <section class="pg-sec" aria-labelledby="h-remise-en-etat-3"><div class="wrap pg-faq">
-    <div class="head"><p class="kicker rv" data-e="">Questions</p><h2 id="h-remise-en-etat-3" class="sp" data-e="">Vos questions sur ce service</h2></div>
+    <div class="head"><h2 id="h-remise-en-etat-3" class="sp" data-e="">Questions fréquentes</h2></div>
     <div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Pouvez-vous rattraper n'importe quelle tache ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Nous faisons le maximum, mais certaines taches ou usures sont définitives : nous vous le disons avant de commencer.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Faut-il vider les pièces ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Idéalement oui, ou au moins dégager les sols : nous en parlons lors du devis.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Combien de temps dure une remise en état ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Cela dépend de la surface et de l'état des lieux : la durée est indiquée dans le devis.</p></div></div></div>
   </div></section>
   <section class="pg-cta" aria-labelledby="h-remise-en-etat-cta"><div class="wrap">
-    <h2 id="h-remise-en-etat-cta" class="sp" data-e="">Redonner de l'éclat à vos locaux ?</h2>
-    <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en 2 minutes : le devis est gratuit et sans engagement.</p>
-    <a href="#contact" class="btn btn-sky mg rv" data-svc-of="remise-en-etat"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
+    <h2 id="h-remise-en-etat-cta" class="sp" data-e="">Besoin d\'un devis ?</h2>
+    <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en quelques lignes. Le devis est gratuit et sans engagement.</p>
+    <a href="#contact" class="btn btn-sky rv" style="--d:.25s" data-svc-of="remise-en-etat"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
     <div class="others-w rv" style="--d:.35s"><p class="others-t" data-e="">Découvrez aussi nos autres services</p><nav class="others" aria-label="Nos autres services"><a href="#nettoyage-bureaux" class="qbtn">Bureaux &amp; commerces</a><a href="#menage-domicile" class="qbtn">Logements &amp; particuliers</a><a href="#nettoyage-vitres" class="qbtn">Vitres &amp; vitrines</a><a href="#fin-de-chantier" class="qbtn">Fin de chantier</a><a href="#copropriete" class="qbtn">Copropriétés</a></nav></div>
   </div></section>
 </article>
@@ -1320,28 +1340,27 @@ body.editing .chips{row-gap:44px;padding-top:40px}
       <nav class="crumbs rv" aria-label="Fil d'Ariane"><a href="#top">Accueil</a><span aria-hidden="true">›</span><a href="#services">Services</a><span aria-hidden="true">›</span><span aria-current="page">Copropriétés</span></nav>
       <h1 id="t-copropriete" class="sp" data-e="">Entretien des parties communes de copropriété</h1>
       <p class="lead rv" style="--d:.25s" data-e="">Des halls, escaliers et paliers propres toute l'année : la première impression de votre immeuble, pour les résidents comme pour les visiteurs.</p>
-      <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy mg" data-svc-of="copropriete"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
-      <ul class="ticks rv" style="--d:.45s"><li data-e="">Devis gratuit</li><li data-e="">Sans engagement</li><li data-e="">Matériel fourni</li></ul>
+      <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy" data-svc-of="copropriete"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
     </div>
     <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="copropriete" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="5" width="22" height="37" rx="2" fill="#fff"></rect><rect x="31" y="17" width="9" height="25" rx="1.5" fill="#a8dcf8"></rect><g fill="#a8dcf8" stroke="none"><rect x="13" y="10" width="5" height="5" rx="1"></rect><rect x="22" y="10" width="5" height="5" rx="1"></rect><rect x="13" y="19" width="5" height="5" rx="1"></rect><rect x="22" y="19" width="5" height="5" rx="1"></rect><rect x="13" y="28" width="5" height="5" rx="1"></rect><rect x="22" y="28" width="5" height="5" rx="1"></rect></g><path d="M17 42v-5h6v5M4 42h40"></path></svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-copropriete-1"><div class="wrap">
-    <div class="head"><p class="kicker rv" data-e="">Ce qui est compris</p><h2 id="h-copropriete-1" class="sp" data-e="">Toutes les parties communes</h2></div>
+    <div class="head"><h2 id="h-copropriete-1" class="sp" data-e="">Ce qui est compris</h2></div>
     <div class="tasks"><div class="task rv" style="--d:0s" data-rep=""><h3 data-e="">Halls et circulations</h3><ul class="inc" data-e=""><li>Hall d'entrée et boîtes aux lettres</li><li>Escaliers, paliers et couloirs</li><li>Rampes et mains courantes</li></ul></div><div class="task rv" style="--d:.08s" data-rep=""><h3 data-e="">Ascenseurs et vitres</h3><ul class="inc" data-e=""><li>Cabine d'ascenseur</li><li>Portes et vitres des parties communes</li><li>Miroirs</li></ul></div><div class="task rv" style="--d:.16s" data-rep=""><h3 data-e="">Locaux annexes</h3><ul class="inc" data-e=""><li>Local poubelles</li><li>Local vélos</li><li>Caves et parkings sur demande</li></ul></div></div>
     <p class="pg-note rv" data-e="">Le planning de passage et la liste des tâches sont fixés dans le devis, à soumettre au conseil syndical si besoin.</p>
   </div></section>
   <section class="pg-sec sec-mist" aria-labelledby="h-copropriete-2"><div class="wrap pg-two">
-    <div><p class="kicker rv" data-e="">Pour qui ?</p><h2 id="h-copropriete-2" class="sp" data-e="">Pour les immeubles</h2><ul class="tags rv"><li data-rep="" data-e="">Syndics professionnels</li><li data-rep="" data-e="">Syndics bénévoles</li><li data-rep="" data-e="">Conseils syndicaux</li><li data-rep="" data-e="">Bailleurs</li></ul></div>
-    <div><p class="kicker rv" data-e="">Fréquence</p><h2 class="sp" data-e="">Un planning fixe et suivi</h2><p class="lead rv" data-e="">Une ou plusieurs fois par semaine selon la taille de l'immeuble, toujours aux mêmes jours, pour un résultat régulier.</p></div>
+    <div><h2 id="h-copropriete-2" class="sp" data-e="">Pour qui ?</h2><ul class="tags rv"><li data-rep="" data-e="">Syndics professionnels</li><li data-rep="" data-e="">Syndics bénévoles</li><li data-rep="" data-e="">Conseils syndicaux</li><li data-rep="" data-e="">Bailleurs</li></ul></div>
+    <div><h2 class="sp" data-e="">À quelle fréquence ?</h2><p class="lead rv" data-e="">Une ou plusieurs fois par semaine selon la taille de l'immeuble, toujours aux mêmes jours, pour un résultat régulier.</p></div>
   </div></section>
   <section class="pg-sec" aria-labelledby="h-copropriete-3"><div class="wrap pg-faq">
-    <div class="head"><p class="kicker rv" data-e="">Questions</p><h2 id="h-copropriete-3" class="sp" data-e="">Vos questions sur ce service</h2></div>
+    <div class="head"><h2 id="h-copropriete-3" class="sp" data-e="">Questions fréquentes</h2></div>
     <div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Travaillez-vous avec les syndics ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Oui : nous établissons un devis et un planning adaptés à l'immeuble, à présenter au conseil syndical si besoin.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Pouvez-vous sortir et rentrer les poubelles ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">C'est possible selon les jours de collecte : précisez-le dans votre demande.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Que se passe-t-il en cas d'absence d'un agent ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Le passage est reprogrammé avec vous : les modalités sont précisées dans le devis.</p></div></div></div>
   </div></section>
   <section class="pg-cta" aria-labelledby="h-copropriete-cta"><div class="wrap">
-    <h2 id="h-copropriete-cta" class="sp" data-e="">Un immeuble toujours accueillant ?</h2>
-    <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en 2 minutes : le devis est gratuit et sans engagement.</p>
-    <a href="#contact" class="btn btn-sky mg rv" data-svc-of="copropriete"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
+    <h2 id="h-copropriete-cta" class="sp" data-e="">Besoin d\'un devis ?</h2>
+    <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en quelques lignes. Le devis est gratuit et sans engagement.</p>
+    <a href="#contact" class="btn btn-sky rv" style="--d:.25s" data-svc-of="copropriete"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
     <div class="others-w rv" style="--d:.35s"><p class="others-t" data-e="">Découvrez aussi nos autres services</p><nav class="others" aria-label="Nos autres services"><a href="#nettoyage-bureaux" class="qbtn">Bureaux &amp; commerces</a><a href="#menage-domicile" class="qbtn">Logements &amp; particuliers</a><a href="#nettoyage-vitres" class="qbtn">Vitres &amp; vitrines</a><a href="#fin-de-chantier" class="qbtn">Fin de chantier</a><a href="#remise-en-etat" class="qbtn">Remise en état</a></nav></div>
   </div></section>
 </article>
@@ -1351,31 +1370,31 @@ body.editing .chips{row-gap:44px;padding-top:40px}
       <nav class="crumbs rv" aria-label="Fil d'Ariane"><a href="#top">Accueil</a><span aria-hidden="true">›</span><span aria-current="page">Qui sommes-nous</span></nav>
       <h1 id="t-a-propos" class="sp" data-e="">Qui sommes-nous ?</h1>
       <p class="lead rv" style="--d:.25s"><span data-k="nom">A-Proclean</span> <span data-e="">est une entreprise de nettoyage professionnel au service des entreprises, des commerces, des copropriétés et des particuliers.</span></p>
-      <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy mg"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#services" class="btn btn-ghost"><span data-e="">Voir nos services</span></a></div>
+      <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#services" class="btn btn-ghost"><span data-e="">Voir nos services</span></a></div>
     </div>
     <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" aria-hidden="true"><svg viewBox="0 0 200 200" focusable="false"><circle cx="100" cy="100" r="78" fill="#fff"></circle><path d="M100 42l46 17v34c0 29-20 46-46 53-26-7-46-24-46-53V59z" fill="#142f64"></path><path d="M100 54l34 12v27c0 22-15 35-34 41z" fill="#2cb3f3" opacity=".9"></path><path d="M80 99l14 14 28-29" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"></path><path d="M160 36c1.4 9 4.6 12 13.6 13.6-9 1.4-12.2 4.6-13.6 13.6-1.4-9-4.6-12.2-13.6-13.6 9-1.6 12.2-4.6 13.6-13.6z" fill="#2cb3f3"></path><path d="M40 140c1 6 3 8 9 9-6 1-8 3-9 9-1-6-3-8-9-9 6-1 8-3 9-9z" fill="#7fd0f7"></path></svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-ap-1"><div class="wrap pg-two">
-    <div><p class="kicker rv" data-e="">Notre métier</p><h2 id="h-ap-1" class="sp" data-e="">Des lieux propres, sans que vous ayez à y penser.</h2></div>
+    <div><h2 id="h-ap-1" class="sp" data-e="">Notre métier</h2></div>
     <div><p class="lead rv" data-e="">Notre travail : vous rendre des lieux propres, sains et accueillants. Nous intervenons ponctuellement ou régulièrement, aux horaires qui vous conviennent, avec notre matériel et des produits professionnels.</p>
     <p class="lead rv" style="margin-top:14px" data-e="">Bureaux, commerces, logements, vitres, fins de chantier ou parties communes : chaque lieu a ses contraintes, et nous adaptons notre méthode à chacun.</p></div>
   </div></section>
   <section class="pg-sec sec-mist" aria-labelledby="h-ap-2"><div class="wrap">
-    <div class="head center"><p class="kicker rv" data-e="">Notre façon de travailler</p><h2 id="h-ap-2" class="sp" data-e="">Simple, sérieux, <em>régulier.</em></h2></div>
-    <div class="vals"><div class="val rv" style="--d:0s" data-rep=""><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8 13s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"></path></svg></span><h3 data-e="">On écoute d'abord</h3><p data-e="">Nous commençons par comprendre vos locaux, vos horaires et vos attentes.</p></div><div class="val rv" style="--d:.08s" data-rep=""><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 14l2 2 4-4"></path></svg></span><h3 data-e="">Un devis clair</h3><p data-e="">Chaque prestation est détaillée et chiffrée avant de commencer.</p></div><div class="val rv" style="--d:.16s" data-rep=""><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3M18 3v4h-4M6 21v-4h4"></path></svg></span><h3 data-e="">La régularité</h3><p data-e="">Les mêmes consignes à chaque passage, pour un résultat constant.</p></div><div class="val rv" style="--d:.24s" data-rep=""><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM9 12l2 2 4-4"></path></svg></span><h3 data-e="">Le suivi</h3><p data-e="">Nous faisons le point avec vous et ajustons si besoin.</p></div></div>
+    <div class="head"><h2 id="h-ap-2" class="sp" data-e="">Notre façon de travailler</h2></div>
+    <div class="vals"><div class="val rv" style="--d:0s" data-rep=""><h3 data-e="">On écoute d'abord</h3><p data-e="">Nous commençons par comprendre vos locaux, vos horaires et vos attentes.</p></div><div class="val rv" style="--d:.08s" data-rep=""><h3 data-e="">Un devis clair</h3><p data-e="">Chaque prestation est détaillée et chiffrée avant de commencer.</p></div><div class="val rv" style="--d:.16s" data-rep=""><h3 data-e="">La régularité</h3><p data-e="">Les mêmes consignes à chaque passage, pour un résultat constant.</p></div><div class="val rv" style="--d:.24s" data-rep=""><h3 data-e="">Le suivi</h3><p data-e="">Nous faisons le point avec vous et ajustons si besoin.</p></div></div>
   </div></section>
   <section class="pg-sec" aria-labelledby="h-ap-3" data-section="Notre histoire (page Qui sommes-nous)" hidden="" data-nosnippet=""><div class="wrap pg-faq">
-    <p class="kicker rv" data-e="">Notre histoire</p><h2 id="h-ap-3" class="sp" data-e="">Comment tout a commencé</h2>
+    <h2 id="h-ap-3" class="sp" data-e="">Notre histoire</h2>
     <p class="lead rv" data-e="">[Racontez ici, en quelques lignes, la création de l'entreprise, votre expérience et ce qui vous tient à cœur.]</p>
   </div></section>
   <section class="pg-sec" aria-labelledby="h-ap-4"><div class="wrap pg-two">
-    <div><p class="kicker rv" data-e="">Nos engagements</p><h2 id="h-ap-4" class="sp" data-e="">Ce sur quoi vous pouvez compter</h2></div>
+    <div><h2 id="h-ap-4" class="sp" data-e="">Nos engagements</h2></div>
     <ul class="inc inc-lg rv" data-e=""><li>Devis gratuit et sans engagement</li><li>Des prix clairs, sans frais cachés</li><li>Le respect de vos horaires et de vos locaux</li><li>La discrétion chez vous comme dans vos bureaux</li><li>Des produits adaptés à chaque surface</li></ul>
   </div></section>
   <section class="pg-cta" aria-labelledby="h-a-propos-cta"><div class="wrap">
-    <h2 id="h-a-propos-cta" class="sp" data-e="">Parlons de votre besoin</h2>
-    <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en 2 minutes : le devis est gratuit et sans engagement.</p>
-    <a href="#contact" class="btn btn-sky mg rv"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
+    <h2 id="h-a-propos-cta" class="sp" data-e="">Besoin d\'un devis ?</h2>
+    <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en quelques lignes. Le devis est gratuit et sans engagement.</p>
+    <a href="#contact" class="btn btn-sky rv" style="--d:.25s"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
     <div class="others-w rv" style="--d:.35s"><p class="others-t" data-e="">Découvrez aussi nos autres services</p><nav class="others" aria-label="Nos autres services"><a href="#nettoyage-bureaux" class="qbtn">Bureaux &amp; commerces</a><a href="#menage-domicile" class="qbtn">Logements &amp; particuliers</a><a href="#nettoyage-vitres" class="qbtn">Vitres &amp; vitrines</a><a href="#fin-de-chantier" class="qbtn">Fin de chantier</a><a href="#remise-en-etat" class="qbtn">Remise en état</a><a href="#copropriete" class="qbtn">Copropriétés</a></nav></div>
   </div></section>
 </article>
