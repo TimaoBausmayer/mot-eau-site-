@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex">
-<title>Page introuvable — L&amp;T Digital</title><link rel="icon" href="/images/logo-small.jpg"><link rel="stylesheet" href="/fonts/fonts.css"><link rel="stylesheet" href="/style.css"></head>
-<body><main class="lp" id="contenu"><h1>Page introuvable</h1><p>Cette page n'existe pas ou n'est plus disponible.</p><p><a class="btn" href="/">Retour à l'accueil</a></p></main></body>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex"><meta name="theme-color" content="#0a0912">
+<title>Page introuvable — L&amp;T Digital</title><link rel="icon" href="/images/logo-small.jpg"><link rel="stylesheet" href="/fonts/fonts.css"><link rel="stylesheet" href="/style.css">
+<style>
+.nf{min-height:100vh;min-height:100svh;display:grid;place-items:center;padding:40px 20px;text-align:center;position:relative;overflow:hidden}
+.nf::before{content:"";position:absolute;inset:0;background:radial-gradient(500px 360px at 20% 15%,rgba(122,92,255,.35),transparent 70%),radial-gradient(500px 360px at 85% 85%,rgba(200,255,62,.12),transparent 70%);pointer-events:none}
+.nf-in{position:relative;max-width:560px}
+.nf-logo{display:inline-flex;align-items:center;gap:12px;font:700 1.2rem var(--hf);color:#f2f3fb;text-decoration:none;margin-bottom:28px}
+.nf-logo img{width:46px;height:46px;border-radius:50%}
+.nf .nf-big{font:800 clamp(5.5rem,22vw,9.5rem)/.9 var(--hf);letter-spacing:-.06em;background:linear-gradient(90deg,#c8ff3e,#8fa2ff 60%,#5eead4);-webkit-background-clip:text;background-clip:text;color:transparent;margin:0}
+.nf h1{font-size:clamp(1.6rem,5vw,2.2rem);margin:14px 0 10px}
+.nf p{color:#c9cbd9;margin:0 auto 26px;max-width:30em}
+.nf-btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+</style></head>
+<body><main class="nf" id="contenu"><div class="nf-in">
+  <a class="nf-logo" href="/"><img src="/images/logo-small.jpg" alt="" width="46" height="46">L&amp;T Digital</a>
+  <p class="nf-big" aria-hidden="true">404</p>
+  <h1>Oups, cette page n'existe pas.</h1>
+  <p>Le lien est peut-être ancien ou mal écrit. Pas de souci : tout le reste est là.</p>
+  <div class="nf-btns"><a class="btn" href="/">Retour à l'accueil</a><a class="btn btn-ghost" href="/#tarifs">Voir les prix</a><a class="btn btn-ghost" href="/#commande">Commander</a></div>
+</div></main></body>
 </html>
