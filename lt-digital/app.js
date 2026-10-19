@@ -661,6 +661,9 @@ $("vat-note").textContent = vatNote;
   const lab=(i,key)=>{ if(T[key]==null) return; const l=document.querySelectorAll("#order-form .fields label")[i]; if(l&&l.firstChild) l.firstChild.textContent=T[key]; };
   set('.links a[href="#tarifs"]','nav_tarifs'); set('.links a[href="#avis"]','nav_avis'); set('.links a[href="#comparatif"]','nav_comparatif'); set('.links a[href="#services"]','nav_services'); set('.links a[href="#process"]','nav_process'); set('.links a[href="#realisations"]','nav_realisations'); set('.links a[href="#faq"]','nav_faq'); set('.links a[href="#histoire"]','nav_histoire'); set('#nav-insta','nav_insta'); set('.nav-in > a.btn','nav_cta');
   set("#order-form > h3","order_plan",0); set("#order-form > h3","order_opts",1); set("#order-form > h3","order_info",2);
+  /* étapes de la commande : « 1. Choisis ton site » → pastille numérotée + titre */
+  document.querySelectorAll("#order-form > h3").forEach(h=>{ const m = h.textContent.match(/^\s*(\d+)\s*[.)·-]\s*(.+)$/); if (!m) return;
+    h.classList.add("ostep-h"); h.innerHTML = `<span class="ostep" aria-hidden="true">${m[1]}</span><span class="sr-only">Étape ${m[1]} : </span>${esc(m[2])}`; });
   lab(0,"f_name"); lab(1,"f_biz"); lab(2,"f_contact"); lab(3,"f_project");
   set(".summary > h3","sum_title"); set("#promo-btn","promo_btn"); set("#copy-btn","copy_btn"); set("#insta-btn","insta_btn"); set("#mail-btn","mail_btn"); set("#cartbar .btn","cart_btn");
   set(".final h2","final_title"); set(".final p","final_text"); set(".final .btn-light","final_btn"); set("#final-insta","final_insta"); set("#final-mail","final_mail"); })();

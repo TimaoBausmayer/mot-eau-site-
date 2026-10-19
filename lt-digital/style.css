@@ -1560,3 +1560,11 @@ label small{margin-left:.35em}
 @keyframes menuIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.links.open{animation:none}}
 body.menu-open .nav{z-index:1000}
+/* bouton Admin du pied de page : présent mais discret (les visiteurs ne doivent pas le remarquer) */
+#lg-a{padding:5px 11px;border-color:rgba(255,255,255,.16);color:#a9abbd!important;background:transparent;font-weight:500;font-size:.78rem}
+#lg-a:hover,#lg-a:focus-visible{background:#c8ff3e;border-color:#c8ff3e;color:#0a0912!important}
+/* commande : titres d'étape avec pastille numérotée */
+.ostep-h{display:flex;align-items:center;gap:12px;font-size:1.22rem}
+.ostep{display:inline-grid;place-items:center;flex:none;width:32px;height:32px;border-radius:10px;font:700 .95rem var(--hf);color:#0a0912;background:linear-gradient(135deg,var(--accent),#9be15d)}
+/* récapitulatif : acompte lisible (police normale) */
+#sum-dep{font:500 .9rem var(--bf)!important;letter-spacing:0!important;color:#d9dbe8}
