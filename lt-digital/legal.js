@@ -219,7 +219,9 @@ const body = `<a class="skip" href="#contenu">Aller au contenu</a>
 <header class="lp-top"><div class="wrap"><a class="logo" href="index.html"><img src="${esc(C.logo||"")}" alt="" width="40" height="40"><b>${esc(C.brand)}</b></a><a href="index.html" class="btn btn-sm btn-ghost">← Retour au site</a></div></header>
 <main class="lp" id="contenu"><h1>${esc(t.title)}</h1>${today?`<p class="upd">Dernière mise à jour : ${esc(today)}</p>`:""}${t.html}</main>
 <footer class="foot"><div class="wrap"><div class="fb"><strong>${esc(C.brand)}</strong></div><nav class="legal-nav" aria-label="Pages légales" style="border:0;padding:0;width:auto">${nav}</nav></div></footer>`;
-return { title: t.title + " — " + C.brand, body };
+/* typographie française : espaces insécables avant ? ! : ; » et après « (dans le texte seulement, pas dans les balises) */
+const nb = h => h.replace(/>([^<]+)</g, (m, x) => ">" + x.replace(/ ([?!:;»])/g, "\u00a0$1").replace(/« /g, "«\u00a0") + "<");
+return { title: t.title + " — " + C.brand, body: nb(body) };
 }
 
 if (typeof module !== "undefined" && module.exports) { module.exports = build; return; }

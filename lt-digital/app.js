@@ -6,6 +6,9 @@ if (PREVIEW) { try { const d = localStorage.getItem("ltd_draft"); if (d) C = JSO
   b.style.cssText = "position:fixed;left:12px;bottom:12px;z-index:99;background:#ffb020;color:#111;font:700 12px Inter,sans-serif;padding:6px 12px;border-radius:99px"; document.body.appendChild(b); }
 const $ = id => document.getElementById(id);
 const esc = s => String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+/* mots d'un titre animé : la ponctuation (? ! : ; ») reste collée au mot d'avant, « au mot d'après */
+const splitWords = t => String(t||"").split(/\s+/).filter(Boolean).reduce((a,w)=>{ const L = a.length-1;
+  if (L>=0 && (/^[?!:;»]+$/.test(w) || a[L]==="«")) a[L] += "\u00a0"+w; else a.push(w); return a; }, []);
 const fmt = n => { const r = Math.round(n*100)/100, v = Number.isInteger(r) ? r.toLocaleString("fr-FR") : r.toLocaleString("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2}); return C.currency.after ? v+" "+C.currency.symbol : C.currency.symbol+v; };
 
 /* éléments masqués depuis l'admin (« Masquer sur le site ») : on les retire avant d'afficher quoi que ce soit */
@@ -37,7 +40,7 @@ $("f-brand").textContent = C.brand; $("f-copy").textContent = "© " + new Date()
 $("f-text").textContent = C.footer;
 $("h-badge").textContent = C.hero.badge; $("h-badge-wrap").hidden = !C.hero.badge;
 /* titre : chaque mot apparaît l'un après l'autre */
-(function(){ let i = 0; const words = (el, txt) => { el.innerHTML = String(txt||"").split(/\s+/).filter(Boolean).map(w=>`<span class="w" style="--i:${i++}"><span>${esc(w)}</span></span>`).join(" "); };
+(function(){ let i = 0; const words = (el, txt) => { el.innerHTML = splitWords(txt).map(w=>`<span class="w" style="--i:${i++}"><span>${esc(w)}</span></span>`).join(" "); };
   words($("h-title"), C.hero.title); words($("h-accent"), C.hero.titleAccent);
   $("h1").style.setProperty("--n", i);
   $("h-accent").insertAdjacentHTML("beforeend", `<svg class="swoosh" viewBox="0 0 300 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 10 C 70 2, 150 2, 298 8" /></svg>`); })();
@@ -739,7 +742,7 @@ $("vat-note").textContent = vatNote;
 (function(){ if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   /* titres de section : les mots montent un par un quand la section arrive */
   document.querySelectorAll("main .sec-head h2").forEach(h=>{ const t = h.textContent.trim(); if(!t) return; let i = 0;
-    const ws = t.split(/\s+/), g = ws.length > 3 ? 2 : 1;   /* les derniers mots prennent le dégradé animé du haut de page */
+    const ws = splitWords(t), g = ws.length > 3 ? 2 : 1;   /* les derniers mots prennent le dégradé animé du haut de page */
     h.innerHTML = ws.map((w,k)=>`<span class="w2${k >= ws.length-g ? " gw" : ""}"><span style="--i:${i++}">${esc(w)}</span></span>`).join(" "); });
   /* cartes : légère inclinaison 3D + reflet lumineux qui suit la souris */
   if (matchMedia("(hover:hover) and (pointer:fine)").matches){
@@ -852,7 +855,7 @@ document.querySelectorAll(".links a.nq[data-g]").forEach(a=>a.addEventListener("
 
 /* ---------- nos designs de logos ---------- */
 (function(){ const L = C.logos || {}, list = (L.items||[]).filter(x=>x && x.image); if (!list.length) return;
-  $("logos").hidden = false; $("lg-eb").textContent = L.eyebrow||"Logos"; { const ws = String(L.title||"").split(/\s+/).filter(Boolean), g = ws.length > 3 ? 2 : 1; $("lg-title").innerHTML = ws.map((w,k)=>`<span class="w2${k >= ws.length-g ? " gw" : ""}"><span style="--i:${k}">${esc(w)}</span></span>`).join(" "); } $("lg-text").textContent = L.text||"";
+  $("logos").hidden = false; $("lg-eb").textContent = L.eyebrow||"Logos"; { const ws = splitWords(L.title), g = ws.length > 3 ? 2 : 1; $("lg-title").innerHTML = ws.map((w,k)=>`<span class="w2${k >= ws.length-g ? " gw" : ""}"><span style="--i:${k}">${esc(w)}</span></span>`).join(" "); } $("lg-text").textContent = L.text||"";
   $("lg-note").textContent = L.note||""; $("lg-btn").textContent = L.cta||"Je veux mon logo";
   $("logos-grid").innerHTML = list.map((x,i)=>`<button type="button" class="lgc reveal" style="--d:${(i%4)*80}ms" data-i="${i}" aria-label="Agrandir le logo ${esc(x.name||"")}"><span class="lgc-img"><img src="${esc(x.image)}" alt="Logo ${esc(x.name||"")}" loading="lazy"></span><span class="lgc-in"><b>${esc(x.name||"")}</b><small>${esc(x.sector||"")}</small></span></button>`).join("");
   $("logos-grid").addEventListener("click", e=>{ const b = e.target.closest("[data-i]"); if (!b) return; const x = list[+b.dataset.i];
@@ -995,4 +998,14 @@ document.querySelectorAll(".links a.nq[data-g]").forEach(a=>a.addEventListener("
     makesOffer: [...vis(C.plans).map(p=>offer(p.name,p.price,p.tagline,p.from)), ...vis((C.services||{}).items).map(x=>offer(x.name,x.price,x.desc,x.from))] };
   const el = document.createElement("script"); el.type = "application/ld+json"; el.textContent = JSON.stringify(data); document.head.appendChild(el);
 } catch(e){} })();
+})();
+
+/* typographie française : espaces insécables avant ? ! : ; » et après « — le signe ne part jamais seul à la ligne
+   (uniquement l'affichage du texte : rien ne change dans config.js) */
+(function(){ const SKIP = /^(SCRIPT|STYLE|TEXTAREA|NOSCRIPT)$/, RX = / ([?!:;»])/g, RX2 = /« /g;
+  const fixNode = n => { const v = n.nodeValue; if (!v || v.indexOf(" ") < 0) return; const t = v.replace(RX, "\u00a0$1").replace(RX2, "«\u00a0"); if (t !== v) n.nodeValue = t; };
+  const fix = root => { if (!root || (root.nodeType === 1 && SKIP.test(root.nodeName))) return; if (root.nodeType === 3) return fixNode(root);
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n => n.parentNode && SKIP.test(n.parentNode.nodeName) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT }); let n; while ((n = w.nextNode())) fixNode(n); };
+  fix(document.body);
+  new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => fix(n)))).observe(document.body, { childList: true, subtree: true });
 })();
