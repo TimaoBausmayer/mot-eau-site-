@@ -59,12 +59,18 @@ $("h-badge").textContent = C.hero.badge; $("h-badge-wrap").hidden = !C.hero.badg
 /* barre « demande » : des exemples de projets s'écrivent tout seuls */
 (function(){ const list = ((C.hero||{}).prompts||[]).filter(Boolean), el = $("h-prompt"); if (!el || !list.length) return; el.hidden = false;
   const q = $("hp-q"); el.setAttribute("aria-label", list[0]);
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches){ q.textContent = list[0]; return; }
   let i = 0, n = 0, del = false;
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) q.textContent = list[0];
   const tick = () => { const txt = list[i];
-    if (!del){ n++; q.textContent = txt.slice(0, n); if (n >= txt.length){ del = true; el.classList.add("ok"); setTimeout(()=>el.classList.remove("ok"), 600); return setTimeout(tick, 1900); } return setTimeout(tick, 38 + Math.random()*55); }
+    if (!del){ n++; q.textContent = txt.slice(0, n); if (n >= txt.length){ del = true; el.setAttribute("aria-label", txt); el.classList.add("ok"); setTimeout(()=>el.classList.remove("ok"), 600); return setTimeout(tick, 1900); } return setTimeout(tick, 38 + Math.random()*55); }
     n -= 2; q.textContent = txt.slice(0, Math.max(0, n)); if (n <= 0){ del = false; n = 0; i = (i+1) % list.length; return setTimeout(tick, 350); } setTimeout(tick, 18); };
-  setTimeout(tick, 1700); })();
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setTimeout(tick, 1700);
+  /* clic : on emmène directement au bon endroit selon la phrase affichée (logo, vidéo, photos, sinon les prix) */
+  el.addEventListener("click", e=>{ const t = (list[i]||"").toLowerCase(), nav = g => document.querySelector(`.links a.nq[data-g="${g}"]`);
+    const go = /logo/.test(t) && !$("logos").hidden ? "#logos" : /vid[ée]o|\bpub/.test(t) ? nav("Pubs vidéo") : /photo/.test(t) ? nav("Photos & vidéo") : "#tarifs";
+    if (!go) return; e.preventDefault();
+    if (typeof go === "string") { const d = document.querySelector(go); if (d) d.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); }
+    else go.click(); }); })();
 /* bande des métiers qui défile (tirée des réalisations) */
 (function(){ const names = [...new Set((C.portfolio||[]).map(p=>String(p.category||p.tag||"").split("·")[0].trim()).filter(Boolean))]; if(names.length<3) return;
   const idx = n => (C.portfolio||[]).findIndex(p=>String(p.category||p.tag||"").split("·")[0].trim()===n);
@@ -570,6 +576,11 @@ if (SV){
   drawSvcs();
 } else { $("services").hidden = true; document.querySelectorAll('a[href="#services"]').forEach(l=>l.hidden=true); }
 drawOpts(); drawSvcOpts(); render();
+
+/* sous la FAQ : une autre question ? → contact direct */
+(function(){ const ct = C.contact||{}, el = $("faq-more"); if (!el || (!ct.instagram && !ct.email)) return;
+  const L = [ct.instagram?`<a href="${esc(ct.instagram)}" target="_blank" rel="noopener">${esc(TX.faq_more_ig||"Écris-nous sur Instagram")}</a>`:"", ct.email?`<a href="mailto:${esc(ct.email)}">${esc(TX.faq_more_mail||"par e-mail")}</a>`:""].filter(Boolean);
+  el.innerHTML = `<span>${esc(TX.faq_more||"Une autre question ?")}</span> ${L.join(" ou ")}. ${esc(TX.faq_more_end||"On te répond en général dans la journée.")}`; el.hidden = false; })();
 
 /* notre histoire */
 (function(){ const st = C.story; if(!st){ $("histoire").hidden = true; document.querySelectorAll('a[href="#histoire"]').forEach(l=>l.hidden=true); return; }

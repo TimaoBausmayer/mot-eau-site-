@@ -1568,3 +1568,7 @@ body.menu-open .nav{z-index:1000}
 .ostep{display:inline-grid;place-items:center;flex:none;width:32px;height:32px;border-radius:10px;font:700 .95rem var(--hf);color:#0a0912;background:linear-gradient(135deg,var(--accent),#9be15d)}
 /* récapitulatif : acompte lisible (police normale) */
 #sum-dep{font:500 .9rem var(--bf)!important;letter-spacing:0!important;color:#d9dbe8}
+/* sous la FAQ : lien direct vers le contact */
+.faq-more{margin-top:22px;padding:18px 20px;border:1px dashed color-mix(in srgb,var(--accent) 45%,transparent);border-radius:16px;color:#c9cbd9;font-size:.96rem;text-align:center}
+.faq-more span{font-weight:700;color:#f2f3fb}
+.faq-more a{color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px}
