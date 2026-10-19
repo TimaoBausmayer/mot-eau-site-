@@ -633,8 +633,12 @@ if ("IntersectionObserver" in window) { const st = new IntersectionObserver(es=>
 if ("IntersectionObserver" in window) { const so = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ countUp(e.target); so.unobserve(e.target);} }),{threshold:.6}); document.querySelectorAll("[data-v]").forEach(el=>so.observe(el)); }
 
 /* menu mobile */
-$("burger").onclick = ()=>$("links").classList.toggle("open");
-$("links").addEventListener("click",()=>$("links").classList.remove("open"));
+/* menu du téléphone : plein écran, la page derrière ne défile plus, bouton « Commander » en bas */
+const menuSet = open => { const L = $("links"); L.classList.toggle("open", open); if (open && innerWidth <= 960) L.style.height = Math.max(240, innerHeight - L.getBoundingClientRect().top) + "px"; else L.style.height = ""; document.body.classList.toggle("menu-open", open); const b = $("burger"); b.setAttribute("aria-expanded", String(open)); b.textContent = open ? (TX.menu_close||"Fermer") : (TX.menu_open||"Menu"); };
+$("burger").onclick = ()=>menuSet(!$("links").classList.contains("open"));
+$("links").addEventListener("click", e=>{ if (e.target.closest("a")) menuSet(false); });
+addEventListener("keydown", e=>{ if (e.key==="Escape" && $("links").classList.contains("open")) { menuSet(false); $("burger").focus(); } });
+if ($("menu-cta") && TX.mcta_btn) $("menu-cta").textContent = TX.mcta_btn;
 
 /* apparition au scroll */
 /* apparition douce des blocs de chaque section (cascade sur les éléments d'une grille) */

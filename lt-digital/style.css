@@ -1546,3 +1546,17 @@ label small{margin-left:.35em}
 }
 /* logos (grand écran) : 2 rangées de 6, plus compact */
 @media(min-width:1100px){.logos{grid-template-columns:repeat(6,1fr);gap:14px}.logos .lgc-in{flex-direction:column;align-items:flex-start;gap:2px;padding:10px 12px}}
+/* menu du téléphone : plein écran, gros liens lisibles, bouton « Commander » */
+.links .menu-cta{display:none}
+@media(max-width:960px){
+  .links{box-sizing:border-box;top:100%;background:#0a0912;border-bottom:0;
+    height:calc(100dvh - 100% - 30px);overflow-y:auto;overscroll-behavior:contain;padding-bottom:28px}
+  .links.open{animation:menuIn .28s cubic-bezier(.2,.8,.2,1)}
+  .links a:not(.btn){padding:16px 24px;font:600 1.18rem var(--hf);color:#f2f3fb;letter-spacing:-.01em}
+  .links .dd>a{font:600 1.18rem var(--hf);color:#f2f3fb}
+  .links .menu-cta{display:flex;margin:22px 24px 0;border-top:0;padding:16px 22px;font-size:1rem}
+  body.menu-open{overflow:hidden}
+}
+@keyframes menuIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.links.open{animation:none}}
+body.menu-open .nav{z-index:1000}
