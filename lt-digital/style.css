@@ -1601,3 +1601,9 @@ body.menu-open .nav{z-index:1000}
   .guar .g p{font-size:.82rem;line-height:1.45}
   .guar .g-ic{margin-bottom:8px}
 }
+/* menu (ordinateur) : plus simple — Logos, Pubs, Photos sont déjà dans « Services ▾ » (gardés dans le menu du téléphone) */
+@media(min-width:961px){.links a.nq{display:none}.links{gap:28px}}
+/* commande : « (facultatif) » sur la même ligne que le libellé, le champ dessous */
+#order-form .fields label{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 6px}
+#order-form .fields label>input,#order-form .fields label>textarea{flex:1 0 100%}
+#order-form .fields label small{font-weight:400;color:#a9abbd}
