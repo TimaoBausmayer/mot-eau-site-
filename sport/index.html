@@ -581,53 +581,102 @@ function streak() {
 
 /* ===== Aliments : estimation locale ===== */
 const norm = s => s.toLowerCase().replace(/œ/g, 'oe').normalize('NFD').replace(/[̀-ͯ]/g, '');
-/* [regex, nom, kcal/100g, prot/100g, poids d'une portion (g), tag] */
+/* [mots-clés, nom, kcal/100 g ou 100 ml, protéines/100, portion usuelle (g ou ml), tag]  — v légume · f fruit · s sucré/gras · pr protéines · d boisson
+   L’ordre compte : les cas précis passent avant les cas généraux. */
 const FOODS = [
-  ['pain au chocolat', 'Pain au chocolat', 420, 7, 70, 's'], ['croissant', 'Croissant', 400, 8, 60, 's'], ['baguette', 'Baguette', 270, 9, 250],
-  ['pain', 'Pain', 270, 9, 40], ['biscotte', 'Biscottes', 400, 11, 10], ['beurre', 'Beurre', 740, .7, 10], ['confiture|miel', 'Confiture', 250, .4, 20, 's'],
-  ['nutella|pate a tartiner', 'Pâte à tartiner', 540, 6, 15, 's'], ['oeuf|omelette', 'Œuf', 143, 12.6, 55, 'pr'],
-  ['fromage blanc|faisselle|skyr', 'Fromage blanc', 75, 8, 100, 'pr'], ['yaourt grec', 'Yaourt grec', 100, 8, 125, 'pr'], ['yaourt|yaourts|yogourt', 'Yaourt', 60, 4, 125],
-  ['fromage|emmental|gruyere|camembert|comte|mozzarella|chevre', 'Fromage', 350, 24, 30], ['lait', 'Lait', 46, 3.2, 250], ['creme', 'Crème', 200, 2.5, 30],
-  ['jambon', 'Jambon', 110, 20, 40, 'pr'], ['blanc de poulet|poulet|escalope|volaille', 'Poulet', 165, 31, 120, 'pr'], ['dinde', 'Dinde', 110, 22, 100, 'pr'],
-  ['steak hache|viande hachee|boeuf|steak|bifteck', 'Bœuf', 220, 26, 125, 'pr'], ['saucisse|merguez|chorizo|saucisson', 'Charcuterie', 300, 14, 60], ['porc|cote de porc|lardons?|bacon', 'Porc', 240, 25, 100, 'pr'],
-  ['thon', 'Thon', 130, 26, 100, 'pr'], ['saumon', 'Saumon', 200, 20, 120, 'pr'], ['poisson|cabillaud|colin|merlu|sardine', 'Poisson', 105, 20, 120, 'pr'], ['crevette', 'Crevettes', 100, 20, 100, 'pr'],
-  ['pomme de terre|patate|puree', 'Pommes de terre', 90, 2, 150], ['frites?', 'Frites', 300, 3.5, 150, 's'], ['riz', 'Riz cuit', 130, 2.7, 150], ['pates|spaghetti|tagliatelle|macaroni|penne|coquillettes', 'Pâtes cuites', 150, 5.5, 200],
-  ['semoule|couscous|boulgour', 'Semoule', 130, 4.5, 170], ['quinoa', 'Quinoa', 120, 4.4, 150], ['lentilles?', 'Lentilles', 115, 9, 150, 'pr'], ['pois chiches?', 'Pois chiches', 130, 8, 100], ['haricots rouges?', 'Haricots rouges', 110, 8, 100],
-  ['flocons? d.avoine|avoine|porridge', 'Flocons d’avoine', 370, 13, 40], ['cereales?|corn flakes|chocapic', 'Céréales', 380, 7, 40, 's'], ['muesli|granola', 'Muesli', 370, 9, 50],
-  ['pizza', 'Pizza', 270, 11, 300], ['burger|hamburger', 'Burger', 250, 13, 200, 's'], ['sandwich|panini|kebab|tacos|wrap', 'Sandwich', 250, 10, 200], ['lasagnes?|hachis|gratin', 'Plat en sauce', 160, 8, 300], ['quiche|tarte sale|croque', 'Quiche', 250, 9, 150],
-  ['haricots verts?', 'Haricots verts', 30, 2, 150, 'v'], ['salade', 'Salade', 15, 1, 100, 'v'], ['tomates?', 'Tomate', 18, .9, 100, 'v'], ['concombre', 'Concombre', 12, .6, 100, 'v'], ['carottes?', 'Carotte', 40, .9, 80, 'v'],
-  ['courgettes?', 'Courgette', 17, 1.2, 150, 'v'], ['brocolis?', 'Brocoli', 35, 2.8, 100, 'v'], ['champignons?', 'Champignons', 25, 3, 100, 'v'], ['legumes?|ratatouille|poelee', 'Légumes', 40, 2, 200, 'v'], ['soupe|potage', 'Soupe', 40, 1.5, 300, 'v'],
-  ['pommes?', 'Pomme', 52, .3, 150, 'f'], ['bananes?', 'Banane', 90, 1.1, 120, 'f'], ['oranges?', 'Orange', 47, .9, 150, 'f'], ['clementines?|mandarines?', 'Clémentine', 47, .8, 70, 'f'], ['fraises?|framboises?|myrtilles?', 'Fruits rouges', 40, .8, 100, 'f'],
-  ['raisin', 'Raisin', 70, .7, 100, 'f'], ['kiwis?', 'Kiwi', 55, 1, 80, 'f'], ['poires?', 'Poire', 57, .4, 150, 'f'], ['fruits?', 'Fruits', 55, .7, 150, 'f'], ['compote', 'Compote', 80, .3, 100, 'f'], ['avocat', 'Avocat', 160, 2, 150],
-  ['amandes?|noix|noisettes?|cacahuetes?|pistaches?|cajou', 'Oléagineux', 600, 20, 30], ['chocolat|carres? de choc', 'Chocolat', 540, 6, 20, 's'], ['biscuits?|gateau|cookie|brownie|muffin|madeleine', 'Gâteau / biscuit', 450, 6, 30, 's'],
-  ['glace', 'Glace', 200, 3.5, 80, 's'], ['chips', 'Chips', 530, 6, 30, 's'], ['bonbons?', 'Bonbons', 350, 0, 20, 's'], ['sucre', 'Sucre', 400, 0, 5, 's'],
-  ['cafe|the |the$|tisane', 'Café / thé', 2, .1, 150], ['coca|soda|limonade|sirop|fanta|sprite', 'Boisson sucrée', 42, 0, 330, 's'], ['jus', 'Jus de fruit', 45, .5, 200, 's'], ['biere', 'Bière', 43, .5, 250], ['vin', 'Vin', 85, 0, 125], ['eau', 'Eau', 0, 0, 250],
-  ['whey|proteine en poudre|shaker', 'Whey', 380, 75, 30, 'pr'], ['huile', 'Huile', 900, 0, 10], ['mayonnaise|mayo', 'Mayonnaise', 700, 1, 15], ['ketchup|sauce', 'Sauce', 100, 1, 30]
-].map(f => ({ re: new RegExp('(^|[^a-z])(' + f[0] + ')', 'i'), n: f[1], k: f[2], p: f[3], w: f[4], t: f[5] || '' }));
-const NUMW = { un: 1, une: 1, deux: 2, trois: 3, quatre: 4, cinq: 5, six: 6, demi: .5, demie: .5, quart: .25 };
-const UNITW = [[/cuilleres? a soupe|cuilleres? a s\b|c\.? ?a ?s\b/, 15], [/cuilleres? a cafe|c\.? ?a ?c\b/, 5], [/verres?/, 200], [/bols?/, 250], [/assiettes?/, 300], [/poignees?/, 30], [/tasses?/, 150], [/canettes?/, 330], [/pots?/, 125], [/boites?/, 130]];
-function parseMeal(text) {
-  const parts = norm(text).split(/\s*(?:,|;|\+|\n|\bet\b|\bavec\b|\bpuis\b)\s*/).map(s => s.trim()).filter(Boolean);
-  return parts.map(seg => {
-    let s = seg.replace(/\b(un|une|deux|trois|quatre|cinq|six|demi|demie|quart)\b/g, m => NUMW[m]);
-    const food = FOODS.find(f => f.re.test(s));
-    if (!food) return { name: seg, kcal: 0, p: 0, unk: true, id: uid() };
-    const m = s.match(/(\d+(?:[.,]\d+)?|\d+\/\d+)\s*(kg|gr|g|ml|cl|l)?(?![a-z])/);
-    let n = 1, g = null;
-    if (m) {
-      n = m[1].includes('/') ? m[1].split('/').reduce((a, b) => a / b) : num(m[1]);
-      if (m[2]) { g = n * ({ kg: 1000, g: 1, gr: 1, ml: 1, cl: 10, l: 1000 })[m[2]]; }
-    }
-    if (g === null) { const u = UNITW.find(x => x[0].test(s)); g = n * (u ? u[1] : food.w); }
-    return { name: food.n + (g && !m ? '' : ''), grams: Math.round(g), kcal: Math.round(g * food.k / 100), p: +(g * food.p / 100).toFixed(1), tag: food.t, id: uid() };
+  /* boissons */
+  ['coca zero|coca light|coca cola zero|pepsi max|boisson zero|zero sucre', 'Soda zéro', .3, 0, 330, 'd'],
+  ['jus d.orange|jus d.oranges', 'Jus d’orange', 45, .7, 200, 'd'], ['jus de pomme', 'Jus de pomme', 46, .1, 200, 'd'], ['jus de raisin', 'Jus de raisin', 65, .3, 200, 'd'], ['jus de tomate', 'Jus de tomate', 20, .8, 200, 'd'], ['jus', 'Jus de fruit', 45, .5, 200, 'd'],
+  ['ice tea|ice-tea|the glace', 'Thé glacé', 35, 0, 330, 'd'], ['coca|cola|pepsi|soda|limonade|fanta|sprite|orangina|schweppes|oasis|tropico', 'Soda', 42, 0, 330, 'd'],
+  ['red bull|redbull|monster|energy|boisson energisante', 'Boisson énergisante', 45, 0, 250, 'd'], ['sirop|diabolo', 'Sirop (dilué)', 30, 0, 200, 'd'],
+  ['lait d.amande', 'Lait d’amande', 24, .5, 250, 'd'], ['lait d.avoine|lait de soja|lait vegetal', 'Lait végétal', 45, 1.5, 250, 'd'],
+  ['chocolat chaud|cacao|nesquik', 'Chocolat chaud', 80, 3, 250, 'd'], ['milkshake|smoothie', 'Smoothie / milkshake', 70, 2, 250, 'd'],
+  ['biere|pinte', 'Bière', 43, .5, 250, 'd'], ['cidre', 'Cidre', 45, 0, 250, 'd'], ['champagne|prosecco|mousseux', 'Champagne', 80, 0, 125, 'd'], ['vin', 'Vin', 85, 0, 125, 'd'],
+  ['whisky|vodka|rhum|gin|tequila|cognac|pastis|ricard|alcool fort', 'Alcool fort', 230, 0, 40, 'd'], ['cocktail|mojito|spritz', 'Cocktail', 150, 0, 200, 'd'],
+  ['lait', 'Lait', 46, 3.2, 250, 'd'], ['cafe|expresso|espresso|cappuccino|capuccino', 'Café', 2, .1, 120, 'd'], ['the|infusion|tisane', 'Thé / tisane', 1, 0, 200, 'd'],
+  ['eau|perrier|badoit|evian|vittel|san pellegrino', 'Eau', 0, 0, 250, 'd'],
+  /* viennoiseries, sucré du matin */
+  ['pain au chocolat|chocolatine', 'Pain au chocolat', 420, 7, 70, 's'], ['croissant', 'Croissant', 400, 8, 60, 's'], ['brioche|pain au lait', 'Brioche', 380, 8, 50, 's'], ['pain d.epices', 'Pain d’épices', 330, 4, 30, 's'],
+  ['crepes?', 'Crêpe', 220, 6, 60, 's'], ['gaufres?', 'Gaufre', 330, 6, 75, 's'], ['pancakes?', 'Pancake', 230, 6, 50, 's'],
+  /* plats composés */
+  ['spaghetti bolognaise|bolognaise', 'Pâtes bolognaise', 140, 7, 300], ['carbonara', 'Pâtes carbonara', 190, 8, 300], ['lasagnes?', 'Lasagnes', 150, 7, 300], ['hachis parmentier', 'Hachis parmentier', 150, 7, 300],
+  ['gratin dauphinois|gratin', 'Gratin', 140, 4, 250], ['tartiflette', 'Tartiflette', 170, 8, 300], ['raclette', 'Raclette', 300, 13, 250], ['paella', 'Paella', 150, 8, 300], ['chili con carne|chili', 'Chili con carne', 120, 8, 300],
+  ['pot au feu|blanquette|bourguignon|navarin', 'Plat mijoté', 140, 12, 300], ['croque monsieur|croque madame|croque', 'Croque-monsieur', 260, 13, 150], ['hot dog|hotdog', 'Hot-dog', 250, 9, 150, 's'],
+  ['burger|hamburger|cheeseburger', 'Burger', 250, 13, 200, 's'], ['kebab|tacos|gyros', 'Kebab / tacos', 215, 11, 350, 's'], ['pizza', 'Pizza', 270, 11, 330], ['quiche|tarte salee|tourte|feuillete|friand', 'Quiche / feuilleté', 250, 9, 150],
+  ['sushis?|makis?|california', 'Sushis', 150, 6, 30], ['poke bowl|poke', 'Poké bowl', 140, 7, 350], ['nuggets?', 'Nuggets', 260, 13, 20, 's'], ['poisson pane|fish and chips', 'Poisson pané', 230, 11, 50],
+  ['escalope panee|cordon bleu', 'Escalope panée', 240, 16, 130], ['wrap|tortillas?|galette de ble', 'Wrap / tortilla', 300, 8, 60], ['sandwich|panini|baguette jambon|sub', 'Sandwich', 250, 10, 200],
+  /* viandes, poissons, œufs */
+  ['steak hache|viande hachee|hache|boulettes?', 'Steak haché', 220, 26, 110, 'pr'], ['blanc de poulet|escalope de poulet|filet de poulet', 'Blanc de poulet', 165, 31, 120, 'pr'],
+  ['cuisse de poulet|pilons?|ailes? de poulet', 'Cuisse de poulet', 210, 24, 120, 'pr'], ['poulet|volaille|poulet roti|escalope', 'Poulet', 190, 28, 120, 'pr'], ['dinde', 'Dinde', 110, 22, 100, 'pr'],
+  ['canard', 'Canard', 200, 18, 120, 'pr'], ['agneau|gigot', 'Agneau', 240, 25, 120, 'pr'], ['veau', 'Veau', 150, 24, 120, 'pr'],
+  ['entrecote|faux filet|rumsteck|bavette|onglet|rosbif|roti de boeuf|boeuf|steak|bifteck', 'Bœuf', 220, 26, 125, 'pr'], ['jambon cru|prosciutto|coppa|bresaola', 'Jambon cru', 230, 28, 30], ['jambon blanc|jambon', 'Jambon', 110, 20, 40, 'pr'],
+  ['saucisson|chorizo|rosette', 'Saucisson', 400, 25, 30, 's'], ['merguez', 'Merguez', 290, 16, 70, 's'], ['saucisses?|chipolatas?|knacki|francfort|strasbourg', 'Saucisse', 270, 13, 60, 's'], ['lardons?|bacon|poitrine', 'Lardons', 280, 16, 40, 's'],
+  ['pate de|pate en croute|rillettes|foie gras', 'Pâté / rillettes', 300, 12, 30, 's'], ['porc|cote de porc|filet mignon|roti de porc', 'Porc', 200, 25, 120, 'pr'], ['saumon', 'Saumon', 200, 20, 120, 'pr'], ['thon', 'Thon', 130, 26, 100, 'pr'],
+  ['sardines?|maquereau', 'Sardines', 200, 22, 60, 'pr'], ['crevettes?|gambas|langoustine|moules?|fruits de mer|calamars?|surimi', 'Fruits de mer', 90, 17, 100, 'pr'],
+  ['cabillaud|colin|merlu|lieu|dorade|sole|truite|poisson', 'Poisson', 105, 20, 120, 'pr'], ['oeufs?|omelette|oeuf dur|oeuf au plat', 'Œuf', 143, 12.6, 55, 'pr'],
+  /* féculents et légumineuses */
+  ['gnocchis?', 'Gnocchis', 150, 4, 200], ['frites?|potatoes|pommes? frites?', 'Frites', 290, 3.5, 150, 's'], ['pommes? noisette|croquettes?|rosti|pommes? de terre sautees?', 'Pommes de terre dorées', 230, 3, 100, 's'],
+  ['pommes? de terre|patates?|puree', 'Pommes de terre', 90, 2, 200], ['riz', 'Riz cuit', 130, 2.7, 150], ['pates|spaghettis?|tagliatelles?|macaronis?|penne|coquillettes?|fusilli|farfalle|raviolis?|tortellini', 'Pâtes cuites', 150, 5.5, 200],
+  ['semoule|couscous', 'Semoule', 130, 4.5, 170], ['boulgour', 'Boulgour', 120, 4, 150], ['quinoa', 'Quinoa', 120, 4.4, 150], ['polenta', 'Polenta', 90, 2, 150], ['lentilles?', 'Lentilles', 115, 9, 150, 'pr'],
+  ['pois chiches?', 'Pois chiches', 130, 8, 100], ['flageolets?', 'Flageolets', 110, 7, 150], ['haricots blancs?|haricots rouges?|feves?|cocos?', 'Haricots secs', 110, 8, 150], ['petits? pois', 'Petits pois', 80, 5.4, 100, 'v'],
+  /* légumes */
+  ['haricots? verts?', 'Haricots verts', 30, 2, 150, 'v'], ['carottes?', 'Carottes', 35, .9, 100, 'v'], ['epinards?', 'Épinards', 25, 3, 150, 'v'], ['chou fleur|choux fleurs?', 'Chou-fleur', 25, 2, 150, 'v'], ['brocolis?', 'Brocoli', 35, 2.8, 150, 'v'],
+  ['courgettes?', 'Courgette', 17, 1.2, 150, 'v'], ['aubergines?', 'Aubergine', 25, 1, 150, 'v'], ['poivrons?', 'Poivron', 30, 1, 100, 'v'], ['tomates?', 'Tomate', 18, .9, 100, 'v'], ['concombres?', 'Concombre', 12, .6, 100, 'v'],
+  ['salade|laitue|roquette|mache', 'Salade', 15, 1, 100, 'v'], ['poireaux?', 'Poireaux', 30, 1.5, 150, 'v'], ['champignons?', 'Champignons', 25, 3, 100, 'v'], ['oignons?', 'Oignon', 40, 1.1, 50, 'v'], ['betteraves?', 'Betterave', 45, 1.7, 100, 'v'],
+  ['radis|endives?|celeri|fenouil', 'Légumes crus', 20, 1, 100, 'v'], ['chou|choux', 'Chou', 30, 1.5, 150, 'v'], ['potiron|courge|butternut|citrouille', 'Courge', 30, 1, 150, 'v'], ['mais|mais doux', 'Maïs', 90, 3, 100, 'v'],
+  ['ratatouille', 'Ratatouille', 55, 1.5, 200, 'v'], ['soupe|potage|veloute', 'Soupe', 40, 1.5, 300, 'v'], ['jardiniere|macedoine|poelee de legumes|legumes?', 'Légumes', 40, 2, 200, 'v'],
+  /* fruits */
+  ['pommes?', 'Pomme', 52, .3, 150, 'f'], ['bananes?', 'Banane', 90, 1.1, 120, 'f'], ['oranges?|pamplemousses?', 'Orange', 47, .9, 150, 'f'], ['clementines?|mandarines?', 'Clémentine', 47, .8, 70, 'f'], ['fraises?|framboises?|myrtilles?|mures?|cerises?', 'Fruits rouges', 45, .8, 100, 'f'],
+  ['raisins? secs?|abricots? secs?|dattes?|figues? seches?', 'Fruits séchés', 280, 2.5, 30, 'f'], ['raisin', 'Raisin', 70, .7, 100, 'f'], ['kiwis?', 'Kiwi', 55, 1, 80, 'f'], ['poires?', 'Poire', 57, .4, 150, 'f'], ['peches?|nectarines?|abricots?|prunes?', 'Pêche / abricot', 45, .9, 120, 'f'],
+  ['melon|pasteque', 'Melon / pastèque', 35, .7, 200, 'f'], ['ananas|mangues?', 'Ananas / mangue', 55, .6, 150, 'f'], ['salade de fruits|fruits?', 'Fruits', 55, .7, 150, 'f'], ['compote', 'Compote', 80, .3, 100, 'f'], ['avocats?', 'Avocat', 160, 2, 150],
+  /* produits laitiers, petit-déj */
+  ['fromage blanc|faisselle|skyr', 'Fromage blanc', 75, 8, 100, 'pr'], ['yaourt grec|yogourt grec', 'Yaourt grec', 100, 8, 125, 'pr'], ['yaourts?|yogourts?', 'Yaourt', 60, 4, 125], ['danettes?|creme dessert|flan|riz au lait|mousse au chocolat', 'Dessert lacté', 120, 3.5, 125, 's'],
+  ['fromage rape|gruyere rape|emmental rape', 'Fromage râpé', 350, 25, 20], ['mozzarella', 'Mozzarella', 250, 18, 60], ['parmesan', 'Parmesan', 400, 35, 10], ['fromage|emmental|gruyere|camembert|comte|chevre|brie|cantal|roquefort|raclette', 'Fromage', 350, 24, 30],
+  ['creme fraiche|creme', 'Crème fraîche', 200, 2.5, 30, 's'], ['beurre|margarine', 'Beurre', 740, .7, 10, 's'], ['confiture|miel', 'Confiture / miel', 250, .4, 20, 's'], ['nutella|pate a tartiner', 'Pâte à tartiner', 540, 6, 15, 's'],
+  ['cereales?|corn flakes|chocapic|special k|crunchy', 'Céréales', 380, 7, 40, 's'], ['flocons? d.avoine|avoine|porridge', 'Flocons d’avoine', 370, 13, 40], ['muesli|granola', 'Muesli', 370, 9, 50], ['biscottes?', 'Biscottes', 400, 11, 10],
+  ['baguette', 'Baguette', 270, 9, 250], ['pain de mie|pain complet|pain', 'Pain', 265, 9, 40],
+  /* sucré, grignotage, assaisonnement */
+  ['barre chocolatee|snickers|mars|twix|bounty|kitkat|kinder', 'Barre chocolatée', 490, 7, 45, 's'], ['barre de cereales|barre proteinee|barre', 'Barre de céréales', 400, 8, 30, 's'], ['chocolat noir|chocolat|carres? de chocolat', 'Chocolat', 540, 6, 20, 's'],
+  ['glace|sorbet|creme glacee', 'Glace', 200, 3.5, 80, 's'], ['gateau|cookies?|biscuits?|brownie|muffin|madeleine|tarte|eclair|donut|beignet', 'Gâteau / biscuit', 420, 5, 40, 's'], ['bonbons?|haribo|sucette|guimauve', 'Bonbons', 350, 0, 20, 's'],
+  ['sucre', 'Sucre', 400, 0, 5, 's'], ['chips|pringles|doritos', 'Chips', 530, 6, 30, 's'], ['pop ?corn', 'Pop-corn', 390, 9, 30, 's'], ['cacahuetes?|amandes?|noix|noisettes?|pistaches?|cajou|fruits secs', 'Oléagineux', 600, 20, 30],
+  ['olives?', 'Olives', 150, 1, 20], ['cornichons?', 'Cornichons', 15, .5, 20, 'v'], ['huile d.olive|huile', 'Huile', 900, 0, 10, 's'], ['mayonnaise|mayo', 'Mayonnaise', 700, 1, 15, 's'], ['ketchup', 'Ketchup', 100, 1, 15, 's'], ['moutarde', 'Moutarde', 70, 4, 10],
+  ['sauce tomate|coulis', 'Sauce tomate', 40, 1.5, 60], ['whey|proteine en poudre|shaker|proteine', 'Whey', 380, 75, 30, 'pr'], ['sauce|bechamel|sauce soja', 'Sauce', 100, 1, 30]
+].map(f => ({ re: new RegExp('(^|[^a-z])((?:' + f[0] + ')s?)(?![a-z])', 'i'), n: f[1], k: f[2], p: f[3], w: f[4], t: f[5] || '' }));
+const NUMW = { un: 1, une: 1, deux: 2, trois: 3, quatre: 4, cinq: 5, six: 6, sept: 7, huit: 8, dix: 10, demi: .5, demie: .5, quart: .25 };
+const UNITW = [[/cuilleres? a soupe|cuilleres? a s\b|c\.? ?a ?s\b/, 15], [/cuilleres? a cafe|c\.? ?a ?c\b/, 5], [/verres?/, 200], [/bols?/, 250], [/assiettes?/, 300], [/poignees?/, 30], [/tasses?/, 150], [/canettes?/, 330], [/bouteilles?/, 500], [/pots?/, 125], [/boites?/, 130], [/barquettes?/, 250]];
+const QTY = /(\d+\/\d+|\d+(?:[.,]\d+)?)\s*(kg|gr|g|ml|cl|litres?|l)?(?![a-z])/g;
+const UMUL = { kg: 1000, g: 1, gr: 1, ml: 1, cl: 10, l: 1000, litre: 1000, litres: 1000 };
+const STOP = /^(de|du|des|la|le|les|un|une|et|au|aux|en|sur|avec|sans|dans|pour|environ|peu|bien|tres|beaucoup|petit|petits|petite|petites|grand|grande|gros|grosse|morceau|morceaux|portion|portions|tranche|tranches|cuit|cuite|cuits|cuites|grille|grillee|grilles|grillees|nature|frais|fraiche|maison|sale|salee|chaud|chaude|froid|froide|fondu|fondue|vapeur|poele|poelee|cru|crue|bouilli|bouillie|rape|rapee|surgele|surgelee|aussi|encore|apres|avant|midi|soir|matin|hier|aujourd|c|d|l|j|m|n|s|t|y|a)$/;
+const qv = m => { const n = m[1].includes('/') ? m[1].split('/').reduce((a, b) => a / b) : num(m[1]); return { n, u: m[2] || '' }; };
+function parseSegment(seg) {
+  const s = norm(seg).replace(/\b(un|une|deux|trois|quatre|cinq|six|sept|huit|dix|demi|demie|quart)\b/g, m => NUMW[m]);
+  let work = s; const found = [];
+  FOODS.forEach(f => { const m = f.re.exec(work); if (m) { const pos = m.index + m[1].length, len = m[2].length; found.push({ f, pos, len }); work = work.slice(0, pos) + ' '.repeat(len) + work.slice(pos + len); } });
+  found.sort((a, b) => a.pos - b.pos);
+  const items = found.map((x, i) => {
+    const before = s.slice(i ? found[i - 1].pos + found[i - 1].len : 0, x.pos), after = s.slice(x.pos + x.len, i < found.length - 1 ? found[i + 1].pos : s.length);
+    let n = 1, g = null; const mb = [...before.matchAll(QTY)].pop(), ma = after.trimStart().match(/^(\d+(?:[.,]\d+)?)\s*(kg|gr|g|ml|cl|litres?|l)(?![a-z])/);
+    const q = mb ? qv(mb) : ma ? { n: num(ma[1]), u: ma[2] } : null;
+    if (q) { n = q.n; if (q.u) g = n * UMUL[q.u]; }
+    if (g === null) { const u = UNITW.find(w => w[0].test(before)); g = n * (u ? u[1] : x.f.w); }
+    g = Math.round(g);
+    return { id: uid(), name: x.f.n, grams: g, kcal: Math.round(g * x.f.k / 100), p: +(g * x.f.p / 100).toFixed(1), tag: x.f.t, k100: x.f.k, p100: x.f.p, d: x.f.t === 'd' };
   });
+  const left = work.replace(QTY, ' ').split(/[^a-z']+/).map(w => w.replace(/'/g, '')).filter(w => w.length >= 5 && !STOP.test(w) && !UNITW.some(u => u[0].test(w)));
+  return { items, left };
+}
+function parseMeal(text) {
+  const segs = norm(text).split(/\s*(?:,|;|\+|\n|\bet\b|\bavec\b|\bpuis\b)\s*/).map(x => x.trim()).filter(Boolean);
+  const items = [], left = [];
+  segs.forEach(seg => { const r = parseSegment(seg); if (!r.items.length) items.push({ id: uid(), name: seg, kcal: 0, p: 0, unk: true }); else { items.push(...r.items); left.push(...r.left); } });
+  return { items, left: [...new Set(left)] };
 }
 const mealTot = m => ({ kcal: Math.round(m.items.reduce((a, i) => a + (+i.kcal || 0), 0)), p: Math.round(m.items.reduce((a, i) => a + (+i.p || 0), 0)) });
 const mealsOf = d => S.meals.filter(m => m.d === d);
 function dayTot(d) {
-  const ms = mealsOf(d); let kcal = 0, p = 0, veg = 0, fruit = 0, sweet = 0, unk = 0;
-  ms.forEach(m => m.items.forEach(i => { kcal += +i.kcal || 0; p += +i.p || 0; if (i.tag === 'v') veg++; if (i.tag === 'f') fruit++; if (i.tag === 's') sweet += +i.kcal || 0; if (i.unk && !i.kcal) unk++; }));
-  return { kcal: Math.round(kcal), p: Math.round(p), veg, fruit, sweet: Math.round(sweet), unk, n: ms.length };
+  const ms = mealsOf(d); let kcal = 0, p = 0, veg = 0, fruit = 0, sweet = 0, unk = 0, drink = 0, drinkK = 0;
+  ms.forEach(m => m.items.forEach(i => { if (i.d) { drink += +i.grams || 0; drinkK += +i.kcal || 0; } kcal += +i.kcal || 0; p += +i.p || 0; if (i.tag === 'v') veg++; if (i.tag === 'f') fruit++; if (i.tag === 's') sweet += +i.kcal || 0; if (i.unk && !i.kcal) unk++; }));
+  return { kcal: Math.round(kcal), p: Math.round(p), veg, fruit, sweet: Math.round(sweet), unk, n: ms.length, drink, drinkK: Math.round(drinkK) };
 }
 function localAdvice(d) {
   const t = dayTot(d), b = body(), tips = []; if (!t.n) return ['Ajoute ce que tu as mangé : je calcule les calories et les protéines et je te dis quoi ajuster.'];
@@ -645,7 +694,9 @@ function localAdvice(d) {
   const ses = S.sessions.filter(s => s.d === d);
   if (ses.length) tips.push('Séance de ' + ses.reduce((a, s) => a + s.min, 0) + ' min faite (≈ ' + ses.reduce((a, s) => a + s.kcal, 0) + ' kcal brûlées). Dans les 2 heures, vise protéines + un peu de glucides (yaourt + banane, œufs + pain).');
   else if (effPlan(d) === 'train' && d === today()) tips.push('Séance prévue aujourd’hui : mange léger 1 h 30 avant (fruit, yaourt) pour être en forme.');
-  tips.push('Bois environ 1,5 à 2 litres d’eau dans la journée, davantage les jours de sport.');
+  if (t.drink < 1000) tips.push('Tu as noté ' + nf(t.drink / 1000, 1) + ' L de boissons. Vise 1,5 à 2 L d’eau dans la journée, davantage les jours de sport.');
+  else tips.push('Hydratation : ' + nf(t.drink / 1000, 1) + ' L notés, c’est bien. Continue d’en boire un peu plus les jours de sport.');
+  if (t.drinkK > 150) tips.push('Tes boissons apportent ' + t.drinkK + ' kcal. L’eau ou un thé sans sucre sont les plus simples à remplacer.');
   return tips;
 }
 
@@ -854,22 +905,24 @@ function vTrain() {
 function vMeals() {
   const d = U.mealDate, ms = mealsOf(d), t = dayTot(d), b = body(), rv = S.reviews[d];
   const pct = b ? clamp(t.kcal / b.kcal * 100, 0, 100) : 0;
-  const types = [['petit', 'Petit-déj'], ['midi', 'Déjeuner'], ['gouter', 'Collation'], ['soir', 'Dîner']];
+  const types = [['petit', 'Petit-déj'], ['midi', 'Déjeuner'], ['gouter', 'Collation'], ['soir', 'Dîner'], ['boisson', 'Boissons']];
   let h = '<h1>Mes repas</h1><div class="row sb"><button class="btn ghost sm" data-act="mday" data-v="-1" aria-label="Jour précédent">←</button><b>' + (d === today() ? 'Aujourd’hui' : fmtLong(d)) + '</b><button class="btn ghost sm" data-act="mday" data-v="1" aria-label="Jour suivant"' + (d >= today() ? ' disabled' : '') + '>→</button></div>' +
     '<section class="card"><div class="row sb"><div><span class="num" style="font-size:40px">' + t.kcal + '</span> <span class="muted">' + (b ? '/ ' + b.kcal + ' kcal' : 'kcal') + '</span></div><div class="small muted" style="text-align:right">Protéines<br><b style="color:var(--ink)">' + t.p + (b ? ' / ' + b.prot : '') + ' g</b></div></div>' +
-    (b ? '<div class="bar" role="progressbar" aria-valuenow="' + Math.round(pct) + '" aria-valuemin="0" aria-valuemax="100"><i class="' + (t.kcal > b.kcal * 1.1 ? 'over' : '') + '" style="width:' + pct + '%"></i></div>' : '<p class="small muted">Renseigne ton poids, ta taille et ton âge dans Aujourd’hui pour voir ta cible.</p>') + '</section>' +
+    (b ? '<div class="bar" role="progressbar" aria-valuenow="' + Math.round(pct) + '" aria-valuemin="0" aria-valuemax="100"><i class="' + (t.kcal > b.kcal * 1.1 ? 'over' : '') + '" style="width:' + pct + '%"></i></div>' : '<p class="small muted">Renseigne ton poids, ta taille et ton âge dans Aujourd’hui pour voir ta cible.</p>') +
+    '<p class="small muted">Boissons : <b style="color:var(--ink)">' + nf(t.drink / 1000, 1) + ' L</b> · ' + t.drinkK + ' kcal</p></section>' +
     '<section class="card"><h2>J’ai mangé</h2><label class="f">Repas<select id="mtype">' + types.map(x => '<option value="' + x[0] + '">' + x[1] + '</option>').join('') + '</select></label>' +
-    '<label class="f">Ce que j’ai mangé<textarea id="mtext" placeholder="ex. 2 œufs, 2 tranches de pain, un café, une banane"></textarea></label>' +
-    '<button class="btn" data-act="madd">Ajouter ce repas</button><p class="tiny muted">Écris comme tu parles : quantités, grammes (150 g de riz), « un bol de », « 2 tranches de ». Les calories sont une estimation.</p></section>';
+    '<label class="f">Ce que j’ai mangé<textarea id="mtext" placeholder="ex. frites, gnocchis, steak haché, petits pois, un coca"></textarea></label>' +
+    '<button class="btn" data-act="madd">Ajouter ce repas</button><p class="tiny muted">Écris comme tu parles, avec ou sans virgules : « 150 g de riz », « 2 œufs », « un verre de jus d’orange ». Je connais environ 200 aliments et boissons. Les calories sont une estimation, tu peux corriger les grammes.</p></section>';
   ms.forEach(m => {
     const mt = mealTot(m);
     h += '<section class="card"><div class="row sb"><h3>' + (types.find(x => x[0] === m.type) || ['', 'Repas'])[1] + '</h3><button class="btn ghost sm" data-act="mdel" data-id="' + m.id + '" aria-label="Supprimer ce repas">Supprimer</button></div><p class="small muted">« ' + esc(m.text) + ' »</p>' +
-      '<div class="row">' + m.items.map(i => i.unk ? '<span class="tag">' + esc(i.name) + ' <input inputmode="numeric" placeholder="kcal" data-act="munk" data-m="' + m.id + '" data-i="' + i.id + '" value="' + (i.kcal || '') + '" aria-label="Calories de ' + esc(i.name) + '"></span>' : '<span class="tag">' + esc(i.name) + (i.grams ? ' · ' + i.grams + ' g' : '') + ' · <b>' + i.kcal + '</b> kcal</span>').join('') + '</div>' +
-      '<p class="small"><b>' + mt.kcal + ' kcal</b> · ' + mt.p + ' g de protéines' + (m.ai ? ' <span class="badge">estimé par Claude</span>' : '') + '</p></section>';
+      '<div class="row">' + m.items.map(i => i.unk ? '<span class="tag">' + esc(i.name) + ' <input inputmode="numeric" placeholder="kcal" data-act="munk" data-m="' + m.id + '" data-i="' + i.id + '" value="' + (i.kcal || '') + '" aria-label="Calories de ' + esc(i.name) + '"></span>' : i.k100 !== undefined ? '<span class="tag">' + esc(i.name) + ' <input inputmode="numeric" data-act="mgram" data-m="' + m.id + '" data-i="' + i.id + '" value="' + i.grams + '" aria-label="Quantité de ' + esc(i.name) + ' en ' + (i.d ? 'millilitres' : 'grammes') + '"> ' + (i.d ? 'ml' : 'g') + ' · <b>' + i.kcal + '</b> kcal</span>' : '<span class="tag">' + esc(i.name) + ' · <b>' + i.kcal + '</b> kcal</span>').join('') + '</div>' +
+      (m.left && m.left.length ? '<p class="tiny muted">Pas reconnu : ' + esc(m.left.join(', ')) + '. Si c’est un aliment, demande à Claude de détailler le repas.</p>' : '') +
+      '<div class="row sb"><p class="small"><b>' + mt.kcal + ' kcal</b> · ' + mt.p + ' g de protéines' + (m.ai ? ' <span class="badge">estimé par Claude</span>' : '') + '</p><button class="btn ghost sm" data-act="mdetail" data-id="' + m.id + '"' + (U.busy ? ' disabled' : '') + '>' + (U.busy === m.id ? 'Claude détaille…' : m.items.some(i => i.unk) || (m.left && m.left.length) ? 'Faire estimer par Claude' : 'Détailler avec Claude') + '</button></div></section>';
   });
   h += '<section class="card soft"><h2>Mon bilan</h2>' +
     (rv ? '<p>' + esc(rv.bilan) + '</p><ul class="advice">' + (rv.conseils || []).map(c => '<li>' + esc(c) + '</li>').join('') + '</ul>' + (rv.prochain ? '<p><b>Prochain repas :</b> ' + esc(rv.prochain) + '</p>' : '') + (rv.sport ? '<p><b>Sport :</b> ' + esc(rv.sport) + '</p>' : '') : '<ul class="advice">' + localAdvice(d).map(c => '<li>' + esc(c) + '</li>').join('') + '</ul>') +
-    '<div class="row"><button class="btn" data-act="ask"' + (ms.length && !U.busy ? '' : ' disabled') + '>' + (U.busy ? 'Claude analyse…' : 'Demander à Claude') + '</button><button class="btn ghost" data-act="copyday"' + (ms.length ? '' : ' disabled') + '>Copier le résumé</button></div>' +
+    '<div class="row"><button class="btn" data-act="ask"' + (ms.length && !U.busy ? '' : ' disabled') + '>' + (U.busy === true ? 'Claude analyse…' : 'Demander à Claude') + '</button><button class="btn ghost" data-act="copyday"' + (ms.length ? '' : ' disabled') + '>Copier le résumé</button></div>' +
     '<p class="tiny muted">« Demander à Claude » ouvre l’analyse détaillée, avec calories recalculées. Hors de Claude, tu as les conseils automatiques ci-dessus.</p>' +
     (U.copy ? '<textarea id="copytxt" readonly rows="6">' + esc(U.copy) + '</textarea>' : '') + '</section>';
   return h;
@@ -1067,6 +1120,21 @@ async function askClaude() {
   U.busy = false; U.keepScroll = true; render();
 }
 
+async function aiDetail(id) {
+  const m = S.meals.find(x => x.id === id); if (!m || U.busy) return;
+  let sm = null; try { sm = window.claude && claude.use ? await claude.use('sample') : null; } catch (e) { }
+  if (!sm) { toast('Claude n’est pas disponible ici. Complète les calories à la main.'); return; }
+  U.busy = id; U.keepScroll = true; render();
+  const prompt = 'Tu es un nutritionniste. Décompose ce repas en aliments avec une quantité réaliste (portion normale pour un adulte si je n’ai rien précisé) et estime les calories et protéines de chaque aliment. Repas : « ' + m.text + ' ». Réponds UNIQUEMENT en JSON valide : {"items":[{"nom":"...","quantite":<grammes ou millilitres>,"kcal":<nombre>,"prot":<grammes de protéines>,"boisson":<true ou false>}]}';
+  try {
+    const r = await sm.json(prompt, { cache: false });
+    const its = (r.items || []).filter(i => i && isFinite(i.kcal)).map(i => { const g = Math.max(1, Math.round(+i.quantite || 100)); return { id: uid(), name: String(i.nom || 'Aliment'), grams: g, kcal: Math.round(i.kcal), p: +(+i.prot || 0).toFixed(1), tag: i.boisson ? 'd' : '', k100: i.kcal / g * 100, p100: (+i.prot || 0) / g * 100, d: !!i.boisson }; });
+    if (its.length) { m.items = its; m.left = []; m.ai = true; delete S.reviews[m.d]; save(); toast('Repas détaillé : ≈ ' + mealTot(m).kcal + ' kcal'); }
+    else toast('Claude n’a rien trouvé à détailler.');
+  } catch (e) { toast('Claude n’a pas répondu. Réessaie dans un instant.'); }
+  U.busy = false; U.keepScroll = true; render();
+}
+
 /* ===== Données d’exemple ===== */
 function demoData() {
   const t = today(), r = rng(7), S2 = defaults(); S2.demo = true;
@@ -1076,7 +1144,7 @@ function demoData() {
   for (let i = 0; i < 6; i++) { const d = addDays(t, -36 + i * 7); S2.records.push({ id: uid(), d, ex: 'pompes', val: pm[i], test: true }, { id: uid(), d, ex: 'squats', val: sq[i], test: true }, { id: uid(), d: addDays(d, -3), ex: 'pompes', val: pm[i] - 2, test: false }); }
   for (let i = 41; i >= 1; i--) { const d = addDays(t, -i), dw = isoDow(d); if ([1, 3, 5].includes(dw) && r() > .15) { const m = [10, 15, 20, 30][Math.floor(r() * 4)]; S2.sessions.push({ id: uid(), d, min: m, kcal: Math.round(m * 7), zones: { abdos: m / 4, bras: m / 4, jambes: m / 4, cardio: m / 4 }, exos: [] }); } }
   const txt = '2 œufs, 2 tranches de pain, un café, une banane';
-  S2.meals.push({ id: uid(), d: t, type: 'petit', text: txt, items: parseMeal(txt) });
+  S2.meals.push({ id: uid(), d: t, type: 'petit', text: txt, items: parseMeal(txt).items });
   return S2;
 }
 
@@ -1155,12 +1223,13 @@ document.addEventListener('click', e => {
     case 'mday': { const d = addDays(U.mealDate, +v); if (d <= today()) { U.mealDate = d; U.copy = ''; render(); } break; }
     case 'madd': {
       const text = val('mtext').trim(); if (!text) { toast('Écris ce que tu as mangé'); break; }
-      const items = parseMeal(text), m = { id: uid(), d: U.mealDate, type: val('mtype'), text, items };
+      const pm = parseMeal(text), m = { id: uid(), d: U.mealDate, type: val('mtype'), text, items: pm.items, left: pm.left };
       S.meals.push(m); delete S.reviews[U.mealDate]; save(); keep(); render();
-      toast(items.some(i => i.unk) ? 'Ajouté. Complète les calories des aliments non reconnus.' : '≈ ' + mealTot(m).kcal + ' kcal ajoutées'); break;
+      toast(pm.items.some(i => i.unk) ? 'Ajouté. Complète les calories des aliments non reconnus.' : '≈ ' + mealTot(m).kcal + ' kcal ajoutées'); break;
     }
     case 'mdel': S.meals = S.meals.filter(m => m.id !== b.dataset.id); delete S.reviews[U.mealDate]; save(); keep(); render(); break;
     case 'ask': askClaude(); break;
+    case 'mdetail': aiDetail(b.dataset.id); break;
     case 'copyday': {
       U.copy = daySummary(U.mealDate) + '\nPeux-tu analyser ma journée (calories, protéines, ce qui manque) et me dire quoi manger ensuite ?';
       try { navigator.clipboard.writeText(U.copy).then(() => toast('Résumé copié'), () => toast('Sélectionne le texte pour le copier')); } catch (x) { toast('Sélectionne le texte pour le copier'); }
@@ -1212,6 +1281,10 @@ document.addEventListener('change', e => {
     if (k === 'height' || k === 'goalWeight') { const n = num(v); v = isFinite(n) ? String(n) : ''; t.value = v; }
     if (k === 'age') { const n = Math.round(num(v)); v = isFinite(n) ? String(n) : ''; t.value = v; }
     P()[k] = (k === 'level' || k === 'perWeek') ? +v : v; save(); keep(); render();
+  }
+  if (t.dataset && t.dataset.act === 'mgram') {
+    const m = S.meals.find(x => x.id === t.dataset.m), i = m && m.items.find(x => x.id === t.dataset.i), g = Math.round(num(t.value));
+    if (i && g >= 0) { i.grams = g; i.kcal = Math.round(g * i.k100 / 100); i.p = +(g * i.p100 / 100).toFixed(1); delete S.reviews[m.d]; save(); keep(); render(); } return;
   }
   if (t.dataset && t.dataset.act === 'munk') {
     const m = S.meals.find(x => x.id === t.dataset.m), i = m && m.items.find(x => x.id === t.dataset.i); if (i) { i.kcal = Math.max(0, Math.round(num(t.value) || 0)); delete S.reviews[m.d]; save(); keep(); render(); }
