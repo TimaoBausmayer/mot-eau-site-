@@ -173,6 +173,20 @@ details summary{cursor:pointer;font-weight:700}
 <div id="player" hidden></div>
 <canvas id="confetti" hidden></canvas>
 <script>
+/* Bandeau d'erreur : si quelque chose casse, la cause s'affiche à l'écran */
+(function () {
+  function show(msg) {
+    try {
+      var b = document.getElementById('errbar');
+      if (!b) { b = document.createElement('div'); b.id = 'errbar'; b.setAttribute('role', 'alert'); b.style.cssText = 'position:fixed;left:0;right:0;top:0;z-index:999;background:#bb3a2b;color:#fff;padding:10px 16px;font:13px/1.35 system-ui,sans-serif;word-break:break-word'; document.body.appendChild(b); }
+      b.textContent = 'Erreur dans l’appli : ' + msg + '  (envoie-moi ce texte)';
+    } catch (e) { }
+  }
+  window.addEventListener('error', function (e) { show((e.message || 'inconnue') + (e.lineno ? ' [ligne ' + e.lineno + ']' : '')); });
+  window.addEventListener('unhandledrejection', function (e) { show(String((e.reason && e.reason.message) || e.reason || 'promesse rejetée')); });
+})();
+</script>
+<script>
 /* ===== Bonhomme animé : cinématique par angles (0° = droite, 90° = bas, -90° = haut) ===== */
 const L = { torso: 34, ua: 16, fa: 15, th: 24, sh: 23, head: 7.5, toe: 6 };
 const FLOOR = 118;
