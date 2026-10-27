@@ -1,0 +1,4 @@
+{
+  "_aide": "Liens de paiement Stripe par produit. La clé est un mot du nom du produit (ex. casquette). Un lien saisi à la main dans le site passe avant celui-ci. Les liens « test_ » ne fonctionnent qu'avec la carte de test 4242 4242 4242 4242.",
+  "casquette": "https://buy.stripe.com/test_eVq5kE4UwfjNcMf0s76AM00"
+}

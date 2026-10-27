@@ -8335,10 +8335,25 @@ window.addEventListener('scroll', () => {
   tabs.forEach(t => t.classList.toggle('on', t.dataset.tab === cur));
 }, { passive:true });
 
+/* Liens de paiement fournis par le fichier payment-links.json (utilisés si le produit n'a pas encore de lien saisi à la main) */
+async function applyPaymentLinkOverrides(){
+  try{
+    const r = await fetch('/payment-links.json', { cache:'no-store' }); if(!r.ok) return;
+    const map = await r.json();
+    (STATE.products || []).forEach(p => {
+      if(!p || p.link) return;
+      const nm = normSearch(p.name || '');
+      const key = Object.keys(map).find(k => !k.startsWith('_') && nm.includes(normSearch(k)));
+      if(key && /^https:\/\/(buy|checkout)\.stripe\.com\//.test(map[key])) p.link = map[key];
+    });
+  }catch(err){ /* pas de fichier : rien à faire */ }
+}
+
 async function init(){
   await restoreAdminSession();
   await loadAll();
   await loadFavorites();
+  await applyPaymentLinkOverrides();
   await loadLangPreference();
   migrateOldData();
   trackVisit();
