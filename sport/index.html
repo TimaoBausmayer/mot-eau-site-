@@ -97,6 +97,18 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .chart .bar.cur{fill:var(--accent)}
 .chart text.val{fill:var(--ink);font-weight:700}
 .chart text.tl{fill:var(--warm)}
+/* niveaux, planning */
+.gz{display:flex;flex-direction:column;gap:6px}
+.gauge{position:relative;padding-bottom:18px}
+.seg{display:flex;gap:3px;height:12px}.seg i{flex:1;border-radius:6px}
+.seg .g0{background:color-mix(in srgb,var(--warm) 75%,var(--surface))}.seg .g1{background:color-mix(in srgb,var(--warm) 30%,var(--surface))}
+.seg .g2{background:color-mix(in srgb,var(--accent) 35%,var(--surface))}.seg .g3{background:color-mix(in srgb,var(--accent) 70%,var(--surface))}.seg .g4{background:var(--accent)}
+.mk{position:absolute;top:-4px;width:6px;height:20px;border-radius:3px;background:var(--ink);border:2px solid var(--surface);transform:translateX(-50%);animation:mk 1.1s .15s cubic-bezier(.2,.8,.2,1) backwards}
+.tk{position:absolute;top:18px;font-size:10px;color:var(--muted);transform:translateX(-50%);font-variant-numeric:tabular-nums}
+.badge.lv0{background:var(--warm-soft);color:var(--warm)}.badge.lv1,.badge.lv2,.badge.lv3,.badge.lv4{background:var(--accent-soft);color:var(--accent)}
+@keyframes mk{from{left:0}}
+.arow{display:grid;grid-template-columns:40px 1fr 110px;gap:8px;align-items:center}
+.plist{display:flex;flex-direction:column;gap:8px}.prow{display:grid;grid-template-columns:40px 1fr;gap:8px;align-items:start}
 @keyframes draw{from{stroke-dashoffset:1;stroke-dasharray:1}to{stroke-dashoffset:0;stroke-dasharray:1}}
 @keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 .heat{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
@@ -413,7 +425,7 @@ const num = v => { const n = parseFloat(String(v).replace(',', '.')); return isF
 /* ===== État et sauvegarde (cache local + base privée si disponible) ===== */
 const KEY = 'coach-maison-v1';
 const defaults = () => ({ v: 1, upd: 0, demo: false,
-  profile: { sex: '', age: '', height: '', goalWeight: '', goal: 'keep', trainDays: [1, 3, 5], recordDay: 7, equip: { tapis: true, bouteilles: true, chaise: true }, lowImpact: false, level: 0 },
+  profile: { sex: '', age: '', height: '', goalWeight: '', goal: 'keep', trainDays: [1, 3, 5], perWeek: 3, avail: {}, availSet: false, recordDay: 7, equip: { tapis: true, bouteilles: true, chaise: true }, lowImpact: false, level: 0 },
   weights: [], meals: [], sessions: [], records: [], plan: {}, reviews: {} });
 let S = defaults();
 function mergeState(o) {
@@ -475,7 +487,90 @@ function effLevel() {
   return (pm >= 20 || sq >= 40) ? 3 : (pm >= 8 || sq >= 20) ? 2 : 1;
 }
 function lowImpact() { const b = body(); return P().lowImpact || (b && (b.bmi >= 30 || b.a >= 55)); }
-const effPlan = d => S.plan[d] || (P().trainDays.includes(isoDow(d)) ? 'train' : 'rest');
+const isAdj = (a, b) => Math.abs(a - b) === 1 || (a === 1 && b === 7) || (a === 7 && b === 1);
+const hhmm = m => Math.floor(m / 60) + 'h' + (m % 60 ? pad(m % 60) : '');
+function dayWin(d) {
+  const a = P().avail[d] || { m: 'free' };
+  if (a.m === 'off') return { ok: false, win: 0 };
+  let st = 18 * 60, free = true;
+  if (a.m === 'time' && a.t) { const [h, mi] = a.t.split(':').map(Number); st = h * 60 + mi + 45; free = false; }
+  st = Math.ceil(st / 15) * 15;
+  const win = free ? 120 : Math.max(0, 22 * 60 - st);
+  return { ok: win >= 15, start: st, win, free, t: a.t };
+}
+/* Planning de la semaine : grosse séance quand il y a du temps, petites quand tu finis tard, jamais deux grosses d’affilée */
+function weekPlan() {
+  const cand = [...P().trainDays].sort().map(d => ({ d, w: dayWin(d) })), info = {};
+  const ok = cand.filter(c => c.w.ok).sort((a, b) => b.w.win - a.w.win || a.d - b.d);
+  const nBig = ok.length >= 5 ? 2 : ok.length >= 2 ? 1 : 0, big = [];
+  for (const c of ok) { if (big.length >= nBig) break; if (c.w.win >= 60 && !big.some(x => isAdj(x, c.d))) big.push(c.d); }
+  for (let d = 1; d <= 7; d++) {
+    const c = cand.find(x => x.d === d);
+    if (!c) { info[d] = { size: 'repos', min: 0, why: 'Jour de repos' }; continue; }
+    if (!c.w.ok) { info[d] = { size: 'repos', min: 0, why: 'Pas disponible ce jour-là' }; continue; }
+    const w = c.w, prevBig = big.some(x => isAdj(x, d) && (x === (d === 1 ? 7 : d - 1)));
+    let size, min, why;
+    if (big.includes(d)) { size = 'grosse'; min = clamp(Math.floor((w.win - 10) / 5) * 5, 40, 60); why = w.free ? 'Journée libre : c’est le bon moment pour la grosse séance.' : 'Tu finis à ' + w.t.replace(':', 'h') + ' : assez de temps pour une grosse séance.'; }
+    else if (prevBig) { size = 'petite'; min = 20; why = 'Lendemain de grosse séance : on allège.'; }
+    else if (w.win >= 60) { size = 'moyenne'; min = 30; why = 'Séance normale.'; }
+    else if (w.win >= 35) { size = 'petite'; min = 20; why = 'Tu finis à ' + w.t.replace(':', 'h') + ' : séance courte le soir.'; }
+    else { size = 'petite'; min = Math.max(10, Math.floor((w.win - 5) / 5) * 5); why = 'Tu finis tard (' + w.t.replace(':', 'h') + ') : mini séance.'; }
+    info[d] = { size, min, start: w.start, why };
+  }
+  return info;
+}
+function planFor(d) {
+  const wp = weekPlan()[isoDow(d)], ov = S.plan[d];
+  if (ov === 'rest') return { size: 'repos', min: 0, why: 'Repos choisi par toi.' };
+  if (ov === 'train' && wp.size === 'repos') return { size: 'moyenne', min: 30, start: 18 * 60, why: 'Séance ajoutée par toi.' };
+  return wp;
+}
+const effPlan = d => planFor(d).size === 'repos' ? 'rest' : 'train';
+const SIZEN = { grosse: 'Grosse séance', moyenne: 'Séance normale', petite: 'Petite séance', repos: 'Repos' };
+function autoDays() {
+  const n = clamp(+P().perWeek || 3, 1, 6), all = [1, 2, 3, 4, 5, 6, 7].map(d => ({ d, w: dayWin(d) })).filter(c => c.w.ok).sort((a, b) => b.w.win - a.w.win || a.d - b.d), pick = [];
+  all.forEach(c => { if (pick.length < n && !pick.some(x => isAdj(x, c.d))) pick.push(c.d); });
+  all.forEach(c => { if (pick.length < n && !pick.includes(c.d)) pick.push(c.d); });
+  return pick.sort();
+}
+function weekCard() {
+  const wp = weekPlan(); let rows = '';
+  for (let d = 1; d <= 7; d++) { const x = wp[d], r = x.size === 'repos';
+    rows += '<div class="prow"><b>' + DOW[d] + '</b><div><span class="badge' + (r ? '' : x.size === 'grosse' ? ' z-abdos' : ' z-bras') + '">' + (r ? 'Repos' : hhmm(x.start) + ' · ' + SIZEN[x.size] + ' · ' + x.min + ' min') + '</span><div class="tiny muted">' + x.why + '</div></div></div>'; }
+  return '<div class="plist">' + rows + '</div>';
+}
+
+/* ===== Niveaux par âge et sexe (repères indicatifs) ===== */
+const NORM_BASE = { pompes: [20, 35, 45, 55], squats: [30, 45, 60, 80], crunch: [25, 35, 45, 55], dips: [8, 15, 22, 30], fentes: [10, 16, 24, 32], gainage: [30, 60, 90, 150] };
+const NORM_F = { pompes: .55, squats: .85, crunch: .85, dips: .6, fentes: .85, gainage: .95 };
+const LVN = ['À travailler', 'Moyen', 'Bon', 'Très bon', 'Excellent'];
+const ageF = a => a < 20 ? .9 : a < 30 ? 1 : a < 40 ? .9 : a < 50 ? .78 : a < 60 ? .65 : .5;
+function norms(k) {
+  const a = num(P().age) || 25, sx = P().sex, sf = sx === 'f' ? NORM_F[k] : sx === 'm' ? 1 : (1 + NORM_F[k]) / 2;
+  return NORM_BASE[k].map(v => Math.max(1, Math.round(v * ageF(a) * sf)));
+}
+function levelOf(k, v) { const t = norms(k); let i = 0; t.forEach((x, j) => { if (v >= x) i = j + 1; }); return { i, t }; }
+function slopeWk(pts) {
+  const n = pts.length; if (n < 2 || pts[n - 1].x - pts[0].x < 5 * 864e5) return null;
+  const mx = pts.reduce((a, p) => a + p.x, 0) / n, my = pts.reduce((a, p) => a + p.y, 0) / n; let sxy = 0, sxx = 0;
+  pts.forEach(p => { sxy += (p.x - mx) * (p.y - my); sxx += (p.x - mx) ** 2; }); return sxx ? sxy / sxx * 7 * 864e5 : null;
+}
+function gauge(k, v) {
+  const tr = TRACK.find(x => x.k === k), { i, t } = levelOf(k, v), un = tr.u === 's' ? ' s' : '';
+  let pos = i === 0 ? v / t[0] * .2 : i < 4 ? (i + (v - t[i - 1]) / (t[i] - t[i - 1])) * .2 : .8 + Math.min(1, (v - t[3]) / (t[3] * .35)) * .2;
+  pos = clamp(pos, .02, .98) * 100;
+  return '<div class="gz"><div class="row sb"><b>' + tr.n + '</b><span class="badge lv' + i + '">' + (v ? LVN[i] + ' · ' + v + un : 'pas encore testé') + '</span></div>' +
+    (v ? '<div class="gauge"><div class="seg">' + [0, 1, 2, 3, 4].map(j => '<i class="g' + j + '"></i>').join('') + '</div><span class="mk" style="left:' + pos.toFixed(1) + '%"></span>' + t.map((x, j) => '<span class="tk" style="left:' + (j + 1) * 20 + '%">' + x + '</span>').join('') + '</div>' : '') + '</div>';
+}
+function levelInfo(k) {
+  const v = prOf(k) || bestOf(k), tr = TRACK.find(x => x.k === k); if (!v) return '';
+  const { i, t } = levelOf(k, v), un = tr.u === 's' ? ' s' : '';
+  if (i === 4) return '<p class="small"><b>Niveau maximum atteint pour ton âge.</b> Continue pour garder la forme.</p>';
+  const need = t[i] - v, pts = (recsOf(k).filter(r => r.test).length > 1 ? recsOf(k).filter(r => r.test) : recsOf(k)).map(r => ({ x: parseD(r.d).getTime(), y: r.val }));
+  const sl = slopeWk(pts), rate = k === 'gainage' ? 5 : Math.max(1, t[0] * .08), real = sl && sl > 0.05;
+  const wk = Math.max(1, Math.ceil(need / (real ? sl : rate)));
+  return '<p class="small">Prochain palier : <b>' + LVN[i + 1] + '</b> à ' + t[i] + un + ' (encore ' + need + un + '). ' + (real ? 'À ton rythme actuel (+' + nf(sl) + un + ' par semaine)' : 'En t’entraînant régulièrement (en général +' + nf(rate, 0) + un + ' par semaine au début)') + ', compte environ <b class="num" style="font-size:22px;color:var(--warm)"><span data-count="' + wk + '">' + wk + '</span> semaine' + (wk > 1 ? 's' : '') + '</b>.</p>';
+}
 const minutesOn = d => S.sessions.filter(s => s.d === d).reduce((a, s) => a + s.min, 0);
 const doneOn = d => S.sessions.some(s => s.d === d) || S.records.some(r => r.d === d);
 function streak() {
@@ -599,7 +694,7 @@ function barChart(vals, labels, curIdx, unit) {
   r.ticks.forEach(t => { s += '<line class="grid" x1="' + m.l + '" x2="' + (W - m.r) + '" y1="' + Y(t) + '" y2="' + Y(t) + '"/><text x="' + (m.l - 5) + '" y="' + (Y(t) + 4) + '" text-anchor="end">' + t + '</text>'; });
   vals.forEach((v, i) => {
     const x = m.l + i * bw + bw * .16, w = bw * .68, y = Y(v);
-    s += '<rect class="bar' + (i === curIdx ? ' cur' : '') + '" x="' + x + '" y="' + y + '" width="' + w + '" height="' + (H - m.b - y) + '" rx="4" style="animation-delay:' + i * 50 + 'ms"/>';
+    if (v) s += '<rect class="bar' + (i === curIdx ? ' cur' : '') + '" x="' + x + '" y="' + y + '" width="' + w + '" height="' + (H - m.b - y) + '" rx="4" style="animation-delay:' + i * 50 + 'ms"/>';
     if (v) s += '<text class="val" x="' + (x + w / 2) + '" y="' + (y - 5) + '" text-anchor="middle">' + v + '</text>';
     s += '<text x="' + (x + w / 2) + '" y="' + (H - 7) + '" text-anchor="middle">' + labels[i] + '</text>';
   });
@@ -657,7 +752,7 @@ function hintFor(e, dur) {
 }
 
 /* ===== Vues ===== */
-const U = { tab: 'today', mealDate: today(), recEx: 'pompes', T: { min: 15, focus: 'all', custom: { abdos: 25, bras: 25, jambes: 25, cardio: 25 }, level: 0, plan: null }, busy: false, copy: '', exportTxt: '', wdate: today(), wkg: '' };
+const U = { tab: 'today', mealDate: today(), recEx: 'pompes', T: { min: 15, focus: 'all', custom: { abdos: 25, bras: 25, jambes: 25, cardio: 25 }, level: 0, plan: null }, busy: false, copy: '', exportTxt: '', wdate: today(), wkg: '', recDate: today() };
 const TABS = [
   ['today', 'aujourdhui', 'Aujourd’hui', '<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>'],
   ['train', 'seance', 'Séance', '<path d="M3 9v6M6 6v12M18 6v12M21 9v6M6 12h12"/>'],
@@ -675,7 +770,7 @@ function vToday() {
   for (let i = 0; i < 7; i++) {
     const d = addDays(mon, i), done = doneOn(d), rs = effPlan(d) === 'rest', mins = minutesOn(d);
     cells += '<button class="day' + (done ? ' done' : rs ? ' rest' : '') + (d === t ? ' today' : '') + '" data-act="daytoggle" data-d="' + d + '" aria-label="' + fmtLong(d) + (done ? ', fait' : rs ? ', repos' : ', entraînement prévu') + '">' +
-      '<span class="dn">' + DOW[i + 1] + '</span><span class="dd">' + parseD(d).getDate() + '</span><span class="ds">' + (done ? (mins ? mins + ' min' : '✓') : rs ? 'repos' : 'prévu') + '</span></button>';
+      '<span class="dn">' + DOW[i + 1] + '</span><span class="dd">' + parseD(d).getDate() + '</span><span class="ds">' + (done ? (mins ? mins + ' min' : '✓') : rs ? 'repos' : hhmm(planFor(d).start)) + '</span></button>';
   }
   const wk = S.sessions.filter(s => s.d >= mon && s.d <= addDays(mon, 6)), wmin = wk.reduce((a, s) => a + s.min, 0);
   const lw = latestW(), fw = sortedW()[0], dW = lw.kg - fw.kg;
@@ -686,8 +781,9 @@ function vToday() {
     '<div class="row sb"><div><h1>Salut Timao</h1><p class="muted">' + fmtLong(t) + '</p></div></div>' +
     '<section class="card ' + (adv.kind === 'rest' ? 'soft' : 'warm') + '" aria-live="polite"><h2>' + adv.title + '</h2><p>' + adv.text + '</p>' +
     (adv.kind === 'train' ? '<button class="btn big" data-act="gotrain">Préparer ma séance</button>' : '<button class="btn ghost" data-act="gotrain">Faire une séance quand même</button>') + '</section>' +
+    (S.records.length === 0 ? vFirstRecords() : '') + (!P().availSet ? '<section class="card warm"><h2>Tes horaires</h2><p>Dis-moi à quelle heure tu finis chaque jour. Je place les grosses séances les jours où tu as le temps, et des petites quand tu finis tard.</p><button class="btn" data-act="gosched">Régler mes horaires</button></section>' : '') +
     '<section class="card"><div class="row sb"><h2>Ma semaine</h2><span class="tiny muted">touche un jour pour changer repos / sport</span></div><div class="week">' + cells + '</div>' +
-    '<p class="small muted">' + wk.length + ' séance' + (wk.length > 1 ? 's' : '') + ' · ' + wmin + ' min cette semaine</p></section>' +
+    '<p class="small muted">' + wk.length + ' séance' + (wk.length > 1 ? 's' : '') + ' · ' + wmin + ' min cette semaine</p>' + (P().availSet ? '<details><summary>Voir le planning de la semaine</summary>' + weekCard() + '</details>' : '') + '</section>' +
     '<div class="grid2">' +
     '<div class="stat"><span class="lbl">Poids</span><span class="num"><span data-count="' + lw.kg + '" data-d="1">' + nf(lw.kg) + '</span> kg</span><span class="delta ' + (dW > 0 ? 'up' : 'down') + '">' + (dW === 0 ? 'stable' : (dW > 0 ? '+' : '') + nf(dW) + ' kg depuis le début') + '</span></div>' +
     '<div class="stat"><span class="lbl">Série</span><span class="num"><span data-count="' + streak() + '">' + streak() + '</span> j</span><span class="small muted">repos prévus ne cassent pas la série</span></div>' +
@@ -705,8 +801,14 @@ function dayAdvice() {
   if (doneOn(t)) return { kind: 'rest', title: 'Séance faite', text: 'Bravo, tu as bougé aujourd’hui' + (minutesOn(t) ? ' (' + minutesOn(t) + ' min)' : '') + '. Mange des protéines, bois de l’eau, et laisse les muscles récupérer.' };
   if (plan === 'rest') return { kind: 'rest', title: 'Jour de repos', text: 'Repos prévu aujourd’hui. C’est pendant le repos que les muscles progressent : marche tranquille, quelques étirements, nuit complète.' };
   if (cons >= 3) return { kind: 'rest', title: 'Repos conseillé', text: 'Tu as enchaîné ' + cons + ' jours de sport. Prends un jour off, ou une séance très douce (étirements). Ton corps te remerciera.' };
+  const pf = planFor(t);
   const hasZ = S.sessions.some(s => diffDays(t, s.d) <= 3 && diffDays(t, s.d) >= 0);
-  return { kind: 'train', title: 'Séance prévue', text: hasZ ? 'Ces derniers jours tu as moins travaillé les ' + ZN[lazy].toLowerCase() + '. Je te conseille d’en mettre un peu plus aujourd’hui.' : 'Aujourd’hui, c’est jour de sport. Choisis la durée et la zone, je te prépare le programme avec les animations.' };
+  return { kind: 'train', title: 'Séance prévue à ' + hhmm(pf.start), text: SIZEN[pf.size] + ' de ' + pf.min + ' min. ' + pf.why + ' ' + (hasZ ? 'Ces derniers jours tu as moins travaillé les ' + ZN[lazy].toLowerCase() + '. Je te conseille d’en mettre un peu plus aujourd’hui.' : 'Aujourd’hui, c’est jour de sport. Choisis la durée et la zone, je te prépare le programme avec les animations.') };
+}
+function vFirstRecords() {
+  return '<section class="card warm"><h2>Mes records d’avant</h2><p class="small">Tu t’es déjà testé avant l’appli ? Note ton meilleur résultat pour chaque exercice (laisse vide ceux que tu n’as jamais faits). Ça règle ton niveau et ta courbe de départ.</p>' +
+    '<div class="grid2">' + TRACK.map(tr => '<label class="f">' + tr.n + ' (' + (tr.u === 's' ? 'secondes' : 'max') + ')<input id="fr-' + tr.k + '" inputmode="numeric" placeholder="–"></label>').join('') + '</div>' +
+    '<label class="f">Date approximative (vide = aujourd’hui)<input id="fr-date" type="date" max="' + today() + '"></label><button class="btn" data-act="firstrec">Noter mes records</button></section>';
 }
 function vOnboard() {
   const p = P();
@@ -786,6 +888,10 @@ function vProgress() {
     const dTot = lw.kg - fw.kg, d7 = ago7 ? lw.kg - ago7.kg : null;
     h += '<div class="grid2"><div class="stat"><span class="lbl">Depuis le début</span><span class="num">' + (dTot > 0 ? '+' : '') + nf(dTot) + ' kg</span><span class="small muted">' + nf(fw.kg) + ' → ' + nf(lw.kg) + ' kg</span></div>' +
       '<div class="stat"><span class="lbl">7 derniers jours</span><span class="num">' + (d7 === null ? '–' : (d7 > 0 ? '+' : '') + nf(d7) + ' kg') + '</span><span class="small muted">' + (num(p.goalWeight) ? 'objectif : ' + nf(num(p.goalWeight)) + ' kg' : 'fixe un objectif dans Profil') + '</span></div></div>' +
+      (() => { const g = num(p.goalWeight), recent = w.filter(x => diffDays(today(), x.d) <= 35).map(x => ({ x: parseD(x.d).getTime(), y: x.kg })), sl = slopeWk(recent);
+        if (!g || sl === null || Math.abs(lw.kg - g) < .2) return g && Math.abs(lw.kg - g) < .2 ? '<p class="small"><b>Objectif atteint.</b> Bravo !</p>' : '';
+        const need = g - lw.kg; if (need * sl <= 0) return '<p class="small muted">Ton poids évolue dans l’autre sens que ton objectif pour l’instant.</p>';
+        const wk = Math.ceil(need / sl); return '<p class="small">À ton rythme (' + (sl > 0 ? '+' : '') + nf(sl, 2) + ' kg par semaine), tu atteins ' + nf(g) + ' kg dans environ <b class="num" style="font-size:22px;color:var(--warm)"><span data-count="' + wk + '">' + wk + '</span> semaine' + (wk > 1 ? 's' : '') + '</b>, vers le ' + fmtShort(addDays(today(), wk * 7)) + '.</p>'; })() +
       (b ? '<p class="small muted">IMC ' + nf(b.bmi) + ' (' + bmiLabel(b.bmi) + '). Dépense de base ≈ ' + Math.round(b.bmr) + ' kcal, avec le sport ≈ ' + Math.round(b.tdee) + ' kcal par jour.</p>' : '');
   } else h += '<p class="muted">Enregistre ton premier poids pour voir la courbe.</p>';
   h += '</section>';
@@ -801,17 +907,22 @@ function vProgress() {
     cal += '<div class="' + cls + (d === today() ? ' ht' : '') + '" title="' + fmtLong(d) + (m ? ' : ' + m + ' min' : '') + '">' + parseD(d).getDate() + '</div>';
   }
   h += '<section class="card"><h2>Mes jours</h2><div class="heat">' + cal + '</div><p class="small muted">Plein = séance (plus foncé = plus long). Pointillé = repos prévu. Contour orange = aujourd’hui.</p></section>';
+  /* niveau */
+  const sxl = p.sex === 'm' ? 'homme' : p.sex === 'f' ? 'femme' : 'personne', age = num(p.age);
+  h += '<section class="card"><div class="row sb"><h2>Mon niveau</h2><span class="badge">' + sxl + (age ? ', ' + age + ' ans' : '') + '</span></div><p class="small muted">Repères indicatifs inspirés des tests de condition physique, adaptés à ton âge et ton sexe. Le trait noir, c’est toi.</p>' + TRACK.map(x => gauge(x.k, prOf(x.k) || bestOf(x.k))).join('') + '</section>';
   /* records */
   const tr = TRACK.find(x => x.k === U.recEx), rs = recsOf(U.recEx), tests = rs.filter(r => r.test), pr = prOf(U.recEx);
   h += '<section class="card"><h2>Records et niveau</h2><div class="chips">' + TRACK.map(x => '<button class="chip" data-act="recex" data-v="' + x.k + '" aria-pressed="' + (x.k === U.recEx) + '">' + x.n + '</button>').join('') + '</div>' +
     '<div class="row" style="flex-wrap:nowrap;align-items:flex-end"><label class="f" style="flex:1">' + (tr.u === 's' ? 'Secondes tenues' : 'Répétitions faites') + '<input id="recv" inputmode="numeric" placeholder="' + (tr.u === 's' ? 'ex. 45' : 'ex. 18') + '"></label><button class="btn" data-act="recadd">Noter</button></div>' +
-    '<label class="row" style="gap:8px"><input type="checkbox" id="rectest"> <span class="small">J’ai fait mon maximum (test de record)</span></label>';
+    '<div class="row" style="gap:12px;align-items:flex-end"><label class="row" style="gap:8px;flex:1;min-width:190px"><input type="checkbox" id="rectest"> <span class="small">J’ai fait mon maximum (test de record)</span></label><label class="f" style="width:150px">Date (pour un ancien résultat)<input id="recdate" type="date" value="' + U.recDate + '" max="' + today() + '"></label></div>';
   if (tests.length || rs.length) {
     const pts = (tests.length ? tests : rs).map(r => ({ x: parseD(r.d).getTime(), y: r.val }));
     h += lineChart({ pts, minor: tests.length ? rs.filter(r => !r.test).map(r => ({ x: parseD(r.d).getTime(), y: r.val })) : [], warm: true, markBest: true, label: 'Progression ' + tr.n, fmtY: v => nf(v, 0), unit: tr.u === 's' ? ' s' : '' });
     const first = (tests.length ? tests : rs)[0], bestV = bestOf(U.recEx);
     h += '<div class="grid2"><div class="stat"><span class="lbl">Record</span><span class="num" style="color:var(--warm)">' + (pr || bestV) + (tr.u === 's' ? ' s' : '') + '</span><span class="small muted">' + (pr ? 'test de max' : 'meilleur résultat') + '</span></div><div class="stat"><span class="lbl">Progression</span><span class="num">' + ((pr || bestV) - first.val >= 0 ? '+' : '') + ((pr || bestV) - first.val) + (first.val ? ' (' + Math.round(((pr || bestV) - first.val) / first.val * 100) + ' %)' : '') + '</span><span class="small muted">depuis ' + fmtShort(first.d) + '</span></div></div>';
-  } else h += '<p class="muted">Aucun résultat pour l’instant. Fais un test, note-le, et ta courbe apparaît.</p>';
+    h += levelInfo(U.recEx);
+    h += '<details><summary>Mes résultats notés</summary><div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">' + [...rs].reverse().slice(0, 12).map(r => '<div class="row sb"><span class="small">' + fmtShort(r.d) + ' · <b>' + r.val + (tr.u === 's' ? ' s' : '') + '</b> ' + (r.test ? '<span class="badge">max</span>' : '') + '</span><button class="btn ghost sm" data-act="recdel" data-id="' + r.id + '" aria-label="Supprimer ce résultat">Supprimer</button></div>').join('') + '</div></details>';
+  } else h += '<p class="muted">Aucun résultat pour l’instant. Fais un test, note-le, et ta courbe apparaît. Tu peux aussi noter un ancien résultat en changeant la date.</p>';
   return h + '</section>';
 }
 
@@ -825,6 +936,10 @@ function vProfile() {
     '<label class="f">Poids visé (kg)<input data-p="goalWeight" inputmode="decimal" value="' + (p.goalWeight || '') + '" placeholder="optionnel"></label></div>' +
     '<label class="f">Objectif<select data-p="goal"><option value="lose"' + (p.goal === 'lose' ? ' selected' : '') + '>Perdre du poids</option><option value="keep"' + (p.goal === 'keep' ? ' selected' : '') + '>Rester stable et me muscler</option><option value="gain"' + (p.goal === 'gain' ? ' selected' : '') + '>Prendre du muscle / du poids</option></select></label>' +
     (b ? '<p class="small muted">Cible du jour : ' + b.kcal + ' kcal et ' + b.prot + ' g de protéines (formule de Mifflin-St Jeor, estimation).</p>' : '') + '</section>' +
+    '<section class="card"><h2>Mes horaires</h2><p class="small muted">Dis-moi à quelle heure tu finis. Je place la séance 45 minutes après (trajet, repas léger), et je choisis les jours de grosse séance.</p>' +
+    [1, 2, 3, 4, 5, 6, 7].map(d => { const a = p.avail[d] || { m: 'free' }; return '<div class="arow"><b>' + DOW[d] + '</b><select data-av="' + d + '" data-f="m" aria-label="Disponibilité ' + DOWL[d] + '"><option value="free"' + (a.m === 'free' ? ' selected' : '') + '>Journée libre</option><option value="time"' + (a.m === 'time' ? ' selected' : '') + '>Je finis à…</option><option value="off"' + (a.m === 'off' ? ' selected' : '') + '>Pas dispo</option></select>' + (a.m === 'time' ? '<input type="time" data-av="' + d + '" data-f="t" value="' + (a.t || '17:30') + '" aria-label="Heure de fin ' + DOWL[d] + '">' : '<span></span>') + '</div>'; }).join('') +
+    '<div class="row" style="flex-wrap:nowrap;align-items:flex-end"><label class="f" style="flex:1">Séances par semaine<select data-p="perWeek">' + [1, 2, 3, 4, 5, 6].map(n => '<option value="' + n + '"' + (+p.perWeek === n ? ' selected' : '') + '>' + n + '</option>').join('') + '</select></label><button class="btn" data-act="autodays">Proposer mes jours</button></div>' +
+    '<h3>Planning proposé</h3>' + weekCard() + '</section>' +
     '<section class="card"><h2>Mon rythme</h2><h3>Jours de sport</h3><div class="chips">' + [1, 2, 3, 4, 5, 6, 7].map(d => tg('pday', d, DOW[d], p.trainDays.includes(d))).join('') + '</div>' +
     '<h3>Jour de record</h3><div class="chips">' + [1, 2, 3, 4, 5, 6, 7].map(d => tg('prec', d, DOW[d], +p.recordDay === d)).join('') + '</div></section>' +
     '<section class="card"><h2>Matériel</h2><div class="chips">' + [['tapis', 'Tapis'], ['bouteilles', 'Bouteilles d’eau'], ['chaise', 'Chaise']].map(q => tg('peq', q[0], q[1], p.equip[q[0]])).join('') + '</div>' +
@@ -977,7 +1092,15 @@ document.addEventListener('click', e => {
   const a = b.dataset.act, v = b.dataset.v;
   switch (a) {
     case 'tab': U.tab = v; try { history.replaceState(null, '', '#' + SLUG[v]); } catch (x) { } render(); break;
-    case 'gotrain': U.tab = 'train'; render(); break;
+    case 'gotrain': { const pf = planFor(today()); if (pf.min) { U.T.min = [5, 10, 15, 20, 30, 45, 60].reduce((a, c) => Math.abs(c - pf.min) < Math.abs(a - pf.min) ? c : a); if (pf.size === 'grosse') U.T.focus = 'all'; U.T.plan = null; } U.tab = 'train'; render(); break; }
+    case 'gosched': U.tab = 'profile'; render(); break;
+    case 'autodays': P().trainDays = autoDays(); P().availSet = true; save(); keep(); render(); toast('Jours proposés : ' + P().trainDays.map(d => DOW[d]).join(', ')); break;
+    case 'firstrec': {
+      const dd = val('fr-date') || today(); let n = 0;
+      TRACK.forEach(tr => { const v = Math.round(num(val('fr-' + tr.k))); if (v > 0) { S.records.push({ id: uid(), d: dd > today() ? today() : dd, ex: tr.k, val: v, test: true }); n++; } });
+      if (!n) { toast('Entre au moins un résultat'); break; } save(); render(); toast(n + ' record' + (n > 1 ? 's notés' : ' noté')); break;
+    }
+    case 'recdel': S.records = S.records.filter(r => r.id !== b.dataset.id); save(); keep(); render(); break;
     case 'daytoggle': { const d = b.dataset.d; S.plan[d] = effPlan(d) === 'rest' ? 'train' : 'rest'; save(); keep(); render(); break; }
     case 'onboard': {
       const w = num(val('ob-w')), h = num(val('ob-h')), ag = num(val('ob-a')), err = $('#ob-err');
@@ -1052,9 +1175,9 @@ document.addEventListener('click', e => {
     }
     case 'recex': U.recEx = v; keep(); render(); break;
     case 'recadd': {
-      const n = Math.round(num(val('recv'))), test = $('#rectest').checked; if (!(n > 0)) { toast('Entre ton résultat'); break; }
-      const pr = prOf(U.recEx); S.records.push({ id: uid(), d: today(), ex: U.recEx, val: n, test }); save(); keep(); render();
-      if (test && pr > 0 && n > pr) { confetti(); toast('Nouveau record : ' + n + ' !'); } else toast('Résultat noté'); break;
+      const n = Math.round(num(val('recv'))), test = $('#rectest').checked, rd = val('recdate') || today(); if (!(n > 0)) { toast('Entre ton résultat'); break; }
+      const pr = prOf(U.recEx), old = rd < today(); S.records.push({ id: uid(), d: rd > today() ? today() : rd, ex: U.recEx, val: n, test }); save(); keep(); U.recDate = today(); render();
+      if (test && !old && pr > 0 && n > pr) { confetti(); toast('Nouveau record : ' + n + ' !'); } else toast(old ? 'Ancien résultat noté au ' + fmtShort(rd) : 'Résultat noté'); break;
     }
     /* profil */
     case 'pday': { const d = +v, a = P().trainDays; P().trainDays = a.includes(d) ? a.filter(x => x !== d) : a.concat(d).sort(); save(); keep(); render(); break; }
@@ -1076,14 +1199,19 @@ document.addEventListener('input', e => {
   }
   if (t.id === 'wkg') U.wkg = t.value;
   if (t.id === 'wdate') U.wdate = t.value;
+  if (t.id === 'recdate') U.recDate = t.value;
 });
 document.addEventListener('change', e => {
   const t = e.target;
+  if (t.dataset && t.dataset.av) {
+    const d = t.dataset.av, a = Object.assign({ m: 'free' }, P().avail[d]); a[t.dataset.f] = t.value; if (a.m === 'time' && !a.t) a.t = '17:30';
+    P().avail[d] = a; P().availSet = true; save(); keep(); render(); return;
+  }
   if (t.dataset && t.dataset.p) {
     const k = t.dataset.p; let v = t.value;
     if (k === 'height' || k === 'goalWeight') { const n = num(v); v = isFinite(n) ? String(n) : ''; t.value = v; }
     if (k === 'age') { const n = Math.round(num(v)); v = isFinite(n) ? String(n) : ''; t.value = v; }
-    P()[k] = k === 'level' ? +v : v; save(); keep(); render();
+    P()[k] = (k === 'level' || k === 'perWeek') ? +v : v; save(); keep(); render();
   }
   if (t.dataset && t.dataset.act === 'munk') {
     const m = S.meals.find(x => x.id === t.dataset.m), i = m && m.items.find(x => x.id === t.dataset.i); if (i) { i.kcal = Math.max(0, Math.round(num(t.value) || 0)); delete S.reviews[m.d]; save(); keep(); render(); }
