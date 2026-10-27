@@ -21,7 +21,8 @@
 <meta property="og:url" content="https://moteau.vercel.app/">
 <meta property="og:title" content="Mot'eau — Un nouveau sport nautique">
 <meta property="og:description" content="Prends de la vitesse. Décolle. Vole. Planning, compétitions, classements, tutoriels et boutique Mot'eau.">
-<meta property="og:image" content="https://moteau.vercel.app/videos/tuto-regles.jpg">
+<meta property="og:image" content="https://moteau.vercel.app/images/og-moteau.jpg">
+<meta property="og:image:alt" content="Équipement Team Mot'eau : la moto noire et orange, la bannière, un short et un maillot">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"SportsOrganization","name":"Mot'eau","alternateName":["Moteau","Mot eau"],"url":"https://moteau.vercel.app/","sport":"Mot'eau","description":"Nouveau sport nautique : une moto lancée sur une rampe de mise à l'eau, un décollage et un vol mesuré.","areaServed":"Lac du Bourget, Savoie, France","sameAs":["https://www.instagram.com/mot_eau/"]}
@@ -978,6 +979,27 @@ input:focus,select:focus,textarea:focus{border-color:var(--orange) !important; b
 /* --- pied de page --- */
 footer{border-top:1px solid var(--card-line); background:linear-gradient(180deg,transparent,rgba(255,255,255,.025)); margin-top:30px;}
 .foot-legal a{color:#bdb7ab;}
+
+/* --- photos du club --- */
+.hero{background:linear-gradient(90deg, #0a0a09 0%, rgba(10,10,9,.97) 38%, rgba(10,10,9,.6) 56%, rgba(10,10,9,.08) 100%), linear-gradient(0deg, rgba(10,10,9,.9) 0%, rgba(10,10,9,0) 28%), url('/images/hero-team.jpg') right 18%/72% auto no-repeat, #0a0a09;}
+.hero .grid-bg{display:none;}
+#heroDefaultSvg,.ramp-graphic svg{display:none !important;}
+.hero h1,.hero p.lead{text-shadow:0 2px 24px rgba(0,0,0,.55);}
+@media (max-width:860px){ .hero{padding-top:380px !important; background:linear-gradient(180deg, rgba(10,10,9,.1) 0%, rgba(10,10,9,.3) 34%, #0a0a09 58%), url('/images/hero-team.jpg') 66% 0/auto 520px no-repeat, #0a0a09;} }
+.machine{padding-top:30px;}
+.machine-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px; align-items:start;}
+.machine-fig{margin:0; border-radius:var(--radius); overflow:hidden; border:1px solid var(--card-line); background:#14110e; box-shadow:0 14px 40px rgba(0,0,0,.35); transition:transform .25s;}
+.machine-fig:hover{transform:translateY(-4px);}
+.machine-fig img{width:100%; height:auto; display:block;}
+.machine-fig figcaption{padding:14px 18px; font-size:.95rem; color:#d8d2c6;}
+.machine-fig figcaption b{color:var(--cream); display:block; font-size:1.05rem;}
+@media (max-width:640px){ .machine-grid{grid-template-columns:1fr;} }
+#viewBanner{display:none; max-width:1144px; margin:92px 18px 0; height:clamp(150px,24vw,260px); border-radius:22px; border:1px solid var(--card-line); background:linear-gradient(0deg, rgba(10,10,9,.55), rgba(10,10,9,.05)), url('/images/boutique-banner.jpg') center 40%/cover no-repeat; box-shadow:0 18px 50px rgba(0,0,0,.4);}
+@media (min-width:1180px){ #viewBanner{margin-left:auto; margin-right:auto;} }
+body[data-view="boutique"] #viewBanner{display:block;}
+body[data-view="boutique"] #viewTabs{margin-top:14px;}
+body[data-view="boutique"] main > section:first-of-type{padding-top:30px;}
+
 /* --- mobile --- */
 @media (max-width:860px){
   .nav-inner{padding:8px 10px; gap:8px;}
@@ -1096,6 +1118,7 @@ footer{border-top:1px solid var(--card-line); background:linear-gradient(180deg,
 
 <main id="contenu" tabindex="-1">
 
+<div id="viewBanner" role="img" aria-label="Équipement Team Mot'eau posé sur l'herbe : la moto noire et orange, la bannière, un short et un maillot"></div>
 <div id="viewTabs" role="navigation" aria-label="Rubriques de cette page"></div>
 
 <div id="searchPanel" role="search" aria-label="Recherche sur le site">
@@ -1143,7 +1166,7 @@ footer{border-top:1px solid var(--card-line); background:linear-gradient(180deg,
   </div>
 </section>
 
-<div class="stat-strip">
+<div class="stat-strip" id="stats">
   <div class="wrap">
     <div class="stat"><div class="num">3</div><div class="lbl">Critères de performance — vitesse, distance, temps</div></div>
     <div class="stat"><div class="num">1</div><div class="lbl">Objectif — un Championnat du Monde Mot'eau</div></div>
@@ -1188,6 +1211,16 @@ footer{border-top:1px solid var(--card-line); background:linear-gradient(180deg,
   </div>
 </section>
 
+
+<section id="machine" class="machine" aria-labelledby="machineTitle">
+  <div class="wrap">
+    <div class="sec-head"><h2 id="machineTitle" class="display">La Mot'eau</h2><p class="sub">La machine du club, aux couleurs de la Team Mot'eau.</p></div>
+    <div class="machine-grid">
+      <figure class="machine-fig"><img src="/images/moto-face.jpg" width="768" height="1024" loading="lazy" decoding="async" alt="La moto Mot'eau noire et orange vue de trois quarts avant, devant la bannière Team Mot'eau"><figcaption><b>Vue de face</b>Réservoir orange, jantes graphiques noir et orange.</figcaption></figure>
+      <figure class="machine-fig"><img src="/images/moto-dos.jpg" width="756" height="1024" loading="lazy" decoding="async" alt="La moto Mot'eau noire et orange vue de trois quarts arrière, devant la bannière Team Mot'eau"><figcaption><b>Vue de dos</b>Selle et carénage noir brillant.</figcaption></figure>
+    </div>
+  </div>
+</section>
 
 <section id="planning">
   <div class="wrap">
@@ -2992,6 +3025,8 @@ Object.assign(TRANSLATE_MAP, {"Les résultats seront publiés prochainement.":"R
 Object.assign(TRANSLATE_MAP, {"Commander avec obligation de paiement":"Order with obligation to pay","Aller au contenu":"Skip to content","Merci de cocher la case d'acceptation des conditions.":"Please tick the box to accept the conditions.","télécharger mes données":"download my data","supprimer mon compte":"delete my account","confidentialité":"privacy","Mentions légales":"Legal notice","Politique de confidentialité":"Privacy policy","Conditions d'utilisation":"Terms of use","Conditions de vente":"Terms of sale","Remboursement & rétractation":"Refunds & withdrawal","Cookies & stockage":"Cookies & storage"});
 
 Object.assign(TRANSLATE_MAP, {"Le sport":"Sport","Rejoindre":"Join","Communauté":"Community","Que veux-tu faire ?":"What do you want to do?","Réserver une séance":"Book a session","Essais et entraînements":"Trials and training","Voir les résultats":"See the results","Classements et records":"Rankings and records","La boutique":"The shop","Vêtements et accessoires":"Clothing and accessories","Rejoindre le club":"Join the club","Adhésion en 2 minutes":"Membership in 2 minutes","Apprendre en vidéo":"Learn with videos","Tutoriels et règles":"Tutorials and rules","Poser une question":"Ask a question","On te répond vite":"We reply quickly","Découvrir le sport":"Discover the sport","Les classements et les records, mis à jour après chaque compétition.":"Rankings and records, updated after every competition.","Rubriques de cette page":"Sections of this page","Prêt de matériel":"Equipment loans","Photos & vidéos":"Photos & videos","Adhésion & inscriptions":"Membership & registrations","Espace adhérents":"Members area","Questions":"Questions","Le concept":"The concept"});
+
+Object.assign(TRANSLATE_MAP, {"La Mot'eau":"The Mot'eau","La machine du club, aux couleurs de la Team Mot'eau.":"The club's machine, in Team Mot'eau colours.","Vue de face":"Front view","Vue de dos":"Rear view","Réservoir orange, jantes graphiques noir et orange.":"Orange tank, black and orange graphic wheels.","Selle et carénage noir brillant.":"Seat and glossy black fairing."});
 
 /* ---- Moteur de traduction FR → EN ----
    - dictionnaire intégré (TRANSLATE_MAP) + traductions saisies par l'admin (i18nEn, onglet « Anglais »)
@@ -8233,14 +8268,14 @@ async function deleteMyAccount(){
    (les liens #planning, #boutique… continuent de fonctionner et ouvrent la bonne page)
    ============================================================ */
 const VIEWS = {
-  home:       ['accueil','actions','actualites','concept'],
+  home:       ['accueil','stats','actions','actualites','concept','machine'],
   sport:      ['planning','resultats','runs','votes','regles','equipement','galerie','tutoriels'],
   boutique:   ['boutique'],
   rejoindre:  ['adhesion','attestation','fidelite','dons'],
   communaute: ['avis','faq','club','histoire','sponsors'],
   admin:      ['dashboard','prospection']
 };
-const VIEW_LABELS = { actualites:'Actualités', concept:'Le concept', planning:'Planning', resultats:'Résultats', runs:'Les runs', votes:'Vote du public', regles:'Règles', equipement:'Prêt de matériel',
+const VIEW_LABELS = { machine:'La Mot\'eau', actualites:'Actualités', concept:'Le concept', planning:'Planning', resultats:'Résultats', runs:'Les runs', votes:'Vote du public', regles:'Règles', equipement:'Prêt de matériel',
   galerie:'Photos & vidéos', tutoriels:'Tutoriels', boutique:'Boutique', adhesion:'Adhésion & inscriptions', attestation:'Attestation', fidelite:'Fidélité', dons:'Faire un don',
   avis:'Avis', faq:'Questions', club:'Espace adhérents', histoire:'Notre histoire', sponsors:'Sponsors', dashboard:'Tableau de bord', prospection:'Démarchage' };
 const VIEW_OF = {}; Object.entries(VIEWS).forEach(([v, ids]) => ids.forEach(id => VIEW_OF[id] = v));
@@ -8272,7 +8307,8 @@ function routeFromHash(){
   setView(v, true);
   const el = id && document.getElementById(id);
   requestAnimationFrame(() => {
-    if(el && id !== 'accueil'){ const top = el.getBoundingClientRect().top + window.scrollY - (CURRENT_VIEW === 'home' ? 100 : 150); window.scrollTo({ top: Math.max(0, top), behavior: changed ? 'auto' : 'smooth' }); }
+    const firstShown = (VIEWS[CURRENT_VIEW] || []).find(sectionShown);
+    if(el && id !== 'accueil' && !(CURRENT_VIEW !== 'home' && id === firstShown)){ const top = el.getBoundingClientRect().top + window.scrollY - (CURRENT_VIEW === 'home' ? 100 : 150); window.scrollTo({ top: Math.max(0, top), behavior: changed ? 'auto' : 'smooth' }); }
     else window.scrollTo({ top:0, behavior:'auto' });
   });
 }
