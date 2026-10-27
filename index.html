@@ -885,6 +885,123 @@ body.edit-mode .view-only{display:none;}
 .toast{position:fixed; bottom:90px; right:24px; background:var(--surface); border:1px solid var(--orange); color:var(--cream); padding:12px 18px; font-size:0.85rem; z-index:200; opacity:0; transform:translateY(8px); transition:all 0.25s ease;}
 .toast.show{opacity:1; transform:translateY(0);}
 .storage-warning{font-size:0.72rem; color:var(--grey); padding:8px 20px 0; text-align:center;}
+
+/* =====================================================================
+   REFONTE VISUELLE — plus simple, plus lisible, plus beau
+   ===================================================================== */
+:root{ --surface:#15130f; --surface-2:#1e1b16; --card-line:rgba(244,239,230,.09); --radius:16px; --glow:rgba(255,90,31,.16); }
+html{scroll-padding-top:150px;}
+body{font-size:17px; line-height:1.62; background:
+  radial-gradient(900px 520px at 85% -8%, rgba(255,90,31,.13), transparent 62%),
+  radial-gradient(700px 480px at -10% 30%, rgba(255,140,60,.06), transparent 60%), var(--black); background-attachment:fixed;}
+/* --- barre du haut --- */
+header{top:calc(var(--announce-h,0px) + 10px) !important; left:max(12px, calc((100vw - 1240px)/2)); right:max(12px, calc((100vw - 1240px)/2)); border:1px solid rgba(255,255,255,.09); border-radius:20px; background:rgba(16,14,11,.72); backdrop-filter:blur(16px) saturate(1.3); -webkit-backdrop-filter:blur(16px) saturate(1.3); box-shadow:0 12px 40px rgba(0,0,0,.35);}
+.nav-inner{padding:10px 18px; max-width:none;}
+.logo{font-size:1.55rem;}
+.nav-links{gap:6px; font-size:.95rem; font-weight:500;}
+.nav-links a{padding:9px 16px; border-radius:999px; opacity:.9; transition:background .2s,color .2s;}
+.nav-links a:hover{background:rgba(255,255,255,.07); color:var(--cream); opacity:1;}
+.nav-links a.active{background:rgba(255,90,31,.16); color:#ffb089; opacity:1;}
+.nav-links a.nav-cta{background:linear-gradient(135deg,#ff6a2f,#ff4a10); color:#0b0a09; font-weight:700; margin-left:8px; border:0; box-shadow:0 6px 20px rgba(255,90,31,.35);}
+.nav-links a.nav-cta, .nav-links a.nav-cta:hover{color:#0b0a09 !important;}
+.nav-links a.nav-cta:hover{filter:brightness(1.08); box-shadow:0 8px 26px rgba(255,90,31,.5);}
+.cart-btn{border-radius:999px; padding:9px 16px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.04);}
+.cart-btn:hover{border-color:var(--orange);}
+.search-btn{border-radius:999px;}
+/* --- rubriques de la page --- */
+#viewTabs{display:none; position:sticky; top:calc(var(--announce-h,0px) + 86px); z-index:90; margin:92px auto 0; max-width:1180px; padding:0 18px; gap:8px; overflow-x:auto; scrollbar-width:none;}
+#viewTabs::-webkit-scrollbar{display:none;}
+body:not([data-view="home"]) #viewTabs.has-tabs{display:flex;}
+#viewTabs a{flex:0 0 auto; padding:9px 18px; border-radius:999px; font-size:.9rem; font-weight:500; background:rgba(22,19,15,.85); border:1px solid var(--card-line); backdrop-filter:blur(10px); color:var(--cream); white-space:nowrap;}
+#viewTabs a:hover{border-color:var(--orange); color:#ffb089;}
+#viewTabs a.on{background:var(--orange); color:#0b0a09; border-color:var(--orange); font-weight:700;}
+/* --- changement de page en douceur --- */
+body[data-view] main > section{animation:viewIn .45s ease both;}
+@keyframes viewIn{from{opacity:0; transform:translateY(14px);}to{opacity:1; transform:none;}}
+/* --- sections --- */
+section{padding:84px 0; border-bottom:0;}
+body:not([data-view="home"]) main > section:first-of-type{padding-top:40px;}
+.sec-head{display:block; margin-bottom:40px;}
+.sec-head h2{font-size:clamp(2.2rem,4.6vw,3.3rem); line-height:1; position:relative; padding-top:22px;}
+.sec-head h2::before{content:""; position:absolute; top:0; left:0; width:44px; height:4px; border-radius:4px; background:var(--orange);}
+.sec-head .sub{max-width:60ch; margin-top:14px; font-size:1.05rem; color:#c9c3b7;}
+/* --- accueil --- */
+.hero{padding:170px 0 70px; border-bottom:0;}
+.hero .grid-bg{opacity:.18; -webkit-mask-image:radial-gradient(60% 70% at 70% 40%, #000, transparent); mask-image:radial-gradient(60% 70% at 70% 40%, #000, transparent);}
+.hero h1{font-size:clamp(3rem,8vw,6.2rem); line-height:.92;}
+.hero p.lead{font-size:1.22rem; max-width:34em; color:#d8d2c6;}
+.hero-ctas{gap:14px;}
+.ramp-graphic{filter:drop-shadow(0 0 60px var(--glow));}
+.eyebrow-tag{letter-spacing:.14em;}
+.quick{padding:10px 0 40px;}
+.quick-title{font-family:'Anton',sans-serif; font-weight:400; text-transform:uppercase; font-size:1.6rem; margin-bottom:22px; color:var(--cream);}
+.quick-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+.quick-card{display:flex; flex-direction:column; gap:4px; padding:24px 22px; border-radius:var(--radius); border:1px solid var(--card-line); background:linear-gradient(180deg,#1b1813,#14110e); transition:transform .2s, border-color .2s, box-shadow .2s;}
+.quick-card:hover{transform:translateY(-4px); border-color:rgba(255,90,31,.6); box-shadow:0 16px 40px rgba(0,0,0,.35), 0 0 0 1px rgba(255,90,31,.25);}
+.quick-card .qi{font-size:2rem; line-height:1; margin-bottom:10px;}
+.quick-card b{font-size:1.15rem; font-weight:700;}
+.quick-card small{color:#bdb7ab; font-size:.92rem;}
+@media (max-width:820px){.quick-grid{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:480px){.quick-card{padding:18px 16px;} .quick-card b{font-size:1rem;} }
+.stat-strip{border:0; background:transparent;}
+.stat{border:1px solid var(--card-line) !important; border-radius:var(--radius); background:rgba(255,255,255,.025); margin:6px;}
+/* --- boutons --- */
+.btn{border-radius:999px; padding:15px 28px; font-weight:700; letter-spacing:.01em; transition:transform .15s, box-shadow .2s, filter .2s;}
+.btn-solid{background:linear-gradient(135deg,#ff6a2f,#ff4a10); color:#0b0a09; border:0; box-shadow:0 10px 28px rgba(255,90,31,.32);}
+.btn-solid:hover{transform:translateY(-2px); filter:brightness(1.07); box-shadow:0 14px 34px rgba(255,90,31,.42);}
+.btn-ghost{border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.04); color:var(--cream);}
+.btn-ghost:hover{border-color:var(--orange); color:#ffb089; background:rgba(255,90,31,.08);}
+.small-btn{border-radius:999px;}
+.filter-btn{border-radius:999px; padding:9px 18px;}
+.filter-btn.active{background:var(--orange); color:#0b0a09; border-color:var(--orange); font-weight:700;}
+/* --- cartes --- */
+.step,.product-card,.comp-card,.signup-card,.news-card,.tuto-card,.contest-card,.loy-reward,.faq-q,.founder-card,.accordion-item,.sponsor-card,.podium-card,.pilot-search,.results-block,.poll-box,.waiver-text-box,.stat-card,.gift-card-box,.don-card{border-radius:var(--radius) !important; border:1px solid var(--card-line) !important; background:linear-gradient(180deg,#1a1713,#13110e) !important; box-shadow:0 8px 28px rgba(0,0,0,.22); transition:transform .2s, border-color .2s, box-shadow .2s;}
+.product-card:hover,.news-card:hover,.tuto-card:hover,.founder-card:hover,.sponsor-card:hover,.comp-card:hover{transform:translateY(-3px); border-color:rgba(255,90,31,.45) !important; box-shadow:0 16px 40px rgba(0,0,0,.35);}
+.steps{gap:18px; border:0 !important; background:none !important;}
+.step{padding:30px 26px;}
+.step .n{border-radius:999px; background:var(--orange); color:#0b0a09; border:0; font-weight:700;}
+.product-thumb{border-radius:12px 12px 0 0;}
+.table-wrap{border:1px solid var(--card-line); border-radius:var(--radius); overflow:auto; background:rgba(255,255,255,.02);}
+thead th{font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color:#bdb7ab; background:rgba(255,255,255,.04);}
+tbody td{padding:16px 14px; border-color:var(--card-line);}
+tbody tr:hover{background:rgba(255,90,31,.05);}
+.tag{border-radius:999px;}
+/* --- formulaires --- */
+input[type=text],input[type=email],input[type=tel],input[type=password],input[type=number],input[type=date],input[type=search],select,textarea,.pw-modal input{border-radius:12px !important; background:#0f0d0b; border:1px solid rgba(255,255,255,.18); padding:13px 14px; font-size:1rem;}
+input:focus,select:focus,textarea:focus{border-color:var(--orange) !important; box-shadow:0 0 0 3px rgba(255,90,31,.22); outline:none;}
+.form-field label{font-size:.88rem; font-weight:600; color:#d8d2c6; margin-bottom:6px; display:block;}
+.signup-card{padding:28px;}
+.signup-card h3,.signup-card .display{font-size:1.5rem;}
+/* --- fenêtres --- */
+.pw-modal,#accountModal,#pilotModal,.cart-drawer{border-radius:22px;}
+.pw-modal{border:1px solid var(--card-line); box-shadow:0 30px 80px rgba(0,0,0,.6);}
+/* --- pied de page --- */
+footer{border-top:1px solid var(--card-line); background:linear-gradient(180deg,transparent,rgba(255,255,255,.025)); margin-top:30px;}
+.foot-legal a{color:#bdb7ab;}
+/* --- mobile --- */
+@media (max-width:860px){
+  .nav-inner{padding:8px 10px; gap:8px;}
+  header .nav-inner > div:last-child{gap:6px !important;}
+  .insta-head{display:none !important;}
+  .lang-switch{width:58px; height:32px;} .lang-switch-thumb{width:25px; height:26px;} .lang-switch.is-en .lang-switch-thumb{transform:translateX(28px);} .lang-switch-opt{font-size:.9rem; line-height:30px;}
+  #accountBtn{max-width:78px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:8px 10px; font-size:.8rem;}
+  .cart-btn{padding:8px 10px; font-size:.8rem;}
+  .nav-links{top:calc(100% + 8px) !important; left:8px; right:8px; border:1px solid var(--card-line); border-radius:18px; padding:10px 14px 16px; background:rgba(16,14,11,.98); box-shadow:0 20px 50px rgba(0,0,0,.6);}
+  .nav-links a{border-bottom:1px solid rgba(255,255,255,.06); border-radius:12px; padding:14px 12px;}
+  .nav-links a.nav-cta{margin:12px 0 0; text-align:center; border:0;}
+  .nav-links{visibility:hidden; pointer-events:none; transition:transform .25s ease, visibility 0s linear .25s;}
+  .nav-links.open{visibility:visible; pointer-events:auto; transition-delay:0s;}
+  .burger{border:1px solid var(--card-line); border-radius:12px; width:40px; height:36px; font-size:1.3rem; line-height:1;}
+}
+@media (max-width:900px){
+  header{left:8px; right:8px; border-radius:16px;}
+  .nav-links{border-radius:16px; background:rgba(16,14,11,.96);}
+  .nav-links a{padding:14px 16px;}
+  .hero{padding:140px 0 50px;}
+  section{padding:56px 0;}
+  #viewTabs{margin-top:84px; top:calc(var(--announce-h,0px) + 78px);}
+}
+
 </style>
 </head>
 <body>
@@ -950,46 +1067,17 @@ body.edit-mode .view-only{display:none;}
 <header id="siteHeader">
   <div class="nav-inner">
     <a href="#accueil" class="logo-slot" id="logoHeader" data-action="upload-logo"><span class="logo" id="logoHeaderText">MOT<span>'</span>EAU</span></a>
-    <nav class="nav-links" id="navLinks">
-      <a href="#accueil">Accueil</a>
-      <a href="#actualites" id="navNewsLink" style="display:none;">Actualités</a>
-      <div class="nav-group">
-        <button type="button" class="nav-group-btn">Le Sport ▾</button>
-        <div class="nav-dropdown">
-          <a href="#planning">Planning</a>
-          <a href="#resultats">Résultats</a>
-          <a href="#runs">Les runs</a>
-          <a href="#votes">Vote du public</a>
-          <a href="#regles">Règles</a>
-          <a href="#equipement">Équipement</a>
-        </div>
-      </div>
-      <a href="#boutique">Boutique</a>
-      <div class="nav-group">
-        <button type="button" class="nav-group-btn">Club ▾</button>
-        <div class="nav-dropdown">
-          <a href="#histoire" id="navHistoryLink">Notre histoire</a>
-          <a href="#adhesion">Adhésion</a>
-          <a href="#fidelite">Fidélité</a>
-          <a href="#club">Espace Club</a>
-          <a href="#attestation">Attestation</a>
-          <a href="#avis">Avis</a>
-          <a href="#faq">Foire aux questions</a>
-          <a href="#sponsors">Sponsors</a>
-        </div>
-      </div>
-      <div class="nav-group">
-        <button type="button" class="nav-group-btn">Médias ▾</button>
-        <div class="nav-dropdown">
-          <a href="#galerie">Photos / Vidéos</a>
-          <a href="#runs">Les runs</a>
-          <a href="#tutoriels">Tutoriels</a>
-        </div>
-      </div>
-      <a href="#dashboard" class="edit-only inline">Tableau de bord</a>
-      <a href="#prospection" class="edit-only inline">Démarchage</a>
-      <a href="#dons" class="nav-cta">Faire un don</a>
+    <nav class="nav-links" id="navLinks" aria-label="Navigation principale">
+      <a href="#accueil" data-viewlink="home">Accueil</a>
+      <a href="#planning" data-viewlink="sport">Le sport</a>
+      <a href="#boutique" data-viewlink="boutique">Boutique</a>
+      <a href="#adhesion" data-viewlink="rejoindre">Rejoindre</a>
+      <a href="#avis" data-viewlink="communaute">Communauté</a>
+      <a href="#dashboard" class="edit-only inline" data-viewlink="admin">Tableau de bord</a>
+      <a href="#prospection" class="edit-only inline" data-viewlink="admin">Démarchage</a>
+      <a href="#adhesion" class="nav-cta">S'inscrire</a>
     </nav>
+    <nav hidden id="legacyNav" aria-hidden="true"><a href="#actualites" id="navNewsLink">Actualités</a><a href="#histoire" id="navHistoryLink">Notre histoire</a></nav>
     <div style="display:flex; align-items:center; gap:12px;">
       <a href="#" id="liveInstaBadge" target="_blank" style="display:none; align-items:center; gap:6px; border:1px solid #ff4747; color:#ff4747; padding:8px 12px; font-size:0.78rem; text-decoration:none; animation:pulseLive 1.5s infinite;">🔴 LIVE</a>
       <a class="search-btn insta-link insta-head" href="https://www.instagram.com/mot_eau/" target="_blank" rel="noopener" title="Instagram @mot_eau" aria-label="Instagram de Mot'eau"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
@@ -1007,6 +1095,8 @@ body.edit-mode .view-only{display:none;}
 </header>
 
 <main id="contenu" tabindex="-1">
+
+<div id="viewTabs" role="navigation" aria-label="Rubriques de cette page"></div>
 
 <div id="searchPanel" role="search" aria-label="Recherche sur le site">
   <div class="search-inner">
@@ -1026,8 +1116,8 @@ body.edit-mode .view-only{display:none;}
       </h1>
       <p class="lead" id="heroLead" data-editable data-section="hero" data-field="lead"></p>
       <div class="hero-ctas">
-        <a href="#regles" class="btn btn-solid">Découvrir le concept</a>
-        <a href="#dons" class="btn btn-ghost">Soutenir le projet</a>
+        <a href="#concept" class="btn btn-solid">Découvrir le sport</a>
+        <a href="#adhesion" class="btn btn-ghost">Rejoindre le club</a>
       </div>
       <div class="countdown" id="countdownBox" style="display:none;"></div>
     </div>
@@ -1062,6 +1152,20 @@ body.edit-mode .view-only{display:none;}
 </div>
 
 
+
+<section id="actions" class="quick" aria-labelledby="quickTitle">
+  <div class="wrap">
+    <h2 id="quickTitle" class="quick-title">Que veux-tu faire ?</h2>
+    <div class="quick-grid">
+      <a class="quick-card" href="#planning"><span class="qi" aria-hidden="true">📅</span><b>Réserver une séance</b><small>Essais et entraînements</small></a>
+      <a class="quick-card" href="#resultats"><span class="qi" aria-hidden="true">🏆</span><b>Voir les résultats</b><small>Classements et records</small></a>
+      <a class="quick-card" href="#boutique"><span class="qi" aria-hidden="true">🛍️</span><b>La boutique</b><small>Vêtements et accessoires</small></a>
+      <a class="quick-card" href="#adhesion"><span class="qi" aria-hidden="true">🤝</span><b>Rejoindre le club</b><small>Adhésion en 2 minutes</small></a>
+      <a class="quick-card" href="#tutoriels"><span class="qi" aria-hidden="true">🎬</span><b>Apprendre en vidéo</b><small>Tutoriels et règles</small></a>
+      <a class="quick-card" href="#faq"><span class="qi" aria-hidden="true">💬</span><b>Poser une question</b><small>On te répond vite</small></a>
+    </div>
+  </div>
+</section>
 
 <section id="actualites" style="display:none;">
   <div class="wrap">
@@ -1108,7 +1212,7 @@ body.edit-mode .view-only{display:none;}
 
 <section id="resultats">
   <div class="wrap">
-    <div class="sec-head"><h2 class="display">Résultats & Compétitions</h2><p class="sub">Ajoute une compétition, renseigne le résultat de chaque pilote (étape atteinte, record perso) — le classement se calcule tout seul.</p></div>
+    <div class="sec-head"><h2 class="display">Résultats & Compétitions</h2><p class="sub">Les classements et les records, mis à jour après chaque compétition.</p></div>
 
     <div class="edit-only inline" style="gap:8px; flex-wrap:wrap; margin-bottom:16px;">
       <button class="small-btn" id="toggleHideAllResultsBtn"></button>
@@ -2887,6 +2991,8 @@ Object.assign(TRANSLATE_MAP, {"Les résultats seront publiés prochainement.":"R
 
 Object.assign(TRANSLATE_MAP, {"Commander avec obligation de paiement":"Order with obligation to pay","Aller au contenu":"Skip to content","Merci de cocher la case d'acceptation des conditions.":"Please tick the box to accept the conditions.","télécharger mes données":"download my data","supprimer mon compte":"delete my account","confidentialité":"privacy","Mentions légales":"Legal notice","Politique de confidentialité":"Privacy policy","Conditions d'utilisation":"Terms of use","Conditions de vente":"Terms of sale","Remboursement & rétractation":"Refunds & withdrawal","Cookies & stockage":"Cookies & storage"});
 
+Object.assign(TRANSLATE_MAP, {"Le sport":"Sport","Rejoindre":"Join","Communauté":"Community","Que veux-tu faire ?":"What do you want to do?","Réserver une séance":"Book a session","Essais et entraînements":"Trials and training","Voir les résultats":"See the results","Classements et records":"Rankings and records","La boutique":"The shop","Vêtements et accessoires":"Clothing and accessories","Rejoindre le club":"Join the club","Adhésion en 2 minutes":"Membership in 2 minutes","Apprendre en vidéo":"Learn with videos","Tutoriels et règles":"Tutorials and rules","Poser une question":"Ask a question","On te répond vite":"We reply quickly","Découvrir le sport":"Discover the sport","Les classements et les records, mis à jour après chaque compétition.":"Rankings and records, updated after every competition.","Rubriques de cette page":"Sections of this page","Prêt de matériel":"Equipment loans","Photos & vidéos":"Photos & videos","Adhésion & inscriptions":"Membership & registrations","Espace adhérents":"Members area","Questions":"Questions","Le concept":"The concept"});
+
 /* ---- Moteur de traduction FR → EN ----
    - dictionnaire intégré (TRANSLATE_MAP) + traductions saisies par l'admin (i18nEn, onglet « Anglais »)
    - motifs pour les textes avec des chiffres, dates en français
@@ -3048,6 +3154,7 @@ function applyEditMode(){
   if(typeof renderLoyalty === 'function') renderLoyalty();
   if(typeof renderRuns === 'function') renderRuns();
   if(typeof renderPilotDirectory === 'function') renderPilotDirectory();
+  if(typeof renderViewTabs === 'function') renderViewTabs();
   if(typeof CLUB_UNLOCKED !== 'undefined' && CLUB_UNLOCKED && typeof renderClubMessages === 'function'){
     renderClubMessages(); renderClubPosts(); renderClubRoster();
   }
@@ -8120,6 +8227,78 @@ async function deleteMyAccount(){
   adminSignOut();
 }
 
+
+/* ============================================================
+   NAVIGATION PAR PAGES — au lieu d'une page interminable, 5 pages courtes
+   (les liens #planning, #boutique… continuent de fonctionner et ouvrent la bonne page)
+   ============================================================ */
+const VIEWS = {
+  home:       ['accueil','actions','actualites','concept'],
+  sport:      ['planning','resultats','runs','votes','regles','equipement','galerie','tutoriels'],
+  boutique:   ['boutique'],
+  rejoindre:  ['adhesion','attestation','fidelite','dons'],
+  communaute: ['avis','faq','club','histoire','sponsors'],
+  admin:      ['dashboard','prospection']
+};
+const VIEW_LABELS = { actualites:'Actualités', concept:'Le concept', planning:'Planning', resultats:'Résultats', runs:'Les runs', votes:'Vote du public', regles:'Règles', equipement:'Prêt de matériel',
+  galerie:'Photos & vidéos', tutoriels:'Tutoriels', boutique:'Boutique', adhesion:'Adhésion & inscriptions', attestation:'Attestation', fidelite:'Fidélité', dons:'Faire un don',
+  avis:'Avis', faq:'Questions', club:'Espace adhérents', histoire:'Notre histoire', sponsors:'Sponsors', dashboard:'Tableau de bord', prospection:'Démarchage' };
+const VIEW_OF = {}; Object.entries(VIEWS).forEach(([v, ids]) => ids.forEach(id => VIEW_OF[id] = v));
+let CURRENT_VIEW = 'home';
+(function(){
+  const st = document.createElement('style'); st.id = 'viewCss';
+  st.textContent = Object.entries(VIEWS).map(([v, ids]) => `body[data-view]:not([data-view="${v}"]) ${ids.map(i => '#' + i).join(', body[data-view]:not([data-view="' + v + '"]) ')}{display:none !important;}`).join('\n');
+  document.head.appendChild(st);
+})();
+function sectionShown(id){ const el = document.getElementById(id); return !!el && el.style.display !== 'none' && !el.classList.contains('edit-only') || (!!el && EDIT_MODE); }
+function renderViewTabs(){
+  const box = document.getElementById('viewTabs'); if(!box) return;
+  const ids = (VIEWS[CURRENT_VIEW] || []).filter(id => VIEW_LABELS[id] && sectionShown(id));
+  box.classList.toggle('has-tabs', ids.length > 1);
+  box.innerHTML = ids.map(id => `<a href="#${id}" data-tab="${id}">${VIEW_LABELS[id]}</a>`).join('');
+}
+function setView(v, quiet){
+  if(!VIEWS[v]) v = 'home';
+  CURRENT_VIEW = v; document.body.dataset.view = v;
+  document.querySelectorAll('[data-viewlink]').forEach(a => a.classList.toggle('active', a.dataset.viewlink === v));
+  renderViewTabs();
+  if(!quiet) window.scrollTo({ top:0, behavior:'instant' in window ? 'instant' : 'auto' });
+}
+function routeFromHash(){
+  const id = decodeURIComponent((location.hash || '').slice(1));
+  const v = VIEW_OF[id] || (id === '' ? 'home' : null);
+  if(v === null){ return; }                       // ancre qui n'est pas une section (ex. contenu)
+  const changed = v !== CURRENT_VIEW;
+  setView(v, true);
+  const el = id && document.getElementById(id);
+  requestAnimationFrame(() => {
+    if(el && id !== 'accueil'){ const top = el.getBoundingClientRect().top + window.scrollY - (CURRENT_VIEW === 'home' ? 100 : 150); window.scrollTo({ top: Math.max(0, top), behavior: changed ? 'auto' : 'smooth' }); }
+    else window.scrollTo({ top:0, behavior:'auto' });
+  });
+}
+window.addEventListener('hashchange', routeFromHash);
+/* Tout code qui fait défiler vers un élément caché ouvre d'abord la bonne page */
+(function(){
+  const base = Element.prototype.scrollIntoView;
+  Element.prototype.scrollIntoView = function(...a){
+    const sec = this.closest && this.closest('section[id]'); const v = sec && VIEW_OF[sec.id];
+    if(v && v !== CURRENT_VIEW) setView(v, true);
+    return base.apply(this, a);
+  };
+})();
+document.getElementById('viewTabs').addEventListener('click', ev => {
+  const a = ev.target.closest('a[data-tab]'); if(!a) return; ev.preventDefault();
+  const el = document.getElementById(a.dataset.tab); if(!el) return;
+  history.replaceState(null, '', '#' + a.dataset.tab);
+  window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 150, behavior:'smooth' });
+});
+/* La rubrique visible met en valeur son bouton */
+window.addEventListener('scroll', () => {
+  const tabs = document.querySelectorAll('#viewTabs a[data-tab]'); if(!tabs.length) return;
+  let cur = null; tabs.forEach(t => { const el = document.getElementById(t.dataset.tab); if(el && el.getBoundingClientRect().top < 200) cur = t.dataset.tab; });
+  tabs.forEach(t => t.classList.toggle('on', t.dataset.tab === cur));
+}, { passive:true });
+
 async function init(){
   await restoreAdminSession();
   await loadAll();
@@ -8149,7 +8328,7 @@ async function init(){
   renderHistory();
   renderGallery();
   renderTutorials();
-  renderNews(); renderCountdown(); renderLoyalty(); renderRuns(); renderPilotDirectory(); applyResultsHidden(); renderProspection(); injectLegalUI();
+  renderNews(); renderCountdown(); renderLoyalty(); renderRuns(); renderPilotDirectory(); applyResultsHidden(); renderProspection(); injectLegalUI(); routeFromHash(); setTimeout(renderViewTabs, 900); setTimeout(renderViewTabs, 2500);
   await Promise.all([loadPolls(), loadVotes()]);
   renderContests();
   renderProducts();
