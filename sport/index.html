@@ -107,6 +107,9 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .tk{position:absolute;top:18px;font-size:10px;color:var(--muted);transform:translateX(-50%);font-variant-numeric:tabular-nums}
 .badge.lv0{background:var(--warm-soft);color:var(--warm)}.badge.lv1,.badge.lv2,.badge.lv3,.badge.lv4{background:var(--accent-soft);color:var(--accent)}
 @keyframes mk{from{left:0}}
+.ring .fg.sc{animation:ringin 1.2s cubic-bezier(.2,.8,.2,1) backwards;transition:none}
+@keyframes ringin{from{stroke-dashoffset:276.46}}
+button.card{font:inherit;color:inherit;width:100%}
 .arow{display:grid;grid-template-columns:40px 1fr 110px;gap:8px;align-items:center}
 .plist{display:flex;flex-direction:column;gap:8px}.prow{display:grid;grid-template-columns:40px 1fr;gap:8px;align-items:start}
 @keyframes draw{from{stroke-dashoffset:1;stroke-dasharray:1}to{stroke-dashoffset:0;stroke-dasharray:1}}
@@ -426,7 +429,7 @@ const num = v => { const n = parseFloat(String(v).replace(',', '.')); return isF
 const KEY = 'coach-maison-v1';
 const defaults = () => ({ v: 1, upd: 0, demo: false,
   profile: { sex: '', age: '', height: '', goalWeight: '', goal: 'keep', trainDays: [1, 3, 5], perWeek: 3, avail: {}, availSet: false, recordDay: 7, equip: { tapis: true, bouteilles: true, chaise: true }, lowImpact: false, level: 0 },
-  weights: [], meals: [], sessions: [], records: [], plan: {}, reviews: {} });
+  weights: [], meals: [], sessions: [], records: [], plan: {}, reviews: {}, weekly: {} });
 let S = defaults();
 function mergeState(o) {
   const d = defaults(); const r = Object.assign(d, o || {});
@@ -803,44 +806,51 @@ function hintFor(e, dur) {
 }
 
 /* ===== Vues ===== */
-const U = { tab: 'today', mealDate: today(), recEx: 'pompes', T: { min: 15, focus: 'all', custom: { abdos: 25, bras: 25, jambes: 25, cardio: 25 }, level: 0, plan: null }, busy: false, copy: '', exportTxt: '', wdate: today(), wkg: '', recDate: today() };
+const U = { tab: 'today', mealDate: today(), recEx: 'pompes', T: { min: 15, focus: 'all', custom: { abdos: 25, bras: 25, jambes: 25, cardio: 25 }, level: 0, plan: null }, busy: false, copy: '', exportTxt: '', wdate: today(), wkg: '', recDate: today(), weekMon: mondayOf(today()), recent: [] };
 const TABS = [
   ['today', 'aujourdhui', 'Aujourd’hui', '<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>'],
   ['train', 'seance', 'Séance', '<path d="M3 9v6M6 6v12M18 6v12M21 9v6M6 12h12"/>'],
   ['meals', 'repas', 'Repas', '<path d="M7 3v8a2 2 0 0 0 2 2v8M11 3v8a2 2 0 0 1-2 2M16 21V3c-2 1-3 4-3 8h3"/>'],
+  ['week', 'bilan', 'Bilan', '<path d="M5 21V10M12 21V4M19 21v-8"/>'],
   ['progress', 'progres', 'Progrès', '<path d="M3 18l6-6 4 4 8-9M15 7h6v6"/>'],
   ['profile', 'profil', 'Profil', '<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>']
 ];
 const profileOK = () => S.weights.length && num(P().height) && num(P().age);
 const zoneBadge = z => '<span class="badge z-' + z + '">' + (ZN[z] || (z === 'chauffe' ? 'Échauffement' : 'Étirement')) + '</span>';
 
+const autoType = () => { const h = new Date().getHours(); return h < 10 ? 'petit' : h < 15 ? 'midi' : h < 18 ? 'gouter' : 'soir'; };
+function lazyZone() {
+  const t = today(), z = { abdos: 0, bras: 0, jambes: 0, cardio: 0 };
+  S.sessions.filter(s => diffDays(t, s.d) <= 4 && diffDays(t, s.d) >= 0).forEach(s => Object.entries(s.zones || {}).forEach(([k, m]) => { if (k in z) z[k] += m; }));
+  return Object.keys(z).sort((a, b) => z[a] - z[b])[0];
+}
 function vToday() {
-  const t = today(), b = body();
   if (!profileOK()) return vOnboard();
-  const mon = mondayOf(t); let cells = '';
+  const t = today(), b = body(), dt = dayTot(t), pf = planFor(t), adv = dayAdvice(), lw = latestW(), fw = sortedW()[0], dW = lw.kg - fw.kg;
+  const wDone = S.weights.some(x => x.d === t), mon = mondayOf(t), ws = weekStats(mon);
+  let cells = '';
   for (let i = 0; i < 7; i++) {
     const d = addDays(mon, i), done = doneOn(d), rs = effPlan(d) === 'rest', mins = minutesOn(d);
-    cells += '<button class="day' + (done ? ' done' : rs ? ' rest' : '') + (d === t ? ' today' : '') + '" data-act="daytoggle" data-d="' + d + '" aria-label="' + fmtLong(d) + (done ? ', fait' : rs ? ', repos' : ', entraînement prévu') + '">' +
-      '<span class="dn">' + DOW[i + 1] + '</span><span class="dd">' + parseD(d).getDate() + '</span><span class="ds">' + (done ? (mins ? mins + ' min' : '✓') : rs ? 'repos' : hhmm(planFor(d).start)) + '</span></button>';
+    cells += '<button class="day' + (done ? ' done' : rs ? ' rest' : '') + (d === t ? ' today' : '') + '" data-act="daytoggle" data-d="' + d + '" aria-label="' + fmtLong(d) + (done ? ', fait' : rs ? ', repos' : ', entraînement prévu') + '"><span class="dn">' + DOW[i + 1] + '</span><span class="dd">' + parseD(d).getDate() + '</span><span class="ds">' + (done ? (mins ? mins + ' min' : '✓') : rs ? 'repos' : hhmm(planFor(d).start)) + '</span></button>';
   }
-  const wk = S.sessions.filter(s => s.d >= mon && s.d <= addDays(mon, 6)), wmin = wk.reduce((a, s) => a + s.min, 0);
-  const lw = latestW(), fw = sortedW()[0], dW = lw.kg - fw.kg;
-  const dt = dayTot(t), adv = dayAdvice();
-  const recToday = isoDow(t) === +P().recordDay;
-  const nextRec = (() => { let n = 0; while (isoDow(addDays(t, n)) !== +P().recordDay) n++; return n; })();
-  return '' + (S.demo ? '<div class="exdemo"><span><b>Données d’exemple.</b> Ce ne sont pas tes chiffres.</span><button class="btn sm warm" data-act="wipe">Effacer les exemples</button></div>' : '') +
-    '<div class="row sb"><div><h1>Salut Timao</h1><p class="muted">' + fmtLong(t) + '</p></div></div>' +
+  const pct = b ? clamp(dt.kcal / b.kcal * 100, 0, 100) : 0, todayMeals = mealsOf(t);
+  const rec = isoDow(t) === +P().recordDay;
+  return (S.demo ? '<div class="exdemo"><span><b>Données d’exemple.</b> Ce ne sont pas tes chiffres.</span><button class="btn sm warm" data-act="wipe">Effacer les exemples</button></div>' : '') +
+    '<div class="row sb"><div><h1>Salut Timao</h1><p class="muted">' + fmtLong(t) + '</p></div><button class="btn ghost sm" data-act="tab" data-v="profile">Réglages</button></div>' +
     '<section class="card ' + (adv.kind === 'rest' ? 'soft' : 'warm') + '" aria-live="polite"><h2>' + adv.title + '</h2><p>' + adv.text + '</p>' +
-    (adv.kind === 'train' ? '<button class="btn big" data-act="gotrain">Préparer ma séance</button>' : '<button class="btn ghost" data-act="gotrain">Faire une séance quand même</button>') + '</section>' +
+    (adv.kind === 'train' ? '<button class="btn big" data-act="quickstart">Lancer ma séance · ' + pf.min + ' min</button><button class="btn ghost" data-act="gotrain">Choisir autre chose</button>' : '<button class="btn ghost" data-act="quickstart">Faire une séance quand même</button>') + '</section>' +
+    '<section class="card"><div class="row sb"><h2>Ce que j’ai mangé ou bu</h2><span class="num" style="font-size:24px">' + dt.kcal + (b ? ' <span class="muted" style="font-size:16px">/ ' + b.kcal + ' kcal</span>' : ' kcal') + '</span></div>' +
+    (b ? '<div class="bar"><i class="' + (dt.kcal > b.kcal * 1.1 ? 'over' : '') + '" style="width:' + pct + '%"></i></div>' : '') +
+    '<textarea id="qtext" rows="2" placeholder="ex. 2 œufs, du pain, un café, une banane"></textarea><button class="btn" data-act="qmeal">Ajouter</button>' +
+    (todayMeals.length ? '<p class="small muted">Aujourd’hui : ' + todayMeals.map(m => (({ petit: 'petit-déj', midi: 'déjeuner', gouter: 'collation', soir: 'dîner', boisson: 'boissons' })[m.type] || 'repas') + ' ' + mealTot(m).kcal + ' kcal').join(' · ') + '</p>' : '') + '</section>' +
+    (wDone ? '' : '<section class="card"><div class="row sb"><h2>Mon poids du jour</h2><span class="small muted">dernier : ' + nf(lw.kg) + ' kg</span></div><div class="row" style="flex-wrap:nowrap"><input id="qw" inputmode="decimal" placeholder="' + nf(lw.kg) + '" aria-label="Poids en kilos"><button class="btn" data-act="wquick">Noter</button></div></section>') +
     (S.records.length === 0 ? vFirstRecords() : '') + (!P().availSet ? '<section class="card warm"><h2>Tes horaires</h2><p>Dis-moi à quelle heure tu finis chaque jour. Je place les grosses séances les jours où tu as le temps, et des petites quand tu finis tard.</p><button class="btn" data-act="gosched">Régler mes horaires</button></section>' : '') +
-    '<section class="card"><div class="row sb"><h2>Ma semaine</h2><span class="tiny muted">touche un jour pour changer repos / sport</span></div><div class="week">' + cells + '</div>' +
-    '<p class="small muted">' + wk.length + ' séance' + (wk.length > 1 ? 's' : '') + ' · ' + wmin + ' min cette semaine</p>' + (P().availSet ? '<details><summary>Voir le planning de la semaine</summary>' + weekCard() + '</details>' : '') + '</section>' +
-    '<div class="grid2">' +
-    '<div class="stat"><span class="lbl">Poids</span><span class="num"><span data-count="' + lw.kg + '" data-d="1">' + nf(lw.kg) + '</span> kg</span><span class="delta ' + (dW > 0 ? 'up' : 'down') + '">' + (dW === 0 ? 'stable' : (dW > 0 ? '+' : '') + nf(dW) + ' kg depuis le début') + '</span></div>' +
-    '<div class="stat"><span class="lbl">Série</span><span class="num"><span data-count="' + streak() + '">' + streak() + '</span> j</span><span class="small muted">repos prévus ne cassent pas la série</span></div>' +
-    '<div class="stat"><span class="lbl">Sport cette semaine</span><span class="num"><span data-count="' + wmin + '">' + wmin + '</span> min</span><span class="small muted">' + wk.length + ' séance' + (wk.length > 1 ? 's' : '') + '</span></div>' +
-    '<div class="stat"><span class="lbl">Calories du jour</span><span class="num"><span data-count="' + dt.kcal + '">' + dt.kcal + '</span>' + (b ? ' / ' + b.kcal : '') + '</span><span class="small muted">' + dt.p + ' g de protéines</span></div></div>' +
-    (recToday ? vRecordDay() : '<div class="card"><div class="row sb"><h2>Jour de record</h2><span class="badge">' + DOWL[+P().recordDay] + '</span></div><p class="muted">' + (nextRec === 1 ? 'Demain' : 'Dans ' + nextRec + ' jours') + ', tu essaies de battre un de tes records. Prépare-toi, bois, dors bien.</p></div>') +
+    (rec ? vRecordDay() : '') +
+    '<section class="card"><div class="row sb"><h2>Ma semaine</h2><span class="tiny muted">touche un jour : repos ou sport</span></div><div class="week">' + cells + '</div>' +
+    (P().availSet ? '<details><summary>Voir le planning de la semaine</summary>' + weekCard() + '</details>' : '') + '</section>' +
+    '<button class="card" data-act="openweek" style="text-align:left;cursor:pointer"><div class="row sb" style="flex-wrap:nowrap"><div><h2>Bilan de la semaine</h2><p class="small muted">' + (ws.any ? ws.label + ' · touche pour voir le détail' : 'Note tes repas et tes séances, le bilan se remplit tout seul.') + '</p></div>' + (ws.any ? '<span class="num" style="font-size:44px;color:var(--accent)">' + ws.score + '<span class="muted" style="font-size:18px">/100</span></span>' : '') + '</div></button>' +
+    '<div class="grid2"><div class="stat"><span class="lbl">Poids</span><span class="num"><span data-count="' + lw.kg + '" data-d="1">' + nf(lw.kg) + '</span> kg</span><span class="delta ' + (dW > 0 ? 'up' : 'down') + '">' + (dW === 0 ? 'stable' : (dW > 0 ? '+' : '') + nf(dW) + ' kg depuis le début') + '</span></div>' +
+    '<div class="stat"><span class="lbl">Série</span><span class="num"><span data-count="' + streak() + '">' + streak() + '</span> j</span><span class="small muted">les repos prévus ne cassent pas la série</span></div></div>' +
     '<p class="sync" id="syncl">' + syncText() + '</p>';
 }
 function dayAdvice() {
@@ -902,6 +912,119 @@ function vTrain() {
   return h;
 }
 
+function recentMeals() {
+  const seen = new Set(), out = [];
+  [...S.meals].sort((a, b) => a.d < b.d ? 1 : a.d > b.d ? -1 : 0).forEach(m => { const k = m.text.trim().toLowerCase(); if (!seen.has(k) && out.length < 8) { seen.add(k); out.push(m.text.trim()); } });
+  return out;
+}
+function addMeal(text, type, d) {
+  const pm = parseMeal(text), m = { id: uid(), d, type, text, items: pm.items, left: pm.left };
+  S.meals.push(m); delete S.reviews[d]; save(); return m;
+}
+function weekKcalChart(mon, target) {
+  const W = 340, H = 150, m = { l: 38, r: 8, t: 14, b: 22 }, vals = [], labs = [];
+  for (let i = 0; i < 7; i++) { const d = addDays(mon, i); vals.push(dayTot(d).kcal); labs.push(DOW[i + 1]); }
+  const r = niceRange(0, Math.max(500, target * 1.2, ...vals)), bw = (W - m.l - m.r) / 7, Y = y => H - m.b - y / r.hi * (H - m.t - m.b);
+  let c = '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Calories par jour">';
+  r.ticks.forEach(t => { c += '<line class="grid" x1="' + m.l + '" x2="' + (W - m.r) + '" y1="' + Y(t) + '" y2="' + Y(t) + '"/><text x="' + (m.l - 5) + '" y="' + (Y(t) + 4) + '" text-anchor="end">' + t + '</text>'; });
+  vals.forEach((v, i) => { const x = m.l + i * bw + bw * .18, w = bw * .64, d = addDays(mon, i); if (v) c += '<rect class="bar' + (d === U.mealDate ? ' cur' : '') + '" x="' + x + '" y="' + Y(v) + '" width="' + w + '" height="' + (H - m.b - Y(v)) + '" rx="4" style="animation-delay:' + i * 40 + 'ms"/>'; c += '<text x="' + (x + w / 2) + '" y="' + (H - 6) + '" text-anchor="middle">' + labs[i] + '</text>'; });
+  if (target) c += '<line class="tgt" x1="' + m.l + '" x2="' + (W - m.r) + '" y1="' + Y(target) + '" y2="' + Y(target) + '"/><text class="tl" x="' + (W - m.r) + '" y="' + (Y(target) - 4) + '" text-anchor="end">cible ' + target + '</text>';
+  return c + '</svg>';
+}
+
+/* ===== Bilan de la semaine ===== */
+function weekStats(mon) {
+  const t = today(), b = body(), days = [];
+  for (let i = 0; i < 7; i++) { const d = addDays(mon, i); days.push({ d, fut: d > t, today: d === t, plan: planFor(d), min: minutesOn(d), sess: S.sessions.some(s => s.d === d), tot: dayTot(d) }); }
+  const past = days.filter(x => !x.fut), pastN = Math.max(1, past.length);
+  const planned = past.filter(x => x.plan.size !== 'repos' && !(x.today && !x.sess)), plannedN = planned.length;
+  const sessDays = days.filter(x => x.sess), doneN = sessDays.length, minutes = days.reduce((a, x) => a + x.min, 0);
+  const logged = past.filter(x => x.tot.n > 0), L = logged.length || 1;
+  const avgK = logged.length ? Math.round(logged.reduce((a, x) => a + x.tot.kcal, 0) / L) : 0, avgP = logged.length ? Math.round(logged.reduce((a, x) => a + x.tot.p, 0) / L) : 0;
+  const avgD = logged.length ? logged.reduce((a, x) => a + x.tot.drink, 0) / L / 1000 : 0;
+  const vegDays = logged.filter(x => x.tot.veg > 0).length, fruitDays = logged.filter(x => x.tot.fruit > 0).length;
+  const sumK = logged.reduce((a, x) => a + x.tot.kcal, 0), sweetPct = sumK ? Math.round(logged.reduce((a, x) => a + x.tot.sweet, 0) / sumK * 100) : 0;
+  const over = b ? logged.filter(x => x.tot.kcal > b.kcal * 1.15).length : 0, under = b ? logged.filter(x => x.tot.kcal < b.kcal * .7).length : 0;
+  const w = sortedW(), wEndO = [...w].filter(x => x.d <= addDays(mon, 6) && x.d <= t).pop(), wStartO = [...w].filter(x => x.d < mon).pop() || w.find(x => x.d >= mon);
+  const dW = wEndO && wStartO && wEndO.d !== wStartO.d ? +(wEndO.kg - wStartO.kg).toFixed(1) : null;
+  const beaten = [];
+  TRACK.forEach(tr => { const ts = recsOf(tr.k).filter(r => r.test), prior = Math.max(0, ...ts.filter(r => r.d < mon).map(r => r.val)), wk = ts.filter(r => r.d >= mon && r.d <= addDays(mon, 6)); if (wk.length) { const bw = Math.max(...wk.map(r => r.val)); if (prior > 0 && bw > prior) beaten.push({ n: tr.n, v: bw, was: prior, u: tr.u === 's' ? ' s' : '' }); } });
+  const zones = { abdos: 0, bras: 0, jambes: 0, cardio: 0 }; S.sessions.filter(s => s.d >= mon && s.d <= addDays(mon, 6)).forEach(s => Object.entries(s.zones || {}).forEach(([k, m]) => { if (k in zones) zones[k] += m; }));
+  const any = doneN > 0 || logged.length > 0;
+  /* note sur 100 : sport 50, repas 40, progrès 10 */
+  const sport = Math.round(50 * Math.min(1, doneN / Math.max(1, plannedN || 1)));
+  let food = Math.round(10 * Math.min(1, logged.length / Math.max(1, Math.min(pastN, 5))));
+  if (logged.length) {
+    if (b) { const dev = logged.reduce((a, x) => a + Math.abs(x.tot.kcal / b.kcal - 1), 0) / L; food += dev <= .1 ? 15 : dev <= .2 ? 11 : dev <= .3 ? 6 : 2; const pr = avgP / b.prot; food += pr >= .9 ? 10 : pr >= .7 ? 7 : pr >= .5 ? 3 : 0; } else food += 15;
+    food += (vegDays + fruitDays) / (2 * L) >= .7 ? 5 : (vegDays + fruitDays) / (2 * L) >= .4 ? 3 : 1;
+  }
+  const g = num(P().goalWeight); let prog = 0; if (beaten.length) prog += 5; if (dW !== null && g && Math.abs(wEndO.kg - g) < Math.abs(wStartO.kg - g)) prog += 5; else if (dW !== null && !g) prog += 3; if (doneN >= 3) prog = Math.min(10, prog + 3);
+  const score = any ? clamp(sport + food + prog, 0, 100) : 0;
+  const label = !any ? '' : score >= 85 ? 'Semaine excellente' : score >= 70 ? 'Très bonne semaine' : score >= 50 ? 'Bonne base' : score >= 30 ? 'Semaine en dents de scie' : 'On repart de zéro, c’est normal';
+  return { mon, days, past, plannedN, doneN, minutes, logged: logged.length, avgK, avgP, avgD, vegDays, fruitDays, sweetPct, over, under, dW, beaten, zones, any, sport, food, prog, score, label, b, current: mon === mondayOf(t), pastN };
+}
+function weekInsights(w) {
+  const good = [], better = [], next = [], b = w.b;
+  if (w.plannedN) { if (w.doneN >= w.plannedN) good.push('Tu as fait ' + w.doneN + ' séance' + (w.doneN > 1 ? 's' : '') + ' sur ' + w.plannedN + ' prévue' + (w.plannedN > 1 ? 's' : '') + ' (' + w.minutes + ' min). Plan respecté.'); else better.push('Seulement ' + w.doneN + ' séance' + (w.doneN > 1 ? 's' : '') + ' sur ' + w.plannedN + ' prévue' + (w.plannedN > 1 ? 's' : '') + '. Garde au moins les petites séances, même 10 minutes comptent.'); }
+  else if (w.doneN) good.push(w.doneN + ' séance' + (w.doneN > 1 ? 's' : '') + ' faite' + (w.doneN > 1 ? 's' : '') + ' (' + w.minutes + ' min).');
+  w.beaten.forEach(x => good.push('Record battu : ' + x.n + ' ' + x.v + x.u + ' (avant ' + x.was + x.u + ').'));
+  if (w.dW !== null) { const g = num(P().goalWeight), cur = latestW(); if (g && cur) { const ok = Math.abs(cur.kg - g) < Math.abs(cur.kg - w.dW - g); (ok ? good : better).push('Poids : ' + (w.dW > 0 ? '+' : '') + nf(w.dW) + ' kg cette semaine' + (ok ? ', dans le bon sens.' : ', à l’opposé de ton objectif. Pas de panique, observe la tendance sur 2 à 3 semaines.')); } else good.push('Poids : ' + (w.dW > 0 ? '+' : '') + nf(w.dW) + ' kg cette semaine.'); }
+  if (w.logged < Math.min(w.pastN, 5)) better.push('Tu as noté tes repas ' + w.logged + ' jour' + (w.logged > 1 ? 's' : '') + ' sur ' + w.pastN + '. Plus tu notes, plus le bilan est juste. Une phrase par repas suffit.'); else if (w.logged) good.push('Repas notés ' + w.logged + ' jours sur ' + w.pastN + '. Super régularité.');
+  if (b && w.logged) {
+    const r = w.avgK / b.kcal;
+    if (r > 1.1) better.push('Moyenne de ' + w.avgK + ' kcal par jour pour une cible de ' + b.kcal + ' (' + w.over + ' jour' + (w.over > 1 ? 's' : '') + ' au-dessus). Allège le soir ou les boissons sucrées.'); else if (r < .8) better.push('Moyenne de ' + w.avgK + ' kcal par jour, bien sous ta cible de ' + b.kcal + '. Manger trop peu freine la récupération et les progrès.'); else good.push('Calories : ' + w.avgK + ' kcal par jour en moyenne, proche de ta cible (' + b.kcal + ').');
+    if (w.avgP >= b.prot * .85) good.push('Protéines : ' + w.avgP + ' g par jour, au niveau.'); else better.push('Protéines : ' + w.avgP + ' g par jour pour ' + b.prot + ' g visés. Ajoute œufs, yaourt grec, poulet ou thon.');
+  }
+  if (w.logged >= 3) { if (w.vegDays >= w.logged * .7) good.push('Légumes présents ' + w.vegDays + ' jours sur ' + w.logged + '.'); else better.push('Légumes seulement ' + w.vegDays + ' jour' + (w.vegDays > 1 ? 's' : '') + ' sur ' + w.logged + '. Un bol à midi ou le soir change tout.'); if (w.sweetPct > 25) better.push(w.sweetPct + ' % de tes calories viennent du sucré ou du gras rapide. Vise moins de 20 %.'); if (w.avgD < 1.2) better.push('Boissons notées : ' + nf(w.avgD, 1) + ' L par jour. Vise 1,5 à 2 L, surtout les jours de sport.'); else good.push('Hydratation : ' + nf(w.avgD, 1) + ' L par jour.'); }
+  const zs = Object.keys(w.zones).sort((a, c) => w.zones[a] - w.zones[c]); if (w.doneN) next.push('Mets plus de ' + ZN[zs[0]].toLowerCase() + ' la semaine prochaine : tu les as peu travaillés (' + Math.round(w.zones[zs[0]]) + ' min).');
+  if (w.plannedN) next.push('Reprends ton planning : ' + P().trainDays.map(d => DOW[d]).join(', ') + '.');
+  next.push('Jour de record : ' + DOWL[+P().recordDay] + '. Dors bien la veille.');
+  if (b && w.logged && w.avgP < b.prot * .85) next.push('Objectif repas : une source de protéines à chaque repas.');
+  if (!good.length) good.push('Chaque semaine notée est un point de départ. Tu as commencé, c’est le plus dur.');
+  return { good, better, next };
+}
+function vWeek() {
+  const mon = U.weekMon, w = weekStats(mon), ins = weekInsights(w), rv = S.weekly[mon], cur = w.current;
+  const end = addDays(mon, 6), lbl = fmtShort(mon) + ' – ' + fmtShort(end);
+  let h = '<h1>Bilan de la semaine</h1><div class="row sb"><button class="btn ghost sm" data-act="wkshift" data-v="-1" aria-label="Semaine précédente">←</button><b>' + (cur ? 'Cette semaine · ' : '') + lbl + '</b><button class="btn ghost sm" data-act="wkshift" data-v="1" aria-label="Semaine suivante"' + (cur ? ' disabled' : '') + '>→</button></div>';
+  if (!w.any) return h + '<section class="card soft"><h2>Rien à analyser</h2><p>Aucune séance ni aucun repas noté sur cette semaine. Note ce que tu manges et tes séances : le bilan se construit tout seul, avec une note, des points forts et des points à améliorer.</p></section>';
+  const off = (276.46 * (1 - w.score / 100)).toFixed(1);
+  h += '<section class="card"><div class="row" style="flex-wrap:nowrap;gap:16px"><div class="ring" style="width:130px;height:130px;margin:0;flex:none"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="bg" cx="50" cy="50" r="44"/><circle class="fg sc" cx="50" cy="50" r="44" stroke-dasharray="276.46" stroke-dashoffset="' + off + '"/></svg><div class="t num" style="font-size:44px"><span data-count="' + w.score + '">' + w.score + '</span></div></div>' +
+    '<div style="min-width:0;display:flex;flex-direction:column;gap:6px"><h2>' + w.label + '</h2><p class="small muted">' + (cur ? 'Semaine en cours : la note évolue chaque jour.' : 'Semaine terminée.') + '</p></div></div>' +
+    [['Sport', w.sport, 50], ['Repas', w.food, 40], ['Progrès', w.prog, 10]].map(x => '<div><div class="row sb small"><span>' + x[0] + '</span><b>' + x[1] + ' / ' + x[2] + '</b></div><div class="bar"><i style="width:' + (x[1] / x[2] * 100) + '%"></i></div></div>').join('') + '</section>';
+  h += '<div class="grid2"><div class="stat"><span class="lbl">Séances</span><span class="num">' + w.doneN + (w.plannedN ? ' / ' + w.plannedN : '') + '</span><span class="small muted">' + w.minutes + ' min de sport</span></div>' +
+    '<div class="stat"><span class="lbl">Calories moyennes</span><span class="num">' + (w.logged ? w.avgK : '–') + '</span><span class="small muted">' + (w.b ? 'cible ' + w.b.kcal + ' kcal' : 'par jour') + '</span></div>' +
+    '<div class="stat"><span class="lbl">Protéines</span><span class="num">' + (w.logged ? w.avgP + ' g' : '–') + '</span><span class="small muted">' + (w.b ? 'cible ' + w.b.prot + ' g' : 'par jour') + '</span></div>' +
+    '<div class="stat"><span class="lbl">Poids</span><span class="num">' + (w.dW === null ? '–' : (w.dW > 0 ? '+' : '') + nf(w.dW) + ' kg') + '</span><span class="small muted">' + (w.logged ? 'boissons ' + nf(w.avgD, 1) + ' L par jour' : 'cette semaine') + '</span></div></div>';
+  h += '<section class="card"><h2>Calories par jour</h2>' + weekKcalChart(mon, w.b ? w.b.kcal : 0) + '</section>';
+  const list = (t, a, cls) => a.length ? '<section class="card ' + cls + '"><h2>' + t + '</h2><ul class="advice">' + a.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></section>' : '';
+  h += list('Ce qui a marché', ins.good, 'soft') + list('À améliorer', ins.better, 'warm') + list('Semaine prochaine', ins.next, '');
+  h += '<section class="card"><h2>Mon bilan par Claude</h2>' + (rv ? '<p>' + esc(rv.resume) + '</p>' + (rv.forts && rv.forts.length ? '<h3>Points forts</h3><ul class="advice">' + rv.forts.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : '') + (rv.mieux && rv.mieux.length ? '<h3>À améliorer</h3><ul class="advice">' + rv.mieux.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : '') + (rv.suite && rv.suite.length ? '<h3>Plan pour la semaine prochaine</h3><ul class="advice">' + rv.suite.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : '') + (rv.mot ? '<p><b>' + esc(rv.mot) + '</b></p>' : '') : '<p class="muted">Claude relit toute ta semaine (repas, séances, poids) et te donne un vrai bilan personnalisé avec un plan pour la suivante.</p>') +
+    '<button class="btn" data-act="askweek"' + (U.busy ? ' disabled' : '') + '>' + (U.busy === 'week' ? 'Claude prépare ton bilan…' : rv ? 'Refaire le bilan' : 'Demander le bilan à Claude') + '</button><button class="btn ghost" data-act="copyweek">Copier le résumé</button>' + (U.copy ? '<textarea id="copytxt" readonly rows="6">' + esc(U.copy) + '</textarea>' : '') + '</section>';
+  return h;
+}
+function weekSummary(w) {
+  let t = 'Bilan de la semaine du ' + fmtShort(w.mon) + ' au ' + fmtShort(addDays(w.mon, 6)) + '\n'; const b = w.b;
+  if (b) t += 'Profil : ' + b.a + ' ans, ' + nf(b.h, 0) + ' cm, ' + nf(b.w) + ' kg, objectif « ' + ({ lose: 'perdre du poids', keep: 'rester stable et se muscler', gain: 'prendre du muscle' })[P().goal] + ' ». Cible : ' + b.kcal + ' kcal, ' + b.prot + ' g de protéines.\n';
+  t += 'Séances : ' + w.doneN + (w.plannedN ? ' sur ' + w.plannedN + ' prévues' : '') + ', ' + w.minutes + ' min.\n';
+  w.days.filter(x => !x.fut).forEach(x => { const ms = mealsOf(x.d); t += '- ' + fmtLong(x.d) + ' : ' + (ms.length ? ms.map(m => m.text).join(' ; ') + ' (≈ ' + x.tot.kcal + ' kcal, ' + x.tot.p + ' g prot)' : 'repas non notés') + (x.min ? ' · sport ' + x.min + ' min' : '') + '\n'; });
+  if (w.dW !== null) t += 'Poids : ' + (w.dW > 0 ? '+' : '') + nf(w.dW) + ' kg.\n';
+  w.beaten.forEach(x => { t += 'Record battu : ' + x.n + ' ' + x.v + x.u + '.\n'; });
+  return t;
+}
+async function askWeek() {
+  const w = weekStats(U.weekMon); if (!w.any || U.busy) return;
+  let sm = null; try { sm = window.claude && claude.use ? await claude.use('sample') : null; } catch (e) { }
+  if (!sm) { toast('Claude n’est pas disponible ici. Copie le résumé et colle-le dans ta conversation.'); return; }
+  U.busy = 'week'; U.keepScroll = true; render();
+  const prompt = 'Tu es mon coach sportif et nutrition, bienveillant, honnête et concret. Réponds en français, en tutoyant, sans jargon, sans exagérer les compliments. Fais le bilan de ma semaine à partir de ces données :\n\n' + weekSummary(w) + '\nNote automatique de l’appli : ' + w.score + '/100.\n\nRéponds UNIQUEMENT avec du JSON valide : {"resume":"4 à 6 phrases sur la semaine","points_forts":["2 à 4 points"],"a_ameliorer":["2 à 4 points précis, avec un chiffre quand c’est possible"],"semaine_prochaine":["3 à 5 actions concrètes : séances, repas, repos"],"mot":"une phrase d’encouragement honnête"}.';
+  try {
+    const r = await sm.json(prompt, { cache: false });
+    S.weekly[U.weekMon] = { resume: String(r.resume || ''), forts: (r.points_forts || []).map(String), mieux: (r.a_ameliorer || []).map(String), suite: (r.semaine_prochaine || []).map(String), mot: String(r.mot || ''), ts: Date.now() }; save();
+  } catch (e) { toast(e && e.code === 'not_granted' ? 'Autorisation refusée : j’utilise le bilan automatique.' : 'Claude n’a pas répondu. Réessaie dans un instant.'); }
+  U.busy = false; U.keepScroll = true; render();
+}
+
 function vMeals() {
   const d = U.mealDate, ms = mealsOf(d), t = dayTot(d), b = body(), rv = S.reviews[d];
   const pct = b ? clamp(t.kcal / b.kcal * 100, 0, 100) : 0;
@@ -910,9 +1033,12 @@ function vMeals() {
     '<section class="card"><div class="row sb"><div><span class="num" style="font-size:40px">' + t.kcal + '</span> <span class="muted">' + (b ? '/ ' + b.kcal + ' kcal' : 'kcal') + '</span></div><div class="small muted" style="text-align:right">Protéines<br><b style="color:var(--ink)">' + t.p + (b ? ' / ' + b.prot : '') + ' g</b></div></div>' +
     (b ? '<div class="bar" role="progressbar" aria-valuenow="' + Math.round(pct) + '" aria-valuemin="0" aria-valuemax="100"><i class="' + (t.kcal > b.kcal * 1.1 ? 'over' : '') + '" style="width:' + pct + '%"></i></div>' : '<p class="small muted">Renseigne ton poids, ta taille et ton âge dans Aujourd’hui pour voir ta cible.</p>') +
     '<p class="small muted">Boissons : <b style="color:var(--ink)">' + nf(t.drink / 1000, 1) + ' L</b> · ' + t.drinkK + ' kcal</p></section>' +
-    '<section class="card"><h2>J’ai mangé</h2><label class="f">Repas<select id="mtype">' + types.map(x => '<option value="' + x[0] + '">' + x[1] + '</option>').join('') + '</select></label>' +
+    '<section class="card"><h2>J’ai mangé</h2><label class="f">Repas<select id="mtype">' + types.map(x => '<option value="' + x[0] + '"' + (x[0] === autoType() ? ' selected' : '') + '>' + x[1] + '</option>').join('') + '</select></label>' +
     '<label class="f">Ce que j’ai mangé<textarea id="mtext" placeholder="ex. frites, gnocchis, steak haché, petits pois, un coca"></textarea></label>' +
     '<button class="btn" data-act="madd">Ajouter ce repas</button><p class="tiny muted">Écris comme tu parles, avec ou sans virgules : « 150 g de riz », « 2 œufs », « un verre de jus d’orange ». Je connais environ 200 aliments et boissons. Les calories sont une estimation, tu peux corriger les grammes.</p></section>';
+  const rc = recentMeals(); U.recent = rc;
+  if (rc.length) h += '<section class="card"><h3>Mes repas habituels (un toucher pour ajouter)</h3><div class="chips">' + rc.map((x, i) => '<button class="chip" data-act="mre" data-v="' + i + '">' + esc(x.length > 30 ? x.slice(0, 29) + '…' : x) + '</button>').join('') + '</div></section>';
+  h += '<section class="card"><h2>Cette semaine</h2>' + weekKcalChart(mondayOf(d), b ? b.kcal : 0) + '</section>';
   ms.forEach(m => {
     const mt = mealTot(m);
     h += '<section class="card"><div class="row sb"><h3>' + (types.find(x => x[0] === m.type) || ['', 'Repas'])[1] + '</h3><button class="btn ghost sm" data-act="mdel" data-id="' + m.id + '" aria-label="Supprimer ce repas">Supprimer</button></div><p class="small muted">« ' + esc(m.text) + ' »</p>' +
@@ -1006,10 +1132,10 @@ function vProfile() {
 
 /* ===== Rendu ===== */
 function render() {
-  const v = { today: vToday, train: vTrain, meals: vMeals, progress: vProgress, profile: vProfile }[U.tab];
+  const v = { today: vToday, train: vTrain, meals: vMeals, week: vWeek, progress: vProgress, profile: vProfile }[U.tab];
   const sc = window.scrollY;
   $('#main').innerHTML = v();
-  $('#tabs').innerHTML = TABS.map(t => '<button class="tab" data-act="tab" data-v="' + t[0] + '"' + (U.tab === t[0] ? ' aria-current="page"' : '') + '><svg viewBox="0 0 24 24" aria-hidden="true">' + t[3] + '</svg>' + t[2] + '</button>').join('');
+  $('#tabs').innerHTML = TABS.filter(t => t[0] !== 'profile').map(t => '<button class="tab" data-act="tab" data-v="' + t[0] + '"' + (U.tab === t[0] ? ' aria-current="page"' : '') + '><svg viewBox="0 0 24 24" aria-hidden="true">' + t[3] + '</svg>' + t[2] + '</button>').join('');
   $$('[data-mini]').forEach(h => { const it = U.T.plan.items[+h.dataset.mini]; mountFig(h, it.ex, { delay: +h.dataset.mini * 60 }); });
   $$('[data-count]').forEach(el => countUp(el));
   startFigs();
@@ -1149,7 +1275,7 @@ function demoData() {
 }
 
 /* ===== Actions ===== */
-const SLUG = { today: 'aujourdhui', train: 'seance', meals: 'repas', progress: 'progres', profile: 'profil' };
+const SLUG = { today: 'aujourdhui', train: 'seance', meals: 'repas', week: 'bilan', progress: 'progres', profile: 'profil' };
 const fromSlug = h => (TABS.find(t => t[1] === h.replace('#', '')) || [])[0];
 let wipeArm = 0, quitArm = 0;
 const val = id => { const e = document.getElementById(id); return e ? e.value : ''; };
@@ -1161,6 +1287,27 @@ document.addEventListener('click', e => {
   switch (a) {
     case 'tab': U.tab = v; try { history.replaceState(null, '', '#' + SLUG[v]); } catch (x) { } render(); break;
     case 'gotrain': { const pf = planFor(today()); if (pf.min) { U.T.min = [5, 10, 15, 20, 30, 45, 60].reduce((a, c) => Math.abs(c - pf.min) < Math.abs(a - pf.min) ? c : a); if (pf.size === 'grosse') U.T.focus = 'all'; U.T.plan = null; } U.tab = 'train'; render(); break; }
+    case 'quickstart': {
+      const pf = planFor(today()), min = pf.min || 15, snap = [5, 10, 15, 20, 30, 45, 60].reduce((a, c) => Math.abs(c - min) < Math.abs(a - min) ? c : a);
+      U.T.min = snap; U.T.focus = pf.size === 'grosse' || pf.size === 'moyenne' || !pf.min ? 'all' : lazyZone(); U.T.plan = genSession(snap, U.T.focus, U.T.custom, U.T.level, Date.now() & 0xfffffff); startPlayer(U.T.plan); break;
+    }
+    case 'qmeal': {
+      const text = val('qtext').trim(); if (!text) { toast('Écris ce que tu as mangé ou bu'); break; }
+      const m = addMeal(text, autoType(), today()); keep(); render(); toast('≈ ' + mealTot(m).kcal + ' kcal ajoutées'); break;
+    }
+    case 'wquick': {
+      const w = num(val('qw')); if (!(w >= 25 && w <= 300)) { toast('Entre ton poids, ex. 74,6'); break; }
+      S.weights = S.weights.filter(x => x.d !== today()); S.weights.push({ d: today(), kg: +w.toFixed(2) }); save(); keep(); render(); toast('Poids noté : ' + nf(w) + ' kg'); break;
+    }
+    case 'mre': { const tx = (U.recent || [])[+v]; if (tx) { const m = addMeal(tx, autoType(), U.mealDate); keep(); render(); toast('≈ ' + mealTot(m).kcal + ' kcal ajoutées'); } break; }
+    case 'openweek': U.weekMon = mondayOf(today()); if (isoDow(today()) === 1 && !weekStats(U.weekMon).any) U.weekMon = addDays(U.weekMon, -7); U.tab = 'week'; render(); break;
+    case 'wkshift': { const m = addDays(U.weekMon, 7 * +v); if (m <= mondayOf(today())) { U.weekMon = m; U.copy = ''; render(); } break; }
+    case 'askweek': askWeek(); break;
+    case 'copyweek': {
+      U.copy = weekSummary(weekStats(U.weekMon)) + '\nPeux-tu me faire le bilan de ma semaine (points forts, à améliorer) et me dire quoi faire la semaine prochaine ?';
+      try { navigator.clipboard.writeText(U.copy).then(() => toast('Résumé copié'), () => toast('Sélectionne le texte pour le copier')); } catch (x) { toast('Sélectionne le texte pour le copier'); }
+      keep(); render(); break;
+    }
     case 'gosched': U.tab = 'profile'; render(); break;
     case 'autodays': P().trainDays = autoDays(); P().availSet = true; save(); keep(); render(); toast('Jours proposés : ' + P().trainDays.map(d => DOW[d]).join(', ')); break;
     case 'firstrec': {
@@ -1223,9 +1370,8 @@ document.addEventListener('click', e => {
     case 'mday': { const d = addDays(U.mealDate, +v); if (d <= today()) { U.mealDate = d; U.copy = ''; render(); } break; }
     case 'madd': {
       const text = val('mtext').trim(); if (!text) { toast('Écris ce que tu as mangé'); break; }
-      const pm = parseMeal(text), m = { id: uid(), d: U.mealDate, type: val('mtype'), text, items: pm.items, left: pm.left };
-      S.meals.push(m); delete S.reviews[U.mealDate]; save(); keep(); render();
-      toast(pm.items.some(i => i.unk) ? 'Ajouté. Complète les calories des aliments non reconnus.' : '≈ ' + mealTot(m).kcal + ' kcal ajoutées'); break;
+      const m = addMeal(text, val('mtype'), U.mealDate); keep(); render();
+      toast(m.items.some(i => i.unk) ? 'Ajouté. Complète les calories des aliments non reconnus.' : '≈ ' + mealTot(m).kcal + ' kcal ajoutées'); break;
     }
     case 'mdel': S.meals = S.meals.filter(m => m.id !== b.dataset.id); delete S.reviews[U.mealDate]; save(); keep(); render(); break;
     case 'ask': askClaude(); break;
