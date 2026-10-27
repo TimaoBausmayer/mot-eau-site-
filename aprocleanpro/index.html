@@ -157,7 +157,7 @@ nav.menu .m-cta a::after{display:none}
 .off,.off *{animation-play-state:paused!important}
 .hero-visual:has(.hero-photo img[src]:not([src=""])) .hero-art{display:none}
 .hero-art .scene{position:absolute;inset:0;width:100%;height:100%}
-.dirt,.sq-track{position:absolute;left:18%;top:11.667%;width:64%;height:55%}
+.dirt,.sq-track{position:absolute;left:15.217%;top:10.4545%;width:69.565%;height:75%}
 .dirt{border-radius:1.6%/1.5%;overflow:hidden;animation:dirt 9s linear -2.7s infinite}
 .dirt svg{width:100%;height:100%;animation:dirt-in 9s linear -2.7s infinite}
 .sq-track{pointer-events:none}
@@ -601,6 +601,57 @@ h1{font-weight:700;letter-spacing:-.025em}
 @media(prefers-reduced-motion:reduce){.js .sp{opacity:1!important;transform:none!important}}
 @media(max-width:640px){.steps{gap:28px}.steps .step{display:block;padding-top:20px}.steps .step h3{margin:0 0 6px}}
 
+
+/* ---------- Plus beau, toujours simple ---------- */
+.hero{background:#f3f7fb;padding:128px 0 0}
+.hero-grid{gap:48px;align-items:center}
+.hero-visual{max-width:560px;aspect-ratio:460/440}
+.hero-art{border-radius:0;box-shadow:none}
+.hero-photo{border-radius:14px}
+.hero h1{font-size:clamp(2.2rem,4.2vw,3.45rem);line-height:1.04;max-width:600px}
+.hero-grid{grid-template-columns:1.1fr .9fr}
+.hero .lead{font-size:1.18rem;max-width:520px}
+.facts{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);margin-top:64px;border-top:1px solid var(--line)}
+.facts li{padding:26px 24px 30px;border-left:1px solid var(--line);display:grid;gap:4px}
+.facts li:first-child{border-left:0;padding-left:0}
+.facts b{font-weight:800;font-size:1rem;display:flex;align-items:center;gap:9px}
+.facts b::before{content:"";flex:none;width:18px;height:18px;border-radius:50%;background:var(--sky) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f1e33' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center/11px no-repeat}
+.facts span{color:var(--muted);font-size:.93rem;padding-left:27px}
+section{padding:108px 0}
+h2{font-size:clamp(2rem,3.5vw,2.9rem)}
+.head{margin-bottom:52px}
+.head .lead{max-width:600px}
+.srv{padding:30px;gap:13px;transition:box-shadow .35s var(--ease),transform .35s var(--ease)}
+.srv:hover{box-shadow:inset 0 0 0 1.5px var(--navy),0 22px 40px -30px rgba(15,30,51,.5);transform:translateY(-3px)}
+.srv h3{font-size:1.28rem}
+.srv-ic svg{width:46px;height:46px}
+.srv .inc{font-size:.95rem}
+.faq .qa{background:#fff}
+.sec-mist .help-card{background:#fff;box-shadow:inset 0 0 0 1px var(--line)}
+.steps .step h3{font-size:1.2rem}
+.step .num::after{font-size:3rem;color:var(--blue)}
+.why{padding:112px 0}
+.ben h3{font-size:1.15rem}
+.map{box-shadow:0 26px 50px -34px rgba(15,30,51,.5)}
+.pg-art{background:linear-gradient(160deg,#edf6fd 0%,#d6eaf9 100%)}
+.pg-art::after{display:block;content:"";position:absolute;left:50%;top:50%;width:62%;aspect-ratio:1;height:auto;margin:0;right:auto;bottom:auto;transform:translate(-50%,-50%);border-radius:50%;background:#fff;box-shadow:0 24px 44px -26px rgba(15,30,51,.45)}
+.pg-art::before{display:block;content:"";position:absolute;left:50%;top:50%;width:84%;aspect-ratio:1;height:auto;right:auto;bottom:auto;transform:translate(-50%,-50%);border-radius:50%;background:none;border:1.5px dashed rgba(11,102,173,.25)}
+.pg-art svg{position:relative;z-index:1;width:36%}
+@media(max-width:980px){
+  .hero{padding-top:112px}
+  .facts{grid-template-columns:1fr 1fr;margin-top:48px}
+  .facts li:nth-child(3){border-left:0;padding-left:0}
+  .facts li:nth-child(n+3){border-top:1px solid var(--line)}
+  section{padding:80px 0}
+}
+@media(max-width:640px){
+  .hero-visual{max-width:420px}
+  .facts{grid-template-columns:1fr;margin-top:36px}
+  .facts li{border-left:0;padding:18px 0;border-top:1px solid var(--line)}
+  .facts li:first-child{border-top:0}
+  section{padding:68px 0}
+}
+
 /* ---------- Impression ---------- */
 @media print{
   header.top,#bar,#up,.callbar,.ed-btn,.skip,.hero-visual,.map,.quick,.calm-btn,.f-bar,.burger{display:none!important}
@@ -809,7 +860,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 
       <div class="hero-visual rv" style="--d:.2s">
         <div class="hero-art" aria-hidden="true">
-          <svg class="scene" viewBox="0 0 500 600" focusable="false">
+          <svg class="scene" viewBox="20 24 460 440" focusable="false">
             <defs>
               <linearGradient id="hs-wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3faff"></stop><stop offset="1" stop-color="#d4ebfa"></stop></linearGradient>
               <linearGradient id="hs-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ccdf7"></stop><stop offset=".72" stop-color="#cdeefd"></stop><stop offset="1" stop-color="#ecf9ff"></stop></linearGradient>
@@ -818,12 +869,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
               <clipPath id="hs-glass"><rect x="90" y="70" width="320" height="330" rx="8"></rect></clipPath>
               <clipPath id="hs-card"><rect width="500" height="600" rx="16"></rect></clipPath>
             </defs>
-            <g clip-path="url(#hs-card)">
-              <rect width="500" height="600" fill="url(#hs-wall)"></rect>
-              <circle cx="438" cy="64" r="96" fill="#fff" opacity=".6"></circle>
-              <circle cx="40" cy="520" r="70" fill="#fff" opacity=".45"></circle>
-              <path d="M0 470h500M0 530h500" stroke="#fff" stroke-opacity=".7" stroke-width="2"></path>
-            </g>
+            <ellipse cx="250" cy="452" rx="214" ry="9" fill="#0d2147" opacity=".1"></ellipse>
             <rect x="82" y="68" width="352" height="362" rx="24" fill="#0d2147" opacity=".12"></rect>
             <rect x="74" y="54" width="352" height="362" rx="24" fill="url(#hs-frame)"></rect>
             <rect x="84" y="64" width="332" height="342" rx="15" fill="#2b5196"></rect>
@@ -876,7 +922,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
               </svg>
             </div>
           </div>
-          <svg class="scene" viewBox="0 0 500 600" focusable="false">
+          <svg class="scene" viewBox="20 24 460 440" focusable="false">
             <rect x="52" y="412" width="396" height="26" rx="10" fill="#0d2147"></rect>
             <rect x="52" y="412" width="396" height="8" rx="4" fill="#284c8c"></rect>
             <g transform="translate(92 318)">
@@ -897,18 +943,19 @@ body.editing .chips{row-gap:44px;padding-top:40px}
               <g fill="#7fd0f7"><circle cx="82" cy="10" r="3"></circle><circle cx="90" cy="16" r="2.4"></circle><circle cx="88" cy="4" r="2"></circle><circle cx="97" cy="9" r="1.6"></circle></g>
             </g>
           </svg>
-          <span class="spark" style="left:27%;top:20%"><svg viewBox="0 0 24 24"><path d="M12 0c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12z" fill="#fff"></path></svg></span>
-          <span class="spark" style="left:63%;top:31%;width:5%;animation-delay:-2.45s"><svg viewBox="0 0 24 24"><path d="M12 0c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12z" fill="#fff"></path></svg></span>
-          <span class="spark" style="left:44%;top:48%;width:6%;animation-delay:-2.2s"><svg viewBox="0 0 24 24"><path d="M12 0c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12z" fill="#fff"></path></svg></span>
+          <span class="spark" style="left:25%;top:21.8%;width:7.6%"><svg viewBox="0 0 24 24"><path d="M12 0c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12z" fill="#fff"></path></svg></span>
+          <span class="spark" style="left:64.1%;top:36.8%;width:5.4%;animation-delay:-2.45s"><svg viewBox="0 0 24 24"><path d="M12 0c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12z" fill="#fff"></path></svg></span>
+          <span class="spark" style="left:43.5%;top:60%;width:6.5%;animation-delay:-2.2s"><svg viewBox="0 0 24 24"><path d="M12 0c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12z" fill="#fff"></path></svg></span>
         </div>
         <div class="ph hero-photo" data-img="" data-par=".04"><img alt="Locaux nettoyés par A-Proclean" fetchpriority="high"></div>
       </div>
     </div>
+    <ul class="facts"><li class="rv" style="--d:.0s" data-rep=""><b data-e="">Particuliers et professionnels</b><span data-e="">Bureaux, commerces, logements, copropriétés</span></li><li class="rv" style="--d:.1s" data-rep=""><b data-e="">Devis gratuit et détaillé</b><span data-e="">Sans engagement de votre part</span></li><li class="rv" style="--d:.2s" data-rep=""><b data-e="">Ponctuel ou régulier</b><span data-e="">Tôt le matin, le soir ou le samedi</span></li><li class="rv" style="--d:.3s" data-rep=""><b data-e="">Matériel et produits fournis</b><span data-e="">Vous n'avez rien à prévoir</span></li></ul>
   </div>
 </section>
 
 <!-- ================= SERVICES ================= -->
-<section id="services" class="sec-mist" aria-labelledby="h-services" data-section="Services">
+<section id="services" aria-labelledby="h-services" data-section="Services">
   <div class="wrap">
     <div class="head">
       <h2 id="h-services" class="sp" data-e="">Nos prestations</h2>
@@ -963,7 +1010,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 </section>
 
 <!-- ================= COMMENT ÇA MARCHE ================= -->
-<section id="etapes" aria-labelledby="h-etapes" data-section="Comment ça marche">
+<section id="etapes" class="sec-mist" aria-labelledby="h-etapes" data-section="Comment ça marche">
   <div class="wrap">
     <div class="head">
       <h2 id="h-etapes" class="sp" data-e="">Comment ça se passe</h2>
@@ -1052,7 +1099,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 </section>
 
 <!-- ================= ZONE ================= -->
-<section id="zone" class="sec-mist" aria-labelledby="h-zone" data-section="Zone d'intervention">
+<section id="zone" aria-labelledby="h-zone" data-section="Zone d'intervention">
   <div class="wrap zone-grid">
     <div class="zone-txt">
       <h2 id="h-zone" class="sp" data-e="">Zone d'intervention</h2>
@@ -1088,7 +1135,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 </section>
 
 <!-- ================= QUESTIONS ================= -->
-<section id="faq" aria-labelledby="h-faq" data-section="Questions fréquentes">
+<section id="faq" class="sec-mist" aria-labelledby="h-faq" data-section="Questions fréquentes">
   <div class="wrap faq-grid">
     <div class="faq-side">
       <h2 id="h-faq" class="sp" data-e="">Questions fréquentes</h2>
