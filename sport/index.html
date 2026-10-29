@@ -446,9 +446,14 @@ const defaults = () => ({ v: 1, upd: 0, demo: false,
   weights: [], meals: [], sessions: [], records: [], plan: {}, reviews: {}, weekly: {} });
 let S = defaults();
 function mergeState(o) {
-  const d = defaults(); const r = Object.assign(d, o || {});
-  r.profile = Object.assign(d.profile, (o && o.profile) || {});
-  r.profile.equip = Object.assign({ tapis: true, bouteilles: true, chaise: true }, ((o && o.profile) || {}).equip || {});
+  const d = defaults(), dp = d.profile, op = (o && o.profile) || {};
+  const r = Object.assign(d, o || {});
+  r.profile = Object.assign(dp, op);
+  r.profile.equip = Object.assign({ tapis: true, bouteilles: true, chaise: true }, op.equip || {});
+  if (!r.profile.avail || typeof r.profile.avail !== 'object') r.profile.avail = {};
+  if (!Array.isArray(r.profile.trainDays)) r.profile.trainDays = [1, 3, 5];
+  ['plan', 'reviews', 'weekly'].forEach(k => { if (!r[k] || typeof r[k] !== 'object') r[k] = {}; });
+  ['weights', 'meals', 'sessions', 'records'].forEach(k => { if (!Array.isArray(r[k])) r[k] = []; });
   return r;
 }
 function loadLocal() { try { const r = localStorage.getItem(KEY); if (r) S = mergeState(JSON.parse(r)); } catch (e) { } }
