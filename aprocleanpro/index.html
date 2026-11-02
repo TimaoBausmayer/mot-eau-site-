@@ -664,6 +664,29 @@ h2{font-size:clamp(2rem,3.5vw,2.9rem)}
 .pg-art[data-art] svg{position:absolute;inset:0;width:100%;height:100%;filter:none;animation:none}
 @media(max-width:640px){.srv-pic{margin:-30px -30px 6px}}
 
+
+/* ---------- Illustrations des étapes, Qui sommes-nous, bulles ---------- */
+.step-pic{aspect-ratio:240/150;border-radius:12px;overflow:hidden;margin-bottom:22px;background:#eaf4fc;box-shadow:inset 0 0 0 1px var(--line)}
+.step-pic svg{width:100%;height:100%;display:block}
+.step{border-top:0;padding-top:0}
+.pg-visual:has(.pg-scene){aspect-ratio:400/280;max-width:540px}
+.pg-art.pg-scene{background:#eaf4fc}
+.pg-art.pg-scene::before,.pg-art.pg-scene::after{display:none}
+.pg-art.pg-scene svg{position:absolute;inset:0;width:100%;height:100%;filter:none;animation:none}
+.bubble{position:absolute;left:82%;bottom:24%;width:22px;aspect-ratio:1;border-radius:50%;opacity:0;pointer-events:none;
+  background:radial-gradient(circle at 32% 30%,rgba(255,255,255,.95) 0 9%,rgba(255,255,255,.2) 13% 60%,rgba(127,208,247,.4) 62% 100%);
+  box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.9),inset -3px -4px 8px rgba(44,179,243,.35),0 2px 6px rgba(13,33,71,.08);
+  animation:bub 8s ease-in infinite}
+.b1{width:26px;--dx:-70px;--dy:-250px;animation-delay:-.5s}
+.b2{width:16px;left:85%;--dx:-30px;--dy:-200px;animation-delay:-2.2s;animation-duration:7s}
+.b3{width:34px;left:80%;--dx:-110px;--dy:-290px;animation-delay:-3.8s;animation-duration:9.5s}
+.b4{width:20px;left:84%;--dx:-55px;--dy:-230px;animation-delay:-5.1s}
+.b5{width:13px;left:86%;--dx:-20px;--dy:-170px;animation-delay:-6.4s;animation-duration:6.5s}
+.b6{width:28px;left:81%;--dx:-90px;--dy:-270px;animation-delay:-7.3s;animation-duration:10s}
+@keyframes bub{0%{opacity:0;transform:translate(0,0) scale(.3)}10%{opacity:.95}75%{opacity:.85}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1)}}
+.calm .bubble{display:none}
+@media(prefers-reduced-motion:reduce){.bubble{display:none}}
+
 /* ---------- Impression ---------- */
 @media print{
   header.top,#bar,#up,.callbar,.ed-btn,.skip,.hero-visual,.map,.quick,.calm-btn,.f-bar,.burger{display:none!important}
@@ -955,6 +978,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
               <g fill="#7fd0f7"><circle cx="82" cy="10" r="3"></circle><circle cx="90" cy="16" r="2.4"></circle><circle cx="88" cy="4" r="2"></circle><circle cx="97" cy="9" r="1.6"></circle></g>
             </g>
           </svg>
+          <span class="bubble b1"></span><span class="bubble b2"></span><span class="bubble b3"></span><span class="bubble b4"></span><span class="bubble b5"></span><span class="bubble b6"></span>
           <span class="spark" style="left:25%;top:21.8%;width:7.6%"><svg viewBox="0 0 24 24"><path d="M12 0c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12z" fill="#fff"></path></svg></span>
           <span class="spark" style="left:64.1%;top:36.8%;width:5.4%;animation-delay:-2.45s"><svg viewBox="0 0 24 24"><path d="M12 0c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12z" fill="#fff"></path></svg></span>
           <span class="spark" style="left:43.5%;top:60%;width:6.5%;animation-delay:-2.2s"><svg viewBox="0 0 24 24"><path d="M12 0c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12z" fill="#fff"></path></svg></span>
@@ -1096,9 +1120,27 @@ body.editing .chips{row-gap:44px;padding-top:40px}
       <h2 id="h-etapes" class="sp" data-e="">Comment ça se passe</h2>
     </div>
     <ol class="steps">
-      <li class="step rv" data-rep=""><span class="num" aria-hidden="true"></span><h3 data-e="">Vous décrivez votre besoin</h3><p data-e="">Par le formulaire ou par téléphone : le type de locaux, la surface, la fréquence.</p></li>
-      <li class="step rv" style="--d:.15s" data-rep=""><span class="num" aria-hidden="true"></span><h3 data-e="">Nous vous envoyons un devis</h3><p data-e="">Gratuit et détaillé. Si besoin, nous passons voir les lieux avant.</p></li>
-      <li class="step rv" style="--d:.3s" data-rep=""><span class="num" aria-hidden="true"></span><h3 data-e="">Nous intervenons</h3><p data-e="">Aux jours et aux horaires convenus. Si quelque chose ne vous convient pas, dites-le-nous : nous ajustons.</p></li>
+      <li class="step rv" data-rep=""><div class="step-pic" aria-hidden="true"><svg viewBox="0 0 240 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="240" height="150" fill="#eaf4fc"></rect>
+<rect x="78" y="14" width="64" height="122" rx="10" fill="#142f64"></rect><rect x="83" y="22" width="54" height="104" rx="5" fill="#fff"></rect><rect x="100" y="16" width="20" height="3" rx="1.5" fill="#0d2147"></rect>
+<rect x="89" y="30" width="30" height="5" rx="2.5" fill="#142f64"></rect>
+<g fill="none" stroke="#8cc4ea" stroke-width="2"><rect x="89" y="42" width="42" height="12" rx="3"></rect><rect x="89" y="58" width="42" height="12" rx="3"></rect><rect x="89" y="74" width="42" height="12" rx="3"></rect></g>
+<circle cx="95" cy="48" r="3" fill="#2cb3f3"></circle><circle cx="95" cy="64" r="3" fill="none" stroke="#8cc4ea" stroke-width="1.5"></circle><circle cx="95" cy="80" r="3" fill="none" stroke="#8cc4ea" stroke-width="1.5"></circle>
+<path d="M101 48h22M101 64h18M101 80h20" stroke="#142f64" stroke-width="2" stroke-linecap="round" opacity=".6"></path><rect x="89" y="98" width="42" height="14" rx="4" fill="#142f64"></rect>
+<path d="M152 34h58a8 8 0 0 1 8 8v24a8 8 0 0 1-8 8h-40l-12 10v-10h-6a8 8 0 0 1-8-8V42a8 8 0 0 1 8-8z" fill="#2cb3f3"></path>
+<circle cx="168" cy="54" r="4" fill="#fff"></circle><circle cx="182" cy="54" r="4" fill="#fff"></circle><circle cx="196" cy="54" r="4" fill="#fff"></circle>
+<g transform="translate(40 96)"><path d="M0 0l14-14 6 6-14 14-8 2z" fill="#f29b52"></path><path d="M14-14l4-4 6 6-4 4z" fill="#0d2147"></path></g></svg></div><span class="num" aria-hidden="true"></span><h3 data-e="">Vous décrivez votre besoin</h3><p data-e="">Par le formulaire ou par téléphone : le type de locaux, la surface, la fréquence.</p></li>
+      <li class="step rv" style="--d:.15s" data-rep=""><div class="step-pic" aria-hidden="true"><svg viewBox="0 0 240 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="240" height="150" fill="#eaf4fc"></rect>
+<path d="M54 64l66-36 66 36v70H54z" fill="#142f64"></path>
+<g transform="rotate(-4 120 60)"><rect x="76" y="14" width="88" height="96" rx="4" fill="#fff" stroke="#dbe5ee" stroke-width="2"></rect>
+<rect x="86" y="26" width="34" height="6" rx="3" fill="#142f64"></rect><path d="M86 44h68M86 54h56M86 64h64M86 74h48" stroke="#8cc4ea" stroke-width="3" stroke-linecap="round"></path>
+<rect x="118" y="86" width="36" height="12" rx="3" fill="#2cb3f3"></rect></g>
+<path d="M54 84l66 36 66-36v50H54z" fill="#1d4182"></path><path d="M54 134l58-36M186 134l-58-36" stroke="#142f64" stroke-width="3"></path>
+<g transform="translate(180 40)"><circle r="18" fill="#3fbf9a"></circle><path d="M-8 0l5 6 11-12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path></g>
+<path transform="translate(44 36) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path></svg></div><span class="num" aria-hidden="true"></span><h3 data-e="">Nous vous envoyons un devis</h3><p data-e="">Gratuit et détaillé. Si besoin, nous passons voir les lieux avant.</p></li>
+      <li class="step rv" style="--d:.3s" data-rep=""><div class="step-pic" aria-hidden="true"><svg viewBox="0 0 240 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="240" height="150" fill="#eaf4fc"></rect><rect y="124" width="240" height="26" fill="#d2e4f2"></rect><rect y="122" width="240" height="3" fill="#b7d0e5"></rect>
+<rect x="160" y="22" width="56" height="86" rx="4" fill="#142f64"></rect><rect x="166" y="28" width="44" height="74" rx="2" fill="#a6dbf8"></rect><path d="M180 28h9l-20 74h-9z" fill="#fff" opacity=".4"></path>
+<g transform="translate(66 124) scale(1)"><path d="M-6-96v96" stroke="#c9a77a" stroke-width="5" stroke-linecap="round"></path><path d="M-20 0h28l-4 8h-20z" fill="#0d2147"></path><rect x="0" y="-62" width="92" height="8" rx="3" fill="#142f64"></rect><rect x="0" y="-18" width="92" height="8" rx="3" fill="#142f64"></rect><rect x="4" y="-62" width="6" height="58" fill="#142f64"></rect><rect x="82" y="-62" width="6" height="58" fill="#142f64"></rect><path d="M10-54h30l-3 36H13z" fill="#2cb3f3"></path><rect x="8" y="-58" width="34" height="6" rx="3" fill="#1e98d6"></rect><rect x="52" y="-50" width="14" height="32" rx="4" fill="#fff" stroke="#0d2147" stroke-width="2"></rect><rect x="54" y="-58" width="10" height="9" rx="2" fill="#0d2147"></rect><rect x="68" y="-40" width="12" height="22" rx="3" fill="#3fbf9a"></rect><rect x="12" y="-10" width="70" height="8" rx="3" fill="#f29b52"></rect><circle cx="14" cy="4" r="6" fill="#0d2147"></circle><circle cx="80" cy="4" r="6" fill="#0d2147"></circle><circle cx="14" cy="4" r="2" fill="#8cc4ea"></circle><circle cx="80" cy="4" r="2" fill="#8cc4ea"></circle></g>
+<path transform="translate(36 40) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(140 30) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path><path transform="translate(132 118) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path></svg></div><span class="num" aria-hidden="true"></span><h3 data-e="">Nous intervenons</h3><p data-e="">Aux jours et aux horaires convenus. Si quelque chose ne vous convient pas, dites-le-nous : nous ajustons.</p></li>
     </ol>
     <div class="steps-cta rv"><a href="#contact" class="btn btn-navy"><span data-e="">Demander un devis</span><span class="ar" aria-hidden="true">→</span></a></div>
   </div>
@@ -1567,7 +1609,16 @@ body.editing .chips{row-gap:44px;padding-top:40px}
       <p class="lead rv" style="--d:.25s"><span data-k="nom">A-Proclean</span> <span data-e="">est une entreprise de nettoyage professionnel au service des entreprises, des commerces, des copropriétés et des particuliers.</span></p>
       <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#services" class="btn btn-ghost"><span data-e="">Voir nos services</span></a></div>
     </div>
-    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" aria-hidden="true"><svg viewBox="0 0 200 200" focusable="false"><circle cx="100" cy="100" r="78" fill="#fff"></circle><path d="M100 42l46 17v34c0 29-20 46-46 53-26-7-46-24-46-53V59z" fill="#142f64"></path><path d="M100 54l34 12v27c0 22-15 35-34 41z" fill="#2cb3f3" opacity=".9"></path><path d="M80 99l14 14 28-29" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"></path><path d="M160 36c1.4 9 4.6 12 13.6 13.6-9 1.4-12.2 4.6-13.6 13.6-1.4-9-4.6-12.2-13.6-13.6 9-1.6 12.2-4.6 13.6-13.6z" fill="#2cb3f3"></path><path d="M40 140c1 6 3 8 9 9-6 1-8 3-9 9-1-6-3-8-9-9 6-1 8-3 9-9z" fill="#7fd0f7"></path></svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
+    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art pg-scene" aria-hidden="true"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<rect width="400" height="260" fill="#eaf4fc"></rect><rect y="204" width="400" height="56" fill="#d2e4f2"></rect><rect y="202" width="400" height="4" fill="#b7d0e5"></rect>
+<path d="M0 230c80-6 160-4 240 2s120 2 160-2v30H0z" fill="#fff" opacity=".35"></path>
+<rect x="40" y="40" width="88" height="164" rx="4" fill="#f7f1e8" stroke="#142f64" stroke-width="6"></rect><circle cx="112" cy="126" r="5" fill="#142f64"></circle><rect x="58" y="60" width="52" height="54" rx="3" fill="#a6dbf8"></rect>
+<rect x="272" y="34" width="96" height="104" rx="5" fill="#142f64"></rect><rect x="279" y="41" width="82" height="90" rx="2" fill="#a6dbf8"></rect><path d="M279 112c26-8 54-6 82 0v19h-82z" fill="#3fbf9a"></path><path d="M310 41h12l-30 90h-12z" fill="#fff" opacity=".4"></path>
+<rect x="266" y="136" width="108" height="7" rx="3" fill="#0d2147"></rect>
+<g transform="translate(170 204) scale(1.25)"><path d="M-6-96v96" stroke="#c9a77a" stroke-width="5" stroke-linecap="round"></path><path d="M-20 0h28l-4 8h-20z" fill="#0d2147"></path><rect x="0" y="-62" width="92" height="8" rx="3" fill="#142f64"></rect><rect x="0" y="-18" width="92" height="8" rx="3" fill="#142f64"></rect><rect x="4" y="-62" width="6" height="58" fill="#142f64"></rect><rect x="82" y="-62" width="6" height="58" fill="#142f64"></rect><path d="M10-54h30l-3 36H13z" fill="#2cb3f3"></path><rect x="8" y="-58" width="34" height="6" rx="3" fill="#1e98d6"></rect><rect x="52" y="-50" width="14" height="32" rx="4" fill="#fff" stroke="#0d2147" stroke-width="2"></rect><rect x="54" y="-58" width="10" height="9" rx="2" fill="#0d2147"></rect><rect x="68" y="-40" width="12" height="22" rx="3" fill="#3fbf9a"></rect><rect x="12" y="-10" width="70" height="8" rx="3" fill="#f29b52"></rect><circle cx="14" cy="4" r="6" fill="#0d2147"></circle><circle cx="80" cy="4" r="6" fill="#0d2147"></circle><circle cx="14" cy="4" r="2" fill="#8cc4ea"></circle><circle cx="80" cy="4" r="2" fill="#8cc4ea"></circle></g>
+<g transform="translate(372 168) scale(0.9)"><path d="M-2 0C-14-8-22-8-30-18c12-4 24 0 30 14" fill="#3fbf9a"></path><path d="M0-2C-6-20-2-36 8-48c6 14 2 30-6 46" fill="#2ea886"></path><path d="M2 0c6-14 18-22 32-22-4 12-14 20-30 24" fill="#3fbf9a"></path><rect x="-22" y="-2" width="46" height="9" rx="3" fill="#e3843a"></rect><path d="M-19 7h40l-5 30h-30z" fill="#f29b52"></path></g>
+<path transform="translate(250 70) scale(1.2)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(150 64) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path><path transform="translate(228 180) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path>
+</svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-ap-1"><div class="wrap pg-two">
     <div><h2 id="h-ap-1" class="sp" data-e="">Notre métier</h2></div>
