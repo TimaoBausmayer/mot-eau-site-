@@ -727,6 +727,30 @@ h2{font-size:clamp(2rem,3.5vw,2.9rem)}
 .faq-side{position:static}
 @media(max-width:640px){.srv-pic{margin:0 0 8px}.services{gap:36px}}
 
+
+/* ---------- Téléphone : plus compact ---------- */
+@media(max-width:640px){
+  section#services .services{grid-template-columns:1fr 1fr;gap:30px 14px}
+  #services .srv{gap:4px}
+  #services .srv-pic{margin:0 0 8px;border-radius:12px}
+  #services .srv h3{font-size:1.02rem;line-height:1.25}
+  #services .srv p{display:none}
+  body.editing #services .srv p{display:block}
+  #services .srv-more{font-size:.9rem}
+  #etapes .steps{gap:22px}
+  #etapes .steps .step{display:grid;grid-template-columns:112px 1fr;gap:2px 16px;align-items:start;padding-top:0}
+  #etapes .step-pic{grid-row:span 3;margin:0;border-radius:10px}
+  #etapes .step .num{margin:0;grid-row:auto}
+  #etapes .step .num,#etapes .step h3,#etapes .step p{grid-column:2}
+  #etapes .step .num::after{font-size:1.5rem}
+  #etapes .steps .step h3{font-size:1.02rem;margin:0 0 2px}
+  footer.foot-site .foot{grid-template-columns:1fr 1fr;gap:30px 20px}
+  footer.foot-site .foot>:first-child,footer.foot-site .foot>:nth-child(4){grid-column:1/-1}
+  footer.foot-site .foot>:nth-child(4) ul{display:flex;flex-wrap:wrap;gap:8px 18px}
+  footer.foot-site{padding-top:52px}
+}
+@media(max-width:980px){#up{display:none!important}}
+
 /* ---------- Impression ---------- */
 @media print{
   header.top,#bar,#up,.callbar,.ed-btn,.skip,.hero-visual,.map,.quick,.calm-btn,.f-bar,.burger{display:none!important}
@@ -1402,7 +1426,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
     <div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Intervenez-vous en dehors des heures d'ouverture ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Oui : tôt le matin, le soir ou le samedi, selon ce qui vous arrange. Les horaires sont convenus dans le devis.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Faut-il fournir le matériel et les produits ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Non, nous venons avec notre matériel et nos produits de nettoyage. La fourniture des consommables (papier, savon…) se précise dans le devis.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Comment est calculé le prix ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Selon la surface, la fréquence et les tâches demandées. Le devis gratuit détaille tout avant de commencer.</p></div></div></div>
   </div></section>
   <section class="pg-cta" aria-labelledby="h-nettoyage-bureaux-cta"><div class="wrap">
-    <h2 id="h-nettoyage-bureaux-cta" class="sp" data-e="">Besoin d\'un devis ?</h2>
+    <h2 id="h-nettoyage-bureaux-cta" class="sp" data-e="">Besoin d'un devis ?</h2>
     <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en quelques lignes. Le devis est gratuit et sans engagement.</p>
     <a href="#contact" class="btn btn-sky rv" style="--d:.25s" data-svc-of="nettoyage-bureaux"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
     <div class="others-w rv" style="--d:.35s"><p class="others-t" data-e="">Découvrez aussi nos autres services</p><nav class="others" aria-label="Nos autres services"><a href="#menage-domicile" class="qbtn">Logements &amp; particuliers</a><a href="#nettoyage-vitres" class="qbtn">Vitres &amp; vitrines</a><a href="#fin-de-chantier" class="qbtn">Fin de chantier</a><a href="#remise-en-etat" class="qbtn">Remise en état</a><a href="#copropriete" class="qbtn">Copropriétés</a></nav></div>
@@ -1444,7 +1468,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
     <div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Dois-je être présent pendant le ménage ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Pas forcément : nous convenons ensemble des modalités d'accès (clés, digicode) au moment du devis.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Apportez-vous les produits ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Oui, notre matériel et nos produits. Si vous préférez que nous utilisions les vôtres, dites-le-nous.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Faites-vous le nettoyage avant un état des lieux ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Oui, nous réalisons un nettoyage complet du logement avant une entrée ou une sortie.</p></div></div></div>
   </div></section>
   <section class="pg-cta" aria-labelledby="h-menage-domicile-cta"><div class="wrap">
-    <h2 id="h-menage-domicile-cta" class="sp" data-e="">Besoin d\'un devis ?</h2>
+    <h2 id="h-menage-domicile-cta" class="sp" data-e="">Besoin d'un devis ?</h2>
     <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en quelques lignes. Le devis est gratuit et sans engagement.</p>
     <a href="#contact" class="btn btn-sky rv" style="--d:.25s" data-svc-of="menage-domicile"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
     <div class="others-w rv" style="--d:.35s"><p class="others-t" data-e="">Découvrez aussi nos autres services</p><nav class="others" aria-label="Nos autres services"><a href="#nettoyage-bureaux" class="qbtn">Bureaux &amp; commerces</a><a href="#nettoyage-vitres" class="qbtn">Vitres &amp; vitrines</a><a href="#fin-de-chantier" class="qbtn">Fin de chantier</a><a href="#remise-en-etat" class="qbtn">Remise en état</a><a href="#copropriete" class="qbtn">Copropriétés</a></nav></div>
@@ -1484,7 +1508,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
     <div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Nettoyez-vous les vitres en hauteur ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Cela dépend de l'accès : nous l'étudions lors du devis et vous disons clairement ce que nous pouvons faire en sécurité.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Les cadres sont-ils compris ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Oui, les encadrements et les rebords sont nettoyés avec les vitres.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Intervenez-vous avant l'ouverture d'un commerce ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Oui, l'horaire est convenu avec vous pour ne pas gêner vos clients.</p></div></div></div>
   </div></section>
   <section class="pg-cta" aria-labelledby="h-nettoyage-vitres-cta"><div class="wrap">
-    <h2 id="h-nettoyage-vitres-cta" class="sp" data-e="">Besoin d\'un devis ?</h2>
+    <h2 id="h-nettoyage-vitres-cta" class="sp" data-e="">Besoin d'un devis ?</h2>
     <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en quelques lignes. Le devis est gratuit et sans engagement.</p>
     <a href="#contact" class="btn btn-sky rv" style="--d:.25s" data-svc-of="nettoyage-vitres"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
     <div class="others-w rv" style="--d:.35s"><p class="others-t" data-e="">Découvrez aussi nos autres services</p><nav class="others" aria-label="Nos autres services"><a href="#nettoyage-bureaux" class="qbtn">Bureaux &amp; commerces</a><a href="#menage-domicile" class="qbtn">Logements &amp; particuliers</a><a href="#fin-de-chantier" class="qbtn">Fin de chantier</a><a href="#remise-en-etat" class="qbtn">Remise en état</a><a href="#copropriete" class="qbtn">Copropriétés</a></nav></div>
@@ -1524,7 +1548,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
     <div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Quand faut-il prévoir le nettoyage ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Une fois les travaux terminés et les artisans partis. Prévenez-nous dès que vous connaissez la date de fin.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Pouvez-vous intervenir avant une livraison ou une visite ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Oui, indiquez-nous la date : nous l'intégrons au planning du devis.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Le matériel est-il fourni ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Oui, nous venons avec le matériel et les produits adaptés aux résidus de chantier.</p></div></div></div>
   </div></section>
   <section class="pg-cta" aria-labelledby="h-fin-de-chantier-cta"><div class="wrap">
-    <h2 id="h-fin-de-chantier-cta" class="sp" data-e="">Besoin d\'un devis ?</h2>
+    <h2 id="h-fin-de-chantier-cta" class="sp" data-e="">Besoin d'un devis ?</h2>
     <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en quelques lignes. Le devis est gratuit et sans engagement.</p>
     <a href="#contact" class="btn btn-sky rv" style="--d:.25s" data-svc-of="fin-de-chantier"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
     <div class="others-w rv" style="--d:.35s"><p class="others-t" data-e="">Découvrez aussi nos autres services</p><nav class="others" aria-label="Nos autres services"><a href="#nettoyage-bureaux" class="qbtn">Bureaux &amp; commerces</a><a href="#menage-domicile" class="qbtn">Logements &amp; particuliers</a><a href="#nettoyage-vitres" class="qbtn">Vitres &amp; vitrines</a><a href="#remise-en-etat" class="qbtn">Remise en état</a><a href="#copropriete" class="qbtn">Copropriétés</a></nav></div>
@@ -1563,7 +1587,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
     <div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Pouvez-vous rattraper n'importe quelle tache ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Nous faisons le maximum, mais certaines taches ou usures sont définitives : nous vous le disons avant de commencer.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Faut-il vider les pièces ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Idéalement oui, ou au moins dégager les sols : nous en parlons lors du devis.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Combien de temps dure une remise en état ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Cela dépend de la surface et de l'état des lieux : la durée est indiquée dans le devis.</p></div></div></div>
   </div></section>
   <section class="pg-cta" aria-labelledby="h-remise-en-etat-cta"><div class="wrap">
-    <h2 id="h-remise-en-etat-cta" class="sp" data-e="">Besoin d\'un devis ?</h2>
+    <h2 id="h-remise-en-etat-cta" class="sp" data-e="">Besoin d'un devis ?</h2>
     <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en quelques lignes. Le devis est gratuit et sans engagement.</p>
     <a href="#contact" class="btn btn-sky rv" style="--d:.25s" data-svc-of="remise-en-etat"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
     <div class="others-w rv" style="--d:.35s"><p class="others-t" data-e="">Découvrez aussi nos autres services</p><nav class="others" aria-label="Nos autres services"><a href="#nettoyage-bureaux" class="qbtn">Bureaux &amp; commerces</a><a href="#menage-domicile" class="qbtn">Logements &amp; particuliers</a><a href="#nettoyage-vitres" class="qbtn">Vitres &amp; vitrines</a><a href="#fin-de-chantier" class="qbtn">Fin de chantier</a><a href="#copropriete" class="qbtn">Copropriétés</a></nav></div>
@@ -1605,7 +1629,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
     <div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Travaillez-vous avec les syndics ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Oui : nous établissons un devis et un planning adaptés à l'immeuble, à présenter au conseil syndical si besoin.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Pouvez-vous sortir et rentrer les poubelles ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">C'est possible selon les jours de collecte : précisez-le dans votre demande.</p></div></div></div><div class="qa rv" data-rep=""><h3><button type="button" aria-expanded="false"><span data-e="">Que se passe-t-il en cas d'absence d'un agent ?</span><i class="x" aria-hidden="true"></i></button></h3><div class="a"><div><p data-e="">Le passage est reprogrammé avec vous : les modalités sont précisées dans le devis.</p></div></div></div>
   </div></section>
   <section class="pg-cta" aria-labelledby="h-copropriete-cta"><div class="wrap">
-    <h2 id="h-copropriete-cta" class="sp" data-e="">Besoin d\'un devis ?</h2>
+    <h2 id="h-copropriete-cta" class="sp" data-e="">Besoin d'un devis ?</h2>
     <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en quelques lignes. Le devis est gratuit et sans engagement.</p>
     <a href="#contact" class="btn btn-sky rv" style="--d:.25s" data-svc-of="copropriete"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
     <div class="others-w rv" style="--d:.35s"><p class="others-t" data-e="">Découvrez aussi nos autres services</p><nav class="others" aria-label="Nos autres services"><a href="#nettoyage-bureaux" class="qbtn">Bureaux &amp; commerces</a><a href="#menage-domicile" class="qbtn">Logements &amp; particuliers</a><a href="#nettoyage-vitres" class="qbtn">Vitres &amp; vitrines</a><a href="#fin-de-chantier" class="qbtn">Fin de chantier</a><a href="#remise-en-etat" class="qbtn">Remise en état</a></nav></div>
@@ -1648,7 +1672,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
     <ul class="inc inc-lg rv" data-e=""><li>Devis gratuit et sans engagement</li><li>Des prix clairs, sans frais cachés</li><li>Le respect de vos horaires et de vos locaux</li><li>La discrétion chez vous comme dans vos bureaux</li><li>Des produits adaptés à chaque surface</li></ul>
   </div></section>
   <section class="pg-cta" aria-labelledby="h-a-propos-cta"><div class="wrap">
-    <h2 id="h-a-propos-cta" class="sp" data-e="">Besoin d\'un devis ?</h2>
+    <h2 id="h-a-propos-cta" class="sp" data-e="">Besoin d'un devis ?</h2>
     <p class="rv" style="--d:.15s" data-e="">Décrivez votre besoin en quelques lignes. Le devis est gratuit et sans engagement.</p>
     <a href="#contact" class="btn btn-sky rv" style="--d:.25s"><span data-e="">Demander mon devis gratuit</span><span class="ar" aria-hidden="true">→</span></a>
     <div class="others-w rv" style="--d:.35s"><p class="others-t" data-e="">Découvrez aussi nos autres services</p><nav class="others" aria-label="Nos autres services"><a href="#nettoyage-bureaux" class="qbtn">Bureaux &amp; commerces</a><a href="#menage-domicile" class="qbtn">Logements &amp; particuliers</a><a href="#nettoyage-vitres" class="qbtn">Vitres &amp; vitrines</a><a href="#fin-de-chantier" class="qbtn">Fin de chantier</a><a href="#remise-en-etat" class="qbtn">Remise en état</a><a href="#copropriete" class="qbtn">Copropriétés</a></nav></div>
