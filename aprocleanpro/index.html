@@ -652,6 +652,18 @@ h2{font-size:clamp(2rem,3.5vw,2.9rem)}
   section{padding:68px 0}
 }
 
+
+/* ---------- Illustrations des prestations ---------- */
+.srv-pic{position:relative;margin:-30px -30px 8px;aspect-ratio:400/230;border-radius:12px 12px 0 0;overflow:hidden;background:#eaf4fc}
+.srv-pic::after{display:none}
+.srv-pic svg{position:absolute;inset:0;width:100%;height:100%;transition:transform .8s var(--ease)}
+.srv:hover .srv-pic svg{transform:scale(1.04)}
+.pg-visual:has(.pg-art[data-art]){aspect-ratio:400/280;max-width:540px}
+.pg-art[data-art]{background:#eaf4fc}
+.pg-art[data-art]::before,.pg-art[data-art]::after{display:none}
+.pg-art[data-art] svg{position:absolute;inset:0;width:100%;height:100%;filter:none;animation:none}
+@media(max-width:640px){.srv-pic{margin:-30px -30px 6px}}
+
 /* ---------- Impression ---------- */
 @media print{
   header.top,#bar,#up,.callbar,.ed-btn,.skip,.hero-visual,.map,.quick,.calm-btn,.f-bar,.burger{display:none!important}
@@ -963,42 +975,110 @@ body.editing .chips{row-gap:44px;padding-top:40px}
     </div>
     <div class="services">
       <article class="srv rv" data-page="nettoyage-bureaux" data-rep="">
-        <span class="srv-ic" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 42V13l15-7 15 7v29" fill="#fff"></path><path d="M4 42h40"></path><g fill="#a8dcf8" stroke="none"><rect x="14" y="16" width="7" height="6" rx="1.5"></rect><rect x="27" y="16" width="7" height="6" rx="1.5"></rect><rect x="14" y="26" width="7" height="6" rx="1.5"></rect><rect x="27" y="26" width="7" height="6" rx="1.5"></rect></g><path d="M20 42v-6h8v6"></path></svg></span>
+        <div class="ph srv-pic" data-img=""><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<rect width="400" height="260" fill="#eaf4fc"></rect><rect y="200" width="400" height="60" fill="#d2e4f2"></rect><rect y="198" width="400" height="4" fill="#b7d0e5"></rect>
+<rect x="232" y="26" width="140" height="112" rx="6" fill="#142f64"></rect><rect x="240" y="34" width="124" height="96" rx="3" fill="#a6dbf8"></rect>
+<rect x="252" y="92" width="18" height="38" fill="#8cc4ea"></rect><rect x="274" y="76" width="22" height="54" fill="#8cc4ea"></rect><rect x="326" y="86" width="20" height="44" fill="#8cc4ea"></rect>
+<path d="M240 118c40-8 80-6 124 0v12H240z" fill="#3fbf9a"></path><path d="M286 34h14l-34 96h-14z" fill="#fff" opacity=".35"></path><rect x="300" y="34" width="4" height="96" fill="#142f64"></rect>
+<rect x="226" y="136" width="152" height="8" rx="3" fill="#0d2147"></rect>
+<rect x="34" y="150" width="206" height="10" rx="3" fill="#142f64"></rect><rect x="46" y="160" width="8" height="40" fill="#142f64"></rect><rect x="220" y="160" width="8" height="40" fill="#142f64"></rect>
+<rect x="160" y="160" width="56" height="32" rx="3" fill="#2b5196"></rect><rect x="182" y="173" width="12" height="4" rx="2" fill="#8cc4ea"></rect>
+<rect x="74" y="84" width="100" height="62" rx="5" fill="#0d2147"></rect><rect x="80" y="90" width="88" height="48" rx="2" fill="#2cb3f3"></rect>
+<path d="M90 104h44M90 114h60M90 124h32" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".85"></path>
+<rect x="118" y="146" width="12" height="5" fill="#0d2147"></rect><rect x="104" y="148" width="40" height="3" rx="1.5" fill="#0d2147"></rect>
+<path d="M190 148l10-34 8 2-6 32z" fill="#142f64"></path><path d="M196 112c4-10 18-12 22-2z" fill="#f29b52"></path>
+<path d="M18 200l6-34h34l6 34" fill="none" stroke="#0d2147" stroke-width="5" stroke-linecap="round"></path><rect x="14" y="132" width="54" height="38" rx="10" fill="#2cb3f3"></rect><rect x="18" y="162" width="46" height="10" rx="5" fill="#142f64"></rect>
+<g transform="translate(342 164) scale(1)"><path d="M-2 0C-14-8-22-8-30-18c12-4 24 0 30 14" fill="#3fbf9a"></path><path d="M0-2C-6-20-2-36 8-48c6 14 2 30-6 46" fill="#2ea886"></path><path d="M2 0c6-14 18-22 32-22-4 12-14 20-30 24" fill="#3fbf9a"></path><rect x="-22" y="-2" width="46" height="9" rx="3" fill="#e3843a"></rect><path d="M-19 7h40l-5 30h-30z" fill="#f29b52"></path></g>
+<path transform="translate(150 76) scale(1.1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(212 70) scale(0.7)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
+</svg><img alt="" loading="lazy" decoding="async"></div>
         <h3 data-e="">Bureaux &amp; commerces</h3>
         <p data-e="">Des espaces de travail propres et accueillants, pour vos équipes comme pour vos clients.</p>
         <ul class="inc" data-e=""><li>Bureaux, sanitaires, coin cuisine</li><li>Corbeilles vidées, consommables</li><li>Poignées et interrupteurs désinfectés</li></ul>
         <div class="srv-links"><a class="srv-more" href="#nettoyage-bureaux">En savoir plus<span class="sr"> sur ce service</span></a><a class="srv-cta" href="#contact">Demander un devis <span class="ar" aria-hidden="true">→</span></a></div>
       </article>
       <article class="srv rv" data-page="menage-domicile" style="--d:.08s" data-rep="">
-        <span class="srv-ic" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 23L24 8l18 15"></path><path d="M10 20v22h28V20" fill="#fff"></path><rect x="19" y="29" width="10" height="13" rx="1.5" fill="#a8dcf8"></rect><rect x="29" y="23" width="5" height="5" rx="1" fill="#a8dcf8" stroke="none"></rect></svg></span>
+        <div class="ph srv-pic" data-img=""><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<rect width="400" height="260" fill="#f2f7fc"></rect><rect y="200" width="400" height="60" fill="#e4d9c8"></rect><rect y="198" width="400" height="4" fill="#cfc2ad"></rect>
+<rect x="40" y="30" width="96" height="120" rx="6" fill="#142f64"></rect><rect x="47" y="37" width="82" height="106" rx="3" fill="#a6dbf8"></rect><path d="M47 118c26-8 54-6 82 0v25H47z" fill="#3fbf9a"></path>
+<path d="M86 37h12l-30 106h-12z" fill="#fff" opacity=".35"></path><rect x="86" y="37" width="4" height="106" fill="#142f64"></rect><circle cx="112" cy="62" r="10" fill="#ffd25e"></circle>
+<rect x="178" y="48" width="64" height="46" rx="3" fill="#e3843a"></rect><rect x="184" y="54" width="52" height="34" rx="2" fill="#ffe9cf"></rect><path d="M188 82l14-14 10 8 8-6 12 12z" fill="#2ea886"></path>
+<rect x="160" y="128" width="190" height="52" rx="14" fill="#2cb3f3"></rect><rect x="152" y="140" width="26" height="54" rx="10" fill="#1e98d6"></rect><rect x="332" y="140" width="26" height="54" rx="10" fill="#1e98d6"></rect>
+<rect x="170" y="164" width="172" height="26" rx="8" fill="#5ec7f7"></rect><rect x="176" y="112" width="70" height="40" rx="12" fill="#7fd3f8"></rect><rect x="262" y="112" width="70" height="40" rx="12" fill="#7fd3f8"></rect>
+<rect x="168" y="190" width="6" height="12" fill="#0d2147"></rect><rect x="336" y="190" width="6" height="12" fill="#0d2147"></rect>
+<ellipse cx="250" cy="226" rx="120" ry="14" fill="#fff" opacity=".55"></ellipse>
+<path d="M372 200V112" stroke="#0d2147" stroke-width="4"></path><path d="M356 112h32l-8-26h-16z" fill="#f29b52"></path><rect x="362" y="198" width="20" height="4" rx="2" fill="#0d2147"></rect>
+<g transform="translate(70 168)"><path d="M0 0h34l-4 34H4z" fill="#142f64"></path><rect x="-3" y="-4" width="40" height="7" rx="3" fill="#0d2147"></rect><path d="M30-4l20-70" stroke="#c9a77a" stroke-width="4" stroke-linecap="round"></path></g>
+<path transform="translate(214 30) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(150 104) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path><path transform="translate(360 64) scale(0.7)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
+</svg><img alt="" loading="lazy" decoding="async"></div>
         <h3 data-e="">Logements &amp; particuliers</h3>
         <p data-e="">Ménage régulier ou grand nettoyage : vous retrouvez une maison propre, sans y passer votre week-end.</p>
         <ul class="inc" data-e=""><li>Ménage régulier ou ponctuel</li><li>Cuisine et salle de bains à fond</li><li>Entrée ou sortie de logement</li></ul>
         <div class="srv-links"><a class="srv-more" href="#menage-domicile">En savoir plus<span class="sr"> sur ce service</span></a><a class="srv-cta" href="#contact">Demander un devis <span class="ar" aria-hidden="true">→</span></a></div>
       </article>
       <article class="srv rv" data-page="nettoyage-vitres" style="--d:.16s" data-rep="">
-        <span class="srv-ic" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="26" height="34" rx="3" fill="#a8dcf8"></rect><path d="M19 6v34M6 23h26"></path><path d="M10 18l5-5M23 34l5-5" stroke="#fff" stroke-width="2.6"></path><path d="M33 31l9 9" stroke-width="3.2"></path><path d="M28 36l10-10" stroke="#0b66ad" stroke-width="3.2"></path></svg></span>
+        <div class="ph srv-pic" data-img=""><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<rect width="400" height="260" fill="#dff0fb"></rect><rect y="214" width="400" height="46" fill="#c4d9ea"></rect><rect y="212" width="400" height="4" fill="#a9c4da"></rect>
+<rect x="34" y="20" width="332" height="194" fill="#f7f1e8"></rect><rect x="34" y="20" width="332" height="16" fill="#142f64"></rect>
+<path d="M34 44h332l-10 30H44z" fill="#2cb3f3"></path><path d="M44 74h52l-6-30H38zM148 74h52l-4-30h-44zM252 74h52l4-30h-48z" fill="#fff" opacity=".8"></path><path d="M356 74h-52l8-30h48z" fill="#fff" opacity=".8"></path>
+<rect x="52" y="90" width="196" height="116" rx="3" fill="#142f64"></rect><rect x="58" y="96" width="184" height="104" rx="2" fill="#a6dbf8"></rect>
+<path d="M98 96h22l-50 104H58v-8z" fill="#fff" opacity=".55"></path><path d="M134 96h10l-50 104h-10z" fill="#fff" opacity=".45"></path>
+<rect x="76" y="160" width="40" height="40" rx="3" fill="#f29b52" opacity=".9"></rect><rect x="124" y="146" width="34" height="54" rx="3" fill="#3fbf9a" opacity=".9"></rect><rect x="166" y="168" width="56" height="32" rx="3" fill="#ffd25e" opacity=".9"></rect>
+<rect x="264" y="90" width="84" height="122" rx="3" fill="#142f64"></rect><rect x="270" y="96" width="72" height="110" rx="2" fill="#a6dbf8"></rect><path d="M300 96h12l-30 110h-12z" fill="#fff" opacity=".5"></path><rect x="330" y="146" width="6" height="18" rx="3" fill="#0d2147"></rect>
+<g transform="translate(206 132) rotate(-28)"><rect x="-3" y="-110" width="6" height="110" rx="3" fill="#c9a77a"></rect><rect x="-26" y="-118" width="52" height="10" rx="5" fill="#0d2147"></rect><rect x="-24" y="-110" width="48" height="4" rx="2" fill="#2cb3f3"></rect></g>
+<path transform="translate(122 116) scale(1.3)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(216 126) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(318 120) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path>
+</svg><img alt="" loading="lazy" decoding="async"></div>
         <h3 data-e="">Vitres &amp; vitrines</h3>
         <p data-e="">Des surfaces vitrées nettes et sans traces, qui laissent entrer la lumière et attirent le regard.</p>
         <ul class="inc" data-e=""><li>Vitrines de commerces</li><li>Baies vitrées et vérandas</li><li>Cadres et rebords compris</li></ul>
         <div class="srv-links"><a class="srv-more" href="#nettoyage-vitres">En savoir plus<span class="sr"> sur ce service</span></a><a class="srv-cta" href="#contact">Demander un devis <span class="ar" aria-hidden="true">→</span></a></div>
       </article>
       <article class="srv rv" data-page="fin-de-chantier" data-rep="">
-        <span class="srv-ic" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="7" width="28" height="11" rx="3" fill="#a8dcf8"></rect><path d="M34 12h5v10H21v6"></path><rect x="18" y="28" width="6" height="14" rx="2" fill="#fff"></rect><path d="M8 26h6M10 32h4M8 38h4" stroke="#2cb3f3"></path></svg></span>
+        <div class="ph srv-pic" data-img=""><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<rect width="400" height="260" fill="#eef5fb"></rect><rect y="196" width="400" height="64" fill="#e7dccb"></rect><rect y="194" width="400" height="4" fill="#cdbfa8"></rect>
+<path d="M0 196h170v64H0z" fill="#d9ccb7"></path><path d="M0 214c40 6 70 2 110 10s50 0 60-8v44H0z" fill="#cbbca4" opacity=".7"></path>
+<rect x="250" y="34" width="110" height="100" rx="5" fill="#142f64"></rect><rect x="257" y="41" width="96" height="86" rx="2" fill="#a6dbf8"></rect><path d="M290 41h12l-30 86h-12z" fill="#fff" opacity=".4"></path>
+<g stroke="#0d2147" stroke-width="6" stroke-linecap="round"><path d="M92 196l34-150M156 196l-30-150"></path></g><g stroke="#0d2147" stroke-width="5"><path d="M101 160h46M108 128h33M115 96h22"></path></g>
+<rect x="114" y="38" width="26" height="12" rx="3" fill="#142f64"></rect>
+<g transform="translate(196 160)"><rect width="44" height="38" rx="4" fill="#fff" stroke="#0d2147" stroke-width="3"></rect><rect y="0" width="44" height="10" rx="3" fill="#2cb3f3"></rect><path d="M8 38v-8M36 38v-6" stroke="#2cb3f3" stroke-width="3"></path></g>
+<g transform="translate(276 192)"><rect x="-6" y="0" width="70" height="8" rx="4" fill="#142f64"></rect><rect x="-2" y="-30" width="62" height="30" rx="10" fill="#2cb3f3"></rect><path d="M30-30v-40" stroke="#0d2147" stroke-width="5" stroke-linecap="round"></path><rect x="22" y="-80" width="16" height="14" rx="4" fill="#0d2147"></rect></g>
+<g fill="#b9a68a" opacity=".55"><circle cx="40" cy="206" r="10"></circle><circle cx="58" cy="214" r="7"></circle><circle cx="26" cy="222" r="6"></circle></g>
+<path transform="translate(214 222) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(300 218) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(352 210) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(190 120) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
+</svg><img alt="" loading="lazy" decoding="async"></div>
         <h3 data-e="">Fin de chantier</h3>
         <p data-e="">Après des travaux, nous retirons poussières et traces pour des locaux prêts à être livrés ou habités.</p>
         <ul class="inc" data-e=""><li>Poussières fines et gravats légers</li><li>Traces de peinture, plâtre, colle</li><li>Sols, vitres et menuiseries</li></ul>
         <div class="srv-links"><a class="srv-more" href="#fin-de-chantier">En savoir plus<span class="sr"> sur ce service</span></a><a class="srv-cta" href="#contact">Demander un devis <span class="ar" aria-hidden="true">→</span></a></div>
       </article>
       <article class="srv rv" data-page="remise-en-etat" style="--d:.08s" data-rep="">
-        <span class="srv-ic" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18h14l4 6v15a3 3 0 0 1-3 3H17a3 3 0 0 1-3-3V22z" fill="#a8dcf8"></path><path d="M18 18v-6h11l6 3"></path><path d="M22 12V7h8"></path><rect x="18" y="27" width="12" height="8" rx="2" fill="#fff"></rect><g fill="#2cb3f3" stroke="none"><circle cx="40" cy="9" r="1.8"></circle><circle cx="44" cy="13" r="1.4"></circle><circle cx="43" cy="6" r="1.2"></circle></g></svg></span>
+        <div class="ph srv-pic" data-img=""><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<rect width="400" height="260" fill="#eaf4fc"></rect><rect y="168" width="400" height="92" fill="#cfe1f0"></rect><rect y="166" width="400" height="4" fill="#b2cbe0"></rect>
+<path d="M0 168h200v92H0z" fill="#c2c7cc"></path><g stroke="#aeb4ba" stroke-width="2"><path d="M0 200h200M0 232h200M60 168v92M130 168v92"></path></g>
+<g stroke="#e9f4fc" stroke-width="2"><path d="M200 200h200M200 232h200M260 168v92M330 168v92"></path></g>
+<path d="M216 248c40-6 120-6 170 0" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".7"></path><path d="M226 186c30-4 90-4 140 0" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".6"></path>
+<rect x="40" y="30" width="96" height="92" rx="5" fill="#142f64"></rect><rect x="47" y="37" width="82" height="78" rx="2" fill="#a6dbf8"></rect><path d="M80 37h12l-26 78h-12z" fill="#fff" opacity=".4"></path>
+<g transform="translate(206 202)"><ellipse cx="0" cy="10" rx="56" ry="12" fill="#0d2147" opacity=".18"></ellipse><rect x="-50" y="-14" width="100" height="22" rx="11" fill="#142f64"></rect><rect x="-42" y="-24" width="84" height="16" rx="8" fill="#2cb3f3"></rect>
+<path d="M0-24l40-110" stroke="#0d2147" stroke-width="7" stroke-linecap="round"></path><rect x="26" y="-146" width="40" height="12" rx="6" fill="#0d2147" transform="rotate(-20 46 -140)"></rect></g>
+<path transform="translate(300 210) scale(1.3)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(350 190) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(262 236) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(370 236) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path>
+</svg><img alt="" loading="lazy" decoding="async"></div>
         <h3 data-e="">Remise en état</h3>
         <p data-e="">Pour les sols et surfaces fatigués : un nettoyage en profondeur qui leur redonne de l'éclat.</p>
         <ul class="inc" data-e=""><li>Décapage et lustrage des sols</li><li>Moquettes et surfaces encrassées</li><li>Dégraissage et détartrage</li></ul>
         <div class="srv-links"><a class="srv-more" href="#remise-en-etat">En savoir plus<span class="sr"> sur ce service</span></a><a class="srv-cta" href="#contact">Demander un devis <span class="ar" aria-hidden="true">→</span></a></div>
       </article>
       <article class="srv rv" data-page="copropriete" style="--d:.16s" data-rep="">
-        <span class="srv-ic" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="5" width="22" height="37" rx="2" fill="#fff"></rect><rect x="31" y="17" width="9" height="25" rx="1.5" fill="#a8dcf8"></rect><g fill="#a8dcf8" stroke="none"><rect x="13" y="10" width="5" height="5" rx="1"></rect><rect x="22" y="10" width="5" height="5" rx="1"></rect><rect x="13" y="19" width="5" height="5" rx="1"></rect><rect x="22" y="19" width="5" height="5" rx="1"></rect><rect x="13" y="28" width="5" height="5" rx="1"></rect><rect x="22" y="28" width="5" height="5" rx="1"></rect></g><path d="M17 42v-5h6v5M4 42h40"></path></svg></span>
+        <div class="ph srv-pic" data-img=""><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<rect width="400" height="260" fill="#f1f6fb"></rect><rect y="206" width="400" height="54" fill="#d6e3ee"></rect><rect y="204" width="400" height="4" fill="#b8cde0"></rect>
+<g fill="#c7d8e8"><path d="M0 206h400v54H0z" opacity=".4"></path></g><path d="M20 236h360" stroke="#fff" stroke-width="3" opacity=".7"></path>
+<rect x="30" y="58" width="120" height="96" rx="4" fill="#142f64"></rect>
+<g fill="#2cb3f3"><rect x="38" y="66" width="31" height="23" rx="2"></rect><rect x="75" y="66" width="31" height="23" rx="2"></rect><rect x="112" y="66" width="31" height="23" rx="2"></rect><rect x="38" y="95" width="31" height="23" rx="2"></rect><rect x="75" y="95" width="31" height="23" rx="2"></rect><rect x="112" y="95" width="31" height="23" rx="2"></rect><rect x="38" y="124" width="31" height="23" rx="2"></rect><rect x="75" y="124" width="31" height="23" rx="2"></rect><rect x="112" y="124" width="31" height="23" rx="2"></rect></g>
+<g fill="#0d2147"><rect x="46" y="74" width="15" height="3" rx="1.5"></rect><rect x="83" y="74" width="15" height="3" rx="1.5"></rect><rect x="120" y="74" width="15" height="3" rx="1.5"></rect><rect x="46" y="103" width="15" height="3" rx="1.5"></rect><rect x="83" y="103" width="15" height="3" rx="1.5"></rect><rect x="120" y="103" width="15" height="3" rx="1.5"></rect><rect x="46" y="132" width="15" height="3" rx="1.5"></rect><rect x="83" y="132" width="15" height="3" rx="1.5"></rect><rect x="120" y="132" width="15" height="3" rx="1.5"></rect></g>
+<rect x="176" y="40" width="96" height="166" rx="4" fill="#9fb4c8"></rect><rect x="182" y="58" width="84" height="148" fill="#c6d5e2"></rect><rect x="223" y="58" width="2" height="148" fill="#9fb4c8"></rect>
+<rect x="206" y="44" width="36" height="10" rx="3" fill="#0d2147"></rect><path d="M216 49l4-3 4 3M228 47l4 3 4-3" stroke="#2cb3f3" stroke-width="2" fill="none"></path>
+<path d="M196 70h20l-30 120h-4z" fill="#fff" opacity=".5"></path><rect x="278" y="118" width="8" height="16" rx="3" fill="#142f64"></rect><circle cx="282" cy="122" r="2" fill="#2cb3f3"></circle>
+<g transform="translate(300 70)"><rect width="76" height="136" rx="4" fill="#142f64"></rect><rect x="6" y="6" width="64" height="124" rx="2" fill="#a6dbf8"></rect><path d="M30 6h12l-26 124h-12z" fill="#fff" opacity=".45"></path><rect x="58" y="70" width="5" height="16" rx="2.5" fill="#0d2147"></rect></g>
+<g transform="translate(350 170) scale(0.8)"><path d="M-2 0C-14-8-22-8-30-18c12-4 24 0 30 14" fill="#3fbf9a"></path><path d="M0-2C-6-20-2-36 8-48c6 14 2 30-6 46" fill="#2ea886"></path><path d="M2 0c6-14 18-22 32-22-4 12-14 20-30 24" fill="#3fbf9a"></path><rect x="-22" y="-2" width="46" height="9" rx="3" fill="#e3843a"></rect><path d="M-19 7h40l-5 30h-30z" fill="#f29b52"></path></g>
+<path transform="translate(250 220) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(110 226) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(160 46) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
+</svg><img alt="" loading="lazy" decoding="async"></div>
         <h3 data-e="">Copropriétés</h3>
         <p data-e="">Des parties communes soignées toute l'année, selon un planning fixe et suivi.</p>
         <ul class="inc" data-e=""><li>Halls, escaliers, paliers</li><li>Ascenseurs et vitres communes</li><li>Local poubelles</li></ul>
@@ -1239,7 +1319,22 @@ body.editing .chips{row-gap:44px;padding-top:40px}
       <p class="lead rv" style="--d:.25s" data-e="">Des locaux propres et accueillants pour vos équipes comme pour vos clients. Nous intervenons tôt le matin, le soir ou le samedi, pour ne pas gêner votre activité.</p>
       <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy" data-svc-of="nettoyage-bureaux"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
     </div>
-    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="nettoyage-bureaux" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 42V13l15-7 15 7v29" fill="#fff"></path><path d="M4 42h40"></path><g fill="#a8dcf8" stroke="none"><rect x="14" y="16" width="7" height="6" rx="1.5"></rect><rect x="27" y="16" width="7" height="6" rx="1.5"></rect><rect x="14" y="26" width="7" height="6" rx="1.5"></rect><rect x="27" y="26" width="7" height="6" rx="1.5"></rect></g><path d="M20 42v-6h8v6"></path></svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
+    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="nettoyage-bureaux" aria-hidden="true"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<rect width="400" height="260" fill="#eaf4fc"></rect><rect y="200" width="400" height="60" fill="#d2e4f2"></rect><rect y="198" width="400" height="4" fill="#b7d0e5"></rect>
+<rect x="232" y="26" width="140" height="112" rx="6" fill="#142f64"></rect><rect x="240" y="34" width="124" height="96" rx="3" fill="#a6dbf8"></rect>
+<rect x="252" y="92" width="18" height="38" fill="#8cc4ea"></rect><rect x="274" y="76" width="22" height="54" fill="#8cc4ea"></rect><rect x="326" y="86" width="20" height="44" fill="#8cc4ea"></rect>
+<path d="M240 118c40-8 80-6 124 0v12H240z" fill="#3fbf9a"></path><path d="M286 34h14l-34 96h-14z" fill="#fff" opacity=".35"></path><rect x="300" y="34" width="4" height="96" fill="#142f64"></rect>
+<rect x="226" y="136" width="152" height="8" rx="3" fill="#0d2147"></rect>
+<rect x="34" y="150" width="206" height="10" rx="3" fill="#142f64"></rect><rect x="46" y="160" width="8" height="40" fill="#142f64"></rect><rect x="220" y="160" width="8" height="40" fill="#142f64"></rect>
+<rect x="160" y="160" width="56" height="32" rx="3" fill="#2b5196"></rect><rect x="182" y="173" width="12" height="4" rx="2" fill="#8cc4ea"></rect>
+<rect x="74" y="84" width="100" height="62" rx="5" fill="#0d2147"></rect><rect x="80" y="90" width="88" height="48" rx="2" fill="#2cb3f3"></rect>
+<path d="M90 104h44M90 114h60M90 124h32" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".85"></path>
+<rect x="118" y="146" width="12" height="5" fill="#0d2147"></rect><rect x="104" y="148" width="40" height="3" rx="1.5" fill="#0d2147"></rect>
+<path d="M190 148l10-34 8 2-6 32z" fill="#142f64"></path><path d="M196 112c4-10 18-12 22-2z" fill="#f29b52"></path>
+<path d="M18 200l6-34h34l6 34" fill="none" stroke="#0d2147" stroke-width="5" stroke-linecap="round"></path><rect x="14" y="132" width="54" height="38" rx="10" fill="#2cb3f3"></rect><rect x="18" y="162" width="46" height="10" rx="5" fill="#142f64"></rect>
+<g transform="translate(342 164) scale(1)"><path d="M-2 0C-14-8-22-8-30-18c12-4 24 0 30 14" fill="#3fbf9a"></path><path d="M0-2C-6-20-2-36 8-48c6 14 2 30-6 46" fill="#2ea886"></path><path d="M2 0c6-14 18-22 32-22-4 12-14 20-30 24" fill="#3fbf9a"></path><rect x="-22" y="-2" width="46" height="9" rx="3" fill="#e3843a"></rect><path d="M-19 7h40l-5 30h-30z" fill="#f29b52"></path></g>
+<path transform="translate(150 76) scale(1.1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(212 70) scale(0.7)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
+</svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-nettoyage-bureaux-1"><div class="wrap">
     <div class="head"><h2 id="h-nettoyage-bureaux-1" class="sp" data-e="">Ce qui est compris</h2></div>
@@ -1269,7 +1364,19 @@ body.editing .chips{row-gap:44px;padding-top:40px}
       <p class="lead rv" style="--d:.25s" data-e="">Retrouvez une maison propre sans y passer vos soirées : ménage régulier, grand nettoyage ou nettoyage avant un déménagement.</p>
       <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy" data-svc-of="menage-domicile"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
     </div>
-    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="menage-domicile" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 23L24 8l18 15"></path><path d="M10 20v22h28V20" fill="#fff"></path><rect x="19" y="29" width="10" height="13" rx="1.5" fill="#a8dcf8"></rect><rect x="29" y="23" width="5" height="5" rx="1" fill="#a8dcf8" stroke="none"></rect></svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
+    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="menage-domicile" aria-hidden="true"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<rect width="400" height="260" fill="#f2f7fc"></rect><rect y="200" width="400" height="60" fill="#e4d9c8"></rect><rect y="198" width="400" height="4" fill="#cfc2ad"></rect>
+<rect x="40" y="30" width="96" height="120" rx="6" fill="#142f64"></rect><rect x="47" y="37" width="82" height="106" rx="3" fill="#a6dbf8"></rect><path d="M47 118c26-8 54-6 82 0v25H47z" fill="#3fbf9a"></path>
+<path d="M86 37h12l-30 106h-12z" fill="#fff" opacity=".35"></path><rect x="86" y="37" width="4" height="106" fill="#142f64"></rect><circle cx="112" cy="62" r="10" fill="#ffd25e"></circle>
+<rect x="178" y="48" width="64" height="46" rx="3" fill="#e3843a"></rect><rect x="184" y="54" width="52" height="34" rx="2" fill="#ffe9cf"></rect><path d="M188 82l14-14 10 8 8-6 12 12z" fill="#2ea886"></path>
+<rect x="160" y="128" width="190" height="52" rx="14" fill="#2cb3f3"></rect><rect x="152" y="140" width="26" height="54" rx="10" fill="#1e98d6"></rect><rect x="332" y="140" width="26" height="54" rx="10" fill="#1e98d6"></rect>
+<rect x="170" y="164" width="172" height="26" rx="8" fill="#5ec7f7"></rect><rect x="176" y="112" width="70" height="40" rx="12" fill="#7fd3f8"></rect><rect x="262" y="112" width="70" height="40" rx="12" fill="#7fd3f8"></rect>
+<rect x="168" y="190" width="6" height="12" fill="#0d2147"></rect><rect x="336" y="190" width="6" height="12" fill="#0d2147"></rect>
+<ellipse cx="250" cy="226" rx="120" ry="14" fill="#fff" opacity=".55"></ellipse>
+<path d="M372 200V112" stroke="#0d2147" stroke-width="4"></path><path d="M356 112h32l-8-26h-16z" fill="#f29b52"></path><rect x="362" y="198" width="20" height="4" rx="2" fill="#0d2147"></rect>
+<g transform="translate(70 168)"><path d="M0 0h34l-4 34H4z" fill="#142f64"></path><rect x="-3" y="-4" width="40" height="7" rx="3" fill="#0d2147"></rect><path d="M30-4l20-70" stroke="#c9a77a" stroke-width="4" stroke-linecap="round"></path></g>
+<path transform="translate(214 30) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(150 104) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path><path transform="translate(360 64) scale(0.7)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
+</svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-menage-domicile-1"><div class="wrap">
     <div class="head"><h2 id="h-menage-domicile-1" class="sp" data-e="">Ce qui est compris</h2></div>
@@ -1299,7 +1406,17 @@ body.editing .chips{row-gap:44px;padding-top:40px}
       <p class="lead rv" style="--d:.25s" data-e="">Des vitres nettes et sans traces laissent entrer la lumière et donnent envie d'entrer. Pour les commerces, les bureaux et les particuliers.</p>
       <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy" data-svc-of="nettoyage-vitres"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
     </div>
-    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="nettoyage-vitres" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="26" height="34" rx="3" fill="#a8dcf8"></rect><path d="M19 6v34M6 23h26"></path><path d="M10 18l5-5M23 34l5-5" stroke="#fff" stroke-width="2.6"></path><path d="M33 31l9 9" stroke-width="3.2"></path><path d="M28 36l10-10" stroke="#0b66ad" stroke-width="3.2"></path></svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
+    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="nettoyage-vitres" aria-hidden="true"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<rect width="400" height="260" fill="#dff0fb"></rect><rect y="214" width="400" height="46" fill="#c4d9ea"></rect><rect y="212" width="400" height="4" fill="#a9c4da"></rect>
+<rect x="34" y="20" width="332" height="194" fill="#f7f1e8"></rect><rect x="34" y="20" width="332" height="16" fill="#142f64"></rect>
+<path d="M34 44h332l-10 30H44z" fill="#2cb3f3"></path><path d="M44 74h52l-6-30H38zM148 74h52l-4-30h-44zM252 74h52l4-30h-48z" fill="#fff" opacity=".8"></path><path d="M356 74h-52l8-30h48z" fill="#fff" opacity=".8"></path>
+<rect x="52" y="90" width="196" height="116" rx="3" fill="#142f64"></rect><rect x="58" y="96" width="184" height="104" rx="2" fill="#a6dbf8"></rect>
+<path d="M98 96h22l-50 104H58v-8z" fill="#fff" opacity=".55"></path><path d="M134 96h10l-50 104h-10z" fill="#fff" opacity=".45"></path>
+<rect x="76" y="160" width="40" height="40" rx="3" fill="#f29b52" opacity=".9"></rect><rect x="124" y="146" width="34" height="54" rx="3" fill="#3fbf9a" opacity=".9"></rect><rect x="166" y="168" width="56" height="32" rx="3" fill="#ffd25e" opacity=".9"></rect>
+<rect x="264" y="90" width="84" height="122" rx="3" fill="#142f64"></rect><rect x="270" y="96" width="72" height="110" rx="2" fill="#a6dbf8"></rect><path d="M300 96h12l-30 110h-12z" fill="#fff" opacity=".5"></path><rect x="330" y="146" width="6" height="18" rx="3" fill="#0d2147"></rect>
+<g transform="translate(206 132) rotate(-28)"><rect x="-3" y="-110" width="6" height="110" rx="3" fill="#c9a77a"></rect><rect x="-26" y="-118" width="52" height="10" rx="5" fill="#0d2147"></rect><rect x="-24" y="-110" width="48" height="4" rx="2" fill="#2cb3f3"></rect></g>
+<path transform="translate(122 116) scale(1.3)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(216 126) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(318 120) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path>
+</svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-nettoyage-vitres-1"><div class="wrap">
     <div class="head"><h2 id="h-nettoyage-vitres-1" class="sp" data-e="">Ce qui est compris</h2></div>
@@ -1329,7 +1446,17 @@ body.editing .chips{row-gap:44px;padding-top:40px}
       <p class="lead rv" style="--d:.25s" data-e="">Après des travaux, la poussière est partout. Nous rendons des locaux propres, prêts à être livrés, visités ou habités.</p>
       <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy" data-svc-of="fin-de-chantier"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
     </div>
-    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="fin-de-chantier" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="7" width="28" height="11" rx="3" fill="#a8dcf8"></rect><path d="M34 12h5v10H21v6"></path><rect x="18" y="28" width="6" height="14" rx="2" fill="#fff"></rect><path d="M8 26h6M10 32h4M8 38h4" stroke="#2cb3f3"></path></svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
+    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="fin-de-chantier" aria-hidden="true"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<rect width="400" height="260" fill="#eef5fb"></rect><rect y="196" width="400" height="64" fill="#e7dccb"></rect><rect y="194" width="400" height="4" fill="#cdbfa8"></rect>
+<path d="M0 196h170v64H0z" fill="#d9ccb7"></path><path d="M0 214c40 6 70 2 110 10s50 0 60-8v44H0z" fill="#cbbca4" opacity=".7"></path>
+<rect x="250" y="34" width="110" height="100" rx="5" fill="#142f64"></rect><rect x="257" y="41" width="96" height="86" rx="2" fill="#a6dbf8"></rect><path d="M290 41h12l-30 86h-12z" fill="#fff" opacity=".4"></path>
+<g stroke="#0d2147" stroke-width="6" stroke-linecap="round"><path d="M92 196l34-150M156 196l-30-150"></path></g><g stroke="#0d2147" stroke-width="5"><path d="M101 160h46M108 128h33M115 96h22"></path></g>
+<rect x="114" y="38" width="26" height="12" rx="3" fill="#142f64"></rect>
+<g transform="translate(196 160)"><rect width="44" height="38" rx="4" fill="#fff" stroke="#0d2147" stroke-width="3"></rect><rect y="0" width="44" height="10" rx="3" fill="#2cb3f3"></rect><path d="M8 38v-8M36 38v-6" stroke="#2cb3f3" stroke-width="3"></path></g>
+<g transform="translate(276 192)"><rect x="-6" y="0" width="70" height="8" rx="4" fill="#142f64"></rect><rect x="-2" y="-30" width="62" height="30" rx="10" fill="#2cb3f3"></rect><path d="M30-30v-40" stroke="#0d2147" stroke-width="5" stroke-linecap="round"></path><rect x="22" y="-80" width="16" height="14" rx="4" fill="#0d2147"></rect></g>
+<g fill="#b9a68a" opacity=".55"><circle cx="40" cy="206" r="10"></circle><circle cx="58" cy="214" r="7"></circle><circle cx="26" cy="222" r="6"></circle></g>
+<path transform="translate(214 222) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(300 218) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(352 210) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(190 120) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
+</svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-fin-de-chantier-1"><div class="wrap">
     <div class="head"><h2 id="h-fin-de-chantier-1" class="sp" data-e="">Ce qui est compris</h2></div>
@@ -1359,7 +1486,16 @@ body.editing .chips{row-gap:44px;padding-top:40px}
       <p class="lead rv" style="--d:.25s" data-e="">Sols ternes, moquettes encrassées, cuisine grasse : un nettoyage en profondeur redonne de l'éclat à des surfaces fatiguées.</p>
       <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy" data-svc-of="remise-en-etat"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
     </div>
-    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="remise-en-etat" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18h14l4 6v15a3 3 0 0 1-3 3H17a3 3 0 0 1-3-3V22z" fill="#a8dcf8"></path><path d="M18 18v-6h11l6 3"></path><path d="M22 12V7h8"></path><rect x="18" y="27" width="12" height="8" rx="2" fill="#fff"></rect><g fill="#2cb3f3" stroke="none"><circle cx="40" cy="9" r="1.8"></circle><circle cx="44" cy="13" r="1.4"></circle><circle cx="43" cy="6" r="1.2"></circle></g></svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
+    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="remise-en-etat" aria-hidden="true"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<rect width="400" height="260" fill="#eaf4fc"></rect><rect y="168" width="400" height="92" fill="#cfe1f0"></rect><rect y="166" width="400" height="4" fill="#b2cbe0"></rect>
+<path d="M0 168h200v92H0z" fill="#c2c7cc"></path><g stroke="#aeb4ba" stroke-width="2"><path d="M0 200h200M0 232h200M60 168v92M130 168v92"></path></g>
+<g stroke="#e9f4fc" stroke-width="2"><path d="M200 200h200M200 232h200M260 168v92M330 168v92"></path></g>
+<path d="M216 248c40-6 120-6 170 0" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".7"></path><path d="M226 186c30-4 90-4 140 0" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".6"></path>
+<rect x="40" y="30" width="96" height="92" rx="5" fill="#142f64"></rect><rect x="47" y="37" width="82" height="78" rx="2" fill="#a6dbf8"></rect><path d="M80 37h12l-26 78h-12z" fill="#fff" opacity=".4"></path>
+<g transform="translate(206 202)"><ellipse cx="0" cy="10" rx="56" ry="12" fill="#0d2147" opacity=".18"></ellipse><rect x="-50" y="-14" width="100" height="22" rx="11" fill="#142f64"></rect><rect x="-42" y="-24" width="84" height="16" rx="8" fill="#2cb3f3"></rect>
+<path d="M0-24l40-110" stroke="#0d2147" stroke-width="7" stroke-linecap="round"></path><rect x="26" y="-146" width="40" height="12" rx="6" fill="#0d2147" transform="rotate(-20 46 -140)"></rect></g>
+<path transform="translate(300 210) scale(1.3)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(350 190) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(262 236) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(370 236) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path>
+</svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-remise-en-etat-1"><div class="wrap">
     <div class="head"><h2 id="h-remise-en-etat-1" class="sp" data-e="">Ce qui est compris</h2></div>
@@ -1389,7 +1525,19 @@ body.editing .chips{row-gap:44px;padding-top:40px}
       <p class="lead rv" style="--d:.25s" data-e="">Des halls, escaliers et paliers propres toute l'année : la première impression de votre immeuble, pour les résidents comme pour les visiteurs.</p>
       <div class="cta rv" style="--d:.35s"><a href="#contact" class="btn btn-navy" data-svc-of="copropriete"><span data-e="">Demander un devis gratuit</span><span class="ar" aria-hidden="true">→</span></a><a href="#contact" class="btn btn-ghost" data-link="tel" data-if="tel" hidden=""><svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span data-k="tel" class="missing">[à compléter]</span></a></div>
     </div>
-    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="copropriete" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#142f64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="5" width="22" height="37" rx="2" fill="#fff"></rect><rect x="31" y="17" width="9" height="25" rx="1.5" fill="#a8dcf8"></rect><g fill="#a8dcf8" stroke="none"><rect x="13" y="10" width="5" height="5" rx="1"></rect><rect x="22" y="10" width="5" height="5" rx="1"></rect><rect x="13" y="19" width="5" height="5" rx="1"></rect><rect x="22" y="19" width="5" height="5" rx="1"></rect><rect x="13" y="28" width="5" height="5" rx="1"></rect><rect x="22" y="28" width="5" height="5" rx="1"></rect></g><path d="M17 42v-5h6v5M4 42h40"></path></svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
+    <div class="pg-visual rv" style="--d:.15s"><div class="pg-art" data-art="copropriete" aria-hidden="true"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<rect width="400" height="260" fill="#f1f6fb"></rect><rect y="206" width="400" height="54" fill="#d6e3ee"></rect><rect y="204" width="400" height="4" fill="#b8cde0"></rect>
+<g fill="#c7d8e8"><path d="M0 206h400v54H0z" opacity=".4"></path></g><path d="M20 236h360" stroke="#fff" stroke-width="3" opacity=".7"></path>
+<rect x="30" y="58" width="120" height="96" rx="4" fill="#142f64"></rect>
+<g fill="#2cb3f3"><rect x="38" y="66" width="31" height="23" rx="2"></rect><rect x="75" y="66" width="31" height="23" rx="2"></rect><rect x="112" y="66" width="31" height="23" rx="2"></rect><rect x="38" y="95" width="31" height="23" rx="2"></rect><rect x="75" y="95" width="31" height="23" rx="2"></rect><rect x="112" y="95" width="31" height="23" rx="2"></rect><rect x="38" y="124" width="31" height="23" rx="2"></rect><rect x="75" y="124" width="31" height="23" rx="2"></rect><rect x="112" y="124" width="31" height="23" rx="2"></rect></g>
+<g fill="#0d2147"><rect x="46" y="74" width="15" height="3" rx="1.5"></rect><rect x="83" y="74" width="15" height="3" rx="1.5"></rect><rect x="120" y="74" width="15" height="3" rx="1.5"></rect><rect x="46" y="103" width="15" height="3" rx="1.5"></rect><rect x="83" y="103" width="15" height="3" rx="1.5"></rect><rect x="120" y="103" width="15" height="3" rx="1.5"></rect><rect x="46" y="132" width="15" height="3" rx="1.5"></rect><rect x="83" y="132" width="15" height="3" rx="1.5"></rect><rect x="120" y="132" width="15" height="3" rx="1.5"></rect></g>
+<rect x="176" y="40" width="96" height="166" rx="4" fill="#9fb4c8"></rect><rect x="182" y="58" width="84" height="148" fill="#c6d5e2"></rect><rect x="223" y="58" width="2" height="148" fill="#9fb4c8"></rect>
+<rect x="206" y="44" width="36" height="10" rx="3" fill="#0d2147"></rect><path d="M216 49l4-3 4 3M228 47l4 3 4-3" stroke="#2cb3f3" stroke-width="2" fill="none"></path>
+<path d="M196 70h20l-30 120h-4z" fill="#fff" opacity=".5"></path><rect x="278" y="118" width="8" height="16" rx="3" fill="#142f64"></rect><circle cx="282" cy="122" r="2" fill="#2cb3f3"></circle>
+<g transform="translate(300 70)"><rect width="76" height="136" rx="4" fill="#142f64"></rect><rect x="6" y="6" width="64" height="124" rx="2" fill="#a6dbf8"></rect><path d="M30 6h12l-26 124h-12z" fill="#fff" opacity=".45"></path><rect x="58" y="70" width="5" height="16" rx="2.5" fill="#0d2147"></rect></g>
+<g transform="translate(350 170) scale(0.8)"><path d="M-2 0C-14-8-22-8-30-18c12-4 24 0 30 14" fill="#3fbf9a"></path><path d="M0-2C-6-20-2-36 8-48c6 14 2 30-6 46" fill="#2ea886"></path><path d="M2 0c6-14 18-22 32-22-4 12-14 20-30 24" fill="#3fbf9a"></path><rect x="-22" y="-2" width="46" height="9" rx="3" fill="#e3843a"></rect><path d="M-19 7h40l-5 30h-30z" fill="#f29b52"></path></g>
+<path transform="translate(250 220) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(110 226) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(160 46) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
+</svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-copropriete-1"><div class="wrap">
     <div class="head"><h2 id="h-copropriete-1" class="sp" data-e="">Ce qui est compris</h2></div>
@@ -2051,7 +2199,7 @@ function syncPages(){
   const link=c=>{const a=document.createElement('a');a.href='#'+c.dataset.page;a.textContent=$('h3',c).textContent.trim();return a};
   const sub=$('#sub-svc');if(sub){sub.innerHTML='';cards.forEach(c=>{const li=document.createElement('li');li.append(link(c));sub.append(li)})}
   $$('.page .others').forEach(n=>{const me=n.closest('.page').id;n.innerHTML='';cards.filter(c=>c.dataset.page!==me).forEach(c=>{const a=link(c);a.className='qbtn';n.append(a)})});
-  $$('.pg-art[data-art]').forEach(n=>{const ic=$('.srv[data-page="'+n.dataset.art+'"] .srv-ic svg');n.innerHTML='';if(ic)n.append(ic.cloneNode(true))});
+  $$('.pg-art[data-art]').forEach(n=>{const ic=$('.srv[data-page="'+n.dataset.art+'"] .srv-pic svg');n.innerHTML='';if(ic)n.append(ic.cloneNode(true))});
 }
 syncServices();
 function goStep(n,focus=true){

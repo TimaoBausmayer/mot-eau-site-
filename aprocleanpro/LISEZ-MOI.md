@@ -55,7 +55,7 @@ Le badge jaune « à compléter » du mode édition compte les informations qui 
 - [ ] Remplacer « Commune 1… 5 » par tes vraies communes.
 - [ ] Vérifier que chaque promesse affichée est vraie : horaires (« tôt le matin, le soir ou le samedi »), « matériel fourni », « un seul interlocuteur », « réponse rapide », « visite possible », et les listes « ce qui est inclus » de chaque service. Corrige ou supprime ce qui ne correspond pas à ta façon de travailler : une fausse promesse est une pratique commerciale trompeuse.
 - [ ] Relire les pages de service et la page « Qui sommes-nous » : chaque tâche listée doit correspondre à ce que tu fais vraiment. Dans *Réglages › Sections*, affiche « Notre histoire » quand tu as écrit quelques lignes sur l'entreprise.
-- [ ] Ajouter tes photos et leur description : touche le dessin de la fenêtre sur l'accueil pour le remplacer par une vraie photo, puis affiche « Avant / après » et « Galerie photos » dans *Réglages › Sections* quand tu as tes photos.
+- [ ] Ajouter tes photos et leur description : touche le dessin de la fenêtre sur l'accueil, ou l'illustration d'une carte de service, pour la remplacer par une vraie photo, puis affiche « Avant / après » et « Galerie photos » dans *Réglages › Sections* quand tu as tes photos.
 - [ ] « Avis clients » est masqué : affiche-le seulement avec de **vrais** avis, recopiés tels quels, avec l'accord du client.
 - [ ] Si tu es déclaré « services à la personne » : coche la case dans Réglages, affiche la section « Tarifs » et indique tes prix TTC.
 - [ ] Sur tes devis signés chez un client particulier : remettre le formulaire de rétractation et **ne rien encaisser pendant 7 jours**. Les CGV du site détaillent ces règles.
