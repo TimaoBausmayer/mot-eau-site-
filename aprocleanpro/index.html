@@ -158,12 +158,12 @@ nav.menu .m-cta a::after{display:none}
 .hero-visual:has(.hero-photo img[src]:not([src=""])) .hero-art{display:none}
 .hero-art .scene{position:absolute;inset:0;width:100%;height:100%}
 .dirt,.sq-track{position:absolute;left:15.217%;top:10.4545%;width:69.565%;height:75%}
-.dirt{border-radius:1.6%/1.5%;overflow:hidden;animation:dirt 9s linear -2.7s infinite}
-.dirt svg{width:100%;height:100%;animation:dirt-in 9s linear -2.7s infinite}
+.dirt{border-radius:1.6%/1.5%;overflow:hidden;animation:dirt-go 2.6s cubic-bezier(.45,0,.35,1) .9s 1 both}
+.dirt svg{width:100%;height:100%;animation:dirt-in-go 2.6s cubic-bezier(.45,0,.35,1) .9s 1 both}
 .sq-track{pointer-events:none}
-.sq{position:absolute;top:-4.5%;height:109%;width:37.5%;left:-36.25%;animation:sq 9s linear -2.7s infinite}
+.sq{position:absolute;top:-4.5%;height:109%;width:37.5%;left:-36.25%;animation:sq-go 3.6s linear .5s 1 both}
 .sq svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 8px 10px rgba(13,33,71,.3))}
-.spark{position:absolute;width:7%;aspect-ratio:1;opacity:0;animation:spark 9s linear -2.7s infinite}
+.spark{position:absolute;width:7%;aspect-ratio:1;opacity:0;animation:twinkle 6s ease-in-out 3.4s infinite both}
 .spark svg{width:100%;height:100%}
 /* Raclette : le film sale glisse vers la droite pendant que son contenu reste en place (= effacement), tout en transform. */
 @keyframes dirt{0%,10%{transform:none;opacity:1;animation-timing-function:cubic-bezier(.42,0,.4,1)}48%,82%{transform:translateX(100%);opacity:1}82.01%{transform:none;opacity:0}100%{transform:none;opacity:1}}
@@ -687,6 +687,28 @@ h2{font-size:clamp(2rem,3.5vw,2.9rem)}
 .calm .bubble{display:none}
 @media(prefers-reduced-motion:reduce){.bubble{display:none}}
 
+
+/* ---------- Animations propres ---------- */
+@keyframes dirt-go{from{transform:none}to{transform:translateX(100%)}}
+@keyframes dirt-in-go{from{transform:none}to{transform:translateX(-100%)}}
+@keyframes sq-go{0%{opacity:0;transform:translateX(-18%) rotate(-3deg)}11%{opacity:1;transform:none;animation-timing-function:cubic-bezier(.45,0,.35,1)}83%{opacity:1;transform:translateX(266.667%)}100%{opacity:0;transform:translateX(292.667%) rotate(4deg)}}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.3) rotate(0)}10%{opacity:1;transform:scale(1) rotate(45deg)}22%{opacity:0;transform:scale(.3) rotate(90deg)}}
+.glass-fx{position:absolute;left:15.217%;top:10.4545%;width:69.565%;height:75%;overflow:hidden;border-radius:1.6%/1.5%;pointer-events:none}
+.glint{position:absolute;top:-25%;bottom:-25%;left:-40%;width:26%;background:linear-gradient(100deg,transparent 0,rgba(255,255,255,.5) 42%,rgba(255,255,255,.8) 50%,rgba(255,255,255,.5) 58%,transparent 100%);transform:translateX(0) skewX(-14deg);animation:glint 8s cubic-bezier(.45,0,.35,1) 4.2s infinite both}
+@keyframes glint{0%{transform:translateX(0) skewX(-14deg)}20%,100%{transform:translateX(620%) skewX(-14deg)}}
+.clouds{animation:clouds 16s ease-in-out infinite alternate;transform-box:view-box}
+@keyframes clouds{from{transform:translateX(-6px)}to{transform:translateX(10px)}}
+.spk{animation:tw 3.2s ease-in-out infinite}
+.spk:nth-of-type(2n){animation-delay:-1.1s}.spk:nth-of-type(3n){animation-delay:-2.1s}
+@keyframes tw{0%,100%{opacity:1}50%{opacity:.25}}
+.js .map .pin{opacity:0;transform:translateY(-36px)}
+.js .map.in .pin{animation:pin-drop .8s cubic-bezier(.3,1.45,.55,1) .35s both}
+@keyframes pin-drop{from{opacity:0;transform:translateY(-36px)}to{opacity:1;transform:none}}
+.js .rv{transform:translateY(14px);transition:opacity .6s cubic-bezier(.22,.8,.2,1),transform .6s cubic-bezier(.22,.8,.2,1);transition-delay:var(--d,0s)}
+.calm .glint,.calm .clouds{animation:none}
+.calm .map .pin,body.editing .map .pin{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.glint{display:none}.js .map .pin{opacity:1;transform:none}}
+
 /* ---------- Impression ---------- */
 @media print{
   header.top,#bar,#up,.callbar,.ed-btn,.skip,.hero-visual,.map,.quick,.calm-btn,.f-bar,.burger{display:none!important}
@@ -912,7 +934,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
               <rect x="90" y="70" width="320" height="330" fill="url(#hs-sky)"></rect>
               <circle cx="322" cy="150" r="84" fill="url(#hs-sun)"></circle>
               <circle cx="322" cy="150" r="27" fill="#ffd25e"></circle>
-              <g fill="#fff">
+              <g fill="#fff" class="clouds">
                 <path d="M118 150c0-12 10-22 22-22 7 0 13 3 17 8 3-2 7-3 11-3 11 0 20 8 21 19 8 1 14 7 14 15H118z" opacity=".96"></path>
                 <path d="M300 214c0-9 7-16 16-16 5 0 10 2 13 6 2-1 5-2 8-2 8 0 15 6 16 14 6 1 10 5 10 11h-63z" opacity=".9"></path>
               </g>
@@ -943,6 +965,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
               <g fill="#fff" opacity=".5"><circle cx="58" cy="206" r="4"></circle><circle cx="152" cy="132" r="3"></circle><circle cx="208" cy="96" r="4"></circle><circle cx="286" cy="292" r="3.5"></circle><circle cx="34" cy="300" r="3"></circle><circle cx="178" cy="306" r="3"></circle></g>
             </svg>
           </div>
+          <div class="glass-fx"><span class="glint"></span></div>
           <div class="sq-track">
             <div class="sq">
               <svg viewBox="0 0 120 360" focusable="false">
@@ -978,10 +1001,9 @@ body.editing .chips{row-gap:44px;padding-top:40px}
               <g fill="#7fd0f7"><circle cx="82" cy="10" r="3"></circle><circle cx="90" cy="16" r="2.4"></circle><circle cx="88" cy="4" r="2"></circle><circle cx="97" cy="9" r="1.6"></circle></g>
             </g>
           </svg>
-          <span class="bubble b1"></span><span class="bubble b2"></span><span class="bubble b3"></span><span class="bubble b4"></span><span class="bubble b5"></span><span class="bubble b6"></span>
           <span class="spark" style="left:25%;top:21.8%;width:7.6%"><svg viewBox="0 0 24 24"><path d="M12 0c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12z" fill="#fff"></path></svg></span>
-          <span class="spark" style="left:64.1%;top:36.8%;width:5.4%;animation-delay:-2.45s"><svg viewBox="0 0 24 24"><path d="M12 0c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12z" fill="#fff"></path></svg></span>
-          <span class="spark" style="left:43.5%;top:60%;width:6.5%;animation-delay:-2.2s"><svg viewBox="0 0 24 24"><path d="M12 0c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12z" fill="#fff"></path></svg></span>
+          <span class="spark" style="left:64.1%;top:36.8%;width:5.4%;animation-delay:3.9s"><svg viewBox="0 0 24 24"><path d="M12 0c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12z" fill="#fff"></path></svg></span>
+          <span class="spark" style="left:43.5%;top:60%;width:6.5%;animation-delay:4.5s"><svg viewBox="0 0 24 24"><path d="M12 0c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12z" fill="#fff"></path></svg></span>
         </div>
         <div class="ph hero-photo" data-img="" data-par=".04"><img alt="Locaux nettoyés par A-Proclean" fetchpriority="high"></div>
       </div>
@@ -1013,7 +1035,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <path d="M190 148l10-34 8 2-6 32z" fill="#142f64"></path><path d="M196 112c4-10 18-12 22-2z" fill="#f29b52"></path>
 <path d="M18 200l6-34h34l6 34" fill="none" stroke="#0d2147" stroke-width="5" stroke-linecap="round"></path><rect x="14" y="132" width="54" height="38" rx="10" fill="#2cb3f3"></rect><rect x="18" y="162" width="46" height="10" rx="5" fill="#142f64"></rect>
 <g transform="translate(342 164) scale(1)"><path d="M-2 0C-14-8-22-8-30-18c12-4 24 0 30 14" fill="#3fbf9a"></path><path d="M0-2C-6-20-2-36 8-48c6 14 2 30-6 46" fill="#2ea886"></path><path d="M2 0c6-14 18-22 32-22-4 12-14 20-30 24" fill="#3fbf9a"></path><rect x="-22" y="-2" width="46" height="9" rx="3" fill="#e3843a"></rect><path d="M-19 7h40l-5 30h-30z" fill="#f29b52"></path></g>
-<path transform="translate(150 76) scale(1.1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(212 70) scale(0.7)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
+<path class="spk" transform="translate(150 76) scale(1.1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(212 70) scale(0.7)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
 </svg><img alt="" loading="lazy" decoding="async"></div>
         <h3 data-e="">Bureaux &amp; commerces</h3>
         <p data-e="">Des espaces de travail propres et accueillants, pour vos équipes comme pour vos clients.</p>
@@ -1032,7 +1054,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <ellipse cx="250" cy="226" rx="120" ry="14" fill="#fff" opacity=".55"></ellipse>
 <path d="M372 200V112" stroke="#0d2147" stroke-width="4"></path><path d="M356 112h32l-8-26h-16z" fill="#f29b52"></path><rect x="362" y="198" width="20" height="4" rx="2" fill="#0d2147"></rect>
 <g transform="translate(70 168)"><path d="M0 0h34l-4 34H4z" fill="#142f64"></path><rect x="-3" y="-4" width="40" height="7" rx="3" fill="#0d2147"></rect><path d="M30-4l20-70" stroke="#c9a77a" stroke-width="4" stroke-linecap="round"></path></g>
-<path transform="translate(214 30) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(150 104) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path><path transform="translate(360 64) scale(0.7)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
+<path class="spk" transform="translate(214 30) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(150 104) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path><path class="spk" transform="translate(360 64) scale(0.7)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
 </svg><img alt="" loading="lazy" decoding="async"></div>
         <h3 data-e="">Logements &amp; particuliers</h3>
         <p data-e="">Ménage régulier ou grand nettoyage : vous retrouvez une maison propre, sans y passer votre week-end.</p>
@@ -1049,7 +1071,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <rect x="76" y="160" width="40" height="40" rx="3" fill="#f29b52" opacity=".9"></rect><rect x="124" y="146" width="34" height="54" rx="3" fill="#3fbf9a" opacity=".9"></rect><rect x="166" y="168" width="56" height="32" rx="3" fill="#ffd25e" opacity=".9"></rect>
 <rect x="264" y="90" width="84" height="122" rx="3" fill="#142f64"></rect><rect x="270" y="96" width="72" height="110" rx="2" fill="#a6dbf8"></rect><path d="M300 96h12l-30 110h-12z" fill="#fff" opacity=".5"></path><rect x="330" y="146" width="6" height="18" rx="3" fill="#0d2147"></rect>
 <g transform="translate(206 132) rotate(-28)"><rect x="-3" y="-110" width="6" height="110" rx="3" fill="#c9a77a"></rect><rect x="-26" y="-118" width="52" height="10" rx="5" fill="#0d2147"></rect><rect x="-24" y="-110" width="48" height="4" rx="2" fill="#2cb3f3"></rect></g>
-<path transform="translate(122 116) scale(1.3)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(216 126) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(318 120) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path>
+<path class="spk" transform="translate(122 116) scale(1.3)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(216 126) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(318 120) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path>
 </svg><img alt="" loading="lazy" decoding="async"></div>
         <h3 data-e="">Vitres &amp; vitrines</h3>
         <p data-e="">Des surfaces vitrées nettes et sans traces, qui laissent entrer la lumière et attirent le regard.</p>
@@ -1066,7 +1088,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <g transform="translate(196 160)"><rect width="44" height="38" rx="4" fill="#fff" stroke="#0d2147" stroke-width="3"></rect><rect y="0" width="44" height="10" rx="3" fill="#2cb3f3"></rect><path d="M8 38v-8M36 38v-6" stroke="#2cb3f3" stroke-width="3"></path></g>
 <g transform="translate(276 192)"><rect x="-6" y="0" width="70" height="8" rx="4" fill="#142f64"></rect><rect x="-2" y="-30" width="62" height="30" rx="10" fill="#2cb3f3"></rect><path d="M30-30v-40" stroke="#0d2147" stroke-width="5" stroke-linecap="round"></path><rect x="22" y="-80" width="16" height="14" rx="4" fill="#0d2147"></rect></g>
 <g fill="#b9a68a" opacity=".55"><circle cx="40" cy="206" r="10"></circle><circle cx="58" cy="214" r="7"></circle><circle cx="26" cy="222" r="6"></circle></g>
-<path transform="translate(214 222) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(300 218) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(352 210) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(190 120) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
+<path class="spk" transform="translate(214 222) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(300 218) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(352 210) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(190 120) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
 </svg><img alt="" loading="lazy" decoding="async"></div>
         <h3 data-e="">Fin de chantier</h3>
         <p data-e="">Après des travaux, nous retirons poussières et traces pour des locaux prêts à être livrés ou habités.</p>
@@ -1082,7 +1104,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <rect x="40" y="30" width="96" height="92" rx="5" fill="#142f64"></rect><rect x="47" y="37" width="82" height="78" rx="2" fill="#a6dbf8"></rect><path d="M80 37h12l-26 78h-12z" fill="#fff" opacity=".4"></path>
 <g transform="translate(206 202)"><ellipse cx="0" cy="10" rx="56" ry="12" fill="#0d2147" opacity=".18"></ellipse><rect x="-50" y="-14" width="100" height="22" rx="11" fill="#142f64"></rect><rect x="-42" y="-24" width="84" height="16" rx="8" fill="#2cb3f3"></rect>
 <path d="M0-24l40-110" stroke="#0d2147" stroke-width="7" stroke-linecap="round"></path><rect x="26" y="-146" width="40" height="12" rx="6" fill="#0d2147" transform="rotate(-20 46 -140)"></rect></g>
-<path transform="translate(300 210) scale(1.3)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(350 190) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(262 236) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(370 236) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path>
+<path class="spk" transform="translate(300 210) scale(1.3)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(350 190) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(262 236) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(370 236) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path>
 </svg><img alt="" loading="lazy" decoding="async"></div>
         <h3 data-e="">Remise en état</h3>
         <p data-e="">Pour les sols et surfaces fatigués : un nettoyage en profondeur qui leur redonne de l'éclat.</p>
@@ -1101,7 +1123,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <path d="M196 70h20l-30 120h-4z" fill="#fff" opacity=".5"></path><rect x="278" y="118" width="8" height="16" rx="3" fill="#142f64"></rect><circle cx="282" cy="122" r="2" fill="#2cb3f3"></circle>
 <g transform="translate(300 70)"><rect width="76" height="136" rx="4" fill="#142f64"></rect><rect x="6" y="6" width="64" height="124" rx="2" fill="#a6dbf8"></rect><path d="M30 6h12l-26 124h-12z" fill="#fff" opacity=".45"></path><rect x="58" y="70" width="5" height="16" rx="2.5" fill="#0d2147"></rect></g>
 <g transform="translate(350 170) scale(0.8)"><path d="M-2 0C-14-8-22-8-30-18c12-4 24 0 30 14" fill="#3fbf9a"></path><path d="M0-2C-6-20-2-36 8-48c6 14 2 30-6 46" fill="#2ea886"></path><path d="M2 0c6-14 18-22 32-22-4 12-14 20-30 24" fill="#3fbf9a"></path><rect x="-22" y="-2" width="46" height="9" rx="3" fill="#e3843a"></rect><path d="M-19 7h40l-5 30h-30z" fill="#f29b52"></path></g>
-<path transform="translate(250 220) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(110 226) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(160 46) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
+<path class="spk" transform="translate(250 220) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(110 226) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(160 46) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
 </svg><img alt="" loading="lazy" decoding="async"></div>
         <h3 data-e="">Copropriétés</h3>
         <p data-e="">Des parties communes soignées toute l'année, selon un planning fixe et suivi.</p>
@@ -1136,11 +1158,11 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <rect x="118" y="86" width="36" height="12" rx="3" fill="#2cb3f3"></rect></g>
 <path d="M54 84l66 36 66-36v50H54z" fill="#1d4182"></path><path d="M54 134l58-36M186 134l-58-36" stroke="#142f64" stroke-width="3"></path>
 <g transform="translate(180 40)"><circle r="18" fill="#3fbf9a"></circle><path d="M-8 0l5 6 11-12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path></g>
-<path transform="translate(44 36) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path></svg></div><span class="num" aria-hidden="true"></span><h3 data-e="">Nous vous envoyons un devis</h3><p data-e="">Gratuit et détaillé. Si besoin, nous passons voir les lieux avant.</p></li>
+<path class="spk" transform="translate(44 36) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path></svg></div><span class="num" aria-hidden="true"></span><h3 data-e="">Nous vous envoyons un devis</h3><p data-e="">Gratuit et détaillé. Si besoin, nous passons voir les lieux avant.</p></li>
       <li class="step rv" style="--d:.3s" data-rep=""><div class="step-pic" aria-hidden="true"><svg viewBox="0 0 240 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="240" height="150" fill="#eaf4fc"></rect><rect y="124" width="240" height="26" fill="#d2e4f2"></rect><rect y="122" width="240" height="3" fill="#b7d0e5"></rect>
 <rect x="160" y="22" width="56" height="86" rx="4" fill="#142f64"></rect><rect x="166" y="28" width="44" height="74" rx="2" fill="#a6dbf8"></rect><path d="M180 28h9l-20 74h-9z" fill="#fff" opacity=".4"></path>
 <g transform="translate(66 124) scale(1)"><path d="M-6-96v96" stroke="#c9a77a" stroke-width="5" stroke-linecap="round"></path><path d="M-20 0h28l-4 8h-20z" fill="#0d2147"></path><rect x="0" y="-62" width="92" height="8" rx="3" fill="#142f64"></rect><rect x="0" y="-18" width="92" height="8" rx="3" fill="#142f64"></rect><rect x="4" y="-62" width="6" height="58" fill="#142f64"></rect><rect x="82" y="-62" width="6" height="58" fill="#142f64"></rect><path d="M10-54h30l-3 36H13z" fill="#2cb3f3"></path><rect x="8" y="-58" width="34" height="6" rx="3" fill="#1e98d6"></rect><rect x="52" y="-50" width="14" height="32" rx="4" fill="#fff" stroke="#0d2147" stroke-width="2"></rect><rect x="54" y="-58" width="10" height="9" rx="2" fill="#0d2147"></rect><rect x="68" y="-40" width="12" height="22" rx="3" fill="#3fbf9a"></rect><rect x="12" y="-10" width="70" height="8" rx="3" fill="#f29b52"></rect><circle cx="14" cy="4" r="6" fill="#0d2147"></circle><circle cx="80" cy="4" r="6" fill="#0d2147"></circle><circle cx="14" cy="4" r="2" fill="#8cc4ea"></circle><circle cx="80" cy="4" r="2" fill="#8cc4ea"></circle></g>
-<path transform="translate(36 40) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(140 30) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path><path transform="translate(132 118) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path></svg></div><span class="num" aria-hidden="true"></span><h3 data-e="">Nous intervenons</h3><p data-e="">Aux jours et aux horaires convenus. Si quelque chose ne vous convient pas, dites-le-nous : nous ajustons.</p></li>
+<path class="spk" transform="translate(36 40) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(140 30) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path><path class="spk" transform="translate(132 118) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path></svg></div><span class="num" aria-hidden="true"></span><h3 data-e="">Nous intervenons</h3><p data-e="">Aux jours et aux horaires convenus. Si quelque chose ne vous convient pas, dites-le-nous : nous ajustons.</p></li>
     </ol>
     <div class="steps-cta rv"><a href="#contact" class="btn btn-navy"><span data-e="">Demander un devis</span><span class="ar" aria-hidden="true">→</span></a></div>
   </div>
@@ -1375,7 +1397,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <path d="M190 148l10-34 8 2-6 32z" fill="#142f64"></path><path d="M196 112c4-10 18-12 22-2z" fill="#f29b52"></path>
 <path d="M18 200l6-34h34l6 34" fill="none" stroke="#0d2147" stroke-width="5" stroke-linecap="round"></path><rect x="14" y="132" width="54" height="38" rx="10" fill="#2cb3f3"></rect><rect x="18" y="162" width="46" height="10" rx="5" fill="#142f64"></rect>
 <g transform="translate(342 164) scale(1)"><path d="M-2 0C-14-8-22-8-30-18c12-4 24 0 30 14" fill="#3fbf9a"></path><path d="M0-2C-6-20-2-36 8-48c6 14 2 30-6 46" fill="#2ea886"></path><path d="M2 0c6-14 18-22 32-22-4 12-14 20-30 24" fill="#3fbf9a"></path><rect x="-22" y="-2" width="46" height="9" rx="3" fill="#e3843a"></rect><path d="M-19 7h40l-5 30h-30z" fill="#f29b52"></path></g>
-<path transform="translate(150 76) scale(1.1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(212 70) scale(0.7)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
+<path class="spk" transform="translate(150 76) scale(1.1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(212 70) scale(0.7)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
 </svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-nettoyage-bureaux-1"><div class="wrap">
@@ -1417,7 +1439,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <ellipse cx="250" cy="226" rx="120" ry="14" fill="#fff" opacity=".55"></ellipse>
 <path d="M372 200V112" stroke="#0d2147" stroke-width="4"></path><path d="M356 112h32l-8-26h-16z" fill="#f29b52"></path><rect x="362" y="198" width="20" height="4" rx="2" fill="#0d2147"></rect>
 <g transform="translate(70 168)"><path d="M0 0h34l-4 34H4z" fill="#142f64"></path><rect x="-3" y="-4" width="40" height="7" rx="3" fill="#0d2147"></rect><path d="M30-4l20-70" stroke="#c9a77a" stroke-width="4" stroke-linecap="round"></path></g>
-<path transform="translate(214 30) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(150 104) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path><path transform="translate(360 64) scale(0.7)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
+<path class="spk" transform="translate(214 30) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(150 104) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path><path class="spk" transform="translate(360 64) scale(0.7)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
 </svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-menage-domicile-1"><div class="wrap">
@@ -1457,7 +1479,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <rect x="76" y="160" width="40" height="40" rx="3" fill="#f29b52" opacity=".9"></rect><rect x="124" y="146" width="34" height="54" rx="3" fill="#3fbf9a" opacity=".9"></rect><rect x="166" y="168" width="56" height="32" rx="3" fill="#ffd25e" opacity=".9"></rect>
 <rect x="264" y="90" width="84" height="122" rx="3" fill="#142f64"></rect><rect x="270" y="96" width="72" height="110" rx="2" fill="#a6dbf8"></rect><path d="M300 96h12l-30 110h-12z" fill="#fff" opacity=".5"></path><rect x="330" y="146" width="6" height="18" rx="3" fill="#0d2147"></rect>
 <g transform="translate(206 132) rotate(-28)"><rect x="-3" y="-110" width="6" height="110" rx="3" fill="#c9a77a"></rect><rect x="-26" y="-118" width="52" height="10" rx="5" fill="#0d2147"></rect><rect x="-24" y="-110" width="48" height="4" rx="2" fill="#2cb3f3"></rect></g>
-<path transform="translate(122 116) scale(1.3)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(216 126) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(318 120) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path>
+<path class="spk" transform="translate(122 116) scale(1.3)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(216 126) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(318 120) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path>
 </svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-nettoyage-vitres-1"><div class="wrap">
@@ -1497,7 +1519,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <g transform="translate(196 160)"><rect width="44" height="38" rx="4" fill="#fff" stroke="#0d2147" stroke-width="3"></rect><rect y="0" width="44" height="10" rx="3" fill="#2cb3f3"></rect><path d="M8 38v-8M36 38v-6" stroke="#2cb3f3" stroke-width="3"></path></g>
 <g transform="translate(276 192)"><rect x="-6" y="0" width="70" height="8" rx="4" fill="#142f64"></rect><rect x="-2" y="-30" width="62" height="30" rx="10" fill="#2cb3f3"></rect><path d="M30-30v-40" stroke="#0d2147" stroke-width="5" stroke-linecap="round"></path><rect x="22" y="-80" width="16" height="14" rx="4" fill="#0d2147"></rect></g>
 <g fill="#b9a68a" opacity=".55"><circle cx="40" cy="206" r="10"></circle><circle cx="58" cy="214" r="7"></circle><circle cx="26" cy="222" r="6"></circle></g>
-<path transform="translate(214 222) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(300 218) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(352 210) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(190 120) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
+<path class="spk" transform="translate(214 222) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(300 218) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(352 210) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(190 120) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
 </svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-fin-de-chantier-1"><div class="wrap">
@@ -1536,7 +1558,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <rect x="40" y="30" width="96" height="92" rx="5" fill="#142f64"></rect><rect x="47" y="37" width="82" height="78" rx="2" fill="#a6dbf8"></rect><path d="M80 37h12l-26 78h-12z" fill="#fff" opacity=".4"></path>
 <g transform="translate(206 202)"><ellipse cx="0" cy="10" rx="56" ry="12" fill="#0d2147" opacity=".18"></ellipse><rect x="-50" y="-14" width="100" height="22" rx="11" fill="#142f64"></rect><rect x="-42" y="-24" width="84" height="16" rx="8" fill="#2cb3f3"></rect>
 <path d="M0-24l40-110" stroke="#0d2147" stroke-width="7" stroke-linecap="round"></path><rect x="26" y="-146" width="40" height="12" rx="6" fill="#0d2147" transform="rotate(-20 46 -140)"></rect></g>
-<path transform="translate(300 210) scale(1.3)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(350 190) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(262 236) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(370 236) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path>
+<path class="spk" transform="translate(300 210) scale(1.3)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(350 190) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(262 236) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(370 236) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path>
 </svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-remise-en-etat-1"><div class="wrap">
@@ -1578,7 +1600,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <path d="M196 70h20l-30 120h-4z" fill="#fff" opacity=".5"></path><rect x="278" y="118" width="8" height="16" rx="3" fill="#142f64"></rect><circle cx="282" cy="122" r="2" fill="#2cb3f3"></circle>
 <g transform="translate(300 70)"><rect width="76" height="136" rx="4" fill="#142f64"></rect><rect x="6" y="6" width="64" height="124" rx="2" fill="#a6dbf8"></rect><path d="M30 6h12l-26 124h-12z" fill="#fff" opacity=".45"></path><rect x="58" y="70" width="5" height="16" rx="2.5" fill="#0d2147"></rect></g>
 <g transform="translate(350 170) scale(0.8)"><path d="M-2 0C-14-8-22-8-30-18c12-4 24 0 30 14" fill="#3fbf9a"></path><path d="M0-2C-6-20-2-36 8-48c6 14 2 30-6 46" fill="#2ea886"></path><path d="M2 0c6-14 18-22 32-22-4 12-14 20-30 24" fill="#3fbf9a"></path><rect x="-22" y="-2" width="46" height="9" rx="3" fill="#e3843a"></rect><path d="M-19 7h40l-5 30h-30z" fill="#f29b52"></path></g>
-<path transform="translate(250 220) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(110 226) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(160 46) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
+<path class="spk" transform="translate(250 220) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(110 226) scale(0.9)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(160 46) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path>
 </svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-copropriete-1"><div class="wrap">
@@ -1617,7 +1639,7 @@ body.editing .chips{row-gap:44px;padding-top:40px}
 <rect x="266" y="136" width="108" height="7" rx="3" fill="#0d2147"></rect>
 <g transform="translate(170 204) scale(1.25)"><path d="M-6-96v96" stroke="#c9a77a" stroke-width="5" stroke-linecap="round"></path><path d="M-20 0h28l-4 8h-20z" fill="#0d2147"></path><rect x="0" y="-62" width="92" height="8" rx="3" fill="#142f64"></rect><rect x="0" y="-18" width="92" height="8" rx="3" fill="#142f64"></rect><rect x="4" y="-62" width="6" height="58" fill="#142f64"></rect><rect x="82" y="-62" width="6" height="58" fill="#142f64"></rect><path d="M10-54h30l-3 36H13z" fill="#2cb3f3"></path><rect x="8" y="-58" width="34" height="6" rx="3" fill="#1e98d6"></rect><rect x="52" y="-50" width="14" height="32" rx="4" fill="#fff" stroke="#0d2147" stroke-width="2"></rect><rect x="54" y="-58" width="10" height="9" rx="2" fill="#0d2147"></rect><rect x="68" y="-40" width="12" height="22" rx="3" fill="#3fbf9a"></rect><rect x="12" y="-10" width="70" height="8" rx="3" fill="#f29b52"></rect><circle cx="14" cy="4" r="6" fill="#0d2147"></circle><circle cx="80" cy="4" r="6" fill="#0d2147"></circle><circle cx="14" cy="4" r="2" fill="#8cc4ea"></circle><circle cx="80" cy="4" r="2" fill="#8cc4ea"></circle></g>
 <g transform="translate(372 168) scale(0.9)"><path d="M-2 0C-14-8-22-8-30-18c12-4 24 0 30 14" fill="#3fbf9a"></path><path d="M0-2C-6-20-2-36 8-48c6 14 2 30-6 46" fill="#2ea886"></path><path d="M2 0c6-14 18-22 32-22-4 12-14 20-30 24" fill="#3fbf9a"></path><rect x="-22" y="-2" width="46" height="9" rx="3" fill="#e3843a"></rect><path d="M-19 7h40l-5 30h-30z" fill="#f29b52"></path></g>
-<path transform="translate(250 70) scale(1.2)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path transform="translate(150 64) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path><path transform="translate(228 180) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path>
+<path class="spk" transform="translate(250 70) scale(1.2)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path><path class="spk" transform="translate(150 64) scale(0.8)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#2cb3f3"></path><path class="spk" transform="translate(228 180) scale(1)" d="M0-9c.9 6 3 8.1 9 9-6 .9-8.1 3-9 9-.9-6-3-8.1-9-9 6-.9 8.1-3 9-9z" fill="#fff"></path>
 </svg></div><div class="ph pg-photo" data-img=""><img alt="" loading="lazy" decoding="async"></div></div>
   </div></div>
   <section class="pg-sec" aria-labelledby="h-ap-1"><div class="wrap pg-two">
