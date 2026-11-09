@@ -228,6 +228,7 @@ ol.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
 .stand{display:flex;flex-direction:column;gap:6px;padding-top:10px;border-top:1px solid var(--line)}.stand:first-of-type{border-top:0;padding-top:0}
 .pbar{position:relative;height:12px;border-radius:6px;background:linear-gradient(90deg,color-mix(in srgb,var(--warm) 55%,var(--surface)),color-mix(in srgb,var(--accent) 30%,var(--surface)) 50%,var(--accent));margin:4px 0 2px}
 .pbar .mid{position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.45}
+.bar>i.mid{background:var(--warn)}.prob{display:flex;flex-direction:column;gap:10px}
 @media (max-width:380px){.item{grid-template-columns:76px 1fr}.item .badge{display:none}.stat .num{font-size:28px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -564,7 +565,7 @@ const num = v => { const n = parseFloat(String(v).replace(',', '.')); return isF
 const KEY = 'coach-maison-v1';
 const defaults = () => ({ v: 1, upd: 0, demo: false,
   profile: { sex: '', age: '', height: '', goalWeight: '', goal: 'keep', trainDays: [1, 3, 5], perWeek: 3, avail: {}, availSet: false, recordDay: 7, equip: { tapis: true, bouteilles: true, chaise: true }, lowImpact: false, level: 0 },
-  weights: [], meals: [], sessions: [], records: [], plan: {}, reviews: {}, weekly: {}, badges: {}, skills: {}, goal: null, run: { stage: 0, best: 0, km: 0 }, notifs: [], notified: {}, bestStreak: 0, miles: {}, nset: { reminder: true, streak: true, water: true, meals: true, bilan: true, goal: true, browser: false } });
+  weights: [], meals: [], sessions: [], records: [], plan: {}, reviews: {}, weekly: {}, badges: {}, skills: {}, goal: null, run: { stage: 0, best: 0, km: 0 }, notifs: [], notified: {}, bestStreak: 0, miles: {}, gh: [], nset: { reminder: true, streak: true, water: true, meals: true, bilan: true, goal: true, browser: false } });
 let S = defaults();
 function mergeState(o) {
   const d = defaults(), dp = d.profile, op = (o && o.profile) || {};
@@ -574,7 +575,7 @@ function mergeState(o) {
   if (!r.profile.avail || typeof r.profile.avail !== 'object') r.profile.avail = {};
   if (!Array.isArray(r.profile.trainDays)) r.profile.trainDays = [1, 3, 5];
   ['plan', 'reviews', 'weekly', 'badges', 'skills', 'miles', 'notified'].forEach(k => { if (!r[k] || typeof r[k] !== 'object') r[k] = {}; });
-  ['weights', 'meals', 'sessions', 'records', 'notifs'].forEach(k => { if (!Array.isArray(r[k])) r[k] = []; });
+  ['weights', 'meals', 'sessions', 'records', 'notifs', 'gh'].forEach(k => { if (!Array.isArray(r[k])) r[k] = []; });
   r.run = Object.assign({ stage: 0, best: 0, km: 0 }, r.run || {}); r.nset = Object.assign({ reminder: true, streak: true, water: true, meals: true, bilan: true, goal: true, browser: false }, r.nset || {});
   return r;
 }
@@ -1316,7 +1317,7 @@ function render() {
   $$('[data-mini]').forEach(h => { const it = U.T.plan.items[+h.dataset.mini]; mountFig(h, it.ex, { delay: +h.dataset.mini * 60 }); });
   $$('[data-lm]').forEach(h => mountFig(h, EXBY[h.dataset.lm], {}));
   { const lf = $('#lfig'); if (lf && EXBY[U.learnEx]) mountFig(lf, EXBY[U.learnEx], { speed: U.lspeed || 1 }); $$('[data-lpos]').forEach(h => { const ex = EXBY[U.learnEx]; if (!ex) return; const sv = mountFig(h, ex, { still: true }); drawPose(sv, ex, ex.fr[+h.dataset.lpos ? ex.fr.length - 1 : 0]); }); }
-  updateBell();
+  updateBell(); updateGProb();
   $$('[data-count]').forEach(el => countUp(el));
   startFigs();
   if (!U.keepScroll) window.scrollTo(0, 0); else window.scrollTo(0, sc);
@@ -1690,16 +1691,21 @@ function gsetup() {
         '<h3>Distance à courir sans t’arrêter</h3><div class="chips">' + [2, 3, 5, 8, 10].map(k => chip('gkm', k, k + ' km', +G.km === k)).join('') + '</div><p class="small muted">Je pars de la marche et je monte par étapes (course et marche en alternance), jusqu’à la course continue.</p>') +
     '<h3>En combien de jours ?</h3><div class="chips">' + [14, 30, 45, 60, 90].map(k => chip('gdays', k, k + ' j', +G.days === k)).join('') + '</div>' +
     '<label class="f">Ou un autre nombre de jours<input id="g-days" inputmode="numeric" value="' + G.days + '"></label>' +
-    '<button class="btn big" data-act="gsave">Créer mon programme</button>' + (S.goal ? '<button class="btn ghost" data-act="gcancel">Annuler</button>' : '') + '<p class="tiny muted" id="g-err" role="alert"></p></section>';
+    '<div id="gprob"></div><button class="btn big" data-act="gsave">Créer mon programme</button>' + (S.goal ? '<button class="btn ghost" data-act="gcancel">Annuler</button>' : '') + '<p class="tiny muted" id="g-err" role="alert"></p></section>';
 }
 function vGoal() {
   const g = S.goal; if (!g || U.gedit) return gsetup();
   const st = gstatus(g), { left, el } = gspan(g), fr = gfrac(g), cur = gcur(g), off = (276.46 * (1 - fr)).toFixed(1), warns = gwarn(g), sch = gschedule(g);
   const curTxt = g.type === 'run' ? 'Étape ' + Math.min(S.run.stage + 1, runStages(g.T).length) + ' sur ' + runStages(g.T).length : g.type === 'weight' ? nf(cur) + ' kg → ' + nf(g.target) + ' kg' : cur + ' → ' + g.target + (g.ex === 'gainage' ? ' s' : '');
   let h = '<section class="card ' + (st.k === 'late' ? 'warm' : 'soft') + '"><div class="row" style="flex-wrap:nowrap;gap:16px"><div class="ring" style="width:120px;height:120px;margin:0;flex:none"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="bg" cx="50" cy="50" r="44"/><circle class="fg sc" cx="50" cy="50" r="44" stroke-dasharray="276.46" stroke-dashoffset="' + off + '"/></svg><div class="t num" style="font-size:34px"><span data-count="' + Math.round(fr * 100) + '">' + Math.round(fr * 100) + '</span>%</div></div>' +
-    '<div style="min-width:0;display:flex;flex-direction:column;gap:6px"><h2>' + gtext(g) + '</h2><span class="badge gs-' + st.k + '" style="align-self:flex-start">' + st.t + '</span><p class="small">Jour ' + Math.min(g.days, el + 1) + ' sur ' + g.days + ' · il reste ' + left + ' jour' + (left > 1 ? 's' : '') + '</p></div></div>' +
-    '<p><b>' + curTxt + '</b></p>' + warns.map(w => '<p class="small" style="color:var(--warm)">' + esc(w) + '</p>').join('') +
+    '<div style="min-width:0;display:flex;flex-direction:column;gap:6px"><h2>' + gtext(g) + '</h2><span class="badge gs-' + (st.k === 'ok' && goalProb(g).p < 35 ? 'late' : st.k) + '" style="align-self:flex-start">' + (st.k === 'ok' && goalProb(g).p < 35 ? 'Objectif ambitieux' : st.t) + '</span><p class="small">Jour ' + Math.min(g.days, el + 1) + ' sur ' + g.days + ' · il reste ' + left + ' jour' + (left > 1 ? 's' : '') + '</p></div></div>' +
+    '<p><b>' + curTxt + '</b></p>' + warns.map(w => '<p class="small" style="color:var(--warm)">' + esc(w) + '</p>').join('') + probBlock(g) +
     '<div class="row"><button class="btn ghost sm" data-act="gedit">Changer d’objectif</button><button class="btn ghost sm" data-act="gdel">' + (U.gdel ? 'Vraiment abandonner ?' : 'Abandonner') + '</button></div></section>';
+  if (g.type === 'reps') {
+    const ts = recsOf(g.ex).filter(r => r.test), un = g.ex === 'gainage' ? ' s' : '';
+    h += '<section class="card"><h2>Mes tests de record</h2>' + (ts.length ? lineChart({ pts: ts.map(r => ({ x: parseD(r.d).getTime(), y: r.val })), target: g.target, warm: true, markBest: true, label: 'Tests de record ' + gname(g), fmtY: v => nf(v, 0), unit: un }) + '<p class="tiny muted">La chance d’y arriver se base sur cette courbe. Un test de temps en temps suffit : entre deux tests, je tiens compte de ta progression.</p>' : '<p class="muted">Aucun test pour l’instant. Fais un test de max et note-le : l’estimation sera bien plus fiable.</p>') + '<button class="btn ghost" data-act="gtest">Noter un test de record</button></section>';
+  }
+  h += probHistory();
   h += '<section class="card"><h2>Mon programme</h2><p class="small muted">Il suit tes jours disponibles. Si tu ne peux pas un jour, dis-le : les séances suivantes se décalent toutes seules.</p><div class="plist">' + sch.map((c, k) => {
     const lab = k === 0 ? 'Aujourd’hui' : k === 1 ? 'Demain' : DOW[isoDow(c.d)] + ' ' + parseD(c.d).getDate();
     return '<div class="grow' + (k === 0 ? ' today' : '') + '"><div><b>' + lab + '</b>' + (c.train && c.pl.start ? '<div class="tiny muted">' + hhmm(c.pl.start) + '</div>' : '') + '</div><div style="min-width:0"><div class="' + (c.train || c.done ? '' : 'muted') + '">' + esc(c.label) + '</div>' + (c.train && !c.done ? '<div class="tiny muted">' + (c.mins || c.pl.min) + ' min</div>' : '') + '</div><div>' +
@@ -1711,7 +1717,7 @@ function goalMini() {
   const g = S.goal;
   if (!g) return '<section class="card"><div class="row sb" style="flex-wrap:nowrap"><div><h2>Mon objectif</h2><p class="small muted">Fixe-toi un but en nombre de jours : je fais le programme.</p></div><button class="btn sm" data-act="gopen">Choisir</button></div></section>';
   const st = gstatus(g), fr = gfrac(g), { left } = gspan(g);
-  return '<button class="card" data-act="gopen" style="text-align:left;cursor:pointer"><div class="row sb" style="flex-wrap:nowrap"><div style="min-width:0"><h2>' + gtext(g) + '</h2><p class="small muted">' + left + ' jour' + (left > 1 ? 's' : '') + ' restant' + (left > 1 ? 's' : '') + ' · <span class="gs-t-' + st.k + '">' + st.t + '</span></p></div><span class="num" style="font-size:34px;color:var(--accent)">' + Math.round(fr * 100) + '%</span></div><div class="bar"><i style="width:' + Math.round(fr * 100) + '%"></i></div></button>';
+  return '<button class="card" data-act="gopen" style="text-align:left;cursor:pointer"><div class="row sb" style="flex-wrap:nowrap"><div style="min-width:0"><h2>' + gtext(g) + '</h2><p class="small muted">' + left + ' jour' + (left > 1 ? 's' : '') + ' restant' + (left > 1 ? 's' : '') + ' · <span class="gs-t-' + st.k + '">' + st.t + '</span> · ' + Math.round(goalProb(g).p) + ' % de chances</p></div><span class="num" style="font-size:34px;color:var(--accent)">' + Math.round(fr * 100) + '%</span></div><div class="bar"><i style="width:' + Math.round(fr * 100) + '%"></i></div></button>';
 }
 function startToday() {
   const g = S.goal, c = g ? gschedule(g, 1)[0] : null, pf = planFor(today()), min = pf.min || 15;
@@ -1873,7 +1879,7 @@ function pushNotif(key, type, title, text, link) {
   updateBell(); return true;
 }
 function genNotifs() {
-  if (!profileOK() || U.quiet) return; const now = new Date(), h = now.getHours() + now.getMinutes() / 60, t = today(), ns = S.nset, pf = planFor(t), train = pf.size !== 'repos' && !doneOn(t), dow = isoDow(t);
+  if (!profileOK() || U.quiet) return; snapGoalProb(); const now = new Date(), h = now.getHours() + now.getMinutes() / 60, t = today(), ns = S.nset, pf = planFor(t), train = pf.size !== 'repos' && !doneOn(t), dow = isoDow(t);
   if (ns.reminder && train && pf.start && h >= pf.start / 60 - .5 && h <= pf.start / 60 + 2) pushNotif('rem-' + t, 'reminder', 'Séance à ' + hhmm(pf.start), SIZEN[pf.size] + ' de ' + pf.min + ' min. Prépare-toi, je te guide.', 'today');
   if (ns.streak && train && h >= 19 && streakInfo().n >= 3) pushNotif('risk-' + t, 'streak', 'Ta série de ' + streakInfo().n + ' jours est en danger', 'Une courte séance ce soir suffit à la sauver.', 'today');
   if (ns.water && h >= 15 && waterOf(t) < waterGoal() * .4) pushNotif('wat-' + t, 'water', 'Pense à boire', 'Tu as noté ' + nf(waterOf(t) / 1000, 2) + ' L sur ' + nf(waterGoal() / 1000, 2) + ' L aujourd’hui.', 'today');
@@ -1882,7 +1888,7 @@ function genNotifs() {
   if (ns.goal && dow === 1 && h >= 8 && !S.weights.some(w => diffDays(t, w.d) <= 6)) pushNotif('wei-' + t, 'goal', 'Pèse-toi', 'Pas de pesée depuis plus de 6 jours.', 'progress');
   if (ns.goal && S.goal) {
     const st = gstatus(S.goal); if (st.k === 'done') pushNotif('gdone-' + S.goal.id, 'goal', 'Objectif atteint !', gtext(S.goal), 'train');
-    else if (dow === 1 && h >= 8) pushNotif('gw-' + mondayOf(t), 'goal', st.k === 'late' ? 'Tu es en retard sur ton objectif' : st.k === 'ahead' ? 'Tu es en avance sur ton objectif' : 'Objectif : tu es dans les temps', gtext(S.goal) + ' · ' + gspan(S.goal).left + ' jours restants', 'train');
+    else if (dow === 1 && h >= 8) pushNotif('gw-' + mondayOf(t), 'goal', st.k === 'late' ? 'Tu es en retard sur ton objectif' : st.k === 'ahead' ? 'Tu es en avance sur ton objectif' : 'Objectif : tu es dans les temps', gtext(S.goal) + ' · ' + gspan(S.goal).left + ' jours restants · ' + Math.round(goalProb(S.goal).p) + ' % de chances', 'train');
   }
 }
 function openNotifs() {
@@ -1938,6 +1944,7 @@ function learnAction(a, b, v) {
     case 'psub': U.psub = v; render(); return true;
     case 'rmetric': U.rmetric = v; U.keepScroll = true; render(); return true;
     case 'prun': U.tab = 'progress'; U.psub = 'run'; render(); return true;
+    case 'gtest': U.recEx = S.goal ? S.goal.ex : U.recEx; U.tab = 'progress'; U.psub = 'general'; render(); return true;
     case 'topro': U.tab = 'progress'; U.psub = 'general'; render(); return true;
     case 'rundel': S.sessions = S.sessions.filter(x => x.id !== b.dataset.id); save(); U.keepScroll = true; render(); return true;
     case 'asave': saveActivity(); return true;
@@ -2020,6 +2027,90 @@ function healthCard() {
   return '<section class="card"><h2>Ma forme générale</h2>' +
     (b ? '<div class="stand"><div class="row sb"><b>Indice de masse corporelle</b><span class="badge">' + nf(b.bmi, 1) + '</span></div><div class="tiny muted">' + bmiLabel(b.bmi) + ' · moyenne pour ton âge ≈ ' + nf(avgBMI(), 1) + '. L’IMC est un repère simple, il ne dit rien de ta masse musculaire.</div></div>' : '') +
     '<div class="stand"><div class="row sb"><b>Sport par semaine</b><span class="badge ' + (wk >= 150 ? 'sk-ok' : '') + '">' + wk + ' min</span></div><div class="bar"><i style="width:' + pct + '%"></i></div><div class="tiny muted">Moyenne sur 4 semaines. L’OMS recommande au moins 150 minutes par semaine pour un adulte' + (wk >= 150 ? ' : objectif atteint.' : ' : il t’en manque ' + (150 - wk) + '.') + '</div></div></section>';
+}
+
+
+/* ---------- Probabilité d'atteindre l'objectif (estimation) ---------- */
+const erf = x => { const s = x < 0 ? -1 : 1; x = Math.abs(x); const t = 1 / (1 + .3275911 * x); return s * (1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - .284496736) * t + .254829592) * t * Math.exp(-x * x)); };
+const Phi = z => .5 * (1 + erf(z / Math.SQRT2));
+const probTier = p => p >= 75 ? 'Très probable' : p >= 55 ? 'Probable' : p >= 35 ? 'Possible, mais serré' : 'Difficile à ce rythme';
+function adherence() {
+  const t = today(); let pl = 0, dn = 0;
+  for (let k = 1; k <= 14; k++) { const d = addDays(t, -k); if (weekPlan()[isoDow(d)].size !== 'repos' && S.plan[d] !== 'rest') { pl++; if (doneOn(d)) dn++; } }
+  return { pl, dn, adh: pl >= 3 ? clamp(dn / pl, .25, 1.1) : .8, known: pl >= 3 };
+}
+/* ov : extraDays (jours en plus), boost (une séance de plus par semaine) */
+function goalProb(g, ov = {}) {
+  const left = gspan(g).left + (ov.extraDays || 0), wk = Math.max(.5, left / 7), A = adherence(), why = [], t = today();
+  if (!ov.extraDays && !ov.boost && gfrac(g) >= 1) return { p: 100, why: ['Objectif atteint'], A };
+  let p = 50;
+  if (g.type === 'reps') {
+    const ts = recsOf(g.ex).filter(r => r.test), n = ts.length, cur = Math.max(prOf(g.ex), gcur(g)), un = g.ex === 'gainage' ? ' s' : '';
+    const pts = ts.map(r => ({ x: parseD(r.d).getTime(), y: r.val })), obs = slopeWk(pts);
+    const typ = g.ex === 'gainage' ? 4 : Math.max(.8, Math.max(cur, g.from) * .07);
+    /* plus tu as de tests de record, plus je me fie à ta propre courbe */
+    const wObs = obs !== null ? n / (n + 2) : 0;
+    let r = obs !== null ? wObs * Math.max(0, obs) + (1 - wObs) * typ : typ; r *= Math.min(1, A.adh) * (ov.boost ? 1.12 : 1);
+    /* un test n'a pas lieu tous les jours : depuis le dernier, je compte une partie de la progression attendue (au plus 4 semaines, à moitié) */
+    const since = n ? Math.min(4, diffDays(t, ts[n - 1].d) / 7) : 0, curE = cur + since * r * .5;
+    const proj = curE + r * wk, sd = Math.max(1.5, cur * .1) * Math.sqrt(wk / 2) + 1 + (n < 2 ? 1 : 0), need = (g.target - curE) / wk;
+    p = Phi((proj - g.target) / sd) * 100;
+    if (since >= 1) why.push('Ton dernier test date d’il y a ' + Math.round(since * 7) + ' jours : j’estime ton niveau actuel autour de ' + Math.round(curE) + un + ' (à confirmer par un prochain test).');
+    why.push(n >= 2 && obs !== null ? 'D’après tes ' + n + ' tests de record : ' + ts[0].val + ' → ' + ts[n - 1].val + un + ' (' + (obs >= 0 ? '+' : '') + nf(obs, 1) + un + ' par semaine). Je me fie à ta courbe à ' + Math.round(wObs * 100) + ' %.' : n === 1 ? 'Un seul test de record (' + ts[0].val + un + ') : estimation prudente. Pas besoin d’en faire souvent, un test toutes les 1 à 2 semaines suffit pour l’affiner.' : 'Aucun test de record sur cet exercice : estimation prudente. Un seul test de max suffit déjà pour la rendre bien plus juste.');
+    why.push('Il faut gagner environ ' + nf(need, 1) + un + ' par semaine ; ton rythme estimé est de ' + nf(r, 1) + un + '.');
+  } else if (g.type === 'weight') {
+    const cur = gcur(g), dir = Math.sign(g.target - g.from) || -1, recent = sortedW().filter(x => diffDays(t, x.d) <= 35).map(x => ({ x: parseD(x.d).getTime(), y: x.kg })), obs = slopeWk(recent), b = body();
+    let lg = 0; for (let k = 1; k <= 14; k++) if (mealsOf(addDays(t, -k)).length) lg++;
+    const adhN = clamp(lg / 10, .3, 1), plan = (b ? b.kcal - b.tdee : dir * 400) * 7 / 7700;
+    let r = obs !== null ? .5 * obs + .5 * plan * adhN : plan * adhN * .85; r = clamp(r, -1, 1);
+    const proj = cur + r * wk, sd = .3 + .35 * Math.sqrt(wk), z = dir < 0 ? (g.target - proj) / sd : (proj - g.target) / sd; p = Phi(z) * 100;
+    why.push('Il faut ' + nf(Math.abs(g.target - cur) / wk, 2) + ' kg par semaine ; ton rythme estimé est de ' + nf(Math.abs(r), 2) + ' kg' + (Math.sign(r) === dir ? '.' : ', dans le mauvais sens pour l’instant.'));
+    why.push(lg >= 8 ? 'Tu notes bien tes repas : estimation plus fiable.' : 'Note tes repas plus souvent : l’estimation sera plus fiable.');
+  } else {
+    const st = runStages(g.T), need = st.length - S.run.stage; let have = 0; for (let k = 0; k <= left; k++) { if (planFor(addDays(t, k)).size !== 'repos') have++; }
+    if (ov.boost) have += Math.floor(wk);
+    if (need <= 0) p = 99; else { const q = Math.min(1, A.adh) * .85, mean = have * q, sd = Math.sqrt(Math.max(.25, have * q * (1 - q))) + .5; p = Phi((mean - need + .5) / sd) * 100; }
+    /* sorties réelles : la distance que tu tiens et sa progression comptent pour moitié */
+    const rr = runsOf().filter(s => s.km > 0 && diffDays(t, s.d) <= 60), ds = slopeWk(rr.map(s => ({ x: parseD(s.d).getTime(), y: s.km }))), bd = runBests().dist;
+    if (rr.length >= 3 && ds !== null && need > 0) {
+      const pD = Phi((bd + Math.max(0, ds) * wk - g.target) / (Math.max(.8, bd * .15) * Math.sqrt(wk / 2) + .5)) * 100; p = .5 * p + .5 * pD;
+      why.push('D’après tes ' + rr.length + ' sorties : plus longue distance ' + nf(bd, 1) + ' km, ' + (ds >= 0 ? '+' : '') + nf(ds, 1) + ' km par semaine.');
+    }
+    why.push('Il te reste ' + Math.max(0, need) + ' étape' + (need > 1 ? 's' : '') + ' de course et ' + have + ' jour' + (have > 1 ? 's' : '') + ' de sport prévu' + (have > 1 ? 's' : '') + '.');
+  }
+  why.push(A.known ? 'Régularité sur 14 jours : ' + A.dn + ' séance' + (A.dn > 1 ? 's' : '') + ' faite' + (A.dn > 1 ? 's' : '') + ' sur ' + A.pl + ' prévues.' : 'Pas encore assez de recul sur ta régularité : j’ai supposé 80 %.');
+  return { p: clamp(p, 1, 99), why, A };
+}
+function probBlock(g, compact) {
+  const o = goalProb(g), p = Math.round(o.p), cls = p < 35 ? 'over' : p < 60 ? 'mid' : '';
+  let h = '<div class="prob"><div class="row" style="flex-wrap:nowrap;gap:14px"><div class="num" style="font-size:48px;line-height:1;color:' + (p < 35 ? 'var(--warm)' : p < 60 ? 'var(--warn)' : 'var(--accent)') + '"><span data-count="' + p + '">' + p + '</span>%</div><div style="min-width:0"><b>Chance d’y arriver</b><div class="small muted">' + probTier(p) + '</div></div></div><div class="bar"><i class="' + cls + '" style="width:' + p + '%"></i></div>';
+  if (!compact) {
+    h += '<ul class="advice">' + o.why.map(w => '<li>' + esc(w) + '</li>').join('') + '</ul>';
+    if (p < 99 && g.id !== 'tmp') {
+      const sc = [{ t: 'En ajoutant 14 jours', v: goalProb(g, { extraDays: 14 }).p }]; if (g.type !== 'weight') sc.push({ t: 'Avec une séance de plus par semaine', v: goalProb(g, { boost: 1 }).p });
+      h += '<h3>Pour augmenter tes chances</h3><ul class="advice">' + sc.map(x => '<li>' + x.t + ' : <b>' + Math.round(x.v) + ' %</b></li>').join('') + '</ul>';
+    }
+    h += '<p class="tiny muted">Estimation à partir de ton rythme réel, de ta régularité et du temps qui reste. Elle change chaque jour avec ce que tu fais, ce n’est pas une promesse.</p>';
+  }
+  return h + '</div>';
+}
+function tempGoal() {
+  const G = U.G, days = Math.round(num(val('g-days'))) || G.days; if (!(days >= 7)) return null;
+  const g = { id: 'tmp', type: G.type, start: today(), days, end: addDays(today(), days) };
+  if (G.type === 'reps') { const ex = val('g-ex') || G.ex, t = Math.round(num(val('g-target'))), cur = bestOf(ex); if (!(t > cur)) return null; Object.assign(g, { ex, from: cur, target: t }); }
+  else if (G.type === 'weight') { const t = num(val('g-target')), lw = latestW(); if (!lw || !(t >= 30 && t <= 250) || Math.abs(t - lw.kg) < .3) return null; Object.assign(g, { from: lw.kg, target: t }); }
+  else { const km = +G.km || 5; Object.assign(g, { target: km, T: clamp(Math.round(km * 6.5), 10, 80), from: 0 }); }
+  return g;
+}
+function updateGProb() { const el = $('#gprob'); if (!el) return; const g = tempGoal(); el.innerHTML = g ? '<h3>Chance d’y arriver avec ces réglages</h3>' + probBlock(g) : ''; }
+function snapGoalProb() {
+  const g = S.goal; if (!g || !profileOK()) return; const p = Math.round(goalProb(g).p); S.gh = S.gh || [];
+  const e = S.gh.find(x => x.id === g.id && x.d === today()); if (e) { if (e.p === p) return; e.p = p; } else S.gh.push({ id: g.id, d: today(), p });
+  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (x) { }
+}
+function probHistory() {
+  const g = S.goal; if (!g) return ''; const pts = (S.gh || []).filter(x => x.id === g.id).map(x => ({ x: parseD(x.d).getTime(), y: x.p })); if (pts.length < 2) return '';
+  return '<section class="card"><h2>Évolution de mes chances</h2>' + lineChart({ pts, label: 'Chance d’atteindre l’objectif', fmtY: v => Math.round(v) + '%', unit: ' %' }) + '<p class="tiny muted">Elle monte quand tu es régulier et que tu progresses, elle baisse quand tu rates des séances.</p></section>';
 }
 
 /* ===== Actions ===== */
@@ -2166,11 +2257,13 @@ document.addEventListener('input', e => {
   }
   if (t.id === 'wkg') U.wkg = t.value;
   if (t.id === 'a-min' || t.id === 'a-sec' || t.id === 'a-km' || t.id === 'a-elev') updateAPace();
+  if (t.id === 'g-target' || t.id === 'g-days') updateGProb();
   if (t.id === 'wdate') U.wdate = t.value;
   if (t.id === 'recdate') U.recDate = t.value;
 });
 document.addEventListener('change', e => {
   const t = e.target;
+  if (t.id === 'g-ex') { U.G.ex = t.value; U.G.target = ''; U.keepScroll = true; render(); return; }
   if (t.dataset && t.dataset.av) {
     const d = t.dataset.av, a = Object.assign({ m: 'free' }, P().avail[d]); a[t.dataset.f] = t.value; if (a.m === 'time' && !a.t) a.t = '17:30';
     P().avail[d] = a; P().availSet = true; save(); keep(); render(); return;
