@@ -225,6 +225,9 @@ ol.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
 .nitem{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}.nitem.new{border-color:var(--accent);background:var(--accent-soft)}
 .ring .t.long{font-size:38px}
 .runrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}.runrow>div{min-width:0}
+.stand{display:flex;flex-direction:column;gap:6px;padding-top:10px;border-top:1px solid var(--line)}.stand:first-of-type{border-top:0;padding-top:0}
+.pbar{position:relative;height:12px;border-radius:6px;background:linear-gradient(90deg,color-mix(in srgb,var(--warm) 55%,var(--surface)),color-mix(in srgb,var(--accent) 30%,var(--surface)) 50%,var(--accent));margin:4px 0 2px}
+.pbar .mid{position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.45}
 @media (max-width:380px){.item{grid-template-columns:76px 1fr}.item .badge{display:none}.stat .num{font-size:28px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -721,7 +724,7 @@ function gauge(k, v) {
   const tr = TRACK.find(x => x.k === k), { i, t } = levelOf(k, v), un = tr.u === 's' ? ' s' : '';
   let pos = i === 0 ? v / t[0] * .2 : i < 4 ? (i + (v - t[i - 1]) / (t[i] - t[i - 1])) * .2 : .8 + Math.min(1, (v - t[3]) / (t[3] * .35)) * .2;
   pos = clamp(pos, .02, .98) * 100;
-  return '<div class="gz"><div class="row sb"><b>' + tr.n + '</b><span class="badge lv' + i + '">' + (v ? LVN[i] + ' · ' + v + un : 'pas encore testé') + '</span></div>' +
+  return '<div class="gz"><div class="row sb"><b>' + tr.n + '</b><span class="badge lv' + i + '">' + (v ? LVN[i] + ' · ' + v + un : 'pas encore testé') + '</span></div>' + (v ? '<div class="tiny muted">Moyenne pour ton âge : <b style="color:var(--ink)">' + t[1] + un + '</b> · ' + pctStr(strengthPct(k, v)) + '</div>' : '') +
     (v ? '<div class="gauge"><div class="seg">' + [0, 1, 2, 3, 4].map(j => '<i class="g' + j + '"></i>').join('') + '</div><span class="mk" style="left:' + pos.toFixed(1) + '%"></span>' + t.map((x, j) => '<span class="tk" style="left:' + (j + 1) * 20 + '%">' + x + '</span>').join('') + '</div>' : '') + '</div>';
 }
 function levelInfo(k) {
@@ -1008,7 +1011,7 @@ function vToday() {
   return (S.demo ? '<div class="exdemo"><span><b>Données d’exemple.</b> Ce ne sont pas tes chiffres.</span><button class="btn sm warm" data-act="wipe">Effacer les exemples</button></div>' : '') +
     '<div class="row sb"><div><h1>Salut Timao</h1><p class="muted">' + fmtLong(t) + '</p></div><div class="row" style="gap:6px"><button class="btn ghost sm bell" data-act="notifs" aria-label="Alertes">Alertes<span class="dotc" id="bellc" style="display:none"></span></button><button class="btn ghost sm" data-act="tab" data-v="profile">Réglages</button></div></div>' +
     '<section class="card ' + (adv.kind === 'rest' ? 'soft' : 'warm') + '" aria-live="polite"><h2>' + adv.title + '</h2><p>' + adv.text + '</p>' +
-    (adv.kind === 'train' ? '<button class="btn big" data-act="quickstart">' + (goalRunToday() ? 'Lancer ma course' : 'Lancer ma séance · ' + pf.min + ' min') + '</button><button class="btn ghost" data-act="gotrain">Choisir autre chose</button>' : '<button class="btn ghost" data-act="quickstart">Faire une séance quand même</button>') + '<button class="btn ghost" data-act="actopen">J’ai fait du sport (course, vélo…)</button></section>' + streakCard() + goalMini() + runCard() +
+    (adv.kind === 'train' ? '<button class="btn big" data-act="quickstart">' + (goalRunToday() ? 'Lancer ma course' : 'Lancer ma séance · ' + pf.min + ' min') + '</button><button class="btn ghost" data-act="gotrain">Choisir autre chose</button>' : '<button class="btn ghost" data-act="quickstart">Faire une séance quand même</button>') + '<button class="btn ghost" data-act="actopen">J’ai fait du sport (course, vélo…)</button></section>' + streakCard() + goalMini() + runCard() + levelCard() +
     '<section class="card"><div class="row sb"><h2>Ce que j’ai mangé ou bu</h2><span class="num" style="font-size:24px">' + dt.kcal + (b ? ' <span class="muted" style="font-size:16px">/ ' + b.kcal + ' kcal</span>' : ' kcal') + '</span></div>' +
     (b ? '<div class="bar"><i class="' + (dt.kcal > b.kcal * 1.1 ? 'over' : '') + '" style="width:' + pct + '%"></i></div>' : '') +
     '<textarea id="qtext" rows="2" placeholder="ex. 2 œufs, du pain, un café, une banane"></textarea><button class="btn" data-act="qmeal">Ajouter</button>' +
@@ -1259,7 +1262,7 @@ function vProgressGeneral() {
   }
   h += '<section class="card"><h2>Mes jours</h2><div class="heat">' + cal + '</div><p class="small muted">Plein = séance (plus foncé = plus long). Pointillé = repos prévu. Contour orange = aujourd’hui.</p></section>';
   /* badges */
-  h += badgesCard();
+  h += standingCard() + healthCard() + badgesCard();
   /* niveau */
   const sxl = p.sex === 'm' ? 'homme' : p.sex === 'f' ? 'femme' : 'personne', age = num(p.age);
   h += '<section class="card"><div class="row sb"><h2>Mon niveau</h2><span class="badge">' + sxl + (age ? ', ' + age + ' ans' : '') + '</span></div><p class="small muted">Repères indicatifs inspirés des tests de condition physique, adaptés à ton âge et ton sexe. Le trait noir, c’est toi.</p>' + TRACK.map(x => gauge(x.k, prOf(x.k) || bestOf(x.k))).join('') + '</section>';
@@ -1792,6 +1795,7 @@ function vRunStats() {
     '<div class="stat"><span class="lbl">Meilleure allure</span><span class="num" style="color:var(--warm)">' + (b.pace ? fpace(b.pace) : '–') + '</span><span class="small muted">min par km, sur 1 km ou plus</span></div>' +
     '<div class="stat"><span class="lbl">Plus long temps</span><span class="num" style="color:var(--warm)">' + ftime(b.time) + '</span></div>' +
     '<div class="stat"><span class="lbl">Plus gros dénivelé</span><span class="num" style="color:var(--warm)">' + (b.elev ? b.elev + ' m' : '–') + '</span></div></div></section>';
+  h += runStandingCard();
   const chip = (v, t) => '<button class="chip" data-act="rmetric" data-v="' + v + '" aria-pressed="' + (M === v) + '">' + t + '</button>';
   const lbl = { pace: 'Allure (min/km)', eq: 'Allure à plat', dist: 'Distance (km)', time: 'Temps (min)', elev: 'Dénivelé (m)', week: 'Km par semaine' };
   let chart = '', note = '';
@@ -1934,6 +1938,7 @@ function learnAction(a, b, v) {
     case 'psub': U.psub = v; render(); return true;
     case 'rmetric': U.rmetric = v; U.keepScroll = true; render(); return true;
     case 'prun': U.tab = 'progress'; U.psub = 'run'; render(); return true;
+    case 'topro': U.tab = 'progress'; U.psub = 'general'; render(); return true;
     case 'rundel': S.sessions = S.sessions.filter(x => x.id !== b.dataset.id); save(); U.keepScroll = true; render(); return true;
     case 'asave': saveActivity(); return true;
     case 'notifs': openNotifs(); return true;
@@ -1960,6 +1965,62 @@ function saveSessionFromPlayer(zones) {
   if (plan.run && PL.runBefore) { const bf = PL.runBefore; setTimeout(() => announceRuns(bf), 400); }
 }
 const goalRunToday = () => { const g = S.goal; if (!g || g.type !== 'run') return false; const c = gschedule(g, 1)[0]; return !!(c && c.kind === 'run' && !c.done); };
+
+/* ---------- Ma place par rapport aux gens de mon âge (estimations) ---------- */
+function interp(pts, v) {
+  if (v <= pts[0][0]) return pts[0][1];
+  for (let i = 1; i < pts.length; i++) if (v <= pts[i][0]) { const a = pts[i - 1], b = pts[i]; return a[1] + (b[1] - a[1]) * (v - a[0]) / (b[0] - a[0]); }
+  return pts[pts.length - 1][1];
+}
+const pctStr = p => p >= 50 ? 'Top ' + Math.max(1, Math.round(100 - p)) + ' %' : 'Mieux que ' + Math.max(1, Math.round(p)) + ' % des gens de ton âge';
+const pctShort = p => p >= 50 ? 'Top ' + Math.max(1, Math.round(100 - p)) + ' %' : 'Mieux que ' + Math.max(1, Math.round(p)) + ' %';
+/* Les 4 seuils d'un exercice correspondent aux percentiles 25, 50 (la moyenne), 75 et 90 */
+function strengthPct(k, v) { const t = norms(k); return interp([[0, 1], [t[0], 25], [t[1], 50], [t[2], 75], [t[3], 90], [t[3] * 1.4, 99]], v); }
+function runNormTimes() { const a = num(P().age) || 30, sx = P().sex, sf = sx === 'f' ? 1.15 : sx === 'm' ? 1 : 1.07, af = a < 30 ? 1 : a < 40 ? 1.04 : a < 50 ? 1.10 : a < 60 ? 1.20 : 1.35; return [21.5, 25.5, 30.5, 36, 42].map(m => m * 60 * sf * af); }
+function run5kPct(sec) { const [p90, p75, p50, p25, p10] = runNormTimes(); return interp([[p90 * .8, 99], [p90, 90], [p75, 75], [p50, 50], [p25, 25], [p10, 10], [p10 * 1.6, 1]], sec); }
+function distF() { const a = num(P().age) || 30; return (P().sex === 'f' ? .9 : 1) * (a < 40 ? 1 : a < 50 ? .9 : a < 60 ? .8 : .65); }
+function runDistPct(km) { const f = distF(); return interp([[0, 1], [3 * f, 25], [5 * f, 50], [8 * f, 75], [12 * f, 90], [18 * f, 99]], km); }
+function standing(kind) {
+  const out = [];
+  if (kind !== 'run') TRACK.forEach(tr => { const v = prOf(tr.k) || bestOf(tr.k); if (v > 0) { const u = tr.u === 's' ? ' s' : ''; out.push({ n: tr.n, v: v + u, avg: norms(tr.k)[1] + u, p: strengthPct(tr.k, v) }); } });
+  if (kind !== 'str') {
+    const rs = runsOf().filter(s => s.km > 0), f = riegel(rs);
+    if (f) { const t5 = f(5); out.push({ n: '5 km (estimation)', v: ftime(t5), avg: ftime(runNormTimes()[2]), p: run5kPct(t5) }); }
+    const bd = runBests().dist; if (bd > 0) out.push({ n: 'Plus longue course', v: nf(bd, 1) + ' km', avg: nf(5 * distF(), 1) + ' km', p: runDistPct(bd) });
+  }
+  return out;
+}
+function standRow(x) {
+  const p = clamp(x.p, 1, 99);
+  return '<div class="stand"><div class="row sb" style="flex-wrap:nowrap"><b>' + x.n + '</b><span class="badge ' + (p >= 50 ? 'sk-ok' : 'lv0') + '">' + pctShort(p) + '</span></div>' +
+    '<div class="pbar" role="img" aria-label="' + pctStr(p) + '"><i class="mid"></i><span class="mk" style="left:' + p.toFixed(0) + '%"></span></div>' +
+    '<div class="tiny muted">Toi : <b style="color:var(--ink)">' + x.v + '</b> · Moyenne pour ton âge : ' + x.avg + '</div></div>';
+}
+const ageSexTxt = () => { const a = num(P().age), s = P().sex; return (s === 'm' ? 'hommes' : s === 'f' ? 'femmes' : 'personnes') + (a ? ' de ' + Math.max(18, Math.round(a / 5) * 5 - 2) + ' à ' + (Math.max(18, Math.round(a / 5) * 5 - 2) + 4) + ' ans' : ''); };
+function globalPct(list) { return list.length ? list.reduce((a, x) => a + clamp(x.p, 1, 99), 0) / list.length : null; }
+function standingCard() {
+  const l = standing(); if (!l.length) return '<section class="card soft"><h2>Ma place pour mon âge</h2><p>Note un premier record (pompes, squats…) ou une course : je te dis quelle est la moyenne pour ton âge et dans quel pourcentage tu te situes.</p></section>';
+  const g = globalPct(l);
+  return '<section class="card"><div class="row sb" style="flex-wrap:nowrap"><div style="min-width:0"><h2>Ma place pour mon âge</h2><p class="small muted">Comparé à des ' + ageSexTxt() + ' (estimation)</p></div><div style="text-align:right"><span class="num" style="font-size:36px;color:var(--accent);white-space:nowrap">' + pctShort(g).replace('Mieux que ', '> ') + '</span></div></div>' +
+    '<p class="small">' + (g >= 50 ? 'Globalement, tu fais partie des <b>' + Math.max(1, Math.round(100 - g)) + ' % les plus en forme</b> de ton âge.' : 'Globalement, tu fais déjà mieux que <b>' + Math.round(g) + ' %</b> des gens de ton âge. Chaque progrès te fait monter.') + '</p>' + l.map(standRow).join('') +
+    '<p class="tiny muted">Le trait au milieu, c’est la moyenne. Ces classements sont des estimations à partir de repères généraux de condition physique (selon l’âge et le sexe), pas une mesure scientifique.</p></section>';
+}
+function runStandingCard() {
+  const l = standing('run'); if (!l.length) return '';
+  return '<section class="card"><h2>Ma place en course</h2><p class="small muted">Comparé à des ' + ageSexTxt() + ' (estimation)</p>' + l.map(standRow).join('') + '<p class="tiny muted">L’estimation sur 5 km vient de ta meilleure sortie de 2 km ou plus.</p></section>';
+}
+function levelCard() {
+  const l = standing(); if (!l.length) return ''; const g = globalPct(l);
+  return '<button class="card" data-act="topro" style="text-align:left;cursor:pointer"><div class="row sb" style="flex-wrap:nowrap"><div style="min-width:0"><h2>Ma place pour mon âge</h2><p class="small muted">' + (g >= 50 ? 'Tu es dans le top ' + Math.max(1, Math.round(100 - g)) + ' % de ton âge' : 'Mieux que ' + Math.round(g) + ' % des gens de ton âge') + '</p></div><span class="num" style="font-size:34px;color:var(--accent)">' + (g >= 50 ? 'Top ' + Math.max(1, Math.round(100 - g)) + '%' : Math.round(g) + '%') + '</span></div></button>';
+}
+function avgBMI() { const a = num(P().age) || 30, m = a < 30 ? 25 : a < 40 ? 27 : a < 50 ? 28 : 28.5, f = a < 30 ? 24.5 : a < 40 ? 26.5 : a < 50 ? 27.5 : 28; return P().sex === 'm' ? m : P().sex === 'f' ? f : (m + f) / 2; }
+function healthCard() {
+  const b = body(), t = today(); let min28 = 0; S.sessions.forEach(s => { const dd = diffDays(t, s.d); if (dd >= 0 && dd < 28) min28 += s.min; });
+  const wk = Math.round(min28 / 4), pct = clamp(wk / 150 * 100, 0, 100);
+  return '<section class="card"><h2>Ma forme générale</h2>' +
+    (b ? '<div class="stand"><div class="row sb"><b>Indice de masse corporelle</b><span class="badge">' + nf(b.bmi, 1) + '</span></div><div class="tiny muted">' + bmiLabel(b.bmi) + ' · moyenne pour ton âge ≈ ' + nf(avgBMI(), 1) + '. L’IMC est un repère simple, il ne dit rien de ta masse musculaire.</div></div>' : '') +
+    '<div class="stand"><div class="row sb"><b>Sport par semaine</b><span class="badge ' + (wk >= 150 ? 'sk-ok' : '') + '">' + wk + ' min</span></div><div class="bar"><i style="width:' + pct + '%"></i></div><div class="tiny muted">Moyenne sur 4 semaines. L’OMS recommande au moins 150 minutes par semaine pour un adulte' + (wk >= 150 ? ' : objectif atteint.' : ' : il t’en manque ' + (150 - wk) + '.') + '</div></div></section>';
+}
 
 /* ===== Actions ===== */
 const SLUG = { today: 'aujourdhui', train: 'seance', meals: 'repas', week: 'bilan', progress: 'progres', profile: 'profil' };
