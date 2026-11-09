@@ -25,8 +25,13 @@
 <meta property="og:image:alt" content="Équipement Team Mot'eau : la moto noire et orange, la bannière, un short et un maillot">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SportsOrganization","name":"Mot'eau","alternateName":["Moteau","Mot eau"],"url":"https://moteau.vercel.app/","sport":"Mot'eau","description":"Nouveau sport nautique : une moto lancée sur une rampe de mise à l'eau, un décollage et un vol mesuré.","areaServed":"Lac du Bourget, Savoie, France","sameAs":["https://www.instagram.com/mot_eau/"]}
+{"@context":"https://schema.org","@graph":[
+{"@type":"SportsOrganization","@id":"https://moteau.vercel.app/#club","name":"Mot'eau","alternateName":["Moteau","Mot eau"],"url":"https://moteau.vercel.app/","logo":"https://moteau.vercel.app/icon-512.png","image":"https://moteau.vercel.app/images/og-moteau.jpg","sport":"Mot'eau (moto sur rampe de mise à l'eau)","description":"Nouveau sport nautique : une moto lancée sur une rampe de mise à l'eau, un décollage et un vol mesuré en vitesse, distance et temps.","areaServed":"Lac du Bourget, Savoie, France","address":{"@type":"PostalAddress","addressLocality":"Aix-les-Bains","addressRegion":"Savoie","addressCountry":"FR"},"sameAs":["https://www.instagram.com/mot_eau/"]},
+{"@type":"WebSite","@id":"https://moteau.vercel.app/#site","url":"https://moteau.vercel.app/","name":"Mot'eau","inLanguage":["fr","en"],"publisher":{"@id":"https://moteau.vercel.app/#club"}}
+]}
 </script>
+<link rel="preconnect" href="https://mot-eau-default-rtdb.europe-west1.firebasedatabase.app" crossorigin>
+<link rel="preload" href="/images/hero-team.webp" as="image" type="image/webp" fetchpriority="high">
 <link rel="preload" href="/fonts/Anton.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="/fonts/SpaceGrotesk.ttf" as="font" type="font/ttf" crossorigin>
 <style>
@@ -981,7 +986,7 @@ footer{border-top:1px solid var(--card-line); background:linear-gradient(180deg,
 .foot-legal a{color:#bdb7ab;}
 
 /* --- photos du club --- */
-.hero{background:linear-gradient(90deg, #0a0a09 0%, rgba(10,10,9,.97) 38%, rgba(10,10,9,.6) 56%, rgba(10,10,9,.08) 100%), linear-gradient(0deg, rgba(10,10,9,.9) 0%, rgba(10,10,9,0) 28%), url('/images/hero-team.jpg') right 18%/72% auto no-repeat, #0a0a09;}
+.hero{background:linear-gradient(90deg, #0a0a09 0%, rgba(10,10,9,.97) 38%, rgba(10,10,9,.6) 56%, rgba(10,10,9,.08) 100%), linear-gradient(0deg, rgba(10,10,9,.9) 0%, rgba(10,10,9,0) 28%), image-set(url('/images/hero-team.webp') type('image/webp'), url('/images/hero-team.jpg') type('image/jpeg')) right 18%/72% auto no-repeat, #0a0a09;}
 .hero .grid-bg{display:none;}
 #heroDefaultSvg,.ramp-graphic svg{display:none !important;}
 .hero h1,.hero p.lead{text-shadow:0 2px 24px rgba(0,0,0,.55);}
@@ -994,11 +999,39 @@ footer{border-top:1px solid var(--card-line); background:linear-gradient(180deg,
 .machine-fig figcaption{padding:14px 18px; font-size:.95rem; color:#d8d2c6;}
 .machine-fig figcaption b{color:var(--cream); display:block; font-size:1.05rem;}
 @media (max-width:640px){ .machine-grid{grid-template-columns:1fr;} }
-#viewBanner{display:none; max-width:1144px; margin:92px 18px 0; height:clamp(150px,24vw,260px); border-radius:22px; border:1px solid var(--card-line); background:linear-gradient(0deg, rgba(10,10,9,.55), rgba(10,10,9,.05)), url('/images/boutique-banner.jpg') center 40%/cover no-repeat; box-shadow:0 18px 50px rgba(0,0,0,.4);}
+#viewBanner{display:none; max-width:1144px; margin:92px 18px 0; height:clamp(150px,24vw,260px); border-radius:22px; border:1px solid var(--card-line); background:linear-gradient(0deg, rgba(10,10,9,.55), rgba(10,10,9,.05)), image-set(url('/images/boutique-banner.webp') type('image/webp'), url('/images/boutique-banner.jpg') type('image/jpeg')) center 40%/cover no-repeat; box-shadow:0 18px 50px rgba(0,0,0,.4);}
 @media (min-width:1180px){ #viewBanner{margin-left:auto; margin-right:auto;} }
 body[data-view="boutique"] #viewBanner{display:block;}
 body[data-view="boutique"] #viewTabs{margin-top:14px;}
 body[data-view="boutique"] main > section:first-of-type{padding-top:30px;}
+
+
+/* --- téléphone : barre du bas, accueil, doigts --- */
+#bottomNav{display:none;}
+@media (max-width:860px){
+  #bottomNav{display:flex; position:fixed; left:8px; right:8px; bottom:calc(8px + env(safe-area-inset-bottom)); z-index:120; background:rgba(16,14,11,.94); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.1); border-radius:22px; padding:6px; box-shadow:0 14px 40px rgba(0,0,0,.55);}
+  #bottomNav a{flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:8px 2px; border-radius:16px; font-size:.7rem; font-weight:600; color:#cfc9bd; min-height:52px; justify-content:center;}
+  #bottomNav a span{font-size:1.25rem; line-height:1;}
+  #bottomNav a.active{background:rgba(255,90,31,.18); color:#ffb089;}
+  body{padding-bottom:calc(86px + env(safe-area-inset-bottom));}
+  footer{padding-bottom:20px;}
+  .edit-fab{bottom:calc(92px + env(safe-area-inset-bottom)) !important;}
+  .toast{bottom:calc(96px + env(safe-area-inset-bottom)) !important;}
+  .nav-links{display:none;} .nav-links.open{display:flex;}
+  .burger{display:none !important;}
+  body.is-admin .burger{display:block !important;}
+  /* accueil : la photo au-dessus, le titre en dessous */
+  .hero{padding-top:378px !important; background:linear-gradient(180deg, rgba(10,10,9,0) 0%, rgba(10,10,9,.15) 40%, #0a0a09 66%), image-set(url('/images/hero-team.webp') type('image/webp'), url('/images/hero-team.jpg') type('image/jpeg')) 64% 70px/auto 330px no-repeat, #0a0a09;}
+  .hero h1{font-size:clamp(2.6rem,13vw,3.8rem);}
+  .hero p.lead{font-size:1.08rem;}
+  .hero-ctas .btn{flex:1 1 100%; text-align:center;}
+  /* zones tactiles confortables */
+  .btn,.small-btn,.filter-btn,select,input,textarea{min-height:46px;}
+  .cart-btn,.search-btn{min-height:40px;}
+  .sec-head h2{font-size:2.1rem;}
+  .signup-card{padding:20px 16px;}
+}
+@media (max-width:860px) and (display-mode:standalone){ header{top:calc(var(--announce-h,0px) + 10px + env(safe-area-inset-top)) !important;} }
 
 /* --- mobile --- */
 @media (max-width:860px){
@@ -1118,6 +1151,13 @@ body[data-view="boutique"] main > section:first-of-type{padding-top:30px;}
 
 <main id="contenu" tabindex="-1">
 
+<nav id="bottomNav" aria-label="Navigation rapide">
+  <a href="#accueil" data-viewlink="home"><span aria-hidden="true">🏠</span>Accueil</a>
+  <a href="#planning" data-viewlink="sport"><span aria-hidden="true">🏁</span>Sport</a>
+  <a href="#boutique" data-viewlink="boutique"><span aria-hidden="true">🛍️</span>Boutique</a>
+  <a href="#adhesion" data-viewlink="rejoindre"><span aria-hidden="true">🤝</span>Rejoindre</a>
+  <a href="#avis" data-viewlink="communaute"><span aria-hidden="true">💬</span>Club</a>
+</nav>
 <div id="viewBanner" role="img" aria-label="Équipement Team Mot'eau posé sur l'herbe : la moto noire et orange, la bannière, un short et un maillot"></div>
 <div id="viewTabs" role="navigation" aria-label="Rubriques de cette page"></div>
 
@@ -1216,8 +1256,8 @@ body[data-view="boutique"] main > section:first-of-type{padding-top:30px;}
   <div class="wrap">
     <div class="sec-head"><h2 id="machineTitle" class="display">La Mot'eau</h2><p class="sub">La machine du club, aux couleurs de la Team Mot'eau.</p></div>
     <div class="machine-grid">
-      <figure class="machine-fig"><img src="/images/moto-face.jpg" width="768" height="1024" loading="lazy" decoding="async" alt="La moto Mot'eau noire et orange vue de trois quarts avant, devant la bannière Team Mot'eau"><figcaption><b>Vue de face</b>Réservoir orange, jantes graphiques noir et orange.</figcaption></figure>
-      <figure class="machine-fig"><img src="/images/moto-dos.jpg" width="756" height="1024" loading="lazy" decoding="async" alt="La moto Mot'eau noire et orange vue de trois quarts arrière, devant la bannière Team Mot'eau"><figcaption><b>Vue de dos</b>Selle et carénage noir brillant.</figcaption></figure>
+      <figure class="machine-fig"><picture><source srcset="/images/moto-face.webp" type="image/webp"><img src="/images/moto-face.jpg" width="768" height="1024" loading="lazy" decoding="async" alt="La moto Mot'eau noire et orange vue de trois quarts avant, devant la bannière Team Mot'eau"></picture><figcaption><b>Vue de face</b>Réservoir orange, jantes graphiques noir et orange.</figcaption></figure>
+      <figure class="machine-fig"><picture><source srcset="/images/moto-dos.webp" type="image/webp"><img src="/images/moto-dos.jpg" width="756" height="1024" loading="lazy" decoding="async" alt="La moto Mot'eau noire et orange vue de trois quarts arrière, devant la bannière Team Mot'eau"></picture><figcaption><b>Vue de dos</b>Selle et carénage noir brillant.</figcaption></figure>
     </div>
   </div>
 </section>
@@ -8340,11 +8380,17 @@ async function applyPaymentLinkOverrides(){
   try{
     const r = await fetch('/payment-links.json', { cache:'no-store' }); if(!r.ok) return;
     const map = await r.json();
+    const isStripe = u => /^https:\/\/(buy|checkout)\.stripe\.com\//.test(u || '');
     (STATE.products || []).forEach(p => {
-      if(!p || p.link) return;
+      if(!p) return;
       const nm = normSearch(p.name || '');
       const key = Object.keys(map).find(k => !k.startsWith('_') && nm.includes(normSearch(k)));
-      if(key && /^https:\/\/(buy|checkout)\.stripe\.com\//.test(map[key])) p.link = map[key];
+      if(!key) return;
+      const cfg = typeof map[key] === 'string' ? { link: map[key] } : map[key];
+      if(p.link) return;                                   // lien saisi à la main : il gagne
+      if(isStripe(cfg.link)){ p.link = cfg.link; return; }  // vrai lien : ouvert à tous
+      if(isAdmin() && isStripe(cfg.testLink)){ p.link = cfg.testLink; return; } // test : administrateur seulement
+      if(cfg.stock) p.stock = cfg.stock;                   // sinon : « Bientôt disponible »
     });
   }catch(err){ /* pas de fichier : rien à faire */ }
 }

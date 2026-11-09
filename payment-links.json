@@ -1,4 +1,8 @@
 {
-  "_aide": "Liens de paiement Stripe par produit. La clé est un mot du nom du produit (ex. casquette). Un lien saisi à la main dans le site passe avant celui-ci. Les liens « test_ » ne fonctionnent qu'avec la carte de test 4242 4242 4242 4242.",
-  "casquette": "https://buy.stripe.com/test_eVq5kE4UwfjNcMf0s76AM00"
+  "_aide": "Un bloc par produit ; la clé est un mot du nom du produit. link = lien de paiement Stripe RÉEL (https://buy.stripe.com/...). testLink = lien de test (visible seulement par l'administrateur connecté). stock = état imposé tant qu'il n'y a pas de lien réel (ex. stock_bientot = « Bientôt disponible »). Un lien saisi à la main dans le site passe avant ce fichier.",
+  "casquette": {
+    "link": "",
+    "testLink": "https://buy.stripe.com/test_eVq5kE4UwfjNcMf0s76AM00",
+    "stock": "stock_bientot"
+  }
 }
