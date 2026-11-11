@@ -167,6 +167,7 @@ cook_rows = [
  ("moteau_favorites","Stockage local","Mémoriser vos produits favoris","Jusqu'à effacement","Fonction demandée par vous"),
  ("moteau_voter","Stockage local","Identifiant aléatoire pour ne voter qu'une fois (si vous n'avez pas de compte)","Jusqu'à effacement","Nécessaire au service demandé"),
  ("moteau_push","Stockage local","Se souvenir que vous avez activé les notifications","Jusqu'à effacement","Fonction demandée par vous"),
+ ("moteau_intro","Stockage de session","Ne montrer l'animation d'ouverture qu'une fois par visite","Supprimé à la fermeture de l'onglet","Confort d'affichage, sans donnée personnelle"),
  ("moteau_visit, moteau_sec_…","Stockage de session","Ne compter qu'une fois votre visite dans les statistiques anonymes","Supprimé à la fermeture de l'onglet","Mesure d'audience anonyme (exemptée de consentement)"),
 ]
 ck = ''.join(f"<tr><td><code>{a}</code></td><td>{b}</td><td>{c}</td><td>{d}</td><td>{e}</td></tr>" for a,b,c,d,e in cook_rows)

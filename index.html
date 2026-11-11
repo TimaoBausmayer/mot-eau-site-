@@ -26,14 +26,16 @@
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
-{"@type":"SportsOrganization","@id":"https://moteau.vercel.app/#club","name":"Mot'eau","alternateName":["Moteau","Mot eau"],"url":"https://moteau.vercel.app/","logo":"https://moteau.vercel.app/icon-512.png","image":"https://moteau.vercel.app/images/og-moteau.jpg","sport":"Mot'eau (moto sur rampe de mise à l'eau)","description":"Nouveau sport nautique : une moto lancée sur une rampe de mise à l'eau, un décollage et un vol mesuré en vitesse, distance et temps.","areaServed":"Lac du Bourget, Savoie, France","address":{"@type":"PostalAddress","addressLocality":"Aix-les-Bains","addressRegion":"Savoie","addressCountry":"FR"},"sameAs":["https://www.instagram.com/mot_eau/"]},
+{"@type":"SportsOrganization","@id":"https://moteau.vercel.app/#club","name":"Mot'eau","alternateName":["Moteau","Mot eau"],"url":"https://moteau.vercel.app/","logo":"https://moteau.vercel.app/images/logo.png","image":"https://moteau.vercel.app/images/og-moteau.jpg","sport":"Mot'eau (moto sur rampe de mise à l'eau)","description":"Nouveau sport nautique : une moto lancée sur une rampe de mise à l'eau, un décollage et un vol mesuré en vitesse, distance et temps.","areaServed":"Lac du Bourget, Savoie, France","address":{"@type":"PostalAddress","addressLocality":"Aix-les-Bains","addressRegion":"Savoie","addressCountry":"FR"},"sameAs":["https://www.instagram.com/mot_eau/"]},
 {"@type":"WebSite","@id":"https://moteau.vercel.app/#site","url":"https://moteau.vercel.app/","name":"Mot'eau","inLanguage":["fr","en"],"publisher":{"@id":"https://moteau.vercel.app/#club"}}
 ]}
 </script>
 <link rel="preconnect" href="https://mot-eau-default-rtdb.europe-west1.firebasedatabase.app" crossorigin>
+<link rel="preload" href="/images/logo.webp" as="image" type="image/webp">
 <link rel="preload" href="/images/hero-team.webp" as="image" type="image/webp" fetchpriority="high">
 <link rel="preload" href="/fonts/Anton.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="/fonts/SpaceGrotesk.ttf" as="font" type="font/ttf" crossorigin>
+<script>try{if(!sessionStorage.getItem('moteau_intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){sessionStorage.setItem('moteau_intro','1');document.documentElement.classList.add('intro');setTimeout(function(){document.documentElement.classList.remove('intro')},3200)}}catch(e){}</script>
 <style>
 :root{
   --black:#0a0a09; --surface:#141311; --surface-2:#1c1a17; --line:#332f29;
@@ -1006,6 +1008,66 @@ body[data-view="boutique"] #viewTabs{margin-top:14px;}
 body[data-view="boutique"] main > section:first-of-type{padding-top:30px;}
 
 
+
+/* =====================================================================
+   ANIMATIONS — entrée, défilement, survol (coupées si « réduire les animations »)
+   ===================================================================== */
+.logo-slot img{width:52px; height:52px; border-radius:50%; transition:transform .7s cubic-bezier(.2,.8,.2,1), filter .3s; filter:drop-shadow(0 0 0 rgba(255,90,31,0));}
+.logo-slot:hover img{transform:rotate(360deg) scale(1.08); filter:drop-shadow(0 0 14px rgba(255,90,31,.7));}
+.foot-logo-slot img{width:96px; height:96px; border-radius:50%; animation:floaty 5s ease-in-out infinite;}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-8px) rotate(3deg);}}
+#introSplash{position:fixed; inset:0; z-index:10001; background:#0a0a09; display:none; align-items:center; justify-content:center;}
+html.intro #introSplash{display:flex; animation:splashOut .55s ease 1.15s forwards;}
+html.intro #introSplash img{animation:splashLogo 1.15s cubic-bezier(.2,.9,.25,1.15) both; filter:drop-shadow(0 0 50px rgba(255,90,31,.55));}
+@keyframes splashLogo{0%{transform:scale(.2) rotate(-200deg); opacity:0;}70%{opacity:1;}100%{transform:scale(1) rotate(0); opacity:1;}}
+@keyframes splashOut{to{opacity:0; visibility:hidden; transform:scale(1.15);}}
+#scrollBar{position:fixed; top:0; left:0; height:3px; width:100%; z-index:10000; background:linear-gradient(90deg,#ff5a1f,#ffb347); transform-origin:0 50%; transform:scaleX(0); pointer-events:none;}
+/* entrée de l'accueil */
+.hero .eyebrow-tag,.hero h1 > span,.hero p.lead,.hero-ctas,.hero .countdown{animation:heroUp .8s cubic-bezier(.2,.8,.2,1) both;}
+.hero h1 > span{display:block;}
+.hero .eyebrow-tag{animation-delay:.15s;} .hero h1 > span:nth-child(1){animation-delay:.28s;} .hero h1 > span:nth-child(2){animation-delay:.42s;}
+.hero p.lead{animation-delay:.58s;} .hero-ctas{animation-delay:.72s;} .hero .countdown{animation-delay:.86s;}
+html.intro .hero .eyebrow-tag,html.intro .hero h1 > span,html.intro .hero p.lead,html.intro .hero-ctas,html.intro .hero .countdown{animation-delay:1.3s;}
+html.intro .hero h1 > span:nth-child(1){animation-delay:1.42s;} html.intro .hero h1 > span:nth-child(2){animation-delay:1.56s;} html.intro .hero p.lead{animation-delay:1.7s;} html.intro .hero-ctas{animation-delay:1.84s;}
+@keyframes heroUp{from{opacity:0; transform:translateY(34px);}to{opacity:1; transform:none;}}
+main{overflow-x:clip;}
+.hero h1 .accent{text-shadow:none; filter:drop-shadow(0 2px 14px rgba(0,0,0,.5)); background:linear-gradient(90deg,#ff5a1f,#ffb347,#ff5a1f); background-size:200% 100%; -webkit-background-clip:text; background-clip:text; color:transparent; animation:heroUp .8s cubic-bezier(.2,.8,.2,1) both, shimmer 5s linear 2s infinite;}
+@keyframes shimmer{to{background-position:-200% 0;}}
+/* bandeau défilant */
+.marquee{overflow:hidden; border-top:1px solid var(--card-line); border-bottom:1px solid var(--card-line); background:linear-gradient(90deg,#ff5a1f,#ff7a2f); transform:rotate(-1.2deg) scale(1.03); margin:10px 0 34px;}
+.marquee-track{display:flex; width:max-content; animation:marq 26s linear infinite;}
+.marquee-track span{font-family:'Anton',sans-serif; font-size:1.25rem; letter-spacing:.06em; color:#0b0a09; padding:10px 0; white-space:pre;}
+@keyframes marq{to{transform:translateX(-50%);}}
+/* apparition au défilement */
+.rv{opacity:0; transform:translateY(28px) scale(.985); transition:opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1); transition-delay:var(--rvd,0s); will-change:opacity,transform;}
+.rv.rv-in{opacity:1; transform:none;}
+body.edit-mode .rv{opacity:1 !important; transform:none !important;}
+.sec-head h2::before{transition:width .9s cubic-bezier(.2,.8,.2,1) .15s;}
+.sec-head.rv:not(.rv-in) h2::before{width:0;}
+/* boutons : reflet + pression */
+.btn-solid,.nav-links a.nav-cta{position:relative; overflow:hidden;}
+.btn-solid::after,.nav-links a.nav-cta::after{content:""; position:absolute; top:0; bottom:0; left:-60%; width:40%; background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent); transform:skewX(-20deg); animation:shine 4.5s ease-in-out infinite;}
+@keyframes shine{0%,70%{left:-60%;}100%{left:130%;}}
+.btn:active,.small-btn:active,.quick-card:active,.cart-btn:active{transform:scale(.96);}
+/* cartes : icône qui rebondit, inclinaison 3D */
+.quick-card .qi{display:inline-block; transition:transform .35s cubic-bezier(.3,1.6,.5,1);}
+.quick-card:hover .qi{transform:translateY(-6px) scale(1.2) rotate(-8deg);}
+.tilt{transform-style:preserve-3d; will-change:transform;}
+.machine-fig img{transition:transform .8s cubic-bezier(.2,.8,.2,1);} .machine-fig{overflow:hidden;} .machine-fig:hover img{transform:scale(1.06);}
+.step .n{animation:pulseRing 2.6s ease-out infinite;}
+@keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(255,90,31,.55);}70%,100%{box-shadow:0 0 0 14px rgba(255,90,31,0);}}
+.cart-count.bump{animation:bump .45s cubic-bezier(.3,1.8,.5,1);}
+@keyframes bump{50%{transform:scale(1.6);}}
+#bottomNav a span{transition:transform .3s cubic-bezier(.3,1.7,.5,1);} #bottomNav a.active span{transform:translateY(-3px) scale(1.18);}
+#viewTabs a{transition:background .25s,color .25s,transform .2s;} #viewTabs a:hover{transform:translateY(-2px);}
+.cd-num{display:inline-block;} .cd-num.tick{animation:tick .35s ease;}
+@keyframes tick{0%{transform:translateY(-35%); opacity:.3;}100%{transform:none; opacity:1;}}
+.toast{transition:opacity .3s, transform .35s cubic-bezier(.3,1.5,.5,1);}
+@media (prefers-reduced-motion: reduce){
+  #introSplash{display:none !important;} .rv{opacity:1 !important; transform:none !important;}
+  .marquee-track,.foot-logo-slot img,.btn-solid::after,.nav-links a.nav-cta::after,.step .n{animation:none !important;}
+}
+
 /* --- téléphone : barre du bas, accueil, doigts --- */
 #bottomNav{display:none;}
 @media (max-width:860px){
@@ -1061,6 +1123,8 @@ body[data-view="boutique"] main > section:first-of-type{padding-top:30px;}
 </head>
 <body>
 <a class="skip-link" href="#contenu">Aller au contenu</a>
+<div id="introSplash" aria-hidden="true"><img src="/images/logo.webp" width="220" height="220" alt=""></div>
+<div id="scrollBar" aria-hidden="true"></div>
 <noscript><p style="padding:70px 20px 10px; color:#f4efe6;">Mot'eau : un nouveau sport nautique (moto, rampe de mise à l'eau, décollage, chrono) au Lac du Bourget. Le planning, les résultats et la boutique nécessitent JavaScript. Informations légales : <a href="/mentions-legales.html">mentions légales</a>, <a href="/confidentialite.html">confidentialité</a>, <a href="/cgv.html">conditions de vente</a>.</p></noscript>
 
 <div class="announce-bar" id="announceBar">
@@ -1121,7 +1185,7 @@ body[data-view="boutique"] main > section:first-of-type{padding-top:30px;}
 
 <header id="siteHeader">
   <div class="nav-inner">
-    <a href="#accueil" class="logo-slot" id="logoHeader" data-action="upload-logo"><span class="logo" id="logoHeaderText">MOT<span>'</span>EAU</span></a>
+    <a href="#accueil" class="logo-slot" id="logoHeader" data-action="upload-logo" aria-label="Mot'eau — accueil"><img src="/images/logo.webp" width="52" height="52" alt="Logo Mot'eau"></a>
     <nav class="nav-links" id="navLinks" aria-label="Navigation principale">
       <a href="#accueil" data-viewlink="home">Accueil</a>
       <a href="#planning" data-viewlink="sport">Le sport</a>
@@ -1205,6 +1269,8 @@ body[data-view="boutique"] main > section:first-of-type{padding-top:30px;}
     </div>
   </div>
 </section>
+
+<div class="marquee" id="marquee" aria-hidden="true"><div class="marquee-track"><span>VITESSE ✦ DISTANCE ✦ TEMPS ✦ DÉCOLLE ✦ VOLE ✦ ÉCLABOUSSE ✦ TEAM MOT'EAU ✦ LAC DU BOURGET ✦ </span><span>VITESSE ✦ DISTANCE ✦ TEMPS ✦ DÉCOLLE ✦ VOLE ✦ ÉCLABOUSSE ✦ TEAM MOT'EAU ✦ LAC DU BOURGET ✦ </span></div></div>
 
 <div class="stat-strip" id="stats">
   <div class="wrap">
@@ -3469,7 +3535,8 @@ document.getElementById('instaUrlInput').addEventListener('change', function(){
    LOGO / IDENTITÉ VISUELLE
    ============================================================ */
 function renderBranding(){
-  const logo = STATE.branding && STATE.branding.logo;
+  // logo officiel du site ; un logo envoyé depuis le mode édition (logoV 2) le remplace
+  const logo = (STATE.branding && STATE.branding.logoV === 2 && STATE.branding.logo) || '/images/logo.webp';
   const headerText = document.getElementById('logoHeaderText');
   const footerText = document.getElementById('logoFooterText');
   const headerSlot = document.getElementById('logoHeader');
@@ -3485,7 +3552,7 @@ function renderBranding(){
 function handleLogoUpload(e){
   if(!EDIT_MODE) return;
   e.preventDefault();
-  pickImage(url => { STATE.branding.logo = url; saveSection('branding'); renderBranding(); });
+  pickImage(url => { STATE.branding.logo = url; STATE.branding.logoV = 2; saveSection('branding'); renderBranding(); });
 }
 document.getElementById('logoHeader').addEventListener('click', handleLogoUpload);
 document.getElementById('logoFooter').addEventListener('click', handleLogoUpload);
@@ -7543,7 +7610,9 @@ function tickCountdown(){
   }
   const d = Math.floor(diff / 864e5), h = Math.floor(diff % 864e5 / 36e5), m = Math.floor(diff % 36e5 / 6e4), s = Math.floor(diff % 6e4 / 1e3);
   const box = (n, l) => `<div class="cd-box"><div class="cd-num">${String(n).padStart(2, '0')}</div><div class="cd-lbl">${l}</div></div>`;
+  const prev = [...grid.querySelectorAll('.cd-num')].map(x => x.textContent);
   grid.innerHTML = box(d, 'jours') + box(h, 'heures') + box(m, 'min') + box(s, 'sec');
+  grid.querySelectorAll('.cd-num').forEach((x, i) => { if(prev.length && prev[i] !== x.textContent) x.classList.add('tick'); });
 }
 document.getElementById('countdownBox').addEventListener('click', ev => {
   if(!EDIT_MODE) return;
@@ -8308,7 +8377,7 @@ async function deleteMyAccount(){
    (les liens #planning, #boutique… continuent de fonctionner et ouvrent la bonne page)
    ============================================================ */
 const VIEWS = {
-  home:       ['accueil','stats','actions','actualites','concept','machine'],
+  home:       ['accueil','marquee','stats','actions','actualites','concept','machine'],
   sport:      ['planning','resultats','runs','votes','regles','equipement','galerie','tutoriels'],
   boutique:   ['boutique'],
   rejoindre:  ['adhesion','attestation','fidelite','dons'],
@@ -8394,6 +8463,46 @@ async function applyPaymentLinkOverrides(){
     });
   }catch(err){ /* pas de fichier : rien à faire */ }
 }
+
+/* ============================================================
+   ANIMATIONS — apparition au défilement, barre de progression, inclinaison des cartes
+   ============================================================ */
+(function(){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // barre de progression de lecture
+  const bar = document.getElementById('scrollBar');
+  const onScroll = () => { const h = document.documentElement.scrollHeight - innerHeight; bar.style.transform = `scaleX(${h > 0 ? Math.min(1, scrollY / h) : 0})`; };
+  addEventListener('scroll', onScroll, { passive:true }); addEventListener('resize', onScroll);
+  if(reduce || !('IntersectionObserver' in window)) return;
+  const SEL = '.sec-head,.quick-card,.step,.product-card,.news-card,.tuto-card,.comp-card,.signup-card,.contest-card,.loy-reward,.faq-q,.founder-card,.sponsor-card,.machine-fig,.stat,.accordion-item,.gallery-item,.table-wrap,.loy-hero,.don-card,.pilot-search,.results-block';
+  const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('rv-in'); io.unobserve(e.target); const sec = e.target.closest('section'); if(sec) setTimeout(() => sec.dataset.seen = '1', 1200); } }), { threshold:0.08, rootMargin:'0px 0px -6% 0px' });
+  function arm(root){
+    if(document.body.classList.contains('edit-mode')) return;
+    const list = root.matches && root.matches(SEL) ? [root] : []; if(root.querySelectorAll) list.push(...root.querySelectorAll(SEL));
+    list.forEach(el => {
+      if(el.classList.contains('rv') || el.closest('#adminPanel,.pw-modal,.cart-drawer')) return;
+      const sec = el.closest('section'); if(sec && sec.dataset.seen) return;   // contenu redessiné dans une partie déjà vue : pas de clignotement
+      const sibs = el.parentElement ? [...el.parentElement.children].filter(c => c.matches(SEL)) : [];
+      el.style.setProperty('--rvd', Math.min(sibs.indexOf(el), 6) * 0.07 + 's');
+      el.classList.add('rv'); io.observe(el);
+    });
+  }
+  arm(document.body);
+  new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => { if(n.nodeType === 1) arm(n); }))).observe(document.getElementById('contenu'), { childList:true, subtree:true });
+  // inclinaison 3D des cartes à la souris (ordinateur seulement)
+  if(matchMedia('(hover:hover) and (pointer:fine)').matches){
+    const TILT = '.quick-card,.product-card,.machine-fig,.news-card,.tuto-card';
+    document.addEventListener('mousemove', ev => {
+      const c = ev.target.closest && ev.target.closest(TILT); if(!c || document.body.classList.contains('edit-mode')) return;
+      const r = c.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width - .5, y = (ev.clientY - r.top) / r.height - .5;
+      c.classList.add('tilt'); c.style.transform = `perspective(900px) rotateX(${(-y * 5).toFixed(2)}deg) rotateY(${(x * 6).toFixed(2)}deg) translateY(-4px)`;
+    }, { passive:true });
+    document.addEventListener('mouseout', ev => { const c = ev.target.closest && ev.target.closest(TILT); if(c && !c.contains(ev.relatedTarget)) c.style.transform = ''; });
+  }
+  // le compteur du panier rebondit quand il change
+  const cc = document.getElementById('cartCount');
+  if(cc) new MutationObserver(() => { cc.classList.remove('bump'); void cc.offsetWidth; cc.classList.add('bump'); }).observe(cc, { childList:true, characterData:true, subtree:true });
+})();
 
 async function init(){
   await restoreAdminSession();
