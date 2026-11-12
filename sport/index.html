@@ -229,6 +229,7 @@ ol.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
 .pbar{position:relative;height:12px;border-radius:6px;background:linear-gradient(90deg,color-mix(in srgb,var(--warm) 55%,var(--surface)),color-mix(in srgb,var(--accent) 30%,var(--surface)) 50%,var(--accent));margin:4px 0 2px}
 .pbar .mid{position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.45}
 .bar>i.mid{background:var(--warn)}.prob{display:flex;flex-direction:column;gap:10px}
+canvas.fig{width:100%;height:auto;display:block;aspect-ratio:240/146;touch-action:pan-y}
 @media (max-width:380px){.item{grid-template-columns:76px 1fr}.item .badge{display:none}.stat .num{font-size:28px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -252,6 +253,7 @@ ol.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
   window.addEventListener('unhandledrejection', function (e) { show(String((e.reason && e.reason.message) || e.reason || 'promesse rejetée')); });
 })();
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 /* ===== Bonhomme animé : cinématique par angles (0° = droite, 90° = bas, -90° = haut) ===== */
 const L = { torso: 34, ua: 16, fa: 15, th: 24, sh: 23, head: 7.5, toe: 6 };
@@ -320,6 +322,7 @@ function figSVG(ex) {
 }
 
 function drawPose(svg, ex, pose, scope) {
+  if (svg.tagName === 'CANVAS') { if (svg.__fig) draw3D(svg.__fig, pose); return; }
   const j = placed(pose, ex), root = scope || svg.querySelector('g.live');
   const ep = (k) => k === 'eye' ? [j.head[0] + 3.7 * Math.cos(rad(pose.t + (pose.hd || 0) + 60)), j.head[1] + 3.7 * Math.sin(rad(pose.t + (pose.hd || 0) + 60))] : j[k];
   root.querySelectorAll('line[data-s]').forEach(ln => {
@@ -350,12 +353,14 @@ function drawPose(svg, ex, pose, scope) {
 /* Animation : image à image, avec une courte pause aux extrémités */
 const FIGS = [];
 function mountFig(host, ex, o = {}) {
-  host.innerHTML = figSVG(ex);
+  const is3 = init3D();
+  host.innerHTML = is3 ? '<canvas class="fig fig3d" role="img" aria-label="' + esc(ex.n) + '"></canvas>' : figSVG(ex);
   const svg = host.firstElementChild;
-  const f = { svg, ex, t0: performance.now() + (o.delay || 0), speed: o.speed || 1, still: !!o.still, paused: 0 };
+  const f = { svg, ex, t0: performance.now() + (o.delay || 0), speed: o.speed || 1, still: !!o.still, paused: 0, mini: !!o.mini, is3 };
+  if (is3) { f.ctx = svg.getContext('2d'); if (!o.mini) bindOrbit(svg, f); }
   FIGS.push(f); svg.__fig = f;
   drawPose(svg, ex, ex.fr[0]);
-  const gh = svg.querySelector('g.ghost'); if (gh) drawPose(svg, ex, ex.fr[ex.fr.length - 1], gh);
+  if (!is3) { const gh = svg.querySelector('g.ghost'); if (gh) drawPose(svg, ex, ex.fr[ex.fr.length - 1], gh); }
   return svg;
 }
 function segInfo(ex, t, speed) {
@@ -381,12 +386,22 @@ function figPhase(f, now) {
 }
 let figRAF = 0;
 function figTick(now) {
+  R3.now = now; R3.frame++;
+  const minis = [];
   for (let i = FIGS.length - 1; i >= 0; i--) {
     const f = FIGS[i];
     if (!f.svg.isConnected) { FIGS.splice(i, 1); continue; }
     if (f.still || f.paused) continue;
     const t = now - f.t0; if (t < 0) continue;
+    if (f.is3 && f.mini) { minis.push(f); continue; }
+    if (f.is3 && !figVisible(f.svg)) continue;
     drawPose(f.svg, f.ex, poseAt(f.ex, t, f.speed));
+  }
+  /* vignettes 3D : au plus trois par image, à tour de rôle, et seulement celles qui sont à l'écran */
+  if (minis.length) {
+    const vis = minis.filter(f => figVisible(f.svg)), n = vis.length;
+    for (let k = 0; k < Math.min(3, n); k++) { const f = vis[(R3.cur + k) % n]; drawPose(f.svg, f.ex, poseAt(f.ex, now - f.t0, f.speed)); }
+    R3.cur = n ? (R3.cur + 3) % n : 0;
   }
   figRAF = requestAnimationFrame(figTick);
 }
@@ -540,6 +555,115 @@ const CUES = {
 };
 const ALT = ['ciseaux', 'mountain', 'genoux', 'talons', 'w_marche', 'w_talons', 'stepup', 'marche', 'course'];
 EX.forEach(e => { e.cues = CUES[e.id] || ['Va', 'Reviens']; if (ALT.includes(e.id)) e.alt = 1; });
+
+
+/* ===== Bonhomme en 3D (three.js) =====
+   Un seul moteur de rendu partagé : chaque dessin est rendu puis recopié dans son propre canvas.
+   Si la 3D n'est pas disponible, on garde le dessin 2D. */
+const R3 = { ok: false, tried: false, W: 1024, H: 624, frame: 0, now: 0, cur: 0 };
+const cssCol = (n, fb) => { try { return getComputedStyle(document.documentElement).getPropertyValue(n).trim() || fb; } catch (e) { return fb; } };
+
+function init3D() {
+  if (R3.tried) return R3.ok; R3.tried = true;
+  try {
+    const T = window.THREE; if (!T) return false;
+    const cv = document.createElement('canvas');
+    const rd = new T.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
+    rd.setPixelRatio(1); rd.setSize(R3.W, R3.H, false); rd.setClearColor(0x000000, 0);
+    rd.shadowMap.enabled = true; rd.shadowMap.type = T.PCFSoftShadowMap;
+    rd.clippingPlanes = [new T.Plane(new T.Vector3(0, 1, 0), 0)]; /* rien ne dépasse sous le sol */
+    const scene = new T.Scene();
+    scene.add(new T.HemisphereLight(0xffffff, 0x77838c, .66)); scene.add(new T.AmbientLight(0xffffff, .1));
+    const sun = new T.DirectionalLight(0xffffff, .5); sun.position.set(-70, 220, 150); sun.castShadow = true;
+    sun.shadow.mapSize.set(1024, 1024); const sc = sun.shadow.camera; sc.left = -170; sc.right = 170; sc.top = 170; sc.bottom = -80; sc.near = 20; sc.far = 640; sun.shadow.bias = -.002; scene.add(sun);
+    const cam = new T.PerspectiveCamera(27, 240 / 146, 20, 1600);
+    const M = c => new T.MeshStandardMaterial({ color: c, roughness: .6, metalness: .02 });
+    const m = { skin: M(0xcbb6a2), arm: M(0xcbb6a2), leg: M(0xcbb6a2), shirt: M(0x0e7c6b), sleeve: M(0x0e7c6b), shorts: M(0x2a3b52), shoe: M(0xf2f4f2), dark: M(0x18211d), prop: M(0xd9501f), mat: M(0x0e7c6b) };
+    const gm = new T.MeshBasicMaterial({ color: 0x0e7c6b, transparent: true, opacity: .15, depthWrite: false });
+    const gmats = { skin: gm, arm: gm, leg: gm, shirt: gm, sleeve: gm, shorts: gm, shoe: gm, dark: gm };
+    R3.cyl = new T.CylinderGeometry(1, 1, 1, 16, 1); R3.sph = new T.SphereGeometry(1, 18, 14); R3.box = new T.BoxGeometry(1, 1, 1);
+    R3.up = new T.Vector3(0, 1, 0); R3.v = new T.Vector3();
+    const disc = new T.Mesh(new T.CircleGeometry(124, 56), new T.MeshBasicMaterial({ color: 0xd6ded7, transparent: true, opacity: .32 })); disc.rotation.x = -Math.PI / 2; disc.position.y = .02; scene.add(disc);
+    const shadow = new T.Mesh(new T.PlaneGeometry(700, 700), new T.ShadowMaterial({ opacity: .24 })); shadow.rotation.x = -Math.PI / 2; shadow.position.y = .04; shadow.receiveShadow = true; scene.add(shadow);
+    const matM = new T.Mesh(R3.box, m.mat); matM.scale.set(212, 1.4, 66); matM.position.set(0, .72, 0); matM.receiveShadow = true; scene.add(matM);
+    const chair = new T.Group(), seat = new T.Mesh(R3.box, m.prop); seat.castShadow = true; seat.receiveShadow = true; chair.add(seat);
+    const legs = [0, 1, 2, 3].map(() => { const l = new T.Mesh(R3.cyl, m.prop); l.castShadow = true; chair.add(l); return l; }); scene.add(chair);
+    const bot = [0, 1].map(() => { const b = new T.Mesh(R3.cyl, m.prop); b.castShadow = true; scene.add(b); return b; });
+    Object.assign(R3, { T, rd, scene, cam, m, gm, disc, matM, chair, seat, legs, bot, sun });
+    R3.man = makeMan(m, false); R3.ghost = makeMan(gmats, true);
+    R3.ok = true; refresh3DColors();
+    try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', refresh3DColors); new MutationObserver(refresh3DColors).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); } catch (e) { }
+  } catch (e) { R3.ok = false; }
+  return R3.ok;
+}
+function refresh3DColors() {
+  if (!R3.ok) return; const m = R3.m, set = (mat, v) => { try { mat.color.set(v); } catch (e) { } };
+  const shirt = cssCol('--shirt', '#0e7c6b'), warm = cssCol('--warm', '#d9501f');
+  set(m.shirt, shirt); set(m.sleeve, shirt); set(m.mat, cssCol('--accent', '#0e7c6b')); try { m.mat.color.lerp(new R3.T.Color(cssCol('--surface', '#ffffff')), .5); } catch (e) { } set(m.shorts, cssCol('--short', '#2a3b52')); set(m.prop, warm); set(R3.gm, cssCol('--accent', '#0e7c6b')); set(R3.disc.material, cssCol('--line', '#d6ded7'));
+  R3.base = {}; ['arm', 'leg', 'shirt', 'sleeve', 'shorts'].forEach(k => { R3.base[k] = m[k].color.clone(); }); R3.warmC = new R3.T.Color(warm);
+  FIGS.forEach(f => { if (f.is3 && f.last && (f.still || f.paused)) draw3D(f, f.last); });
+}
+function makeMan(m, ghost) {
+  const T = R3.T, g = new T.Group(), mk = (geo, mat) => { const x = new T.Mesh(geo, mat); x.castShadow = !ghost; g.add(x); return x; };
+  const P = { g, ghost };
+  P.torso = mk(R3.cyl, m.shirt); P.pelvis = mk(R3.sph, m.shorts); P.chest = mk(R3.sph, m.shirt); P.neck = mk(R3.cyl, m.skin); P.head = mk(R3.sph, m.skin);
+  if (!ghost) { P.eyeA = mk(R3.sph, m.dark); P.eyeB = mk(R3.sph, m.dark); }
+  P.side = [0, 1].map(() => ({ shoulder: mk(R3.sph, m.sleeve), uarm: mk(R3.cyl, m.arm), sleeve: mk(R3.cyl, m.sleeve), elbow: mk(R3.sph, m.arm), farm: mk(R3.cyl, m.arm), hand: mk(R3.sph, m.arm), hipj: mk(R3.sph, m.shorts), thigh: mk(R3.cyl, m.leg), short: mk(R3.cyl, m.shorts), knee: mk(R3.sph, m.leg), shin: mk(R3.cyl, m.leg), foot: mk(R3.box, m.shoe) }));
+  R3.scene.add(g); return P;
+}
+function seg3(mesh, a, b, rx, rz) {
+  const dx = b[0] - a[0], dy = b[1] - a[1], dz = b[2] - a[2], len = Math.hypot(dx, dy, dz) || .001;
+  mesh.position.set((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2);
+  R3.v.set(dx / len, dy / len, dz / len); mesh.quaternion.setFromUnitVectors(R3.up, R3.v); mesh.scale.set(rx, len, rz);
+}
+const ball3 = (mesh, p, rx, ry, rz) => { mesh.position.set(p[0], p[1], p[2]); mesh.scale.set(rx, ry, rz); };
+const mix3 = (a, b, k) => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k];
+/* j : articulations du dessin 2D (plan de profil) ; on leur donne de l'épaisseur et un côté gauche / droit */
+function poseMan(P, j, pose, yo) {
+  const c = (p, z) => [p[0] - 120, FLOOR - p[1] + yo, z], hip = c(j.hip, 0), sh = c(j.sh, 0), head = c(j.head, 0);
+  seg3(P.torso, hip, sh, 6.4, 9.6); ball3(P.pelvis, hip, 6.9, 6.2, 9.9); ball3(P.chest, sh, 6.3, 5.2, 10.3);
+  seg3(P.neck, sh, head, 2.7, 2.7); ball3(P.head, head, 7.3, 7.6, 7.1);
+  if (P.eyeA) { const a = rad(pose.t + (pose.hd || 0) + 72), ex = head[0] + 6.6 * Math.cos(a), ey = head[1] - 6.6 * Math.sin(a); ball3(P.eyeA, [ex, ey, 2.7], 1, 1, 1); ball3(P.eyeB, [ex, ey, -2.7], 1, 1, 1); }
+  [[j.el, j.ha, j.kn, j.ft, j.to, 1], [j.el2, j.ha2, j.kn2, j.ft2, j.to2, -1]].forEach((a, i) => {
+    const s = P.side[i], z = a[5], S0 = [sh[0], sh[1], z * 10.9], el = c(a[0], z * 11.7), ha = c(a[1], z * 11.7), H0 = [hip[0], hip[1], z * 5.6], kn = c(a[2], z * 5.9), ft = c(a[3], z * 5.9), to = c(a[4], z * 5.9);
+    ball3(s.shoulder, S0, 3.9, 3.9, 3.9); seg3(s.uarm, S0, el, 3, 3); seg3(s.sleeve, S0, mix3(S0, el, .5), 3.7, 3.7); ball3(s.elbow, el, 3, 3, 3); seg3(s.farm, el, ha, 2.6, 2.6); ball3(s.hand, ha, 3, 3.3, 3);
+    ball3(s.hipj, H0, 5, 5, 5); seg3(s.thigh, H0, kn, 4.4, 4.4); seg3(s.short, H0, mix3(H0, kn, .55), 5.1, 5.1); ball3(s.knee, kn, 4, 4, 4); seg3(s.shin, kn, ft, 3.3, 3.3);
+    const dx = to[0] - ft[0], dy = to[1] - ft[1], d = Math.hypot(dx, dy) || 1, ux = dx / d, uy = dy / d;
+    seg3(s.foot, [ft[0] - ux * 3, ft[1] - uy * 3, ft[2]], [to[0] + ux * 2.5, to[1] + uy * 2.5, to[2]], 3.4, 4.7);
+  });
+}
+function draw3D(f, pose) {
+  if (!R3.ok) return; const cv = f.svg, ex = f.ex, dpr = Math.min(2, window.devicePixelRatio || 1);
+  const cw = cv.clientWidth || (f.mini ? 110 : 340), w = clamp(Math.round(cw * dpr), 96, R3.W), h = Math.round(w * 146 / 240);
+  if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+  f.last = pose;
+  const yo = 2 + (ex.mat ? 1.3 : 0), j = placed(pose, ex), last = ex.fr[ex.fr.length - 1];
+  poseMan(R3.man, j, pose, yo);
+  const gh = !ex.loop && !f.mini && !f.still; R3.ghost.g.visible = gh;
+  if (gh) { f.gj = f.gj || placed(last, ex); poseMan(R3.ghost, f.gj, last, yo); }
+  /* accessoires */
+  R3.matM.visible = !!ex.mat; R3.chair.visible = !!ex.chair;
+  if (ex.chair) { const c = ex.chair, cx = c.x + c.w / 2 - 120; R3.seat.scale.set(c.w, 3.4, 38); R3.seat.position.set(cx, c.h - 1.7 + yo, 0); R3.legs.forEach((l, i) => { l.scale.set(1.5, c.h - 3.4 + yo, 1.5); l.position.set(cx + (i < 2 ? -1 : 1) * (c.w / 2 - 3), (c.h - 3.4 + yo) / 2, (i % 2 ? -1 : 1) * 15); }); }
+  R3.bot.forEach((b, i) => { b.visible = !!ex.bottle; if (!ex.bottle) return; const z = i ? -11.7 : 11.7, el = i ? j.el2 : j.el, ha = i ? j.ha2 : j.ha, H = [ha[0] - 120, FLOOR - ha[1] + yo, z], dx = ha[0] - el[0], dy = -(ha[1] - el[1]), d = Math.hypot(dx, dy) || 1; seg3(b, [H[0] - dx / d * 4, H[1] - dy / d * 4, z], [H[0] + dx / d * 9, H[1] + dy / d * 9, z], 2.7, 2.7); });
+  /* muscles qui travaillent : ils s'allument */
+  const k = .8 + .15 * Math.sin(R3.now / 190), z = ex.z, tint = (name, v) => { const mt = R3.m[name]; mt.color.copy(R3.base[name]); if (v) mt.color.lerp(R3.warmC, k); };
+  tint('shirt', z === 'abdos'); tint('arm', z === 'bras' || z === 'cardio'); tint('sleeve', z === 'bras'); tint('leg', z === 'jambes' || z === 'cardio' || z === 'run' || z === 'walk'); tint('shorts', z === 'jambes');
+  /* caméra de trois quarts ; elle se balance doucement, et on peut la tourner au doigt */
+  /* cadrage automatique : assez large pour le corps allongé, assez haut pour les bras levés et les sauts */
+  if (f.top === undefined) { let top = 0, x0 = 1e9, x1 = -1e9; ex.fr.forEach(p => { const q = placed(p, ex); ['head', 'ha', 'ha2', 'el', 'el2', 'kn', 'kn2', 'ft', 'ft2', 'to', 'to2', 'hip'].forEach(k => { top = Math.max(top, FLOOR - q[k][1] + (k === 'head' ? 9 : 3)); x0 = Math.min(x0, q[k][0]); x1 = Math.max(x1, q[k][0]); }); }); f.top = top; f.cx = (x0 + x1) / 2 - 120 + (ex.chair ? (ex.chair.x + ex.chair.w / 2 - 120 - ((x0 + x1) / 2 - 120)) * .25 : 0); f.span = x1 - x0; }
+  const low = f.top < 62, el = low ? .3 : .15, ty = Math.max(18, (f.top + 2) / 2), d = Math.max(low ? 200 : 225, (f.span + 46) / .74, (f.top + 24) / .48) * (f.mini ? .9 : 1);
+  const az = (f.az === undefined ? .55 : f.az) + (f.drag || f.mini || f.still ? 0 : .16 * Math.sin(R3.now / 2100));
+  R3.cam.position.set(f.cx + Math.sin(az) * d * Math.cos(el), ty + d * Math.sin(el), Math.cos(az) * d * Math.cos(el)); R3.cam.lookAt(f.cx, ty, 0);
+  const rd = R3.rd; rd.setViewport(0, 0, w, h); rd.setScissor(0, 0, w, h); rd.setScissorTest(true); rd.clear(); rd.render(R3.scene, R3.cam);
+  f.ctx.clearRect(0, 0, w, h); f.ctx.drawImage(rd.domElement, 0, R3.H - h, w, h, 0, 0, w, h);
+}
+function bindOrbit(cv, f) {
+  let x0 = null; cv.style.touchAction = 'pan-y'; cv.style.cursor = 'grab';
+  cv.addEventListener('pointerdown', e => { x0 = e.clientX; f.drag = true; if (f.az === undefined) f.az = .55; try { cv.setPointerCapture(e.pointerId); } catch (x) { } });
+  cv.addEventListener('pointermove', e => { if (x0 === null) return; f.az += (e.clientX - x0) * .012; x0 = e.clientX; if ((f.still || f.paused) && f.last) draw3D(f, f.last); });
+  const end = () => { x0 = null; }; cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
+}
+const figVisible = el => { try { const r = el.getBoundingClientRect(); return r.bottom > -40 && r.top < (window.innerHeight || 800) + 40; } catch (e) { return true; } };
 
 /* ===== Utilitaires ===== */
 const $ = (s, r = document) => r.querySelector(s);
@@ -1314,8 +1438,8 @@ function render() {
   const sc = window.scrollY;
   $('#main').innerHTML = v();
   $('#tabs').innerHTML = TABS.filter(t => t[0] !== 'profile').map(t => '<button class="tab" data-act="tab" data-v="' + t[0] + '"' + (U.tab === t[0] ? ' aria-current="page"' : '') + '><svg viewBox="0 0 24 24" aria-hidden="true">' + t[3] + '</svg>' + t[2] + '</button>').join('');
-  $$('[data-mini]').forEach(h => { const it = U.T.plan.items[+h.dataset.mini]; mountFig(h, it.ex, { delay: +h.dataset.mini * 60 }); });
-  $$('[data-lm]').forEach(h => mountFig(h, EXBY[h.dataset.lm], {}));
+  $$('[data-mini]').forEach(h => { const it = U.T.plan.items[+h.dataset.mini]; mountFig(h, it.ex, { delay: +h.dataset.mini * 60, mini: true }); });
+  $$('[data-lm]').forEach(h => mountFig(h, EXBY[h.dataset.lm], { mini: true }));
   { const lf = $('#lfig'); if (lf && EXBY[U.learnEx]) mountFig(lf, EXBY[U.learnEx], { speed: U.lspeed || 1 }); $$('[data-lpos]').forEach(h => { const ex = EXBY[U.learnEx]; if (!ex) return; const sv = mountFig(h, ex, { still: true }); drawPose(sv, ex, ex.fr[+h.dataset.lpos ? ex.fr.length - 1 : 0]); }); }
   updateBell(); updateGProb();
   $$('[data-count]').forEach(el => countUp(el));
@@ -1384,7 +1508,7 @@ function tickPlayer() {
   if (sec <= 3 && sec >= 1 && sec !== PL.lastBeep) { PL.lastBeep = sec; beep(sec === 1 ? 990 : 760, .1); vib(30); }
   const t = $('#ptime'), ring = $('#pring'); if (t) t.textContent = tfmt(Math.max(0, sec)); if (ring) ring.style.strokeDashoffset = (276.46 * (1 - clamp(PL.left / (s.dur * 1000), 0, 1))).toFixed(1);
   if (s.type === 'work') {
-    const sv = $('#pfig svg'), f = sv && sv.__fig;
+    const sv = $('#pfig .fig'), f = sv && sv.__fig;
     if (f) {
       const ph = figPhase(f, now), c = $('#pcue');
       if (c && ph.cue !== PL.lastCue) { PL.lastCue = ph.cue; c.textContent = ph.cue; c.style.animation = 'none'; void c.offsetWidth; c.style.animation = ''; }
@@ -1422,7 +1546,7 @@ function openEx(i) {
   m.innerHTML = '<div class="in"><div class="row sb"><span class="badge">' + zoneBadgeText(ex.z) + ' · niveau ' + ex.lvl + '</span><button class="btn ghost sm" data-act="exclose">Fermer</button></div>' +
     '<h1>' + ex.n + '</h1><div id="mfig" class="figbox" style="padding:8px"></div>' +
     '<section class="card"><h3>Comment faire</h3><p>' + esc(ex.how) + '</p><h3>Les consignes qui défilent</h3><div class="chips">' + ex.cues.map(c => '<span class="chip mini">' + esc(c) + '</span>').join('') + '</div>' +
-    '<p class="small"><b>Muscles :</b> ' + muOf(ex) + '. <b>Matériel :</b> ' + (ex.eq.length ? ex.eq.join(', ') : 'aucun') + '. ' + (ex.imp ? 'Avec impacts.' : 'Sans impact.') + '</p><p class="tiny muted">La silhouette claire montre la position d’arrivée. La partie orange, c’est ce qui travaille.</p></section>' +
+    '<p class="small"><b>Muscles :</b> ' + muOf(ex) + '. <b>Matériel :</b> ' + (ex.eq.length ? ex.eq.join(', ') : 'aucun') + '. ' + (ex.imp ? 'Avec impacts.' : 'Sans impact.') + '</p><p class="tiny muted">Glisse le bonhomme avec le doigt pour le faire tourner. La silhouette claire montre la position d’arrivée, la partie qui s’allume est celle qui travaille.</p></section>' +
     '<div class="grid2"><button class="btn ghost" data-act="exno" data-i="' + i + '">Je ne sais pas le faire</button><button class="btn ghost" data-act="exlearn" data-id="' + ex.id + '">Je veux l’apprendre</button></div><button class="btn" data-act="exswap" data-i="' + i + '">Remplacer par un autre exercice</button></div>';
   mountFig($('#mfig'), ex); startFigs();
 }
@@ -1597,7 +1721,7 @@ function vLearnEx(id) {
   const next = lad && lad.steps[i + 1] ? EXBY[lad.steps[i + 1]] : null, prev = lad && i > 0 ? EXBY[lad.steps[i - 1]] : null;
   const sb = (v, t) => '<button class="chip" data-act="lstate" data-id="' + id + '" data-v="' + v + '" aria-pressed="' + (st === v) + '">' + t + '</button>';
   return '<button class="btn ghost sm" data-act="lback" style="align-self:flex-start">← Retour</button><div><h1>' + ex.n + '</h1>' + (lad ? '<p class="muted">' + lad.n + ' · étape ' + (i + 1) + ' sur ' + lad.steps.length + '</p>' : '<p class="muted">' + muOf(ex) + '</p>') + '</div>' +
-    '<div id="lfig" class="figbox" style="padding:8px"></div>' +
+    '<div id="lfig" class="figbox" style="padding:8px"></div><p class="tiny muted" style="text-align:center">Glisse le bonhomme avec le doigt pour le voir sous tous les angles.</p>' +
     '<div class="chips"><button class="chip" data-act="lspeed" data-v="1" aria-pressed="' + ((U.lspeed || 1) === 1) + '">Vitesse normale</button><button class="chip" data-act="lspeed" data-v="0.5" aria-pressed="' + (U.lspeed === 0.5) + '">Au ralenti</button><button class="chip" data-act="lspeed" data-v="0.25" aria-pressed="' + (U.lspeed === 0.25) + '">Très lent</button></div>' +
     '<section class="card"><h3>En deux images</h3><div class="grid2"><div><div class="figbox" data-lpos="0" style="padding:2px"></div><p class="tiny muted" style="text-align:center">Départ</p></div><div><div class="figbox" data-lpos="1" style="padding:2px"></div><p class="tiny muted" style="text-align:center">Arrivée</p></div></div></section>' +
     '<section class="card"><h2>Les étapes</h2><ol class="steps">' + d.keys.map(k => '<li>' + esc(k) + '</li>').join('') + '</ol>' + (d.bad.length ? '<h3>Erreurs fréquentes</h3><ul class="advice bad">' + d.bad.map(k => '<li>' + esc(k) + '</li>').join('') + '</ul>' : '') + (d.tip ? '<p class="small"><b>Pour progresser :</b> ' + esc(d.tip) + '</p>' : '') + '</section>' +
@@ -2039,6 +2163,19 @@ function adherence() {
   for (let k = 1; k <= 14; k++) { const d = addDays(t, -k); if (weekPlan()[isoDow(d)].size !== 'repos' && S.plan[d] !== 'rest') { pl++; if (doneOn(d)) dn++; } }
   return { pl, dn, adh: pl >= 3 ? clamp(dn / pl, .25, 1.1) : .8, known: pl >= 3 };
 }
+/* Les séances que le programme prévoit vraiment d'ici l'échéance (jours « je ne peux pas » retirés).
+   n : nombre de séances ; eff : séances utiles à l'objectif (une grosse compte plus, un test compte peu) ; run : séances de course */
+function progSessions(g, ov = {}) {
+  const gx = ov.extraDays ? Object.assign({}, g, { end: addDays(g.end, ov.extraDays) }) : g, days = Math.min(400, Math.max(0, diffDays(gx.end, today())) + 1);
+  let n = 0, eff = 0, run = 0;
+  gschedule(gx, days).forEach(c => {
+    if (!c.train || c.done) return; n++;
+    if (c.kind === 'run') run++;
+    eff += c.kind === 'test' ? .3 : (c.pl.size === 'grosse' ? 1.3 : c.pl.size === 'petite' ? .7 : 1);
+  });
+  if (ov.boost) { const add = Math.floor(Math.max(.5, days / 7)); n += add; eff += add; run += add; }
+  return { n, eff, run };
+}
 /* ov : extraDays (jours en plus), boost (une séance de plus par semaine) */
 function goalProb(g, ov = {}) {
   const left = gspan(g).left + (ov.extraDays || 0), wk = Math.max(.5, left / 7), A = adherence(), why = [], t = today();
@@ -2050,25 +2187,32 @@ function goalProb(g, ov = {}) {
     const typ = g.ex === 'gainage' ? 4 : Math.max(.8, Math.max(cur, g.from) * .07);
     /* plus tu as de tests de record, plus je me fie à ta propre courbe */
     const wObs = obs !== null ? n / (n + 2) : 0;
-    let r = obs !== null ? wObs * Math.max(0, obs) + (1 - wObs) * typ : typ; r *= Math.min(1, A.adh) * (ov.boost ? 1.12 : 1);
+    const rw = obs !== null ? wObs * Math.max(0, obs) + (1 - wObs) * typ : typ;
+    /* le nouveau programme : je compte les séances réellement prévues d'ici l'échéance, et ce que chacune rapporte */
+    const P2 = progSessions(g, ov), ref = Math.max(1, P().trainDays.length || 3), perS = rw / ref;
+    const gain = P2.eff * perS * Math.min(1, A.adh), r = gain / wk;
     /* un test n'a pas lieu tous les jours : depuis le dernier, je compte une partie de la progression attendue (au plus 4 semaines, à moitié) */
-    const since = n ? Math.min(4, diffDays(t, ts[n - 1].d) / 7) : 0, curE = cur + since * r * .5;
-    const proj = curE + r * wk, sd = Math.max(1.5, cur * .1) * Math.sqrt(wk / 2) + 1 + (n < 2 ? 1 : 0), need = (g.target - curE) / wk;
+    const since = n ? Math.min(4, diffDays(t, ts[n - 1].d) / 7) : 0, curE = cur + since * rw * Math.min(1, A.adh) * .5;
+    const proj = curE + gain, sd = Math.max(1.5, cur * .1) * Math.sqrt(wk / 2) + 1 + (n < 2 ? 1 : 0), need = (g.target - curE) / wk;
     p = Phi((proj - g.target) / sd) * 100;
+    why.push('Ton programme prévoit ' + P2.n + ' séance' + (P2.n > 1 ? 's' : '') + ' d’ici l’échéance (' + nf(P2.n / wk, 1) + ' par semaine). Chacune te fait gagner environ ' + nf(perS, 2) + un + '.');
     if (since >= 1) why.push('Ton dernier test date d’il y a ' + Math.round(since * 7) + ' jours : j’estime ton niveau actuel autour de ' + Math.round(curE) + un + ' (à confirmer par un prochain test).');
     why.push(n >= 2 && obs !== null ? 'D’après tes ' + n + ' tests de record : ' + ts[0].val + ' → ' + ts[n - 1].val + un + ' (' + (obs >= 0 ? '+' : '') + nf(obs, 1) + un + ' par semaine). Je me fie à ta courbe à ' + Math.round(wObs * 100) + ' %.' : n === 1 ? 'Un seul test de record (' + ts[0].val + un + ') : estimation prudente. Pas besoin d’en faire souvent, un test toutes les 1 à 2 semaines suffit pour l’affiner.' : 'Aucun test de record sur cet exercice : estimation prudente. Un seul test de max suffit déjà pour la rendre bien plus juste.');
     why.push('Il faut gagner environ ' + nf(need, 1) + un + ' par semaine ; ton rythme estimé est de ' + nf(r, 1) + un + '.');
   } else if (g.type === 'weight') {
     const cur = gcur(g), dir = Math.sign(g.target - g.from) || -1, recent = sortedW().filter(x => diffDays(t, x.d) <= 35).map(x => ({ x: parseD(x.d).getTime(), y: x.kg })), obs = slopeWk(recent), b = body();
     let lg = 0; for (let k = 1; k <= 14; k++) if (mealsOf(addDays(t, -k)).length) lg++;
-    const adhN = clamp(lg / 10, .3, 1), plan = (b ? b.kcal - b.tdee : dir * 400) * 7 / 7700;
+    /* le nouveau programme : plus il prévoit de séances par semaine, plus tu dépenses */
+    const P2 = progSessions(g, ov), spw = clamp(P2.n / wk, 0, 7), tdeeP = b ? b.bmr * (1.2 + .07 * spw) : 0;
+    const adhN = clamp(lg / 10, .3, 1), plan = (b ? b.kcal - tdeeP : dir * 400) * 7 / 7700;
+    why.push('Ton programme prévoit ' + P2.n + ' séance' + (P2.n > 1 ? 's' : '') + ' d’ici l’échéance (' + nf(spw, 1) + ' par semaine).');
     let r = obs !== null ? .5 * obs + .5 * plan * adhN : plan * adhN * .85; r = clamp(r, -1, 1);
     const proj = cur + r * wk, sd = .3 + .35 * Math.sqrt(wk), z = dir < 0 ? (g.target - proj) / sd : (proj - g.target) / sd; p = Phi(z) * 100;
     why.push('Il faut ' + nf(Math.abs(g.target - cur) / wk, 2) + ' kg par semaine ; ton rythme estimé est de ' + nf(Math.abs(r), 2) + ' kg' + (Math.sign(r) === dir ? '.' : ', dans le mauvais sens pour l’instant.'));
     why.push(lg >= 8 ? 'Tu notes bien tes repas : estimation plus fiable.' : 'Note tes repas plus souvent : l’estimation sera plus fiable.');
   } else {
-    const st = runStages(g.T), need = st.length - S.run.stage; let have = 0; for (let k = 0; k <= left; k++) { if (planFor(addDays(t, k)).size !== 'repos') have++; }
-    if (ov.boost) have += Math.floor(wk);
+    /* le nouveau programme : seules les séances de course prévues font avancer les étapes */
+    const st = runStages(g.T), need = st.length - S.run.stage, have = progSessions(g, ov).run;
     if (need <= 0) p = 99; else { const q = Math.min(1, A.adh) * .85, mean = have * q, sd = Math.sqrt(Math.max(.25, have * q * (1 - q))) + .5; p = Phi((mean - need + .5) / sd) * 100; }
     /* sorties réelles : la distance que tu tiens et sa progression comptent pour moitié */
     const rr = runsOf().filter(s => s.km > 0 && diffDays(t, s.d) <= 60), ds = slopeWk(rr.map(s => ({ x: parseD(s.d).getTime(), y: s.km }))), bd = runBests().dist;
@@ -2090,7 +2234,7 @@ function probBlock(g, compact) {
       const sc = [{ t: 'En ajoutant 14 jours', v: goalProb(g, { extraDays: 14 }).p }]; if (g.type !== 'weight') sc.push({ t: 'Avec une séance de plus par semaine', v: goalProb(g, { boost: 1 }).p });
       h += '<h3>Pour augmenter tes chances</h3><ul class="advice">' + sc.map(x => '<li>' + x.t + ' : <b>' + Math.round(x.v) + ' %</b></li>').join('') + '</ul>';
     }
-    h += '<p class="tiny muted">Estimation à partir de ton rythme réel, de ta régularité et du temps qui reste. Elle change chaque jour avec ce que tu fais, ce n’est pas une promesse.</p>';
+    h += '<p class="tiny muted">Estimation à partir de ton nouveau programme (les séances vraiment prévues), de tes tests de record et de ta régularité. Si tu retires un jour avec « Je ne peux pas » ou si tu en ajoutes un, elle change aussitôt. Ce n’est pas une promesse.</p>';
   }
   return h + '</div>';
 }
@@ -2189,7 +2333,7 @@ document.addEventListener('click', e => {
       const w = (latestW() || { kg: 70 }).kg; saveSession(m, Math.round(5 * w * m / 60), {}, []); confetti(); toast('Séance de ' + m + ' min notée'); U.T.plan = null; U.tab = 'today'; render(); break;
     }
     /* lecteur */
-    case 'ppause': { PL.paused = !PL.paused; const now = performance.now(); PL.last = now; b.textContent = PL.paused ? 'Reprendre' : 'Pause'; const sv = $('#pfig svg'), f = sv && sv.__fig; if (f) { if (PL.paused) f.paused = now; else { f.t0 += now - f.paused; f.paused = 0; } } break; }
+    case 'ppause': { PL.paused = !PL.paused; const now = performance.now(); PL.last = now; b.textContent = PL.paused ? 'Reprendre' : 'Pause'; const sv = $('#pfig .fig'), f = sv && sv.__fig; if (f) { if (PL.paused) f.paused = now; else { f.t0 += now - f.paused; f.paused = 0; } } break; }
     case 'pmute': U.mute = !U.mute; try { localStorage.setItem('coach-mute', U.mute ? '1' : '0'); } catch (x) { } b.textContent = U.mute ? 'Son coupé' : 'Son activé'; break;
     case 'exinfo': openEx(+b.dataset.i); break;
     case 'exclose': closeEx(); break;
