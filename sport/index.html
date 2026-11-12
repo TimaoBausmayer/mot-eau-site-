@@ -1426,10 +1426,10 @@ function vProfile() {
     '<section class="card"><h2>Matériel</h2><div class="chips">' + [['tapis', 'Tapis'], ['bouteilles', 'Bouteilles d’eau'], ['chaise', 'Chaise']].map(q => tg('peq', q[0], q[1], p.equip[q[0]])).join('') + '</div>' +
     '<div class="chips">' + tg('plow', 1, 'Faible impact (sans sauts)', p.lowImpact) + '</div><p class="small muted">Pas d’haltères : les bouteilles pleines (1,5 L ≈ 1,5 kg) font très bien l’affaire. Les chaises doivent être stables, calées contre un mur.</p>' +
     '<label class="f">Niveau<select data-p="level"><option value="0"' + (!+p.level ? ' selected' : '') + '>Auto (selon tes records)</option><option value="1"' + (+p.level === 1 ? ' selected' : '') + '>Débutant</option><option value="2"' + (+p.level === 2 ? ' selected' : '') + '>Intermédiaire</option><option value="3"' + (+p.level === 3 ? ' selected' : '') + '>Avancé</option></select></label></section>' +
-    notifCard() + '<section class="card"><h2>Mes données</h2><p class="small muted" id="syncl">' + syncText() + '</p><div class="row"><button class="btn ghost" data-act="export">Exporter</button><button class="btn ghost" data-act="demo">Données d’exemple</button><button class="btn ghost" data-act="wipe">Tout effacer</button></div>' +
+    notifCard() + '<section class="card"><h2>Mes données</h2><p class="small muted" id="syncl">' + syncText() + '</p><div class="row"><button class="btn ghost" data-act="export">Exporter</button><button class="btn ghost" data-act="demo">Données d’exemple</button></div>' +
     (U.exportTxt ? '<textarea id="expt" readonly rows="5">' + esc(U.exportTxt) + '</textarea>' : '') +
     '<details><summary>Importer une sauvegarde</summary><textarea id="impt" rows="4" placeholder="Colle ici ta sauvegarde"></textarea><button class="btn sm" data-act="import" style="margin-top:8px">Importer</button></details>' +
-    '<p class="tiny muted">Ces conseils sont généraux et ne remplacent pas un avis médical. Si tu as mal, arrête l’exercice.</p></section>';
+    '<p class="tiny muted">Ces conseils sont généraux et ne remplacent pas un avis médical. Si tu as mal, arrête l’exercice.</p></section>' + resetCard();
 }
 
 /* ===== Rendu ===== */
@@ -2257,6 +2257,48 @@ function probHistory() {
   return '<section class="card"><h2>Évolution de mes chances</h2>' + lineChart({ pts, label: 'Chance d’atteindre l’objectif', fmtY: v => Math.round(v) + '%', unit: ' %' }) + '<p class="tiny muted">Elle monte quand tu es régulier et que tu progresses, elle baisse quand tu rates des séances.</p></section>';
 }
 
+
+/* ---------- Réinitialiser : tout, ou seulement une partie ---------- */
+const RESETS = [
+  { k: 'meals', n: 'Repas et eau', d: 'repas notés, eau, bilans de repas', f: () => { S.meals = []; S.reviews = {}; } },
+  { k: 'sessions', n: 'Séances et courses', d: 'séances, activités, courses, étapes de course', f: () => { S.sessions = []; S.run = { stage: 0, best: 0, km: 0 }; } },
+  { k: 'records', n: 'Records', d: 'tests de record et résultats notés', f: () => { S.records = []; } },
+  { k: 'weights', n: 'Poids', d: 'toutes les pesées sauf la dernière', f: () => { const l = latestW(); S.weights = l ? [{ d: today(), kg: l.kg }] : []; } },
+  { k: 'goal', n: 'Objectif', d: 'objectif en cours et courbe des chances', f: () => { S.goal = null; S.gh = []; } },
+  { k: 'badges', n: 'Badges et série', d: 'badges, paliers et meilleure série', f: () => { S.badges = {}; S.miles = {}; S.bestStreak = 0; } },
+  { k: 'skills', n: 'Apprentissage', d: 'exercices marqués « je sais » ou « je ne sais pas »', f: () => { S.skills = {}; } },
+  { k: 'plan', n: 'Planning et bilans', d: 'jours modifiés à la main, bilans de la semaine', f: () => { S.plan = {}; S.weekly = {}; } },
+  { k: 'notifs', n: 'Alertes', d: 'liste des alertes reçues', f: () => { S.notifs = []; S.notified = {}; } }
+];
+function resetCard() {
+  const sel = U.rs || (U.rs = {}), n = Object.keys(sel).filter(k => sel[k]).length;
+  return '<section class="card"><h2>Réinitialiser</h2><p class="small muted">Choisis ce que tu veux remettre à zéro. Le reste est gardé. Pense à « Exporter » avant si tu veux une copie de sécurité.</p>' +
+    '<div class="chips">' + RESETS.map(r => '<button class="chip" data-act="rsel" data-v="' + r.k + '" aria-pressed="' + !!sel[r.k] + '" title="' + r.d + '">' + r.n + '</button>').join('') + '</div>' +
+    (n ? '<p class="small">Sera effacé : ' + RESETS.filter(r => sel[r.k]).map(r => r.d).join(' ; ') + '.</p>' : '') +
+    '<button class="btn warm" data-act="rdo"' + (n ? '' : ' disabled') + '>' + (U.rarm === 'part' ? 'Confirmer : effacer ' + n + ' élément' + (n > 1 ? 's' : '') : 'Réinitialiser la sélection') + '</button>' +
+    '<h3>Tout recommencer</h3><p class="small muted">Efface absolument tout, profil compris, et revient à l’écran de départ.</p>' +
+    '<button class="btn ghost" data-act="rall">' + (U.rarm === 'all' ? 'Confirmer : tout effacer définitivement' : 'Tout réinitialiser') + '</button>' +
+    (U.rarm ? '<button class="btn ghost sm" data-act="rcancel">Annuler</button>' : '') + '</section>';
+}
+function resetAction(a, v) {
+  switch (a) {
+    case 'rsel': U.rs = U.rs || {}; U.rs[v] = !U.rs[v]; U.rarm = ''; U.keepScroll = true; render(); return true;
+    case 'rcancel': U.rarm = ''; U.keepScroll = true; render(); return true;
+    case 'rdo': {
+      const pick = RESETS.filter(r => U.rs && U.rs[r.k]); if (!pick.length) return true;
+      if (U.rarm !== 'part') { U.rarm = 'part'; U.keepScroll = true; render(); return true; }
+      U.quiet = true; pick.forEach(r => r.f()); S.demo = false; save(); U.quiet = false; checkBadges(true); U.boot = true; checkStreak(); U.boot = false;
+      U.rs = {}; U.rarm = ''; U.T.plan = null; U.keepScroll = true; render(); toast('Réinitialisé : ' + pick.map(r => r.n.toLowerCase()).join(', ')); return true;
+    }
+    case 'rall': {
+      if (U.rarm !== 'all') { U.rarm = 'all'; U.keepScroll = true; render(); return true; }
+      U.quiet = true; S = defaults(); save(); U.quiet = false;
+      U.rs = {}; U.rarm = ''; U.T.plan = null; U.exportTxt = ''; U.gedit = false; U.learnEx = null; U.tab = 'today'; render(); toast('Tout est remis à zéro'); return true;
+    }
+  }
+  return false;
+}
+
 /* ===== Actions ===== */
 const SLUG = { today: 'aujourdhui', train: 'seance', meals: 'repas', week: 'bilan', progress: 'progres', profile: 'profil' };
 const fromSlug = h => (TABS.find(t => t[1] === h.replace('#', '')) || [])[0];
@@ -2268,6 +2310,7 @@ document.addEventListener('click', e => {
   const b = e.target.closest('button[data-act],div[data-act]'); if (!b) return;
   const a = b.dataset.act, v = b.dataset.v;
   if (learnAction(a, b, v)) return;
+  if (resetAction(a, v)) return;
   switch (a) {
     case 'tab': U.tab = v; try { history.replaceState(null, '', '#' + SLUG[v]); } catch (x) { } render(); break;
     case 'gotrain': { const pf = planFor(today()); if (pf.min) { U.T.min = [5, 10, 15, 20, 30, 45, 60].reduce((a, c) => Math.abs(c - pf.min) < Math.abs(a - pf.min) ? c : a); if (pf.size === 'grosse') U.T.focus = 'all'; U.T.plan = null; } U.tab = 'train'; render(); break; }
