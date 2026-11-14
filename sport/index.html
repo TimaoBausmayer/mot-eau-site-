@@ -230,6 +230,16 @@ ol.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
 .pbar .mid{position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.45}
 .bar>i.mid{background:var(--warn)}.prob{display:flex;flex-direction:column;gap:10px}
 canvas.fig{width:100%;height:auto;display:block;aspect-ratio:240/146;touch-action:pan-y}
+.tile{font:inherit;color:inherit;text-align:left;cursor:pointer;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-height:96px;transition:transform .12s ease}
+.tile:active{transform:scale(.97)}.tile .lbl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}.tile .num{font-size:28px;line-height:1.1}
+.tile.ok{border-color:var(--accent);background:var(--accent-soft)}
+.tile:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.flamemini .flame{width:22px;height:26px}
+details.fold{display:block}details.fold>*+*{margin-top:12px}
+details.fold>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary::after{content:"+";font-family:var(--f-display);font-size:26px;line-height:1;color:var(--muted)}
+details.fold[open]>summary::after{content:"–"}
 @media (max-width:380px){.item{grid-template-columns:76px 1fr}.item .badge{display:none}.stat .num{font-size:28px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -1106,12 +1116,12 @@ const U = { tab: 'today', mealDate: today(), recEx: 'pompes', T: { min: 15, focu
 try { U.mute = localStorage.getItem('coach-mute') === '1'; } catch (e) { }
 const vib = p => { try { if (!U.mute && navigator.vibrate) navigator.vibrate(p); } catch (e) { } };
 const TABS = [
-  ['today', 'aujourdhui', 'Aujourd’hui', '<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>'],
-  ['train', 'seance', 'Séance', '<path d="M3 9v6M6 6v12M18 6v12M21 9v6M6 12h12"/>'],
+  ['today', 'aujourdhui', 'Accueil', '<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>'],
+  ['train', 'seance', 'Sport', '<path d="M3 9v6M6 6v12M18 6v12M21 9v6M6 12h12"/>'],
   ['meals', 'repas', 'Repas', '<path d="M7 3v8a2 2 0 0 0 2 2v8M11 3v8a2 2 0 0 1-2 2M16 21V3c-2 1-3 4-3 8h3"/>'],
   ['week', 'bilan', 'Bilan', '<path d="M5 21V10M12 21V4M19 21v-8"/>'],
   ['progress', 'progres', 'Progrès', '<path d="M3 18l6-6 4 4 8-9M15 7h6v6"/>'],
-  ['profile', 'profil', 'Profil', '<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>']
+  ['profile', 'profil', 'Réglages', '<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>']
 ];
 const profileOK = () => S.weights.length && num(P().height) && num(P().age);
 const zoneBadge = z => '<span class="badge z-' + z + '">' + (ZL[z] || z) + '</span>';
@@ -1333,7 +1343,7 @@ function vMeals() {
     '<section class="card"><div class="row sb"><div><span class="num" style="font-size:40px">' + t.kcal + '</span> <span class="muted">' + (b ? '/ ' + b.kcal + ' kcal' : 'kcal') + '</span></div><div class="small muted" style="text-align:right">Protéines<br><b style="color:var(--ink)">' + t.p + (b ? ' / ' + b.prot : '') + ' g</b></div></div>' +
     (b ? '<div class="bar" role="progressbar" aria-valuenow="' + Math.round(pct) + '" aria-valuemin="0" aria-valuemax="100"><i class="' + (t.kcal > b.kcal * 1.1 ? 'over' : '') + '" style="width:' + pct + '%"></i></div>' : '<p class="small muted">Renseigne ton poids, ta taille et ton âge dans Aujourd’hui pour voir ta cible.</p>') +
     '<p class="small muted">Boissons : <b style="color:var(--ink)">' + nf(t.drink / 1000, 1) + ' L</b> · ' + t.drinkK + ' kcal</p></section>' +
-    '<section class="card"><h2>J’ai mangé</h2><label class="f">Repas<select id="mtype">' + types.map(x => '<option value="' + x[0] + '"' + (x[0] === autoType() ? ' selected' : '') + '>' + x[1] + '</option>').join('') + '</select></label>' +
+    (d === today() ? waterCard() : '') + '<section class="card"><h2>J’ai mangé</h2><label class="f">Repas<select id="mtype">' + types.map(x => '<option value="' + x[0] + '"' + (x[0] === autoType() ? ' selected' : '') + '>' + x[1] + '</option>').join('') + '</select></label>' +
     '<label class="f">Ce que j’ai mangé<textarea id="mtext" placeholder="ex. frites, gnocchis, steak haché, petits pois, un coca"></textarea></label>' +
     '<button class="btn" data-act="madd">Ajouter ce repas</button><p class="tiny muted">Écris comme tu parles, avec ou sans virgules : « 150 g de riz », « 2 œufs », « un verre de jus d’orange ». Je connais environ 200 aliments et boissons. Les calories sont une estimation, tu peux corriger les grammes.</p></section>';
   const rc = recentMeals(); U.recent = rc;
@@ -1375,10 +1385,12 @@ function vProgressGeneral() {
   } else h += '<p class="muted">Enregistre ton premier poids pour voir la courbe.</p>';
   h += '</section>';
   /* temps de sport */
+  h += '\u0001';
   const mon = mondayOf(today()), vals = [], labs = [];
   for (let i = 7; i >= 0; i--) { const m0 = addDays(mon, -7 * i); vals.push(S.sessions.filter(s => s.d >= m0 && s.d <= addDays(m0, 6)).reduce((a, s) => a + s.min, 0)); labs.push(fmtShort(m0).replace('.', '')); }
   h += '<section class="card"><div class="row sb"><h2>Temps de sport</h2><span class="badge">minutes par semaine</span></div>' + barChart(vals, labs.map((l, i) => i % 2 === 1 || i === 7 ? l : ''), 7) + '</section>';
   /* calendrier */
+  h += '\u0001';
   let cal = DOW.slice(1).map(x => '<div class="hd">' + x[0] + '</div>').join('');
   const start = addDays(mon, -28);
   for (let i = 0; i < 35; i++) {
@@ -1387,11 +1399,12 @@ function vProgressGeneral() {
   }
   h += '<section class="card"><h2>Mes jours</h2><div class="heat">' + cal + '</div><p class="small muted">Plein = séance (plus foncé = plus long). Pointillé = repos prévu. Contour orange = aujourd’hui.</p></section>';
   /* badges */
-  h += standingCard() + healthCard() + badgesCard();
+  h += '\u0001';
   /* niveau */
   const sxl = p.sex === 'm' ? 'homme' : p.sex === 'f' ? 'femme' : 'personne', age = num(p.age);
   h += '<section class="card"><div class="row sb"><h2>Mon niveau</h2><span class="badge">' + sxl + (age ? ', ' + age + ' ans' : '') + '</span></div><p class="small muted">Repères indicatifs inspirés des tests de condition physique, adaptés à ton âge et ton sexe. Le trait noir, c’est toi.</p>' + TRACK.map(x => gauge(x.k, prOf(x.k) || bestOf(x.k))).join('') + '</section>';
   /* records */
+  h += '\u0001';
   const tr = TRACK.find(x => x.k === U.recEx), rs = recsOf(U.recEx), tests = rs.filter(r => r.test), pr = prOf(U.recEx);
   h += '<section class="card"><h2>Records et niveau</h2><div class="chips">' + TRACK.map(x => '<button class="chip" data-act="recex" data-v="' + x.k + '" aria-pressed="' + (x.k === U.recEx) + '">' + x.n + '</button>').join('') + '</div>' +
     '<div class="row" style="flex-wrap:nowrap;align-items:flex-end"><label class="f" style="flex:1">' + (tr.u === 's' ? 'Secondes tenues' : 'Répétitions faites') + '<input id="recv" inputmode="numeric" placeholder="' + (tr.u === 's' ? 'ex. 45' : 'ex. 18') + '"></label><button class="btn" data-act="recadd">Noter</button></div>' +
@@ -1434,10 +1447,11 @@ function vProfile() {
 
 /* ===== Rendu ===== */
 function render() {
-  const v = { today: vToday, train: vTrain, meals: vMeals, week: vWeek, progress: vProgress, profile: vProfile }[U.tab];
+  if (U.tab === 'week') { U.tab = 'progress'; U.psub = 'bilan'; }
+  const v = { today: vHome, train: vTrain, meals: vMeals, progress: vProgress2, profile: vProfileFold }[U.tab];
   const sc = window.scrollY;
   $('#main').innerHTML = v();
-  $('#tabs').innerHTML = TABS.filter(t => t[0] !== 'profile').map(t => '<button class="tab" data-act="tab" data-v="' + t[0] + '"' + (U.tab === t[0] ? ' aria-current="page"' : '') + '><svg viewBox="0 0 24 24" aria-hidden="true">' + t[3] + '</svg>' + t[2] + '</button>').join('');
+  $('#tabs').innerHTML = TABS.filter(t => t[0] !== 'week').map(t => '<button class="tab" data-act="tab" data-v="' + t[0] + '"' + (U.tab === t[0] ? ' aria-current="page"' : '') + '><svg viewBox="0 0 24 24" aria-hidden="true">' + t[3] + '</svg>' + t[2] + '</button>').join('');
   $$('[data-mini]').forEach(h => { const it = U.T.plan.items[+h.dataset.mini]; mountFig(h, it.ex, { delay: +h.dataset.mini * 60, mini: true }); });
   $$('[data-lm]').forEach(h => mountFig(h, EXBY[h.dataset.lm], { mini: true }));
   { const lf = $('#lfig'); if (lf && EXBY[U.learnEx]) mountFig(lf, EXBY[U.learnEx], { speed: U.lspeed || 1 }); $$('[data-lpos]').forEach(h => { const ex = EXBY[U.learnEx]; if (!ex) return; const sv = mountFig(h, ex, { still: true }); drawPose(sv, ex, ex.fr[+h.dataset.lpos ? ex.fr.length - 1 : 0]); }); }
@@ -2299,6 +2313,78 @@ function resetAction(a, v) {
   return false;
 }
 
+
+/* ---------- Version épurée : accueil court, Progrès en 4 onglets, Réglages repliables ---------- */
+function vHome() {
+  if (!profileOK()) return vOnboard();
+  const t = today(), b = body(), dt = dayTot(t), pf = planFor(t), adv = dayAdvice(), lw = latestW(), mon = mondayOf(t), si = streakInfo(), g = S.goal;
+  let cells = '';
+  for (let i = 0; i < 7; i++) {
+    const d = addDays(mon, i), done = doneOn(d), rs = effPlan(d) === 'rest', mins = minutesOn(d);
+    cells += '<button class="day' + (done ? ' done' : rs ? ' rest' : '') + (d === t ? ' today' : '') + '" data-act="daytoggle" data-d="' + d + '" aria-label="' + fmtLong(d) + (done ? ', fait' : rs ? ', repos' : ', entraînement prévu') + '"><span class="dn">' + DOW[i + 1] + '</span><span class="dd">' + parseD(d).getDate() + '</span><span class="ds">' + (done ? (mins ? mins + ' min' : '✓') : rs ? 'repos' : hhmm(planFor(d).start)) + '</span></button>';
+  }
+  const wDone = S.weights.some(x => x.d === t), wat = waterOf(t), wg = waterGoal(), sport = minutesOn(t);
+  const tile = (attrs, lbl, val, sub, ok) => '<button class="tile' + (ok ? ' ok' : '') + '" ' + attrs + '><span class="lbl">' + lbl + '</span><span class="num">' + val + '</span><span class="small muted">' + sub + '</span></button>';
+  const todo = [[S.records.length > 0, 'Noter mes records actuels', 'fropen'], [!!P().availSet, 'Régler mes horaires', 'gosched'], [!!g, 'Choisir un objectif', 'gopen']], left = todo.filter(x => !x[0]).length;
+  return (S.demo ? '<div class="exdemo"><span><b>Données d’exemple.</b> Ce ne sont pas tes chiffres.</span><button class="btn sm warm" data-act="wipe">Effacer les exemples</button></div>' : '') +
+    '<div class="row sb"><div><h1>Salut Timao</h1><p class="muted">' + fmtLong(t) + '</p></div><button class="btn ghost sm bell" data-act="notifs" aria-label="Alertes">Alertes<span class="dotc" id="bellc" style="display:none"></span></button></div>' +
+    /* 1. quoi faire aujourd'hui */
+    '<section class="card ' + (adv.kind === 'rest' ? 'soft' : 'warm') + '" aria-live="polite"><h2>' + adv.title + '</h2><p>' + adv.text + '</p>' +
+    (adv.kind === 'train' ? '<button class="btn big" data-act="quickstart">' + (goalRunToday() ? 'Lancer ma course' : 'Lancer ma séance · ' + pf.min + ' min') + '</button>' : '<button class="btn ghost" data-act="quickstart">Faire une séance quand même</button>') +
+    (g ? '<button class="btn ghost sm" data-act="gopen" style="align-self:flex-start">Objectif : ' + gtext(g) + ' · ' + Math.round(goalProb(g).p) + ' % de chances</button>' : '') + '</section>' +
+    /* 2. les 4 gestes du jour */
+    '<div class="grid2">' +
+    tile('data-act="qmopen"', 'Manger', dt.kcal + ' kcal', b ? 'sur ' + b.kcal + ' · touche pour noter' : 'touche pour noter', dt.n > 0) +
+    tile('data-act="water" data-v="250"', 'Boire', nf(wat / 1000, 2) + ' L', 'sur ' + nf(wg / 1000, 2) + ' L · touche = 1 verre', wat >= wg) +
+    tile('data-act="qwopen"', 'Me peser', nf(lw.kg) + ' kg', wDone ? 'noté aujourd’hui' : 'touche pour noter', wDone) +
+    tile('data-act="actopen"', 'J’ai fait du sport', sport ? sport + ' min' : '+', sport ? 'aujourd’hui · touche pour ajouter' : 'course, vélo, foot…', sport > 0) + '</div>' +
+    /* 3. la semaine et la série */
+    '<section class="card"><div class="row sb" style="flex-wrap:nowrap"><h2>Ma semaine</h2><span class="row" style="gap:6px;flex-wrap:nowrap"><span class="flamemini">' + flameSVG(si.n) + '</span><b>' + si.n + ' jour' + (si.n > 1 ? 's' : '') + ' de suite</b></span></div><div class="week">' + cells + '</div>' +
+    '<p class="tiny muted">Touche un jour pour passer de sport à repos.</p>' + (P().availSet ? '<details><summary>Voir le planning de la semaine</summary>' + weekCard() + '</details>' : '') + '</section>' +
+    (isoDow(t) === +P().recordDay ? vRecordDay() : '') +
+    /* 4. pour bien démarrer (disparaît une fois fait) */
+    (left ? '<section class="card"><h2>Pour bien démarrer</h2>' + todo.map(x => '<div class="row sb" style="flex-wrap:nowrap"><span class="' + (x[0] ? 'muted' : '') + '">' + (x[0] ? '✓ ' : '') + x[1] + '</span>' + (x[0] ? '' : '<button class="btn sm" data-act="' + x[2] + '">Faire</button>') + '</div>').join('') + '</section>' : '') +
+    '<p class="sync" id="syncl">' + syncText() + '</p>';
+}
+function simpleAction(a, v) {
+  switch (a) {
+    case 'qmopen': {
+      const t = today(), ms = mealsOf(t);
+      openSheet('<div class="row sb"><h1>Manger ou boire</h1><button class="btn ghost sm" data-act="exclose">Fermer</button></div><section class="card"><label class="f">Ce que j’ai mangé ou bu<textarea id="qtext" rows="3" placeholder="ex. 2 œufs, du pain, un café, une banane"></textarea></label><button class="btn big" data-act="qmeal">Ajouter</button><p class="tiny muted">Écris comme tu parles. Je calcule les calories et les protéines.</p>' +
+        (ms.length ? '<p class="small muted">Déjà noté aujourd’hui : ' + ms.map(m => esc(m.text)).join(' · ') + '</p>' : '') + '<button class="btn ghost" data-act="tab" data-v="meals">Voir tous mes repas</button></section>');
+      const el = $('#qtext'); if (el) try { el.focus(); } catch (e) { } return true;
+    }
+    case 'qwopen': {
+      const lw = latestW();
+      openSheet('<div class="row sb"><h1>Me peser</h1><button class="btn ghost sm" data-act="exclose">Fermer</button></div><section class="card"><label class="f">Mon poids aujourd’hui (kg)<input id="qw" inputmode="decimal" placeholder="' + (lw ? nf(lw.kg) : '74,6') + '"></label><button class="btn big" data-act="wquick">Noter</button><p class="small muted">Dernière pesée : ' + (lw ? nf(lw.kg) + ' kg le ' + fmtShort(lw.d) : 'aucune') + '.</p></section>');
+      const el = $('#qw'); if (el) try { el.focus(); } catch (e) { } return true;
+    }
+    case 'fropen': openSheet('<div class="row sb"><h1>Mes records</h1><button class="btn ghost sm" data-act="exclose">Fermer</button></div>' + vFirstRecords()); return true;
+    case 'gosched': U.open = { 'Mes horaires': true }; U.tab = 'profile'; render(); return true;
+    case 'tab': if (U.modal !== null && U.modal !== undefined) closeEx(); return false;
+  }
+  return false;
+}
+/* Progrès : 4 onglets courts au lieu d'une longue page */
+function vProgress2() {
+  let sub = U.psub || 'bilan'; if (sub === 'general') sub = 'force';
+  const chip = x => '<button class="chip" data-act="psub" data-v="' + x[0] + '" aria-pressed="' + (sub === x[0]) + '">' + x[1] + '</button>';
+  const nav = '<div class="chips subnav" role="group" aria-label="Progrès">' + [['bilan', 'Bilan'], ['body', 'Poids'], ['force', 'Force'], ['run', 'Course']].map(chip).join('') + '</div>';
+  if (sub === 'bilan') return nav + vWeek() + streakCard();
+  if (sub === 'run') return nav + vRunStats();
+  const parts = vProgressGeneral().split('\u0001');
+  if (sub === 'body') return nav + parts[0].replace('<h1>Mes progrès</h1>', '<h1>Mon poids</h1>') + healthCard() + parts[1] + parts[2];
+  return nav + '<h1>Ma force</h1>' + standingCard() + (parts[3] || '') + (parts[4] || '') + badgesCard();
+}
+/* Réglages : chaque partie se déplie */
+function vProfileFold() {
+  const o = U.open || (U.open = { 'Moi': true });
+  return vProfile().replace('<h1>Profil</h1>', '<h1>Réglages</h1><p class="muted">Touche une ligne pour l’ouvrir.</p>')
+    .replace(/<section class="card"><h2>([^<]+)<\/h2>/g, (m, t) => '<details class="card fold" data-fold="' + t + '"' + (o[t] ? ' open' : '') + '><summary><h2>' + t + '</h2></summary>')
+    .replace(/<\/section>/g, '</details>');
+}
+document.addEventListener('toggle', e => { const d = e.target; if (d && d.dataset && d.dataset.fold) { (U.open = U.open || {})[d.dataset.fold] = d.open; } }, true);
+
 /* ===== Actions ===== */
 const SLUG = { today: 'aujourdhui', train: 'seance', meals: 'repas', week: 'bilan', progress: 'progres', profile: 'profil' };
 const fromSlug = h => (TABS.find(t => t[1] === h.replace('#', '')) || [])[0];
@@ -2311,17 +2397,18 @@ document.addEventListener('click', e => {
   const a = b.dataset.act, v = b.dataset.v;
   if (learnAction(a, b, v)) return;
   if (resetAction(a, v)) return;
+  if (simpleAction(a, v)) return;
   switch (a) {
     case 'tab': U.tab = v; try { history.replaceState(null, '', '#' + SLUG[v]); } catch (x) { } render(); break;
     case 'gotrain': { const pf = planFor(today()); if (pf.min) { U.T.min = [5, 10, 15, 20, 30, 45, 60].reduce((a, c) => Math.abs(c - pf.min) < Math.abs(a - pf.min) ? c : a); if (pf.size === 'grosse') U.T.focus = 'all'; U.T.plan = null; } U.tab = 'train'; render(); break; }
     case 'quickstart': startToday(); break;
     case 'qmeal': {
       const text = val('qtext').trim(); if (!text) { toast('Écris ce que tu as mangé ou bu'); break; }
-      const m = addMeal(text, autoType(), today()); keep(); render(); toast('≈ ' + mealTot(m).kcal + ' kcal ajoutées'); break;
+      const m = addMeal(text, autoType(), today()); closeEx(); keep(); render(); toast('≈ ' + mealTot(m).kcal + ' kcal ajoutées'); break;
     }
     case 'wquick': {
       const w = num(val('qw')); if (!(w >= 25 && w <= 300)) { toast('Entre ton poids, ex. 74,6'); break; }
-      S.weights = S.weights.filter(x => x.d !== today()); S.weights.push({ d: today(), kg: +w.toFixed(2) }); save(); keep(); render(); toast('Poids noté : ' + nf(w) + ' kg'); break;
+      S.weights = S.weights.filter(x => x.d !== today()); S.weights.push({ d: today(), kg: +w.toFixed(2) }); save(); closeEx(); keep(); render(); toast('Poids noté : ' + nf(w) + ' kg'); break;
     }
     case 'mre': { const tx = (U.recent || [])[+v]; if (tx) { const m = addMeal(tx, autoType(), U.mealDate); keep(); render(); toast('≈ ' + mealTot(m).kcal + ' kcal ajoutées'); } break; }
     case 'openweek': U.weekMon = mondayOf(today()); if (isoDow(today()) === 1 && !weekStats(U.weekMon).any) U.weekMon = addDays(U.weekMon, -7); U.tab = 'week'; render(); break;
@@ -2337,7 +2424,7 @@ document.addEventListener('click', e => {
     case 'firstrec': {
       const dd = val('fr-date') || today(); let n = 0;
       TRACK.forEach(tr => { const v = Math.round(num(val('fr-' + tr.k))); if (v > 0) { S.records.push({ id: uid(), d: dd > today() ? today() : dd, ex: tr.k, val: v, test: true }); n++; } });
-      if (!n) { toast('Entre au moins un résultat'); break; } save(); render(); toast(n + ' record' + (n > 1 ? 's notés' : ' noté')); break;
+      if (!n) { toast('Entre au moins un résultat'); break; } save(); closeEx(); render(); toast(n + ' record' + (n > 1 ? 's notés' : ' noté')); break;
     }
     case 'recdel': S.records = S.records.filter(r => r.id !== b.dataset.id); save(); keep(); render(); break;
     case 'daytoggle': { const d = b.dataset.d; S.plan[d] = effPlan(d) === 'rest' ? 'train' : 'rest'; save(); keep(); render(); break; }
