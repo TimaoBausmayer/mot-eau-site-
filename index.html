@@ -1207,6 +1207,33 @@ input[type=text],input[type=email],input[type=tel],input[type=password],input[ty
 .thumb-ph{filter:none !important;}
 .product-thumb{background:#1a1714 !important;}
 
+/* --- rubriques vides cachées aux visiteurs --- */
+body:not(.edit-mode) [data-empty="1"]{display:none !important;}
+/* --- première fois --- */
+.first-steps{list-style:none; counter-reset:fs; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; padding:0; margin:0;}
+.first-steps li{counter-increment:fs; border:2px solid #24201b; border-radius:6px; background:#141210; padding:22px 20px 20px; display:flex; flex-direction:column; gap:8px;}
+.first-steps li::before{content:counter(fs,decimal-leading-zero); font-family:'Anton',sans-serif; font-size:2.2rem; line-height:1; color:var(--orange);}
+.first-steps b{font-family:'Anton',sans-serif; font-weight:400; text-transform:uppercase; font-size:1.25rem;}
+.first-steps span{color:#d0cabe; font-size:.95rem;}
+.first-steps a,.first-more a{color:var(--orange); text-decoration:underline;}
+.first-more{margin-top:22px; color:#d0cabe;}
+/* --- instagram --- */
+.insta-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px;}
+.insta-card{border:2px solid #24201b; border-radius:6px; background:#141210; overflow:hidden; display:flex; flex-direction:column;}
+.insta-load{all:unset; cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; aspect-ratio:4/5; background:repeating-linear-gradient(45deg,#17140f 0 14px,#1b1813 14px 28px); color:#d0cabe; text-align:center; padding:20px; font-size:.9rem;}
+.insta-load b{font-family:'Anton',sans-serif; font-weight:400; font-size:1.3rem; color:var(--cream); text-transform:uppercase;}
+.insta-load:focus-visible{outline:3px solid var(--orange); outline-offset:-3px;}
+.insta-card iframe{width:100%; aspect-ratio:4/5.6; border:0; background:#fff;}
+.insta-card .insta-foot{display:flex; justify-content:space-between; align-items:center; padding:10px 12px; font-size:.82rem;}
+.insta-card .insta-foot a{color:var(--orange);}
+.insta-admin{margin-top:18px;}
+/* --- vidéo d'accueil (si le fichier existe) --- */
+.hero-video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; opacity:0; transition:opacity 1s;}
+.hero-video.on{opacity:.55;}
+.hero.has-video::after{content:""; position:absolute; inset:0; z-index:1; background:linear-gradient(90deg,#0b0a09 0%, rgba(11,10,9,.85) 40%, rgba(11,10,9,.25) 100%);}
+.hero .hero-inner{position:relative; z-index:2;}
+@media (max-width:860px){ .hero.has-video::after{background:linear-gradient(180deg, rgba(11,10,9,.2) 0%, #0b0a09 62%);} .hero-video{height:380px; bottom:auto;} }
+
 </style>
 </head>
 <body>
@@ -1377,7 +1404,7 @@ input[type=text],input[type=email],input[type=tel],input[type=password],input[ty
       <a class="quick-card" href="#planning"><span class="qi" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="1"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><b>Réserver une séance</b><small>Essais et entraînements</small></a>
       <a class="quick-card" href="#resultats"><span class="qi" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 0 1-10 0V4zM7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4M12 14v4M8 21h8"/></svg></span><b>Voir les résultats</b><small>Classements et records</small></a>
       <a class="quick-card" href="#boutique"><span class="qi" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 13H6L5 8zM9 8V6a3 3 0 0 1 6 0v2"/></svg></span><b>La boutique</b><small>Vêtements et accessoires</small></a>
-      <a class="quick-card" href="#adhesion"><span class="qi" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 4.8a3.5 3.5 0 0 1 0 6.4M18.5 14.8c1.6.8 2.6 2.6 3 5.2"/></svg></span><b>Rejoindre le club</b><small>Adhésion en 2 minutes</small></a>
+      <a class="quick-card" href="#premiere"><span class="qi" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 4.8a3.5 3.5 0 0 1 0 6.4M18.5 14.8c1.6.8 2.6 2.6 3 5.2"/></svg></span><b>Première fois ?</b><small>Comment ça se passe</small></a>
       <a class="quick-card" href="#tutoriels"><span class="qi" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M10 9l5 3-5 3V9z"/></svg></span><b>Apprendre en vidéo</b><small>Tutoriels et règles</small></a>
       <a class="quick-card" href="#faq"><span class="qi" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4V5z"/></svg></span><b>Poser une question</b><small>Un humain du club te répond</small></a>
     </div>
@@ -1561,6 +1588,20 @@ input[type=text],input[type=email],input[type=tel],input[type=password],input[ty
       <h3 class="subhead">Demandes de prêt</h3>
       <div class="table-wrap"><table><thead><tr><th>Nom</th><th>Équipement</th><th>Date souhaitée</th><th>Paiement</th><th>Statut</th><th></th></tr></thead><tbody id="loansBody"></tbody></table></div>
     </div>
+  </div>
+</section>
+
+<section id="premiere" aria-labelledby="premiereTitle">
+  <div class="wrap">
+    <div class="sec-head"><h2 id="premiereTitle" class="display">Ta première fois</h2><p class="sub">Comment se passe une première séance, du début à la fin.</p></div>
+    <ol class="first-steps">
+      <li><b>Choisis une séance</b><span>Dans le <a href="#planning">planning</a>, prends une séance d'essai ou d'entraînement et inscris-toi en ligne.</span></li>
+      <li><b>Signe l'attestation</b><span>En ligne avant de venir, ou sur place. Pour un mineur, c'est un parent ou un tuteur qui signe. <a href="#attestation">Voir l'attestation</a>.</span></li>
+      <li><b>Prépare ton sac</b><span>Maillot de bain, serviette, vêtements de rechange, et des chaussures qui peuvent aller dans l'eau.</span></li>
+      <li><b>Casque et gilet</b><span>Ils sont obligatoires. Tu n'en as pas ? Le club en prête : <a href="#equipement">prêt de matériel</a>.</span></li>
+      <li><b>Sur place</b><span>L'équipe t'explique les consignes de sécurité avant ta première descente. Ensuite, c'est à toi.</span></li>
+    </ol>
+    <p class="first-more">Le prix est indiqué sur chaque séance et dans <a href="#adhesion">Adhésion &amp; inscriptions</a>. Une autre question ? <a href="#faq">Pose-la ici</a>, quelqu'un du club te répond.</p>
   </div>
 </section>
 
@@ -2046,6 +2087,18 @@ input[type=text],input[type=email],input[type=tel],input[type=password],input[ty
 
 
 
+<section id="instagram" aria-labelledby="instaTitle">
+  <div class="wrap">
+    <div class="sec-head"><h2 id="instaTitle" class="display">Sur Instagram</h2><p class="sub">Les dernières publications de <a class="insta-link" href="https://www.instagram.com/mot_eau/" target="_blank" rel="noopener">@mot_eau</a>.</p></div>
+    <div class="insta-grid" id="instaGrid"></div>
+    <div class="edit-only block insta-admin">
+      <p class="hint-text">Collez le lien d'une publication Instagram (bouton « Partager », puis « Copier le lien »). Les 6 dernières s'affichent sur l'accueil.</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;"><input type="text" id="instaAddUrl" placeholder="https://www.instagram.com/p/..." style="flex:1 1 260px;"><button class="small-btn solid" id="instaAddBtn" type="button">Ajouter</button></div>
+    </div>
+    <p style="margin-top:22px;"><a class="btn btn-ghost insta-link" href="https://www.instagram.com/mot_eau/" target="_blank" rel="noopener">Suivre @mot_eau</a></p>
+  </div>
+</section>
+
 <section id="cta" class="cta-band" aria-labelledby="ctaTitle">
   <div class="wrap cta-inner">
     <img src="/images/logo.webp" width="120" height="120" alt="" loading="lazy" class="cta-logo">
@@ -2232,6 +2285,7 @@ const DEFAULTS = {
   clubCodeHash: "",
   googleReviewLink: "",
   news: [],
+  instaPosts: [],
   countdown: {},
   contests: [],
   runs: [],
@@ -2265,7 +2319,7 @@ const DEFAULTS = {
     lead: "Mot'eau, c'est une moto lancée sur une rampe de mise à l'eau, un décollage, et une seule question : jusqu'où peux-tu aller ? Vitesse, distance, temps — chaque run est mesuré et compté.",
     image: null
   },
-  contact: { email: "contact@moteau-sport.fr", instagram: "https://www.instagram.com/mot_eau/", location: "Lac du Bourget — Savoie" },
+  contact: { email: "", instagram: "https://www.instagram.com/mot_eau/", location: "Lac du Bourget — Savoie" },
   founders: [
     { name:"Timao Bausmayer", role:"Fondateur · Gérant", bio:"", photo:null },
     { name:"Gabin", role:"Associé · Gérant", bio:"", photo:null },
@@ -2291,29 +2345,15 @@ const DEFAULTS = {
     { id:"p5", name:"Maillot technique Pilote", price:39, desc:"Séchage rapide, coupe course.", images:[], link:"", stock:"stock_en", colors:[], sizes:["S","M","L","XL"] },
     { id:"p6", name:"Bonnet Mot'eau", price:18, desc:"Tricot serré, patch brodé.", images:[], link:"", stock:"stock_en", colors:[], sizes:[] }
   ],
-  planning: [
-    { name:"", date:"Samedi 12 sept.", time:"10h00 – 13h00", place:"Base nautique — Lac du Bourget", type:"entrainement", dateISO:"", maxParticipants:"", participants:[] },
-    { name:"", date:"Mercredi 16 sept.", time:"14h00 – 17h00", place:"Base nautique — Lac du Bourget", type:"essai", dateISO:"", maxParticipants:"", participants:[] },
-    { name:"", date:"Samedi 19 sept.", time:"10h00 – 13h00", place:"Base nautique — Lac du Bourget", type:"entrainement", dateISO:"", maxParticipants:"", participants:[] },
-    { name:"Championnat Régional Aix-les-Bains", date:"Dimanche 27 sept.", time:"9h00 – 18h00", place:"Plan d'eau — Aix-les-Bains", type:"competition", dateISO:"", maxParticipants:"", participants:[] },
-    { name:"", date:"Samedi 3 oct.", time:"10h00 – 13h00", place:"Base nautique — Lac du Bourget", type:"entrainement", dateISO:"", maxParticipants:"", participants:[] }
-  ],
+  planning: [],
   planningTypes: [
     { id:"entrainement", label:"Entraînement", color:"#e8c93a" },
     { id:"essai", label:"Essai matériel", color:"#ff5c5c" },
     { id:"competition", label:"Compétition", color:"#4ea8de" }
   ],
   resultsDisplay: { showRecords: true, showGeneralRanking: true, hideAll: false },
-  competitions: [
-    { id:"comp_seed_1", name:"Championnat de Printemps 2026", date:"2026-04-12", doc:null, pilots:[
-      { id:"cp1", name:"S. Marchand", result:"champion", manches:6, manchesTimes:[
-          {time:"1:15.20", dropped:false},{time:"1:12.40", dropped:false},{time:"1:18.90", dropped:true},
-          {time:"1:11.05", dropped:false},{time:"1:14.30", dropped:false},{time:"1:19.60", dropped:true}
-        ], bestTime:"1:11.05", bestDistance:"20 m", cumulativeTime:"4:52.95" },
-      { id:"cp2", name:"L. Berthier", result:"finaliste", manches:9, bestTime:"1:13.80", bestDistance:"18 m", cumulativeTime:"5:00.25" },
-      { id:"cp3", name:"T. Rousseau", result:"e4", manches:6, bestTime:"1:18.40", bestDistance:"15 m", cumulativeTime:"5:24.35" }
-    ] }
-  ],
+  competitions: [],
+
   rules: [
     { title:"Principe général & règle d'or des quotas", content:"Le Championnat du Monde 2026 se dispute avec <b>deux mot'eaux identiques</b> afin de garantir une équité sportive parfaite : chaque pilote effectue un nombre strictement égal de passages sur chaque machine.<br><br><b>🏆 Règle d'or des quotas minimaux :</b> pour valider le calcul du temps cumulé à n'importe quelle étape N, il faut obligatoirement conserver au minimum :<br>• Au moins 1 passage de l'Étape 1<br>• Au moins 2 passages de l'Étape 2<br>• Au moins 3 passages de l'Étape 3<br>• Au moins 4 passages de l'Étape 4<br>• … et ainsi de suite (N passages de l'Étape N)." },
     { title:"Tableau récapitulatif du championnat", content:"• <b>Étape 1 (Qualif.)</b> — 20 pilotes → 6 passages (3/machine) → 2 pires retirés → 15 qualifiés<br>• <b>Étape 2</b> — 15 pilotes → 6 passages (3/machine) → 3 pires retirés → 10 qualifiés<br>• <b>Étape 3</b> — 10 pilotes → 6 passages (3/machine) → 3 pires retirés → 5 qualifiés<br>• <b>Étape 4 (¼ Finale)</b> — 5 pilotes → 8 passages (4/machine) → 3 pires retirés → 3 qualifiés<br>• <b>Étape 5 (½ Finale)</b> — 3 pilotes → 10 passages (5/machine) → 5 pires retirés → 2 qualifiés<br>• <b>Étape 6 (Finale Ph.1)</b> — 2 pilotes → 10 passages (5/machine) → 5 pires retirés → 2 qualifiés" },
@@ -2334,14 +2374,7 @@ const DEFAULTS = {
     { title:"La boutique", text:"Choisir sa couleur et sa taille, voir le stock, gérer son panier, utiliser un code promo et payer.", video:"videos/tuto-boutique.mp4", poster:"videos/tuto-boutique.jpg" },
     { title:"Les classements", text:"Le temps cumulé, les retraits, la ligne de qualification et les records du monde : comment se calcule ta place.", video:"videos/tuto-classements.mp4", poster:"videos/tuto-classements.jpg" }
   ],
-  gallery: [
-    { type:"photo", tag:"Entraînement", image:null },
-    { type:"video", tag:"Highlights", image:null },
-    { type:"photo", tag:"Essai rampe", image:null },
-    { type:"photo", tag:"Décollage", image:null },
-    { type:"video", tag:"Freestyle", image:null },
-    { type:"photo", tag:"Réception", image:null }
-  ],
+  gallery: [],
   donations: [
     { label:"Supporter", amount:10, desc:"Un coup de pouce pour les essais.", link:"" },
     { label:"Partenaire", amount:50, desc:"Contribue au matériel et aux rampes.", link:"" },
@@ -3236,6 +3269,8 @@ Object.assign(TRANSLATE_MAP, {"La Mot'eau":"The Mot'eau","La machine du club, au
 
 Object.assign(TRANSLATE_MAP, {"Prêt à décoller ?":"Ready for take-off?","Rejoins la Team Mot'eau : une séance d'essai, et tu ne verras plus jamais une cale de mise à l'eau de la même façon.":"Join Team Mot'eau: one trial session, and you'll never look at a boat ramp the same way again.","Voir le planning":"See the schedule","Photo à venir":"Photo coming soon","Revenir en haut de la page":"Back to top"});
 
+Object.assign(TRANSLATE_MAP, {"Ta première fois":"Your first time","Comment se passe une première séance, du début à la fin.":"How a first session works, from start to finish.","Choisis une séance":"Pick a session","Signe l'attestation":"Sign the waiver","Prépare ton sac":"Pack your bag","Casque et gilet":"Helmet and life jacket","Sur place":"On site","Maillot de bain, serviette, vêtements de rechange, et des chaussures qui peuvent aller dans l'eau.":"Swimsuit, towel, spare clothes, and shoes that can go in the water.","L'équipe t'explique les consignes de sécurité avant ta première descente. Ensuite, c'est à toi.":"The team explains the safety rules before your first run. Then it's your turn.","Première fois ?":"First time?","Comment ça se passe":"How it works","Prochaines dates bientôt":"Next dates coming soon","Sur Instagram":"On Instagram","Voir la publication":"View the post","Au clic, la publication est chargée depuis Instagram.":"On click, the post is loaded from Instagram.","Ouvrir sur Instagram":"Open on Instagram","Suivre @mot_eau":"Follow @mot_eau","Première fois":"First time"});
+
 /* ---- Moteur de traduction FR → EN ----
    - dictionnaire intégré (TRANSLATE_MAP) + traductions saisies par l'admin (i18nEn, onglet « Anglais »)
    - motifs pour les textes avec des chiffres, dates en français
@@ -3397,6 +3432,8 @@ function applyEditMode(){
   if(typeof renderLoyalty === 'function') renderLoyalty();
   if(typeof renderRuns === 'function') renderRuns();
   if(typeof renderPilotDirectory === 'function') renderPilotDirectory();
+  if(typeof renderInstagram === 'function') renderInstagram();
+  if(typeof markEmptySections === 'function') markEmptySections();
   if(typeof renderViewTabs === 'function') renderViewTabs();
   if(typeof CLUB_UNLOCKED !== 'undefined' && CLUB_UNLOCKED && typeof renderClubMessages === 'function'){
     renderClubMessages(); renderClubPosts(); renderClubRoster();
@@ -3612,8 +3649,9 @@ function getInstagramUrl(){
 }
 function renderContact(){
   const emailEl = document.getElementById('contactEmailLink');
-  emailEl.textContent = STATE.contact.email;
-  emailEl.href = 'mailto:' + STATE.contact.email;
+  emailEl.textContent = STATE.contact.email || (EDIT_MODE ? 'Ajouter votre e-mail de contact' : '');
+  emailEl.href = STATE.contact.email ? 'mailto:' + STATE.contact.email : '#';
+  if(emailEl.parentElement) emailEl.parentElement.style.display = (STATE.contact.email || EDIT_MODE) ? '' : 'none';
   const insta = getInstagramUrl();
   document.querySelectorAll('.insta-link').forEach(a => { a.href = insta; });
   document.getElementById('contactLocation').textContent = STATE.contact.location;
@@ -6822,7 +6860,9 @@ function renderAdminPanel(){
       [(STATE.planning||[]).reduce((t,s) => t + ((s && s.participants)||[]).length, 0), 'Inscrits aux séances'],
       [STATE.visitCount || 0, 'Visites du site']
     ];
-    body.innerHTML = `<div class="admin-stats">${stats.map(([n,l]) => `<div class="admin-stat"><div class="n">${e(String(n))}</div><div class="l">${l}</div></div>`).join('')}</div>
+    const smp = countSamples(), smpN = smp.planning + smp.competitions + smp.gallery + smp.email;
+    const smpHtml = smpN ? `<div class="admin-card" style="border-color:var(--orange);"><h4>Exemples de départ encore présents</h4><div class="muted">${smp.planning} séance(s), ${smp.competitions} compétition(s) d'exemple, ${smp.gallery} case(s) photo vide(s)${smp.email ? ', e-mail de contact d\'exemple' : ''}. Les visiteurs ne les voient plus, mais vous pouvez les supprimer pour de bon.</div><button class="small-btn solid" id="cleanSamplesBtn" style="margin-top:10px;">Supprimer les exemples</button></div>` : '';
+    body.innerHTML = smpHtml + `<div class="admin-stats">${stats.map(([n,l]) => `<div class="admin-stat"><div class="n">${e(String(n))}</div><div class="l">${l}</div></div>`).join('')}</div>
       <h3 style="margin-bottom:10px;">⏳ À traiter (pas encore payé)</h3>
       ${table(todo.reverse().slice(0, 15))}
       <h3 style="margin:26px 0 10px;">🧾 Tout le suivi</h3>
@@ -7213,6 +7253,7 @@ function exportAdminCsv(){
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 }
+document.getElementById('adminBody').addEventListener('click', e => { if(e.target.id === 'cleanSamplesBtn' && confirm('Supprimer définitivement les séances, la compétition et les cases photo d\'exemple ?')) cleanSamplesForGood(); });
 document.getElementById('adminTabs').addEventListener('click', e => {
   const b = e.target.closest('[data-admintab]'); if(!b) return;
   adminTab = b.dataset.admintab; adminSearch = ''; adminStatus = 'all'; renderAdminPanel();
@@ -8479,14 +8520,14 @@ async function deleteMyAccount(){
    (les liens #planning, #boutique… continuent de fonctionner et ouvrent la bonne page)
    ============================================================ */
 const VIEWS = {
-  home:       ['accueil','marquee','stats','actions','actualites','concept','machine','cta'],
+  home:       ['accueil','marquee','stats','actions','actualites','concept','machine','instagram','cta'],
   sport:      ['planning','resultats','runs','votes','regles','equipement','galerie','tutoriels'],
   boutique:   ['boutique'],
-  rejoindre:  ['adhesion','attestation','fidelite','dons'],
+  rejoindre:  ['premiere','adhesion','attestation','fidelite','dons'],
   communaute: ['avis','faq','club','histoire','sponsors'],
   admin:      ['dashboard','prospection']
 };
-const VIEW_LABELS = { machine:'La Mot\'eau', actualites:'Actualités', concept:'Le concept', planning:'Planning', resultats:'Résultats', runs:'Les runs', votes:'Vote du public', regles:'Règles', equipement:'Prêt de matériel',
+const VIEW_LABELS = { premiere:'Première fois', instagram:'Instagram', machine:'La Mot\'eau', actualites:'Actualités', concept:'Le concept', planning:'Planning', resultats:'Résultats', runs:'Les runs', votes:'Vote du public', regles:'Règles', equipement:'Prêt de matériel',
   galerie:'Photos & vidéos', tutoriels:'Tutoriels', boutique:'Boutique', adhesion:'Adhésion & inscriptions', attestation:'Attestation', fidelite:'Fidélité', dons:'Faire un don',
   avis:'Avis', faq:'Questions', club:'Espace adhérents', histoire:'Notre histoire', sponsors:'Sponsors', dashboard:'Tableau de bord', prospection:'Démarchage' };
 const VIEW_OF = {}; Object.entries(VIEWS).forEach(([v, ids]) => ids.forEach(id => VIEW_OF[id] = v));
@@ -8496,7 +8537,7 @@ let CURRENT_VIEW = 'home';
   st.textContent = Object.entries(VIEWS).map(([v, ids]) => `body[data-view]:not([data-view="${v}"]) ${ids.map(i => '#' + i).join(', body[data-view]:not([data-view="' + v + '"]) ')}{display:none !important;}`).join('\n');
   document.head.appendChild(st);
 })();
-function sectionShown(id){ const el = document.getElementById(id); return !!el && el.style.display !== 'none' && !el.classList.contains('edit-only') || (!!el && EDIT_MODE); }
+function sectionShown(id){ const el = document.getElementById(id); if(!el) return false; if(EDIT_MODE) return true; return el.style.display !== 'none' && !el.classList.contains('edit-only') && el.dataset.empty !== '1'; }
 function renderViewTabs(){
   const box = document.getElementById('viewTabs'); if(!box) return;
   const ids = (VIEWS[CURRENT_VIEW] || []).filter(id => VIEW_LABELS[id] && sectionShown(id));
@@ -8617,11 +8658,111 @@ async function applyPaymentLinkOverrides(){
   }, { passive:true });
 })();
 
+/* ============================================================
+   EXEMPLES DE DÉPART — retirés de l'affichage (et effaçables d'un clic par l'admin)
+   ============================================================ */
+const SAMPLE_PLANNING = ['Samedi 12 sept.|Base nautique — Lac du Bourget','Mercredi 16 sept.|Base nautique — Lac du Bourget','Samedi 19 sept.|Base nautique — Lac du Bourget','Dimanche 27 sept.|Plan d\'eau — Aix-les-Bains','Samedi 3 oct.|Base nautique — Lac du Bourget'];
+const isSampleSession = r => r && SAMPLE_PLANNING.includes((r.date || '') + '|' + (r.place || '')) && !(r.participants || []).length && !r.dateISO;
+const isSampleComp = c => c && (c.id === 'comp_seed_1' || (c.name === 'Championnat de Printemps 2026' && (c.pilots || []).some(p => p && /^(S\. Marchand|L\. Berthier|T\. Rousseau)$/.test(p.name || ''))));
+const isSampleGallery = g => g && !g.image && !g.video && !g.url;
+function countSamples(){
+  return { planning:(STATE.planning || []).filter(isSampleSession).length, competitions:(STATE.competitions || []).filter(isSampleComp).length,
+    gallery:(STATE.gallery || []).filter(isSampleGallery).length, email: STATE.contact && STATE.contact.email === 'contact@moteau-sport.fr' ? 1 : 0 };
+}
+function stripSamplesForVisitors(){
+  if(isAdmin()) return;      // l'admin voit tout (et peut nettoyer depuis son espace)
+  STATE.planning = (STATE.planning || []).filter(r => !isSampleSession(r));
+  STATE.competitions = (STATE.competitions || []).filter(c => !isSampleComp(c));
+  STATE.gallery = (STATE.gallery || []).filter(g => !isSampleGallery(g));
+  if(STATE.contact && STATE.contact.email === 'contact@moteau-sport.fr') STATE.contact.email = '';
+}
+async function cleanSamplesForGood(){
+  if(!isAdmin()) return;
+  STATE.planning = (STATE.planning || []).filter(r => !isSampleSession(r));
+  STATE.competitions = (STATE.competitions || []).filter(c => !isSampleComp(c));
+  STATE.gallery = (STATE.gallery || []).filter(g => !isSampleGallery(g));
+  for(const k of ['planning','competitions','gallery']) await saveSection(k);
+  if(STATE.contact && STATE.contact.email === 'contact@moteau-sport.fr'){ STATE.contact.email = ''; await saveSection('contact'); }
+  ['renderPlanning','renderCompetitions','renderGeneralRanking','renderWorldRecords','renderPilotDirectory','renderGallery','renderContact'].forEach(f => { try{ window[f] && window[f](); }catch(e){} });
+  markEmptySections(); showToast('Exemples supprimés'); renderAdminPanel();
+}
+
+/* ============================================================
+   RUBRIQUES VIDES — cachées aux visiteurs, réapparaissent dès qu'il y a du contenu
+   ============================================================ */
+function markEmptySections(){
+  const vis = arr => (arr || []).filter(Boolean);
+  const cfg = typeof loyaltyCfg === 'function' ? loyaltyCfg() : {};
+  const empty = {
+    planning:    vis(STATE.planning).length === 0,
+    resultats:   vis(STATE.competitions).filter(c => !c.hidden).length === 0,
+    galerie:     vis(STATE.gallery).filter(g => g.image || g.video || g.url).length === 0,
+    equipement:  vis(STATE.equipment).length === 0,
+    sponsors:    vis(STATE.sponsors).filter(x => x.name || x.logo).length === 0,
+    fidelite:    !cfg.enabled || vis(cfg.rewards).filter(r => r.label).length === 0,
+    instagram:   vis(STATE.instaPosts).length === 0,
+    tutoriels:   vis(STATE.tutorials).length === 0
+  };
+  Object.entries(empty).forEach(([id, e]) => { const el = document.getElementById(id); if(el){ if(e) el.dataset.empty = '1'; else delete el.dataset.empty; } });
+  document.querySelectorAll('.quick-card').forEach(a => {
+    const id = (a.dataset.target || (a.getAttribute('href') || '').replace('#', '')); a.dataset.target = id;
+    if(empty[id]) a.dataset.empty = '1'; else delete a.dataset.empty;
+  });
+  if(typeof renderViewTabs === 'function') renderViewTabs();
+}
+
+/* ============================================================
+   INSTAGRAM — publications choisies par l'admin, chargées seulement au clic
+   ============================================================ */
+const instaCode = u => { const m = String(u || '').match(/instagram\.com\/(?:[A-Za-z0-9_.]+\/)?(p|reel|tv)\/([A-Za-z0-9_-]{5,})/); return m ? { kind:m[1], code:m[2] } : null; };
+function renderInstagram(){
+  const grid = document.getElementById('instaGrid'); if(!grid) return;
+  const posts = (STATE.instaPosts || []).filter(Boolean).slice(-6).reverse();
+  grid.innerHTML = posts.map(u => { const c = instaCode(u); if(!c) return ''; const href = `https://www.instagram.com/${c.kind}/${c.code}/`;
+    return `<div class="insta-card" data-code="${escSearch(c.code)}" data-kind="${c.kind}">
+      <button type="button" class="insta-load"><b>Voir la publication</b><span>Au clic, la publication est chargée depuis Instagram.</span></button>
+      <div class="insta-foot"><a href="${href}" target="_blank" rel="noopener">Ouvrir sur Instagram</a>${EDIT_MODE ? `<button class="icon-btn danger" type="button" data-instadel="${escSearch(u)}" title="Retirer">✕</button>` : ''}</div></div>`; }).join('');
+}
+document.getElementById('instaGrid').addEventListener('click', ev => {
+  const del = ev.target.closest('[data-instadel]');
+  if(del && EDIT_MODE){ STATE.instaPosts = (STATE.instaPosts || []).filter(u => u !== del.dataset.instadel); saveSection('instaPosts'); renderInstagram(); markEmptySections(); return; }
+  const b = ev.target.closest('.insta-load'); if(!b) return;
+  const card = b.closest('.insta-card');
+  const f = document.createElement('iframe');
+  f.src = `https://www.instagram.com/${card.dataset.kind}/${card.dataset.code}/embed/`; f.loading = 'lazy'; f.title = 'Publication Instagram de Mot\'eau';
+  b.replaceWith(f);
+});
+document.getElementById('instaAddBtn').addEventListener('click', () => {
+  const inp = document.getElementById('instaAddUrl'); const u = inp.value.trim();
+  if(!instaCode(u)){ showToast("Ce n'est pas un lien de publication Instagram."); return; }
+  STATE.instaPosts = (STATE.instaPosts || []).filter(Boolean); if(!STATE.instaPosts.includes(u)) STATE.instaPosts.push(u);
+  inp.value = ''; saveSection('instaPosts'); renderInstagram(); markEmptySections(); showToast('Publication ajoutée');
+});
+
+/* ============================================================
+   VIDÉO D'ACCUEIL — s'affiche automatiquement si videos/hero.mp4 existe
+   ============================================================ */
+async function setupHeroVideo(){
+  try{
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if(navigator.connection && navigator.connection.saveData) return;
+    const r = await fetch('/videos/hero.mp4', { method:'HEAD', cache:'no-store' });
+    if(!r.ok || !(r.headers.get('content-type') || '').includes('video')) return;
+    const hero = document.querySelector('.hero'); if(!hero || hero.querySelector('.hero-video')) return;
+    const v = document.createElement('video');
+    Object.assign(v, { muted:true, loop:true, autoplay:true, playsInline:true, preload:'auto' });
+    v.className = 'hero-video'; v.setAttribute('aria-hidden', 'true'); v.src = '/videos/hero.mp4';
+    v.addEventListener('playing', () => v.classList.add('on'), { once:true });
+    hero.prepend(v); hero.classList.add('has-video'); v.play().catch(() => {});
+  }catch(err){ /* pas de vidéo : la photo reste */ }
+}
+
 async function init(){
   await restoreAdminSession();
   await loadAll();
   await loadFavorites();
   await applyPaymentLinkOverrides();
+  stripSamplesForVisitors();
   await loadLangPreference();
   migrateOldData();
   trackVisit();
@@ -8647,7 +8788,7 @@ async function init(){
   renderHistory();
   renderGallery();
   renderTutorials();
-  renderNews(); renderCountdown(); renderLoyalty(); renderRuns(); renderPilotDirectory(); applyResultsHidden(); renderProspection(); injectLegalUI(); routeFromHash(); setTimeout(renderViewTabs, 900); setTimeout(renderViewTabs, 2500);
+  renderNews(); renderCountdown(); renderLoyalty(); renderRuns(); renderPilotDirectory(); applyResultsHidden(); renderProspection(); injectLegalUI(); renderInstagram(); markEmptySections(); setupHeroVideo(); routeFromHash(); setTimeout(renderViewTabs, 900); setTimeout(renderViewTabs, 2500);
   await Promise.all([loadPolls(), loadVotes()]);
   renderContests();
   renderProducts();

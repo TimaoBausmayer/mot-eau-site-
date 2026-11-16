@@ -430,7 +430,10 @@
         }
       },
       "productCosts": {},
-      "expenses": {}
+      "expenses": {},
+      "instaPosts": {
+        ".read": true
+      }
     }
   }
 }
