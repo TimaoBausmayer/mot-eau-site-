@@ -35,7 +35,7 @@
 <link rel="preload" href="/images/hero-team.webp" as="image" type="image/webp" fetchpriority="high">
 <link rel="preload" href="/fonts/Anton.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="/fonts/SpaceGrotesk.ttf" as="font" type="font/ttf" crossorigin>
-<script>try{if(!sessionStorage.getItem('moteau_intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){sessionStorage.setItem('moteau_intro','1');document.documentElement.classList.add('intro');setTimeout(function(){document.documentElement.classList.remove('intro')},3200)}}catch(e){}</script>
+<script>try{if(false&&!sessionStorage.getItem('moteau_intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){sessionStorage.setItem('moteau_intro','1');document.documentElement.classList.add('intro');setTimeout(function(){document.documentElement.classList.remove('intro')},3200)}}catch(e){}</script>
 <style>
 :root{
   --black:#0a0a09; --surface:#141311; --surface-2:#1c1a17; --line:#332f29;
@@ -1149,6 +1149,64 @@ body.is-admin #toTop{right:86px;}
   #viewTabs{margin-top:84px; top:calc(var(--announce-h,0px) + 78px);}
 }
 
+/* =====================================================================
+   STYLE « AFFICHE » — plus brut, moins lisse (passe devant tout le reste)
+   ===================================================================== */
+:root{--radius:6px;}
+body{background:#0b0a09 !important;}
+body::after{content:""; position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:.07; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); mix-blend-mode:overlay;}
+header{border-radius:8px !important; background:#0b0a09 !important; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; border:2px solid #24201b !important; box-shadow:none !important;}
+.nav-links a{border-radius:4px !important;}
+.nav-links a.active{background:transparent !important; color:var(--orange) !important; box-shadow:inset 0 -3px 0 var(--orange);}
+.nav-links a.nav-cta,.btn-solid{background:var(--orange) !important; color:#0b0a09 !important; border:2px solid #0b0a09 !important; box-shadow:4px 4px 0 #f4efe6 !important; border-radius:4px !important; filter:none !important; transform:none;}
+.btn-solid:hover,.nav-links a.nav-cta:hover{transform:translate(-2px,-2px) !important; box-shadow:6px 6px 0 #f4efe6 !important;}
+.btn-solid:active,.nav-links a.nav-cta:active{transform:translate(3px,3px) !important; box-shadow:1px 1px 0 #f4efe6 !important;}
+.btn-solid::after,.nav-links a.nav-cta::after{display:none !important;}
+.btn-ghost{border-radius:4px !important; border:2px solid #f4efe6 !important; background:transparent !important; color:#f4efe6 !important;}
+.btn-ghost:hover{background:#f4efe6 !important; color:#0b0a09 !important;}
+.btn{text-transform:uppercase; letter-spacing:.06em; font-size:.88rem;}
+.small-btn,.filter-btn,.cart-btn,#viewTabs a{border-radius:4px !important;}
+#viewTabs a{background:#0b0a09 !important; backdrop-filter:none !important; border:2px solid #2a251f !important;}
+#viewTabs a.on{background:var(--orange) !important; border-color:var(--orange) !important;}
+.quick-card,.step,.product-card,.comp-card,.signup-card,.news-card,.tuto-card,.contest-card,.loy-reward,.faq-q,.founder-card,.accordion-item,.sponsor-card,.podium-card,.pilot-search,.results-block,.poll-box,.waiver-text-box,.machine-fig,.stat,.table-wrap,.cta-inner{border-radius:6px !important; background:#141210 !important; box-shadow:none !important; border:2px solid #24201b !important;}
+.quick-card:hover,.product-card:hover,.news-card:hover,.tuto-card:hover,.founder-card:hover,.comp-card:hover{transform:translate(-3px,-3px) !important; border-color:var(--orange) !important; box-shadow:5px 5px 0 var(--orange) !important;}
+.quick-card::before,.product-card::before,.step::before,.news-card::before,.tuto-card::before{display:none !important;}
+.quick-card .qi{color:var(--orange); width:28px; height:28px;}
+.quick-card:hover .qi{transform:none !important;}
+.quick-card b{font-family:'Anton',sans-serif; font-weight:400; text-transform:uppercase; font-size:1.3rem; letter-spacing:.02em;}
+.sec-head h2{padding-top:0 !important; padding-bottom:18px; display:inline-block;}
+.sec-head h2::before{display:none !important;}
+.sec-head h2::after{content:""; position:absolute; left:-4px; right:-8px; bottom:2px; height:16px; z-index:-1; background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 24'><path d='M4 15 C60 6 140 4 296 9 C210 12 120 15 60 21 C40 22 20 20 4 15Z' fill='%23ff5a1f'/></svg>") center/100% 100% no-repeat; opacity:.9;}
+.sec-head h2{position:relative; z-index:0;}
+.hero h1 .accent{background:none !important; -webkit-background-clip:border-box !important; background-clip:border-box !important; color:var(--orange) !important; animation:heroUp .8s cubic-bezier(.2,.8,.2,1) both !important; filter:none !important;}
+.hero h1,.hero p.lead{text-shadow:0 2px 0 rgba(0,0,0,.35) !important;}
+.eyebrow-tag{display:inline-block; background:var(--cream); color:#0b0a09 !important; padding:4px 10px; transform:rotate(-2deg); font-weight:700; letter-spacing:.08em;}
+.eyebrow-tag::before{display:none !important;}
+.marquee{background:var(--orange) !important; border:0 !important; transform:rotate(-1.5deg) scale(1.03) !important;}
+.marquee-track span{font-size:1.4rem !important;}
+.step .n{animation:none !important; border-radius:4px !important;}
+.logo-slot img{filter:none !important;} .logo-slot:hover img{transform:rotate(-8deg) scale(1.05) !important; filter:none !important;}
+.foot-logo-slot img{animation:none !important; transform:rotate(-6deg);}
+.cta-logo{animation:none !important; transform:rotate(-8deg);}
+.cta-inner{background:var(--orange) !important; border:2px solid #0b0a09 !important; color:#0b0a09; box-shadow:8px 8px 0 #f4efe6 !important;}
+.cta-inner h2,.cta-inner p{color:#0b0a09 !important;}
+.cta-inner .btn-solid{background:#0b0a09 !important; color:#f4efe6 !important; border-color:#0b0a09 !important; box-shadow:4px 4px 0 #f4efe6 !important;}
+.cta-inner .btn-ghost{border-color:#0b0a09 !important; color:#0b0a09 !important;}
+.cta-inner .btn-ghost:hover{background:#0b0a09 !important; color:#f4efe6 !important;}
+.machine-fig{transform:rotate(-1.2deg);} .machine-fig:nth-child(2){transform:rotate(1.4deg);}
+.machine-fig:hover{transform:rotate(0) !important;}
+#bottomNav{background:#0b0a09 !important; backdrop-filter:none !important; border:2px solid #24201b !important; border-radius:8px !important;}
+#bottomNav a{border-radius:4px !important;}
+#bottomNav a.active{background:var(--orange) !important; color:#0b0a09 !important;}
+#bottomNav a.active span{transform:none !important;}
+#toTop{border-radius:4px !important; background:var(--orange) !important; border:2px solid #0b0a09; box-shadow:3px 3px 0 #f4efe6 !important;}
+#viewBanner{border-radius:6px !important; border:2px solid #24201b !important; box-shadow:none !important;}
+input[type=text],input[type=email],input[type=tel],input[type=password],input[type=number],input[type=date],input[type=search],select,textarea,.pw-modal input{border-radius:4px !important; border-width:2px !important;}
+.pw-modal,#accountModal,#pilotModal{border-radius:8px !important;}
+#scrollBar{background:var(--orange) !important;}
+.thumb-ph{filter:none !important;}
+.product-thumb{background:#1a1714 !important;}
+
 </style>
 </head>
 <body>
@@ -1246,11 +1304,11 @@ body.is-admin #toTop{right:86px;}
 <main id="contenu" tabindex="-1">
 
 <nav id="bottomNav" aria-label="Navigation rapide">
-  <a href="#accueil" data-viewlink="home"><span aria-hidden="true">🏠</span>Accueil</a>
-  <a href="#planning" data-viewlink="sport"><span aria-hidden="true">🏁</span>Sport</a>
-  <a href="#boutique" data-viewlink="boutique"><span aria-hidden="true">🛍️</span>Boutique</a>
-  <a href="#adhesion" data-viewlink="rejoindre"><span aria-hidden="true">🤝</span>Rejoindre</a>
-  <a href="#avis" data-viewlink="communaute"><span aria-hidden="true">💬</span>Club</a>
+  <a href="#accueil" data-viewlink="home"><span aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7M5 9.5V20h14V9.5"/></svg></span>Accueil</a>
+  <a href="#planning" data-viewlink="sport"><span aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h12l-2 4 2 4H5"/></svg></span>Sport</a>
+  <a href="#boutique" data-viewlink="boutique"><span aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 13H6L5 8zM9 8V6a3 3 0 0 1 6 0v2"/></svg></span>Boutique</a>
+  <a href="#adhesion" data-viewlink="rejoindre"><span aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 4.8a3.5 3.5 0 0 1 0 6.4M18.5 14.8c1.6.8 2.6 2.6 3 5.2"/></svg></span>Rejoindre</a>
+  <a href="#avis" data-viewlink="communaute"><span aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4V5z"/></svg></span>Club</a>
 </nav>
 <div id="viewBanner" role="img" aria-label="Équipement Team Mot'eau posé sur l'herbe : la moto noire et orange, la bannière, un short et un maillot"></div>
 <div id="viewTabs" role="navigation" aria-label="Rubriques de cette page"></div>
@@ -1300,7 +1358,7 @@ body.is-admin #toTop{right:86px;}
   </div>
 </section>
 
-<div class="marquee" id="marquee" aria-hidden="true"><div class="marquee-track"><span>VITESSE ✦ DISTANCE ✦ TEMPS ✦ DÉCOLLE ✦ VOLE ✦ ÉCLABOUSSE ✦ TEAM MOT'EAU ✦ LAC DU BOURGET ✦ </span><span>VITESSE ✦ DISTANCE ✦ TEMPS ✦ DÉCOLLE ✦ VOLE ✦ ÉCLABOUSSE ✦ TEAM MOT'EAU ✦ LAC DU BOURGET ✦ </span></div></div>
+<div class="marquee" id="marquee" aria-hidden="true"><div class="marquee-track"><span>VITESSE / DISTANCE / TEMPS / TEAM MOT'EAU / LAC DU BOURGET / AIX-LES-BAINS / </span><span>VITESSE / DISTANCE / TEMPS / TEAM MOT'EAU / LAC DU BOURGET / AIX-LES-BAINS / </span></div></div>
 
 <div class="stat-strip" id="stats">
   <div class="wrap">
@@ -1314,14 +1372,14 @@ body.is-admin #toTop{right:86px;}
 
 <section id="actions" class="quick" aria-labelledby="quickTitle">
   <div class="wrap">
-    <h2 id="quickTitle" class="quick-title">Que veux-tu faire ?</h2>
+    <h2 id="quickTitle" class="quick-title">Tu cherches quoi ?</h2>
     <div class="quick-grid">
-      <a class="quick-card" href="#planning"><span class="qi" aria-hidden="true">📅</span><b>Réserver une séance</b><small>Essais et entraînements</small></a>
-      <a class="quick-card" href="#resultats"><span class="qi" aria-hidden="true">🏆</span><b>Voir les résultats</b><small>Classements et records</small></a>
-      <a class="quick-card" href="#boutique"><span class="qi" aria-hidden="true">🛍️</span><b>La boutique</b><small>Vêtements et accessoires</small></a>
-      <a class="quick-card" href="#adhesion"><span class="qi" aria-hidden="true">🤝</span><b>Rejoindre le club</b><small>Adhésion en 2 minutes</small></a>
-      <a class="quick-card" href="#tutoriels"><span class="qi" aria-hidden="true">🎬</span><b>Apprendre en vidéo</b><small>Tutoriels et règles</small></a>
-      <a class="quick-card" href="#faq"><span class="qi" aria-hidden="true">💬</span><b>Poser une question</b><small>On te répond vite</small></a>
+      <a class="quick-card" href="#planning"><span class="qi" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="1"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><b>Réserver une séance</b><small>Essais et entraînements</small></a>
+      <a class="quick-card" href="#resultats"><span class="qi" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 0 1-10 0V4zM7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4M12 14v4M8 21h8"/></svg></span><b>Voir les résultats</b><small>Classements et records</small></a>
+      <a class="quick-card" href="#boutique"><span class="qi" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 13H6L5 8zM9 8V6a3 3 0 0 1 6 0v2"/></svg></span><b>La boutique</b><small>Vêtements et accessoires</small></a>
+      <a class="quick-card" href="#adhesion"><span class="qi" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 4.8a3.5 3.5 0 0 1 0 6.4M18.5 14.8c1.6.8 2.6 2.6 3 5.2"/></svg></span><b>Rejoindre le club</b><small>Adhésion en 2 minutes</small></a>
+      <a class="quick-card" href="#tutoriels"><span class="qi" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M10 9l5 3-5 3V9z"/></svg></span><b>Apprendre en vidéo</b><small>Tutoriels et règles</small></a>
+      <a class="quick-card" href="#faq"><span class="qi" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4V5z"/></svg></span><b>Poser une question</b><small>Un humain du club te répond</small></a>
     </div>
   </div>
 </section>
@@ -1992,8 +2050,8 @@ body.is-admin #toTop{right:86px;}
   <div class="wrap cta-inner">
     <img src="/images/logo.webp" width="120" height="120" alt="" loading="lazy" class="cta-logo">
     <div>
-      <h2 id="ctaTitle" class="display">Prêt à décoller ?</h2>
-      <p>Rejoins la Team Mot'eau : une séance d'essai, et tu ne verras plus jamais une cale de mise à l'eau de la même façon.</p>
+      <h2 id="ctaTitle" class="display">Viens essayer.</h2>
+      <p>Casque, gilet, une descente de cale, un plouf. On t'explique tout sur place, au Lac du Bourget.</p>
     </div>
     <div class="cta-btns"><a href="#adhesion" class="btn btn-solid">Rejoindre le club</a><a href="#planning" class="btn btn-ghost">Voir le planning</a></div>
   </div>
@@ -3172,7 +3230,7 @@ Object.assign(TRANSLATE_MAP, {"Les résultats seront publiés prochainement.":"R
 
 Object.assign(TRANSLATE_MAP, {"Commander avec obligation de paiement":"Order with obligation to pay","Aller au contenu":"Skip to content","Merci de cocher la case d'acceptation des conditions.":"Please tick the box to accept the conditions.","télécharger mes données":"download my data","supprimer mon compte":"delete my account","confidentialité":"privacy","Mentions légales":"Legal notice","Politique de confidentialité":"Privacy policy","Conditions d'utilisation":"Terms of use","Conditions de vente":"Terms of sale","Remboursement & rétractation":"Refunds & withdrawal","Cookies & stockage":"Cookies & storage"});
 
-Object.assign(TRANSLATE_MAP, {"Le sport":"Sport","Rejoindre":"Join","Communauté":"Community","Que veux-tu faire ?":"What do you want to do?","Réserver une séance":"Book a session","Essais et entraînements":"Trials and training","Voir les résultats":"See the results","Classements et records":"Rankings and records","La boutique":"The shop","Vêtements et accessoires":"Clothing and accessories","Rejoindre le club":"Join the club","Adhésion en 2 minutes":"Membership in 2 minutes","Apprendre en vidéo":"Learn with videos","Tutoriels et règles":"Tutorials and rules","Poser une question":"Ask a question","On te répond vite":"We reply quickly","Découvrir le sport":"Discover the sport","Les classements et les records, mis à jour après chaque compétition.":"Rankings and records, updated after every competition.","Rubriques de cette page":"Sections of this page","Prêt de matériel":"Equipment loans","Photos & vidéos":"Photos & videos","Adhésion & inscriptions":"Membership & registrations","Espace adhérents":"Members area","Questions":"Questions","Le concept":"The concept"});
+Object.assign(TRANSLATE_MAP, {"Le sport":"Sport","Rejoindre":"Join","Communauté":"Community","Tu cherches quoi ?":"What are you looking for?","Un humain du club te répond":"Someone from the club will reply","Viens essayer.":"Come and try it.","Casque, gilet, une descente de cale, un plouf. On t'explique tout sur place, au Lac du Bourget.":"Helmet, life jacket, one run down the ramp, one splash. We explain everything on site, at Lac du Bourget.","Réserver une séance":"Book a session","Essais et entraînements":"Trials and training","Voir les résultats":"See the results","Classements et records":"Rankings and records","La boutique":"The shop","Vêtements et accessoires":"Clothing and accessories","Rejoindre le club":"Join the club","Adhésion en 2 minutes":"Membership in 2 minutes","Apprendre en vidéo":"Learn with videos","Tutoriels et règles":"Tutorials and rules","Poser une question":"Ask a question","On te répond vite":"We reply quickly","Découvrir le sport":"Discover the sport","Les classements et les records, mis à jour après chaque compétition.":"Rankings and records, updated after every competition.","Rubriques de cette page":"Sections of this page","Prêt de matériel":"Equipment loans","Photos & vidéos":"Photos & videos","Adhésion & inscriptions":"Membership & registrations","Espace adhérents":"Members area","Questions":"Questions","Le concept":"The concept"});
 
 Object.assign(TRANSLATE_MAP, {"La Mot'eau":"The Mot'eau","La machine du club, aux couleurs de la Team Mot'eau.":"The club's machine, in Team Mot'eau colours.","Vue de face":"Front view","Vue de dos":"Rear view","Réservoir orange, jantes graphiques noir et orange.":"Orange tank, black and orange graphic wheels.","Selle et carénage noir brillant.":"Seat and glossy black fairing."});
 
@@ -8534,7 +8592,7 @@ async function applyPaymentLinkOverrides(){
   arm(document.body);
   new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => { if(n.nodeType === 1) arm(n); }))).observe(document.getElementById('contenu'), { childList:true, subtree:true });
   // inclinaison 3D des cartes à la souris (ordinateur seulement)
-  if(matchMedia('(hover:hover) and (pointer:fine)').matches){
+  if(false){
     const TILT = '.quick-card,.product-card,.machine-fig,.news-card,.tuto-card';
     document.addEventListener('mousemove', ev => {
       const c = ev.target.closest && ev.target.closest(TILT); if(!c || document.body.classList.contains('edit-mode')) return;
@@ -8553,7 +8611,7 @@ async function applyPaymentLinkOverrides(){
   const tt = document.getElementById('toTop');
   addEventListener('scroll', () => tt.classList.toggle('show', scrollY > 700), { passive:true });
   tt.addEventListener('click', () => scrollTo({ top:0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
-  if(matchMedia('(hover:hover) and (pointer:fine)').matches) document.addEventListener('mousemove', ev => {
+  if(false) document.addEventListener('mousemove', ev => {
     const c = ev.target.closest && ev.target.closest('.quick-card,.product-card,.step,.news-card,.tuto-card'); if(!c) return;
     const r = c.getBoundingClientRect(); c.style.setProperty('--mx', (ev.clientX - r.left) + 'px'); c.style.setProperty('--my', (ev.clientY - r.top) + 'px');
   }, { passive:true });
