@@ -1062,11 +1062,41 @@ body.edit-mode .rv{opacity:1 !important; transform:none !important;}
 #viewTabs a{transition:background .25s,color .25s,transform .2s;} #viewTabs a:hover{transform:translateY(-2px);}
 .cd-num{display:inline-block;} .cd-num.tick{animation:tick .35s ease;}
 @keyframes tick{0%{transform:translateY(-35%); opacity:.3;}100%{transform:none; opacity:1;}}
-.toast{transition:opacity .3s, transform .35s cubic-bezier(.3,1.5,.5,1);}
+.toast{transition:opacity .3s, transform .35s cubic-bezier(.3,1.5,.5,1); pointer-events:none;} .toast.show{pointer-events:auto;}
 @media (prefers-reduced-motion: reduce){
   #introSplash{display:none !important;} .rv{opacity:1 !important; transform:none !important;}
   .marquee-track,.foot-logo-slot img,.btn-solid::after,.nav-links a.nav-cta::after,.step .n{animation:none !important;}
 }
+
+
+/* --- finitions --- */
+::selection{background:var(--orange); color:#0b0a09;}
+html{scrollbar-color:#ff5a1f #14110e; scrollbar-width:thin;}
+::-webkit-scrollbar{width:10px; height:10px;} ::-webkit-scrollbar-track{background:#14110e;} ::-webkit-scrollbar-thumb{background:linear-gradient(#ff6a2f,#d6440d); border-radius:10px; border:2px solid #14110e;}
+.product-thumb{position:relative; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px; background:radial-gradient(circle at 50% 42%, rgba(255,90,31,.22), transparent 62%), #12100d !important; overflow:hidden;}
+.product-thumb[style*="background-image"]{background-size:cover !important; background-position:center !important;}
+.thumb-ph{width:46%; height:auto; opacity:.9; filter:drop-shadow(0 8px 26px rgba(255,90,31,.35)); transition:transform .6s cubic-bezier(.2,.8,.2,1);}
+.product-card:hover .thumb-ph{transform:rotate(12deg) scale(1.08);}
+.thumb-ph-txt{font-family:'Space Grotesk',sans-serif !important; font-size:.72rem !important; letter-spacing:.14em; color:#bdb7ab !important; opacity:1 !important;}
+/* lueur qui suit la souris sur les cartes */
+.quick-card,.product-card,.step,.news-card,.tuto-card,.signup-card{position:relative;}
+.quick-card::before,.product-card::before,.step::before,.news-card::before,.tuto-card::before{content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; opacity:0; transition:opacity .3s; background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%), rgba(255,120,50,.18), transparent 70%);}
+.quick-card:hover::before,.product-card:hover::before,.step:hover::before,.news-card:hover::before,.tuto-card:hover::before{opacity:1;}
+/* bandeau « Prêt à décoller ? » */
+.cta-band{padding:30px 0 70px;}
+.cta-inner{display:grid; grid-template-columns:auto 1fr auto; gap:28px; align-items:center; padding:38px 40px; border-radius:26px; border:1px solid rgba(255,90,31,.45); background:radial-gradient(600px 300px at 0% 0%, rgba(255,90,31,.28), transparent 70%), linear-gradient(135deg,#1d1610,#120f0c); box-shadow:0 24px 70px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.03); max-width:1124px;}
+.cta-logo{width:120px; height:120px; animation:floaty 5s ease-in-out infinite;}
+.cta-inner h2{font-size:clamp(2rem,4.4vw,3.2rem); line-height:1; margin-bottom:10px;}
+.cta-inner p{color:#d8d2c6; max-width:46ch;}
+.cta-btns{display:flex; flex-direction:column; gap:12px;}
+@media (max-width:860px){ .cta-inner{grid-template-columns:1fr; text-align:center; padding:30px 22px; margin:0 14px;} .cta-logo{margin:0 auto; width:96px; height:96px;} .cta-inner p{margin:0 auto;} }
+/* retour en haut */
+#toTop{position:fixed; right:20px; bottom:24px; z-index:110; width:48px; height:48px; border-radius:50%; border:0; cursor:pointer; background:linear-gradient(135deg,#ff6a2f,#ff4a10); color:#0b0a09; font-size:1.3rem; font-weight:700; box-shadow:0 10px 28px rgba(255,90,31,.4); opacity:0; transform:translateY(16px) scale(.8); pointer-events:none; transition:opacity .3s, transform .35s cubic-bezier(.3,1.5,.5,1);}
+#toTop.show{opacity:1; transform:none; pointer-events:auto;}
+#toTop:hover{transform:translateY(-3px);}
+body.is-admin #toTop{right:86px;}
+@media (max-width:860px){ #toTop{right:14px; bottom:calc(92px + env(safe-area-inset-bottom)); width:44px; height:44px;} body.is-admin #toTop{right:14px; bottom:calc(156px + env(safe-area-inset-bottom));} }
+@media (prefers-reduced-motion: reduce){ .cta-logo{animation:none !important;} }
 
 /* --- téléphone : barre du bas, accueil, doigts --- */
 #bottomNav{display:none;}
@@ -1958,7 +1988,19 @@ body.edit-mode .rv{opacity:1 !important; transform:none !important;}
 
 
 
+<section id="cta" class="cta-band" aria-labelledby="ctaTitle">
+  <div class="wrap cta-inner">
+    <img src="/images/logo.webp" width="120" height="120" alt="" loading="lazy" class="cta-logo">
+    <div>
+      <h2 id="ctaTitle" class="display">Prêt à décoller ?</h2>
+      <p>Rejoins la Team Mot'eau : une séance d'essai, et tu ne verras plus jamais une cale de mise à l'eau de la même façon.</p>
+    </div>
+    <div class="cta-btns"><a href="#adhesion" class="btn btn-solid">Rejoindre le club</a><a href="#planning" class="btn btn-ghost">Voir le planning</a></div>
+  </div>
+</section>
+
 </main>
+<button id="toTop" type="button" aria-label="Revenir en haut de la page">↑</button>
 
 <footer>
   <div class="wrap">
@@ -3133,6 +3175,8 @@ Object.assign(TRANSLATE_MAP, {"Commander avec obligation de paiement":"Order wit
 Object.assign(TRANSLATE_MAP, {"Le sport":"Sport","Rejoindre":"Join","Communauté":"Community","Que veux-tu faire ?":"What do you want to do?","Réserver une séance":"Book a session","Essais et entraînements":"Trials and training","Voir les résultats":"See the results","Classements et records":"Rankings and records","La boutique":"The shop","Vêtements et accessoires":"Clothing and accessories","Rejoindre le club":"Join the club","Adhésion en 2 minutes":"Membership in 2 minutes","Apprendre en vidéo":"Learn with videos","Tutoriels et règles":"Tutorials and rules","Poser une question":"Ask a question","On te répond vite":"We reply quickly","Découvrir le sport":"Discover the sport","Les classements et les records, mis à jour après chaque compétition.":"Rankings and records, updated after every competition.","Rubriques de cette page":"Sections of this page","Prêt de matériel":"Equipment loans","Photos & vidéos":"Photos & videos","Adhésion & inscriptions":"Membership & registrations","Espace adhérents":"Members area","Questions":"Questions","Le concept":"The concept"});
 
 Object.assign(TRANSLATE_MAP, {"La Mot'eau":"The Mot'eau","La machine du club, aux couleurs de la Team Mot'eau.":"The club's machine, in Team Mot'eau colours.","Vue de face":"Front view","Vue de dos":"Rear view","Réservoir orange, jantes graphiques noir et orange.":"Orange tank, black and orange graphic wheels.","Selle et carénage noir brillant.":"Seat and glossy black fairing."});
+
+Object.assign(TRANSLATE_MAP, {"Prêt à décoller ?":"Ready for take-off?","Rejoins la Team Mot'eau : une séance d'essai, et tu ne verras plus jamais une cale de mise à l'eau de la même façon.":"Join Team Mot'eau: one trial session, and you'll never look at a boat ramp the same way again.","Voir le planning":"See the schedule","Photo à venir":"Photo coming soon","Revenir en haut de la page":"Back to top"});
 
 /* ---- Moteur de traduction FR → EN ----
    - dictionnaire intégré (TRANSLATE_MAP) + traductions saisies par l'admin (i18nEn, onglet « Anglais »)
@@ -5727,7 +5771,7 @@ function renderProducts(){
       <div class="product-thumb" style="${bg}">${bgAlt}
         <span class="stock-badge ${stock}">${stockInfo.short}</span>
         <button type="button" class="fav-heart ${isFav?'active':''}" data-action="toggle-fav" title="Ajouter aux favoris">${isFav?'♥':'♡'}</button>
-        ${imgs.length ? '' : `<span>${(p.name||'??').slice(0,2).toUpperCase()}</span>`}
+        ${imgs.length ? '' : `<img class="thumb-ph" src="/images/logo.webp" alt="" loading="lazy"><span class="thumb-ph-txt">Photo à venir</span>`}
         ${imgs.length>1 ? `<button class="thumb-nav prev" data-action="prev-img">‹</button><button class="thumb-nav next" data-action="next-img">›</button>` : ''}
         ${imgs.length>1 ? `<div class="thumb-dots">${imgs.map((_,i)=>`<span class="${i===cur?'active':''}"></span>`).join('')}</div>` : ''}
         <div class="upload-overlay edit-only" data-action="add-img">+ Ajouter une image</div>
@@ -8377,7 +8421,7 @@ async function deleteMyAccount(){
    (les liens #planning, #boutique… continuent de fonctionner et ouvrent la bonne page)
    ============================================================ */
 const VIEWS = {
-  home:       ['accueil','marquee','stats','actions','actualites','concept','machine'],
+  home:       ['accueil','marquee','stats','actions','actualites','concept','machine','cta'],
   sport:      ['planning','resultats','runs','votes','regles','equipement','galerie','tutoriels'],
   boutique:   ['boutique'],
   rejoindre:  ['adhesion','attestation','fidelite','dons'],
@@ -8502,6 +8546,17 @@ async function applyPaymentLinkOverrides(){
   // le compteur du panier rebondit quand il change
   const cc = document.getElementById('cartCount');
   if(cc) new MutationObserver(() => { cc.classList.remove('bump'); void cc.offsetWidth; cc.classList.add('bump'); }).observe(cc, { childList:true, characterData:true, subtree:true });
+})();
+
+/* Finitions : retour en haut + lueur qui suit la souris */
+(function(){
+  const tt = document.getElementById('toTop');
+  addEventListener('scroll', () => tt.classList.toggle('show', scrollY > 700), { passive:true });
+  tt.addEventListener('click', () => scrollTo({ top:0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
+  if(matchMedia('(hover:hover) and (pointer:fine)').matches) document.addEventListener('mousemove', ev => {
+    const c = ev.target.closest && ev.target.closest('.quick-card,.product-card,.step,.news-card,.tuto-card'); if(!c) return;
+    const r = c.getBoundingClientRect(); c.style.setProperty('--mx', (ev.clientX - r.left) + 'px'); c.style.setProperty('--my', (ev.clientY - r.top) + 'px');
+  }, { passive:true });
 })();
 
 async function init(){
