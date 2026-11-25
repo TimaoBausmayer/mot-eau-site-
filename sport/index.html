@@ -1562,7 +1562,7 @@ function drawStep() {
   const prog = PL.plan.items.map((it, i) => '<i class="' + (i < done ? 'on' : '') + '"></i>').join('');
   PL.showReps = isW && !ex.time; PL.lastCue = null; PL.lastRep = -1;
   const nextW = PL.steps.slice(PL.i + 1).find(x => x.type === 'work');
-  $('#player').innerHTML = '<div class="in"><div class="row sb"><span class="badge">' + (isW ? zoneBadgeText(ex.z) + ' · ' + s.idx + '/' + s.n : s.type === 'prep' ? 'Départ' : 'Récupération') + '</span><div class="row" style="gap:6px"><button class="btn ghost sm" data-act="pmute" aria-label="Son">' + (U.mute ? 'Son coupé' : 'Son activé') + '</button><button class="btn ghost sm" data-act="pquit">Quitter</button></div></div>' +
+  $('#player').innerHTML = '<div class="in"><div class="row sb"><span class="badge">' + (isW ? zoneBadgeText(ex.z) + ' · ' + s.idx + '/' + s.n : s.type === 'prep' ? 'Départ' : 'Récupération') + '</span><div class="row" style="gap:6px"><button class="btn ghost sm" data-act="pmute" aria-label="Son">' + (U.mute ? 'Son coupé' : 'Son activé') + '</button><button class="btn ghost sm" data-act="pquit">Arrêter</button></div></div>' +
     '<div class="progress" aria-hidden="true">' + prog + '</div><div class="ph"><h1>' + title + '</h1><p class="muted">' + sub + '</p></div>' +
     '<div id="pfig"></div>' +
     (isW ? '<div class="cuebar"><span class="cue" id="pcue">&nbsp;</span>' + (PL.showReps ? '<div class="tempo"><b id="preps">0</b><span>rythme</span></div>' : '') + '</div>' : '<div class="cuebar"></div>') +
@@ -1601,11 +1601,11 @@ function finishPlayer() {
   clearInterval(PL.timer); beep(660, .15); setTimeout(() => beep(880, .15), 180); setTimeout(() => beep(1100, .3), 380);
   const mins = Math.max(1, Math.round(PL.secs / 60)), kcal = Math.round(PL.kcal);
   const trk = [...new Set(PL.plan.items.filter(i => i.ex.trk).map(i => i.ex.trk))];
-  $('#player').innerHTML = '<div class="in"><h1>Séance terminée</h1><div class="grid2"><div class="stat"><span class="lbl">Durée</span><span class="num">' + mins + ' min</span></div><div class="stat"><span class="lbl">Dépense estimée</span><span class="num">≈ ' + kcal + ' kcal</span></div></div>' +
+  $('#player').innerHTML = '<div class="in"><h1>' + (PL.early ? 'Séance arrêtée' : 'Séance terminée') + '</h1>' + (PL.early ? '<p class="small">Ce que tu as déjà fait est gardé. ' + (PL.secs >= PL.plan.secs * .8 ? 'Plus de 80 % de la séance : elle compte pour ta série.' : 'Moins de 80 % de la séance : elle ne compte pas pour ta série.') + '</p>' : '') + '<div class="grid2"><div class="stat"><span class="lbl">Durée</span><span class="num">' + mins + ' min</span></div><div class="stat"><span class="lbl">Dépense estimée</span><span class="num">≈ ' + kcal + ' kcal</span></div></div>' +
     (trk.length ? '<section class="card"><h3>Tes résultats (facultatif)</h3><p class="small muted">Note combien tu as fait en tout, ça nourrit tes courbes.</p>' + trk.map(k => { const tr = TRACK.find(x => x.k === k); return '<label class="f">' + tr.n + ' (' + (tr.u === 's' ? 'secondes' : 'total') + ')<input inputmode="numeric" data-rk="' + k + '"></label>'; }).join('') + '<label class="row" style="gap:8px"><input type="checkbox" id="pmax"> <span class="small">J’ai fait mon maximum</span></label></section>' : '') +
     (PL.plan.run ? '<section class="card"><h3>Comment c’était ?</h3><label class="f">Distance (km, facultatif)<input id="pkm" inputmode="decimal" placeholder="ex. 3,2"></label><label class="f">Dénivelé positif (m, facultatif)<input id="pelev" inputmode="numeric" placeholder="ex. 40"></label><label class="f">Ressenti<select id="pfeel"><option value="dur">Trop dur : je refais cette étape</option><option value="ok" selected>Bien : étape suivante</option><option value="facile">Facile : j’avance plus vite</option></select></label></section>' : '') +
     (PL.plan.practice ? '<section class="card"><h3>Tu y arrives ?</h3><label class="f"><select id="pskill"><option value="learn">Encore un peu, je m’entraîne</option><option value="ok">Oui, je sais le faire</option><option value="no">Non, trop difficile pour l’instant</option></select></label></section>' : '') +
-    '<button class="btn big" data-act="psave">Enregistrer la séance</button></div>';
+    '<button class="btn big" data-act="psave">Enregistrer la séance</button>' + (PL.early ? '<button class="btn ghost" data-act="pdiscard">Ne pas enregistrer</button>' : '') + '</div>';
   PL.sum = { mins, kcal };
 }
 function saveSession(mins, kcal, zones, exos) {
@@ -2540,7 +2540,7 @@ function startGym(plan) {
 function drawGym() {
   const pl = GS.plan, it = pl.items[GS.i], ex = it.ex, rest = GS.phase === 'rest', n = pl.items.length;
   const prog = pl.items.map((x, i) => '<i class="' + (i < GS.i ? 'on' : '') + '"></i>').join('');
-  $('#player').innerHTML = '<div class="in"><div class="row sb"><span class="badge">Salle · exercice ' + (GS.i + 1) + '/' + n + '</span><button class="btn ghost sm" data-act="gquit">Quitter</button></div><div class="progress" aria-hidden="true">' + prog + '</div>' +
+  $('#player').innerHTML = '<div class="in"><div class="row sb"><span class="badge">Salle · exercice ' + (GS.i + 1) + '/' + n + '</span><button class="btn ghost sm" data-act="gquit">Arrêter</button></div><div class="progress" aria-hidden="true">' + prog + '</div>' +
     '<div class="ph"><h1>' + ex.n + '</h1><p class="muted">' + muOf(ex) + '</p></div><div id="pfig"></div>' +
     (rest ? '<div class="ring rest"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="bg" cx="50" cy="50" r="44"/><circle class="fg" id="pring" cx="50" cy="50" r="44" stroke-dasharray="276.46" stroke-dashoffset="0"/></svg><div class="t num" id="ptime">' + it.rest + '</div></div><p style="text-align:center"><b>Repos.</b> Ensuite : série ' + (GS.s + 1) + ' sur ' + it.sets + '</p><button class="btn big" data-act="gskip">Passer le repos</button>' :
       '<section class="card"><div class="row sb"><h2>Série ' + (GS.s + 1) + ' sur ' + it.sets + '</h2><span class="badge">objectif ' + (it.sec ? fmtDur(it.reps) : it.reps + ' rép.' + (it.kg ? ' · ' + nf(it.kg, it.kg % 1 ? 1 : 0) + ' kg' : '')) + '</span></div>' +
@@ -2566,9 +2566,9 @@ function finishGym() {
   clearInterval(GS.timer); beep(660, .15); setTimeout(() => beep(880, .15), 180); setTimeout(() => beep(1100, .3), 380);
   const done = GS.log.reduce((a, l) => a + l.length, 0), planned = GS.plan.items.reduce((a, it) => a + it.sets, 0), mins = Math.max(1, Math.round((Date.now() - GS.t0) / 60000));
   GS.sum = { done, planned, mins, full: done >= planned * .8 };
-  $('#player').innerHTML = '<div class="in"><h1>Séance terminée</h1><div class="grid2"><div class="stat"><span class="lbl">Durée</span><span class="num">' + mins + ' min</span></div><div class="stat"><span class="lbl">Séries faites</span><span class="num">' + done + ' / ' + planned + '</span></div></div>' +
+  $('#player').innerHTML = '<div class="in"><h1>' + (GS.early ? 'Séance arrêtée' : 'Séance terminée') + '</h1>' + (GS.early ? '<p class="small">Les séries déjà faites sont gardées.</p>' : '') + '<div class="grid2"><div class="stat"><span class="lbl">Durée</span><span class="num">' + mins + ' min</span></div><div class="stat"><span class="lbl">Séries faites</span><span class="num">' + done + ' / ' + planned + '</span></div></div>' +
     '<p class="' + (GS.sum.full ? 'small muted' : 'small') + '">' + (GS.sum.full ? 'Séance complète : elle compte pour ta série de victoires.' : 'Séance incomplète (moins de 80 % des séries) : elle est enregistrée, mais ne compte pas pour la série.') + '</p>' +
-    '<label class="f">Durée réelle en minutes (tu peux corriger)<input id="g-min" inputmode="numeric" value="' + mins + '"></label><button class="btn big" data-act="gymsave">Enregistrer la séance</button></div>';
+    '<label class="f">Durée réelle en minutes (tu peux corriger)<input id="g-min" inputmode="numeric" value="' + mins + '"></label><button class="btn big" data-act="gymsave">Enregistrer la séance</button>' + (GS.early ? '<button class="btn ghost" data-act="gdiscard">Ne pas enregistrer</button>' : '') + '</div>';
 }
 function closeGym() { if (GS) clearInterval(GS.timer); try { wakeLock && wakeLock.release(); } catch (e) { } wakeLock = null; $('#player').hidden = true; document.body.style.overflow = ''; GS = null; }
 function pushLift(ex, kg, reps, test) { if (kg > 0 && reps > 0) S.lifts.push({ id: uid(), d: today(), ex, kg: +kg, reps: Math.round(reps), test: !!test }); }
@@ -2668,7 +2668,8 @@ function gymAction(a, b, v) {
       const it = GS.plan.items[GS.i], alts = (GALT[it.ex.id] || []).filter(id => EXBY[id] && !GS.plan.items.some(x => x.ex.id === id)); if (!alts.length) { toast('Pas d’autre exercice équivalent'); return true; }
       const ex = EXBY[alts[0]], sec = !!(ex.time || ex.gsec); Object.assign(it, { ex, sec, kg: sec || !ex.kgs ? 0 : workKg(ex.id, it.reps) }); drawGym(); toast('Remplacé par : ' + ex.n); return true;
     }
-    case 'gquit': if (Date.now() - (GS.qa || 0) < 3500) { closeGym(); render(); } else { GS.qa = Date.now(); b.textContent = 'Vraiment quitter ?'; } return true;
+    case 'gquit': { const any = GS.log.some(l => l.length); if (Date.now() - (GS.qa || 0) < 3500) { if (any) { GS.early = true; finishGym(); } else { closeGym(); render(); } } else { GS.qa = Date.now(); b.textContent = any ? 'Arrêter et enregistrer ?' : 'Vraiment arrêter ?'; } return true; }
+    case 'gdiscard': closeGym(); render(); toast('Séance non enregistrée'); return true;
     case 'gymsave': {
       const sum = GS.sum, mins = Math.max(1, Math.round(num(val('g-min'))) || sum.mins), w = (latestW() || { kg: 70 }).kg, det = [];
       GS.plan.items.forEach((it, i) => { const l = GS.log[i]; if (!l.length) return; det.push({ n: it.ex.n, sets: l }); if (it.ex.kgs) { const best = l.filter(x => x.kg > 0).sort((x, y) => e1rm(y.kg, y.reps) - e1rm(x.kg, x.reps))[0]; if (best) pushLift(it.ex.id, best.kg, best.reps, false); } });
@@ -2916,9 +2917,11 @@ document.addEventListener('click', e => {
     case 'water': { const ml = +v; addWater(ml); U.lastGlass = ml > 0 ? Math.floor(waterOf(today()) / 250) - 1 : null; keep(); render(); toast(ml > 0 ? nf(waterOf(today()) / 1000, 2) + ' L aujourd’hui' : 'Retiré'); U.lastGlass = null; break; }
     case 'pnext': goStep(PL.i + 1); break;
     case 'pprev': { let i = PL.i - 1; while (i > 0 && PL.steps[i].type !== 'work') i--; goStep(Math.max(0, i)); break; }
+    case 'pdiscard': closePlayer(); PL = null; render(); toast('Séance non enregistrée'); break;
     case 'pquit':
-      if (Date.now() - quitArm < 3500) { closePlayer(); PL = null; render(); }
-      else { quitArm = Date.now(); b.textContent = 'Vraiment quitter ?'; }
+      /* arrêter en cours de route : ce qui est fait est proposé à l'enregistrement */
+      if (Date.now() - quitArm < 3500) { if (PL.secs >= 20) { PL.early = true; finishPlayer(); } else { closePlayer(); PL = null; render(); } }
+      else { quitArm = Date.now(); b.textContent = PL.secs >= 20 ? 'Arrêter et enregistrer ?' : 'Vraiment arrêter ?'; }
       break;
     case 'psave': {
       const max = $('#pmax') && $('#pmax').checked, ex = [];
