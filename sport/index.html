@@ -753,14 +753,16 @@ const num = v => { const n = parseFloat(String(v).replace(',', '.')); return isF
 /* ===== État et sauvegarde (cache local + base privée si disponible) ===== */
 const KEY = 'coach-maison-v1';
 const defaults = () => ({ v: 1, upd: 0, demo: false,
-  profile: { sex: '', age: '', height: '', goalWeight: '', goal: 'keep', trainDays: [1, 3, 5], perWeek: 3, avail: {}, availSet: false, recordDay: 7, place: 'auto', gymFrom: '', start: '', sizes: null, equip: { tapis: true, halteres: true, elastique: true, roue: true, plateau: true, fitball: true, ballon: true, poignees: true, rouleau: true, chaise: true, bouteilles: true }, lowImpact: false, level: 0 },
+  profile: { sex: '', age: '', height: '', goalWeight: '', goal: 'keep', trainDays: [1, 3, 5], perWeek: 3, avail: {}, availSet: false, recordDay: 7, place: 'auto', gymFrom: '', start: '', sizes: null, equip: { tapis: true, halteres: true, elastique: true, roue: true, plateau: true, fitball: true, ballon: true, poignees: true, rouleau: true, chaise: false, bouteilles: false }, equipV: 2, lowImpact: false, level: 0 },
   weights: [], meals: [], sessions: [], records: [], plan: {}, reviews: {}, weekly: {}, badges: {}, skills: {}, goal: null, run: { stage: 0, best: 0, km: 0 }, notifs: [], notified: {}, bestStreak: 0, miles: {}, gh: [], lifts: [], custom: [], monthly: {}, nset: { reminder: true, streak: true, water: true, meals: true, bilan: true, goal: true, browser: false } });
 let S = defaults();
 function mergeState(o) {
   const d = defaults(), dp = d.profile, op = (o && o.profile) || {};
   const r = Object.assign(d, o || {});
   r.profile = Object.assign(dp, op);
-  r.profile.equip = Object.assign({ tapis: true, halteres: true, elastique: true, roue: true, plateau: true, fitball: true, ballon: true, poignees: true, rouleau: true, chaise: true, bouteilles: true }, op.equip || {});
+  r.profile.equip = Object.assign({ tapis: true, halteres: true, elastique: true, roue: true, plateau: true, fitball: true, ballon: true, poignees: true, rouleau: true, chaise: false, bouteilles: false }, op.equip || {});
+  /* une fois : le matériel de ta photo, sans chaise ni bouteilles */
+  if (op.equipV !== 2) { Object.assign(r.profile.equip, { tapis: true, halteres: true, elastique: true, roue: true, plateau: true, fitball: true, ballon: true, poignees: true, rouleau: true, chaise: false, bouteilles: false }); r.profile.equipV = 2; }
   if (!r.profile.avail || typeof r.profile.avail !== 'object') r.profile.avail = {};
   if (!Array.isArray(r.profile.trainDays)) r.profile.trainDays = [1, 3, 5];
   ['plan', 'reviews', 'weekly', 'badges', 'skills', 'miles', 'notified', 'monthly'].forEach(k => { if (!r[k] || typeof r[k] !== 'object') r[k] = {}; });
@@ -2782,7 +2784,7 @@ function genEquipSession(min, picked, seed) {
   if (picked.includes('rouleau')) coolX.push(EXBY.rouleau_cuisses);
   shuffle(EX.filter(e => e.z === 'etire' && e.id !== 'rouleau_cuisses'), r).forEach(e => { if (coolX.length < wc + (picked.includes('rouleau') ? 1 : 0)) coolX.push(e); });
   const fixed = wc * 30 + coolX.length * 35, slots = Math.max(picked.length ? 3 : 2, Math.floor((min * 60 - fixed) / (work + rest)));
-  const keys = picked.filter(k => k !== 'rouleau' && (EQX[k] || []).some(id => okE(EXBY[id]))), lists = {}, idx = {};
+  const keys = picked.filter(k => k !== 'rouleau' && k !== 'tapis' && (EQX[k] || []).some(id => okE(EXBY[id]))), lists = {}, idx = {};
   keys.forEach(k => { lists[k] = shuffle(EQX[k].map(id => EXBY[id]).filter(okE), r); idx[k] = 0; });
   const pool = [], used = new Set();
   for (let round = 0; pool.length < slots && round < 6 && keys.length; round++) {
