@@ -240,6 +240,12 @@ details.fold>summary{list-style:none;cursor:pointer;display:flex;justify-content
 details.fold>summary::-webkit-details-marker{display:none}
 details.fold>summary::after{content:"+";font-family:var(--f-display);font-size:26px;line-height:1;color:var(--muted)}
 details.fold[open]>summary::after{content:"–"}
+.fig .f-board{fill:var(--ink);stroke:none}.fig .f-ball{fill:var(--figfar);stroke:none;opacity:.85}.fig .f-roller{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+.fig .f-wheel{fill:var(--ink);stroke:var(--figfar);stroke-width:2}.fig .f-sball{fill:#2348c4;stroke:none}.fig .f-handle{fill:var(--ink);stroke:none}
+.fig .f-band{stroke:var(--warm);stroke-width:2.5;stroke-dasharray:4 3}.fig .f-cable{stroke:var(--figfar);stroke-width:1.5}.fig .f-pulley{fill:var(--figfar);stroke:none}
+.fig .f-bar{fill:var(--figfar);stroke:var(--ink);stroke-width:1}.fig .f-plate{fill:var(--ink);stroke:none;opacity:.9}
+.perow{display:grid;grid-template-columns:1fr 52px 52px 60px 36px;gap:6px;align-items:center}.perow.head{font-size:12px;color:var(--muted)}.perow input{min-height:38px;padding:6px 8px}.perow .btn{min-height:36px;padding:4px}
+.mrow{display:grid;grid-template-columns:1fr 70px 60px;gap:6px;align-items:center;padding:6px 0;border-top:1px solid var(--line)}.mrow input{min-height:38px;padding:6px 8px}
 @media (max-width:380px){.item{grid-template-columns:76px 1fr}.item .badge{display:none}.stat .num{font-size:28px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -291,7 +297,7 @@ function lerpPose(A, B, k) {
   const n = (x, y) => x + (y - x) * k;
   const arr = (x, y, d) => { x = x || d; y = y || d; return x.map((v, i) => n(v, y[i] === undefined ? v : y[i])); };
   return {
-    t: n(A.t, B.t), hd: n(A.hd || 0, B.hd || 0), lift: n(A.lift || 0, B.lift || 0),
+    t: n(A.t, B.t), hd: n(A.hd || 0, B.hd || 0), lift: n(A.lift || 0, B.lift || 0), dx: n(A.dx || 0, B.dx || 0),
     a: arr(A.a, B.a), b: arr(A.b || A.a, B.b || B.a), l: arr(A.l, B.l), m: arr(A.m || A.l, B.m || B.l)
   };
 }
@@ -303,7 +309,7 @@ function placed(pose, ex) {
   ['sh', 'el', 'ha', 'el2', 'ha2', 'kn', 'ft', 'to', 'kn2', 'ft2', 'to2', 'hip'].forEach(k => { maxY = Math.max(maxY, s[k][1]); });
   maxY = Math.max(maxY, s.head[1] + L.head - 1.5);
   const pin = ex.pin || { j: 'hip', x: 120 };
-  const dx = pin.x - s[JOINT[pin.j]][0], dy = FLOOR - maxY - (pose.lift || 0);
+  const dx = pin.x - s[JOINT[pin.j]][0] + (pose.dx || 0), dy = FLOOR - maxY - (pose.lift || 0);
   const out = {};
   for (const k in s) out[k] = [s[k][0] + dx, s[k][1] + dy];
   return out;
@@ -322,8 +328,21 @@ function figSVG(ex) {
       '<line x1="' + (c.x + c.w - 3) + '" y1="' + top + '" x2="' + (c.x + c.w - 3) + '" y2="' + FLOOR + '"/>' +
       (c.back ? '<line x1="' + (c.x + (c.back > 0 ? c.w - 3 : 3)) + '" y1="' + top + '" x2="' + (c.x + (c.back > 0 ? c.w - 3 : 3)) + '" y2="' + (top - 26) + '"/>' : '') + '</g>';
   }
+  /* matériel posé au sol (fixe) */
+  if (ex.board) props += '<rect class="f-board" x="' + (ex.board.x - 18) + '" y="' + (FLOOR - 4) + '" width="36" height="4" rx="2"/>';
+  if (ex.ball) props += '<circle class="f-ball" cx="' + ex.ball.x + '" cy="' + (FLOOR - ex.ball.r) + '" r="' + ex.ball.r + '"/>';
+  if (ex.roller) props += '<circle class="f-roller" cx="' + ex.roller.x + '" cy="' + (FLOOR - 4) + '" r="5"/>';
+  if (ex.cable) props += '<circle class="f-pulley" cx="' + ex.cable.x + '" cy="' + ex.cable.y + '" r="3"/>';
   const L2 = (s, c, f) => '<line data-s="' + s + '" class="' + c + '"' + (f ? ' data-f="' + f + '"' : '') + '/>';
-  const bottle = ex.bottle ? '<line class="f-bottle" data-b="1"/><line class="f-bottle" data-b="2"/>' : '';
+  let bottle = ex.bottle ? '<line class="f-bottle" data-b="1"/><line class="f-bottle" data-b="2"/>' : '';
+  /* matériel tenu en main ou attaché au corps (bouge avec lui) */
+  if (ex.band) bottle += '<line class="f-band" data-p="band"/>';
+  if (ex.cable) bottle += '<line class="f-cable" data-p="cable"/>';
+  if (ex.wheel) bottle += '<circle class="f-wheel" data-p="wheel" r="6"/>';
+  if (ex.sball) bottle += '<circle class="f-sball" data-p="sball" r="6.5"/>';
+  if (ex.handles) bottle += '<rect class="f-handle" data-p="handles" width="11" height="7" rx="2"/>';
+  if (ex.dumb) bottle += '<line class="f-bottle" data-p="dumb"/>';
+  if (ex.bar) bottle += (ex.plates ? '<circle class="f-plate" data-p="plate" r="10"/>' : '') + '<circle class="f-bar" data-p="bar" r="3.2"/>';
   const ghost = ex.loop ? '' : '<g class="ghost"><line data-s="sh-hip" class="s-torso"/><line data-s="kn-hip" class="s-th"/><line data-s="ft-kn" class="s-sh"/><line data-s="to-ft" class="s-ft"/><line data-s="el-sh" class="s-ua"/><line data-s="ha-el" class="s-fa"/><circle class="gh-head" r="' + L.head + '" data-s="head"/></g>';
   return '<svg class="fig tg-' + ex.z + '" viewBox="0 -6 240 146" role="img" aria-label="' + esc(ex.n) + '" data-fig="' + id + '">' + props + ghost +
     '<g class="live"><g class="f-far">' + L2('el2-sh', 's-ua') + L2('ha2-el2', 's-fa') + L2('kn2-hip', 's-th') + L2('ft2-kn2', 's-sh') + L2('to2-ft2', 's-ft') + '</g>' +
@@ -357,6 +376,16 @@ function drawPose(svg, ex, pose, scope) {
     bt.setAttribute('x1', (ha[0] - ux * 4).toFixed(1)); bt.setAttribute('y1', (ha[1] - uy * 4).toFixed(1));
     bt.setAttribute('x2', (ha[0] + ux * 8).toFixed(1)); bt.setAttribute('y2', (ha[1] + uy * 8).toFixed(1));
     if (far && !(ex.fr[0].b)) bt.style.display = 'none';
+  });
+  svg.querySelectorAll('[data-p]').forEach(el => {
+    const k = el.dataset.p, h = j.ha, at = (n, v) => el.setAttribute(n, v.toFixed ? v.toFixed(1) : v);
+    if (k === 'band') { at('x1', h[0]); at('y1', h[1]); at('x2', j.ft[0]); at('y2', j.ft[1]); }
+    else if (k === 'cable') { at('x1', h[0]); at('y1', h[1]); at('x2', ex.cable.x); at('y2', ex.cable.y); }
+    else if (k === 'wheel') { at('cx', h[0]); at('cy', h[1] + 1); }
+    else if (k === 'sball') { at('cx', h[0]); at('cy', h[1] - 3); }
+    else if (k === 'handles') { at('x', h[0] - 5.5); at('y', h[1] - 1); }
+    else if (k === 'dumb') { at('x1', h[0]); at('y1', h[1] - 7); at('x2', h[0]); at('y2', h[1] + 7); }
+    else { at('cx', h[0]); at('cy', h[1]); }
   });
 }
 
@@ -599,7 +628,19 @@ function init3D() {
     const chair = new T.Group(), seat = new T.Mesh(R3.box, m.prop); seat.castShadow = true; seat.receiveShadow = true; chair.add(seat);
     const legs = [0, 1, 2, 3].map(() => { const l = new T.Mesh(R3.cyl, m.prop); l.castShadow = true; chair.add(l); return l; }); scene.add(chair);
     const bot = [0, 1].map(() => { const b = new T.Mesh(R3.cyl, m.prop); b.castShadow = true; scene.add(b); return b; });
-    Object.assign(R3, { T, rd, scene, cam, m, gm, disc, matM, chair, seat, legs, bot, sun });
+    /* matériel : roue, plateau, ballons, rouleau, poignées, haltère, élastiques, barre, câbles */
+    const M2 = (c, r) => new T.MeshStandardMaterial({ color: c, roughness: r === undefined ? .55 : r, metalness: .05 });
+    const add = (geo, mat) => { const x = new T.Mesh(geo, mat); x.castShadow = true; x.receiveShadow = true; x.visible = false; scene.add(x); return x; };
+    const kit = {
+      wheel: add(new T.CylinderGeometry(6.5, 6.5, 5, 24), M2(0x1d2226)), axle: add(R3.cyl, M2(0x8a939b, .4)),
+      board: add(new T.CylinderGeometry(18, 15, 4.5, 32), M2(0x1d2226)), boardTop: add(new T.CylinderGeometry(6, 6, .6, 24), M2(0x67c3cf)),
+      ball: add(new T.SphereGeometry(1, 32, 24), M2(0x4c565e, .9)), sball: add(new T.SphereGeometry(6.5, 24, 18), M2(0x2348c4, .5)),
+      roller: add(new T.CylinderGeometry(5, 5, 34, 24), M2(0xa9d4cc, .8)),
+      handles: [0, 1].map(() => add(R3.box, M2(0x22272b))), dumb: add(R3.cyl, M2(0x22272b)),
+      band: [0, 1].map((i) => add(R3.cyl, M2(i ? 0x3f8fd6 : 0xe8743b))), cable: [0, 1].map(() => add(R3.cyl, M2(0x30363b, .35))), pulley: add(R3.sph, M2(0x8a939b, .35)),
+      bar: add(R3.cyl, M2(0x9aa3aa, .3)), plates: [0, 1].map(() => add(new T.CylinderGeometry(10, 10, 3, 28), M2(0x22272b)))
+    };
+    Object.assign(R3, { T, rd, scene, cam, m, gm, disc, matM, chair, seat, legs, bot, sun, kit });
     R3.man = makeMan(m, false); R3.ghost = makeMan(gmats, true);
     R3.ok = true; refresh3DColors();
     try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', refresh3DColors); new MutationObserver(refresh3DColors).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); } catch (e) { }
@@ -654,6 +695,20 @@ function draw3D(f, pose) {
   /* accessoires */
   R3.matM.visible = !!ex.mat; R3.chair.visible = !!ex.chair;
   if (ex.chair) { const c = ex.chair, cx = c.x + c.w / 2 - 120; R3.seat.scale.set(c.w, 3.4, 38); R3.seat.position.set(cx, c.h - 1.7 + yo, 0); R3.legs.forEach((l, i) => { l.scale.set(1.5, c.h - 3.4 + yo, 1.5); l.position.set(cx + (i < 2 ? -1 : 1) * (c.w / 2 - 3), (c.h - 3.4 + yo) / 2, (i % 2 ? -1 : 1) * 15); }); }
+  {
+    const K = R3.kit, c3 = (p, z) => [p[0] - 120, FLOOR - p[1] + yo, z], hA = c3(j.ha, 11.7), hB = c3(j.ha2, -11.7), hM = mix3(hA, hB, .5);
+    Object.keys(K).forEach(k => { (Array.isArray(K[k]) ? K[k] : [K[k]]).forEach(x => { x.visible = false; }); });
+    if (ex.wheel) { K.wheel.visible = K.axle.visible = true; K.wheel.position.set(hM[0], hM[1] - 1, 0); K.wheel.rotation.set(Math.PI / 2, 0, 0); seg3(K.axle, [hM[0], hM[1], 12], [hM[0], hM[1], -12], 1.4, 1.4); }
+    if (ex.board) { K.board.visible = K.boardTop.visible = true; K.board.position.set(ex.board.x - 120, 2.25 + yo, 0); K.boardTop.position.set(ex.board.x - 120, 4.6 + yo, 0); }
+    if (ex.ball) { K.ball.visible = true; K.ball.scale.set(ex.ball.r, ex.ball.r, ex.ball.r); K.ball.position.set(ex.ball.x - 120, ex.ball.r + yo, 0); }
+    if (ex.sball) { K.sball.visible = true; K.sball.position.set(hM[0], hM[1] + 3, 0); }
+    if (ex.roller) { K.roller.visible = true; K.roller.rotation.set(Math.PI / 2, 0, 0); K.roller.position.set(ex.roller.x - 120, 5 + yo, 0); }
+    if (ex.handles) [hA, hB].forEach((h, i) => { const x = K.handles[i]; x.visible = true; x.scale.set(11, 6, 5); x.position.set(h[0], h[1] - 3, h[2]); });
+    if (ex.dumb) { K.dumb.visible = true; seg3(K.dumb, [hM[0], hM[1] - 8, 0], [hM[0], hM[1] + 8, 0], 2.8, 2.8); }
+    if (ex.band) [[hA, c3(j.ft, 5.9)], [hB, c3(j.ft2, -5.9)]].forEach((p, i) => { K.band[i].visible = true; seg3(K.band[i], p[0], p[1], 1, 1); });
+    if (ex.cable) { const an = c3([ex.cable.x, ex.cable.y], 0); K.pulley.visible = true; ball3(K.pulley, an, 3, 3, 3); [hA, hB].forEach((h, i) => { K.cable[i].visible = true; seg3(K.cable[i], h, an, .7, .7); }); }
+    if (ex.bar) { K.bar.visible = true; seg3(K.bar, [hM[0], hM[1], 32], [hM[0], hM[1], -32], 1.3, 1.3); if (ex.plates) K.plates.forEach((x, i) => { x.visible = true; x.rotation.set(Math.PI / 2, 0, 0); x.position.set(hM[0], hM[1], i ? -24 : 24); }); }
+  }
   R3.bot.forEach((b, i) => { b.visible = !!ex.bottle; if (!ex.bottle) return; const z = i ? -11.7 : 11.7, el = i ? j.el2 : j.el, ha = i ? j.ha2 : j.ha, H = [ha[0] - 120, FLOOR - ha[1] + yo, z], dx = ha[0] - el[0], dy = -(ha[1] - el[1]), d = Math.hypot(dx, dy) || 1; seg3(b, [H[0] - dx / d * 4, H[1] - dy / d * 4, z], [H[0] + dx / d * 9, H[1] + dy / d * 9, z], 2.7, 2.7); });
   /* muscles qui travaillent : ils s'allument */
   const k = .8 + .15 * Math.sin(R3.now / 190), z = ex.z, tint = (name, v) => { const mt = R3.m[name]; mt.color.copy(R3.base[name]); if (v) mt.color.lerp(R3.warmC, k); };
@@ -698,18 +753,18 @@ const num = v => { const n = parseFloat(String(v).replace(',', '.')); return isF
 /* ===== État et sauvegarde (cache local + base privée si disponible) ===== */
 const KEY = 'coach-maison-v1';
 const defaults = () => ({ v: 1, upd: 0, demo: false,
-  profile: { sex: '', age: '', height: '', goalWeight: '', goal: 'keep', trainDays: [1, 3, 5], perWeek: 3, avail: {}, availSet: false, recordDay: 7, equip: { tapis: true, bouteilles: true, chaise: true }, lowImpact: false, level: 0 },
-  weights: [], meals: [], sessions: [], records: [], plan: {}, reviews: {}, weekly: {}, badges: {}, skills: {}, goal: null, run: { stage: 0, best: 0, km: 0 }, notifs: [], notified: {}, bestStreak: 0, miles: {}, gh: [], nset: { reminder: true, streak: true, water: true, meals: true, bilan: true, goal: true, browser: false } });
+  profile: { sex: '', age: '', height: '', goalWeight: '', goal: 'keep', trainDays: [1, 3, 5], perWeek: 3, avail: {}, availSet: false, recordDay: 7, place: 'auto', gymFrom: '', start: '', sizes: null, equip: { tapis: true, halteres: true, elastique: true, roue: true, plateau: true, fitball: true, ballon: true, poignees: true, rouleau: true, chaise: true, bouteilles: true }, lowImpact: false, level: 0 },
+  weights: [], meals: [], sessions: [], records: [], plan: {}, reviews: {}, weekly: {}, badges: {}, skills: {}, goal: null, run: { stage: 0, best: 0, km: 0 }, notifs: [], notified: {}, bestStreak: 0, miles: {}, gh: [], lifts: [], custom: [], monthly: {}, nset: { reminder: true, streak: true, water: true, meals: true, bilan: true, goal: true, browser: false } });
 let S = defaults();
 function mergeState(o) {
   const d = defaults(), dp = d.profile, op = (o && o.profile) || {};
   const r = Object.assign(d, o || {});
   r.profile = Object.assign(dp, op);
-  r.profile.equip = Object.assign({ tapis: true, bouteilles: true, chaise: true }, op.equip || {});
+  r.profile.equip = Object.assign({ tapis: true, halteres: true, elastique: true, roue: true, plateau: true, fitball: true, ballon: true, poignees: true, rouleau: true, chaise: true, bouteilles: true }, op.equip || {});
   if (!r.profile.avail || typeof r.profile.avail !== 'object') r.profile.avail = {};
   if (!Array.isArray(r.profile.trainDays)) r.profile.trainDays = [1, 3, 5];
-  ['plan', 'reviews', 'weekly', 'badges', 'skills', 'miles', 'notified'].forEach(k => { if (!r[k] || typeof r[k] !== 'object') r[k] = {}; });
-  ['weights', 'meals', 'sessions', 'records', 'notifs', 'gh'].forEach(k => { if (!Array.isArray(r[k])) r[k] = []; });
+  ['plan', 'reviews', 'weekly', 'badges', 'skills', 'miles', 'notified', 'monthly'].forEach(k => { if (!r[k] || typeof r[k] !== 'object') r[k] = {}; });
+  ['weights', 'meals', 'sessions', 'records', 'notifs', 'gh', 'lifts', 'custom'].forEach(k => { if (!Array.isArray(r[k])) r[k] = []; });
   r.run = Object.assign({ stage: 0, best: 0, km: 0 }, r.run || {}); r.nset = Object.assign({ reminder: true, streak: true, water: true, meals: true, bilan: true, goal: true, browser: false }, r.nset || {});
   return r;
 }
@@ -783,6 +838,7 @@ function dayWin(d) {
 }
 /* Planning de la semaine : grosse séance quand il y a du temps, petites quand tu finis tard, jamais deux grosses d’affilée */
 function weekPlan() {
+  if (P().sizes) return sizePlan();
   const cand = [...P().trainDays].sort().map(d => ({ d, w: dayWin(d) })), info = {};
   const ok = cand.filter(c => c.w.ok).sort((a, b) => b.w.win - a.w.win || a.d - b.d);
   const nBig = ok.length >= 5 ? 2 : ok.length >= 2 ? 1 : 0, big = [];
@@ -803,6 +859,7 @@ function weekPlan() {
   return info;
 }
 function planFor(d) {
+  if (P().start && d < P().start) return { size: 'repos', min: 0, why: 'Ton programme commence le ' + fmtShort(P().start) + '.' };
   const wp = weekPlan()[isoDow(d)], ov = S.plan[d];
   if (ov === 'rest') return { size: 'repos', min: 0, why: 'Repos choisi par toi.' };
   const pl = (ov === 'train' && wp.size === 'repos') ? { size: 'moyenne', min: 30, start: 18 * 60, why: 'Séance ajoutée par toi.' } : wp;
@@ -872,7 +929,8 @@ function levelInfo(k) {
   return '<p class="small">Prochain palier : <b>' + LVN[i + 1] + '</b> à ' + t[i] + un + ' (encore ' + need + un + '). ' + (real ? 'À ton rythme actuel (+' + nf(sl) + un + ' par semaine)' : 'En t’entraînant régulièrement (en général +' + nf(rate, 0) + un + ' par semaine au début)') + ', compte environ <b class="num" style="font-size:22px;color:var(--warm)"><span data-count="' + wk + '">' + wk + '</span> semaine' + (wk > 1 ? 's' : '') + '</b>.</p>';
 }
 const minutesOn = d => S.sessions.filter(s => s.d === d).reduce((a, s) => a + s.min, 0);
-const doneOn = d => S.sessions.some(s => s.d === d) || S.records.some(r => r.d === d);
+/* la série ne compte que les séances complètes validées */
+const doneOn = d => S.sessions.some(s => s.d === d && s.full !== false);
 function streak() { return streakInfo().n; }
 
 /* ===== Aliments : estimation locale ===== */
@@ -1062,7 +1120,7 @@ function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>>
 function shuffle(a, r) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function genSession(min, focus, custom, levelSel, seed, opts = {}) {
   const r = rng(seed), lvl = levelSel || effLevel(), lowI = lowImpact(), eq = P().equip;
-  const ok = e => e.eq.every(q => eq[q]) && !(lowI && e.imp) && S.skills[e.id] !== 'no';
+  const ok = e => e.eq.every(hasEq) && !(lowI && e.imp) && S.skills[e.id] !== 'no';
   const work = [30, 40, 45][lvl - 1], rest = [30, 20, 15][lvl - 1];
   const wc = min < 8 ? 1 : min < 20 ? 2 : 3, WU = 30, CD = 35;
   const mainSec = Math.max(min * 60 - wc * (WU + CD), work + rest);
@@ -1088,7 +1146,7 @@ function genSession(min, focus, custom, levelSel, seed, opts = {}) {
     idx[z]++; cnt[z]--; lastZ = z; lastE = e.id; seq.push(e);
   }
   /* exercice que tu apprends : glissé dans la séance ; exercice de ton objectif : répété */
-  const learnPool = EX.filter(e => S.skills[e.id] === 'learn' && ZN[e.z] && e.eq.every(q => eq[q]) && !(lowI && e.imp));
+  const learnPool = EX.filter(e => S.skills[e.id] === 'learn' && ZN[e.z] && e.eq.every(hasEq) && !(lowI && e.imp));
   if (learnPool.length && seq.length) seq[Math.min(1, seq.length - 1)] = learnPool[Math.floor(r() * learnPool.length)];
   let ge = null;
   if (opts.goalEx && EXBY[opts.goalEx]) { ge = ok(EXBY[opts.goalEx]) ? EXBY[opts.goalEx] : easierOk(opts.goalEx, ok); if (ge) [0, Math.floor(seq.length / 2), seq.length >= 6 ? seq.length - 1 : -1].forEach(p => { if (p >= 0 && p < seq.length) seq[p] = ge; }); }
@@ -1309,14 +1367,14 @@ function vWeek() {
   h += '<section class="card"><h2>Calories par jour</h2>' + weekKcalChart(mon, w.b ? w.b.kcal : 0) + '</section>';
   const list = (t, a, cls) => a.length ? '<section class="card ' + cls + '"><h2>' + t + '</h2><ul class="advice">' + a.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></section>' : '';
   h += list('Ce qui a marché', ins.good, 'soft') + list('À améliorer', ins.better, 'warm') + list('Semaine prochaine', ins.next, '');
-  h += '<section class="card"><h2>Mon bilan par Claude</h2>' + (rv ? '<p>' + esc(rv.resume) + '</p>' + (rv.forts && rv.forts.length ? '<h3>Points forts</h3><ul class="advice">' + rv.forts.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : '') + (rv.mieux && rv.mieux.length ? '<h3>À améliorer</h3><ul class="advice">' + rv.mieux.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : '') + (rv.suite && rv.suite.length ? '<h3>Plan pour la semaine prochaine</h3><ul class="advice">' + rv.suite.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : '') + (rv.mot ? '<p><b>' + esc(rv.mot) + '</b></p>' : '') : '<p class="muted">Claude relit toute ta semaine (repas, séances, poids) et te donne un vrai bilan personnalisé avec un plan pour la suivante.</p>') +
-    '<button class="btn" data-act="askweek"' + (U.busy ? ' disabled' : '') + '>' + (U.busy === 'week' ? 'Claude prépare ton bilan…' : rv ? 'Refaire le bilan' : 'Demander le bilan à Claude') + '</button><button class="btn ghost" data-act="copyweek">Copier le résumé</button>' + (U.copy ? '<textarea id="copytxt" readonly rows="6">' + esc(U.copy) + '</textarea>' : '') + '</section>';
+  h += claudeWeekBlock(mon, rv);
   return h;
 }
 function weekSummary(w) {
   let t = 'Bilan de la semaine du ' + fmtShort(w.mon) + ' au ' + fmtShort(addDays(w.mon, 6)) + '\n'; const b = w.b;
   if (b) t += 'Profil : ' + b.a + ' ans, ' + nf(b.h, 0) + ' cm, ' + nf(b.w) + ' kg, objectif « ' + ({ lose: 'perdre du poids', keep: 'rester stable et se muscler', gain: 'prendre du muscle' })[P().goal] + ' ». Cible : ' + b.kcal + ' kcal, ' + b.prot + ' g de protéines.\n';
   t += 'Séances : ' + w.doneN + (w.plannedN ? ' sur ' + w.plannedN + ' prévues' : '') + ', ' + w.minutes + ' min.\n';
+  S.sessions.filter(s => s.d >= w.mon && s.d <= addDays(w.mon, 6)).forEach(s => { t += '  · ' + fmtShort(s.d) + ' : ' + (s.name || ({ gym: 'séance salle', perso: 'séance perso', run: 'course guidée', free: s.act || 'activité', records: 'séance records du mois' })[s.kind] || 'séance guidée') + ', ' + s.min + ' min' + (s.km ? ', ' + s.km + ' km' : '') + (s.full === false ? ' (incomplète)' : '') + (Array.isArray(s.details) ? ' : ' + s.details.map(x => x.n + (Array.isArray(x.sets) ? ' ' + x.sets.length + ' séries' : ' ' + x.sets + '×' + x.reps + (x.kg ? ' à ' + x.kg + ' kg' : ''))).join(', ') : '') + '\n'; });
   w.days.filter(x => !x.fut).forEach(x => { const ms = mealsOf(x.d); t += '- ' + fmtLong(x.d) + ' : ' + (ms.length ? ms.map(m => m.text).join(' ; ') + ' (≈ ' + x.tot.kcal + ' kcal, ' + x.tot.p + ' g prot)' : 'repas non notés') + (x.min ? ' · sport ' + x.min + ' min' : '') + '\n'; });
   if (w.dW !== null) t += 'Poids : ' + (w.dW > 0 ? '+' : '') + nf(w.dW) + ' kg.\n';
   w.beaten.forEach(x => { t += 'Record battu : ' + x.n + ' ' + x.v + x.u + '.\n'; });
@@ -1430,14 +1488,14 @@ function vProfile() {
     '<label class="f">Poids visé (kg)<input data-p="goalWeight" inputmode="decimal" value="' + (p.goalWeight || '') + '" placeholder="optionnel"></label></div>' +
     '<label class="f">Objectif<select data-p="goal"><option value="lose"' + (p.goal === 'lose' ? ' selected' : '') + '>Perdre du poids</option><option value="keep"' + (p.goal === 'keep' ? ' selected' : '') + '>Rester stable et me muscler</option><option value="gain"' + (p.goal === 'gain' ? ' selected' : '') + '>Prendre du muscle / du poids</option></select></label>' +
     (b ? '<p class="small muted">Cible du jour : ' + b.kcal + ' kcal et ' + b.prot + ' g de protéines (formule de Mifflin-St Jeor, estimation).</p>' : '') + '</section>' +
-    '<section class="card"><h2>Mes horaires</h2><p class="small muted">Dis-moi à quelle heure tu finis. Je place la séance 45 minutes après (trajet, repas léger), et je choisis les jours de grosse séance.</p>' +
+    gymSettings() + '<section class="card"><h2>Mes horaires</h2><p class="small muted">Dis-moi à quelle heure tu finis. Je place la séance 45 minutes après (trajet, repas léger), et je choisis les jours de grosse séance.</p>' +
     [1, 2, 3, 4, 5, 6, 7].map(d => { const a = p.avail[d] || { m: 'free' }; return '<div class="arow"><b>' + DOW[d] + '</b><select data-av="' + d + '" data-f="m" aria-label="Disponibilité ' + DOWL[d] + '"><option value="free"' + (a.m === 'free' ? ' selected' : '') + '>Journée libre</option><option value="time"' + (a.m === 'time' ? ' selected' : '') + '>Je finis à…</option><option value="off"' + (a.m === 'off' ? ' selected' : '') + '>Pas dispo</option></select>' + (a.m === 'time' ? '<input type="time" data-av="' + d + '" data-f="t" value="' + (a.t || '17:30') + '" aria-label="Heure de fin ' + DOWL[d] + '">' : '<span></span>') + '</div>'; }).join('') +
     '<div class="row" style="flex-wrap:nowrap;align-items:flex-end"><label class="f" style="flex:1">Séances par semaine<select data-p="perWeek">' + [1, 2, 3, 4, 5, 6].map(n => '<option value="' + n + '"' + (+p.perWeek === n ? ' selected' : '') + '>' + n + '</option>').join('') + '</select></label><button class="btn" data-act="autodays">Proposer mes jours</button></div>' +
     '<h3>Planning proposé</h3>' + weekCard() + '</section>' +
     '<section class="card"><h2>Mon rythme</h2><h3>Jours de sport</h3><div class="chips">' + [1, 2, 3, 4, 5, 6, 7].map(d => tg('pday', d, DOW[d], p.trainDays.includes(d))).join('') + '</div>' +
-    '<h3>Jour de record</h3><div class="chips">' + [1, 2, 3, 4, 5, 6, 7].map(d => tg('prec', d, DOW[d], +p.recordDay === d)).join('') + '</div></section>' +
-    '<section class="card"><h2>Matériel</h2><div class="chips">' + [['tapis', 'Tapis'], ['bouteilles', 'Bouteilles d’eau'], ['chaise', 'Chaise']].map(q => tg('peq', q[0], q[1], p.equip[q[0]])).join('') + '</div>' +
-    '<div class="chips">' + tg('plow', 1, 'Faible impact (sans sauts)', p.lowImpact) + '</div><p class="small muted">Pas d’haltères : les bouteilles pleines (1,5 L ≈ 1,5 kg) font très bien l’affaire. Les chaises doivent être stables, calées contre un mur.</p>' +
+    '</section>' +
+    '<section class="card"><h2>Matériel</h2><div class="chips">' + EQUIP.map(q => tg('peq', q[0], q[1], !!p.equip[q[0]])).join('') + '</div>' +
+    '<div class="chips">' + tg('plow', 1, 'Faible impact (sans sauts)', p.lowImpact) + '</div><p class="small muted">Coche tout le matériel que tu as : les séances s’en servent, et Sport > Matériel te fait une séance avec. Les bouteilles pleines remplacent les haltères. La chaise doit être stable, calée contre un mur.</p>' +
     '<label class="f">Niveau<select data-p="level"><option value="0"' + (!+p.level ? ' selected' : '') + '>Auto (selon tes records)</option><option value="1"' + (+p.level === 1 ? ' selected' : '') + '>Débutant</option><option value="2"' + (+p.level === 2 ? ' selected' : '') + '>Intermédiaire</option><option value="3"' + (+p.level === 3 ? ' selected' : '') + '>Avancé</option></select></label></section>' +
     notifCard() + '<section class="card"><h2>Mes données</h2><p class="small muted" id="syncl">' + syncText() + '</p><div class="row"><button class="btn ghost" data-act="export">Exporter</button><button class="btn ghost" data-act="demo">Données d’exemple</button></div>' +
     (U.exportTxt ? '<textarea id="expt" readonly rows="5">' + esc(U.exportTxt) + '</textarea>' : '') +
@@ -1567,7 +1625,7 @@ function openEx(i) {
 function closeEx() { U.modal = null; const m = $('#modal'); m.hidden = true; m.innerHTML = ''; document.body.style.overflow = ''; }
 function swapEx(i) {
   const plan = U.T.plan, it = plan.items[i], cur = it.ex, eq = P().equip, free = cur.z === 'chauffe' || cur.z === 'etire';
-  const okE = e => e.id !== cur.id && !plan.items.some(x => x.ex.id === e.id) && S.skills[e.id] !== 'no' && (free || e.eq.every(q => eq[q])) && !(lowImpact() && e.imp);
+  const okE = e => e.id !== cur.id && !plan.items.some(x => x.ex.id === e.id) && S.skills[e.id] !== 'no' && (free || e.eq.every(hasEq)) && !(lowImpact() && e.imp);
   const pool = EX.filter(e => e.z === cur.z && okE(e) && e.lvl <= Math.max(plan.lvl, cur.lvl));
   const easier = S.skills[cur.id] === 'no' ? easierOk(cur.id, okE) : null;
   if (!pool.length && !easier) { toast('Pas d’autre exercice équivalent'); return; }
@@ -1772,10 +1830,10 @@ function buildRunPlan() {
 function startRun() { const p = buildRunPlan(); U.T.plan = p; U.T.focus = 'run'; startPlayer(p); }
 
 /* ---------- Objectifs en nombre de jours ---------- */
-const GT = { reps: 'Plus de répétitions', weight: 'Mon poids', run: 'Courir' };
-const gname = g => g.type === 'reps' ? (TRACK.find(x => x.k === g.ex) || {}).n : g.type === 'weight' ? 'Poids' : 'Course';
+const GT = { reps: 'Plus de répétitions', lift: 'Charge à la salle', weight: 'Mon poids', run: 'Courir' };
+const gname = g => g.type === 'lift' ? (EXBY[g.ex] || {}).n : g.type === 'reps' ? (TRACK.find(x => x.k === g.ex) || {}).n : g.type === 'weight' ? 'Poids' : 'Course';
 const gspan = g => ({ left: Math.max(0, diffDays(g.end, today())), el: clamp(diffDays(today(), g.start), 0, g.days) });
-function gcur(g) { return g.type === 'reps' ? bestOf(g.ex) : g.type === 'weight' ? (latestW() || { kg: g.from }).kg : S.run.stage; }
+function gcur(g) { return g.type === 'lift' ? liftBest(g.ex) : g.type === 'reps' ? bestOf(g.ex) : g.type === 'weight' ? (latestW() || { kg: g.from }).kg : S.run.stage; }
 function gfrac(g) {
   if (g.type === 'run') return clamp(Math.max(S.run.stage / runStages(g.T).length, runBests(runsOf().filter(s => s.d >= g.start)).dist / g.target), 0, 1);
   const den = g.target - g.from; return den ? clamp((gcur(g) - g.from) / den, 0, 1) : 1;
@@ -1786,10 +1844,10 @@ function gstatus(g) {
   const d = fr - exp; return d > .08 ? { k: 'ahead', t: 'En avance' } : d < -.12 ? { k: 'late', t: 'En retard' } : { k: 'ok', t: 'Dans les temps' };
 }
 function gtext(g) {
-  return g.type === 'reps' ? gname(g) + ' : ' + g.target + (g.ex === 'gainage' ? ' s' : '') + ' en ' + g.days + ' jours' : g.type === 'weight' ? 'Arriver à ' + nf(g.target) + ' kg en ' + g.days + ' jours' : 'Courir ' + g.target + ' km en ' + g.days + ' jours';
+  return g.type === 'lift' ? gname(g) + ' : ' + nf(g.target) + ' kg en ' + g.days + ' jours' : g.type === 'reps' ? gname(g) + ' : ' + g.target + (g.ex === 'gainage' ? ' s' : '') + ' en ' + g.days + ' jours' : g.type === 'weight' ? 'Arriver à ' + nf(g.target) + ' kg en ' + g.days + ' jours' : 'Courir ' + g.target + ' km en ' + g.days + ' jours';
 }
 function gschedule(g, n = 14) {
-  const out = [], st = g.type === 'run' ? runStages(g.T) : null, { left } = gspan(g), cur = gcur(g); let ri = 0, ti = 0;
+  const out = [], st = g.type === 'run' ? runStages(g.T) : null, { left } = gspan(g), cur = gcur(g); let ri = 0, ti = 0; const mt = {};
   for (let k = 0; k < n; k++) {
     const d = addDays(today(), k); if (d > g.end) break;
     const pl = planFor(d), train = pl.size !== 'repos', done = doneOn(d), c = { d, pl, train, done, kind: 'rest', label: 'Repos' };
@@ -1797,8 +1855,9 @@ function gschedule(g, n = 14) {
       if (g.type === 'run') {
         if (P().trainDays.length >= 4 && ti % 3 === 2) { c.kind = 'strength'; c.label = 'Renforcement jambes et abdos'; }
         else { const idx = Math.min(S.run.stage + ri, st.length - 1); c.kind = 'run'; c.label = 'Course : ' + stageLabel(st[idx]); c.mins = Math.round(runTotal(st[idx]) + 10); ri++; }
-      } else if (g.type === 'reps') {
-        if (isoDow(d) === +P().recordDay) { c.kind = 'test'; c.label = 'Test de max : ' + gname(g); }
+      } else if (g.type === 'reps' || g.type === 'lift') {
+        if (!S.monthly[ym(d)] && !mt[ym(d)]) { mt[ym(d)] = 1; c.kind = 'test'; c.label = 'Séance du mois : battre mes records'; }
+        else if (g.type === 'lift') { const kw = workKg(g.ex, 6); c.kind = 'strength'; c.sets = pl.size === 'grosse' ? 5 : 4; c.reps = 6; c.label = gname(g) + ' : ' + c.sets + ' séries de 6' + (kw ? ' à ' + nf(kw, kw % 1 ? 1 : 0) + ' kg' : ''); }
         else { const val = cur + (g.target - cur) * clamp(k / Math.max(1, left), 0, 1), r = Math.max(3, Math.round(val * (g.ex === 'gainage' ? .7 : .65))); c.kind = 'strength'; c.sets = pl.size === 'grosse' ? 4 : 3; c.reps = r; c.label = gname(g) + ' : ' + c.sets + ' séries de ' + r + (g.ex === 'gainage' ? ' s' : ''); }
       } else { c.kind = ti % 2 === 0 ? 'cardio' : 'full'; c.label = c.kind === 'cardio' ? 'Séance cardio, brûle-calories' : 'Séance tout le corps'; }
       ti++;
@@ -1824,7 +1883,8 @@ function gsetup() {
   const chip = (act, v, t, on) => '<button class="chip" data-act="' + act + '" data-v="' + v + '" aria-pressed="' + on + '">' + t + '</button>';
   return '<section class="card"><h2>Fixer un objectif</h2><p class="small muted">Dis-moi ce que tu veux et en combien de jours. Je construis le programme jour par jour avec tes disponibilités, et il s’adapte quand tu rates ou que tu fais plus.</p>' +
     '<h3>Je veux…</h3><div class="chips">' + Object.keys(GT).map(k => chip('gtype', k, GT[k], G.type === k)).join('') + '</div>' +
-    (G.type === 'reps' ? '<div class="grid2"><label class="f">Exercice<select id="g-ex">' + TRACK.map(t => '<option value="' + t.k + '"' + (G.ex === t.k ? ' selected' : '') + '>' + t.n + '</option>').join('') + '</select></label><label class="f">' + (G.ex === 'gainage' ? 'Secondes à tenir' : 'Répétitions visées') + '<input id="g-target" inputmode="numeric" value="' + (G.target || '') + '" placeholder="' + (G.ex === 'gainage' ? 'ex. 90' : 'ex. 30') + '"></label></div><p class="small muted">Ton record actuel : ' + (cur || 'pas encore testé') + '</p>' :
+    (G.type === 'lift' ? '<div class="grid2"><label class="f">Exercice<select id="g-ex">' + LIFTS.map(id => '<option value="' + id + '"' + (G.ex === id ? ' selected' : '') + '>' + EXBY[id].n + '</option>').join('') + '</select></label><label class="f">Charge visée (kg)<input id="g-target" inputmode="decimal" value="' + (G.target || '') + '" placeholder="ex. 60"></label></div><p class="small muted">Record actuel : ' + (liftBest(LIFTS.includes(G.ex) ? G.ex : 'g_bench') ? nf(liftBest(LIFTS.includes(G.ex) ? G.ex : 'g_bench')) + ' kg (estimé sur une répétition)' : 'pas encore testé : fais la séance du mois à la salle') + '</p>' :
+    G.type === 'reps' ? '<div class="grid2"><label class="f">Exercice<select id="g-ex">' + TRACK.map(t => '<option value="' + t.k + '"' + (G.ex === t.k ? ' selected' : '') + '>' + t.n + '</option>').join('') + '</select></label><label class="f">' + (G.ex === 'gainage' ? 'Secondes à tenir' : 'Répétitions visées') + '<input id="g-target" inputmode="numeric" value="' + (G.target || '') + '" placeholder="' + (G.ex === 'gainage' ? 'ex. 90' : 'ex. 30') + '"></label></div><p class="small muted">Ton record actuel : ' + (cur || 'pas encore testé') + '</p>' :
       G.type === 'weight' ? '<label class="f">Poids visé (kg)<input id="g-target" inputmode="decimal" value="' + (G.target || '') + '" placeholder="' + (lw ? nf(lw.kg - 3) : 'ex. 72') + '"></label><p class="small muted">Poids actuel : ' + (lw ? nf(lw.kg) + ' kg' : 'non noté') + '. Ta cible de calories s’ajuste toute seule.</p>' :
         '<h3>Distance à courir sans t’arrêter</h3><div class="chips">' + [2, 3, 5, 8, 10].map(k => chip('gkm', k, k + ' km', +G.km === k)).join('') + '</div><p class="small muted">Je pars de la marche et je monte par étapes (course et marche en alternance), jusqu’à la course continue.</p>') +
     '<h3>En combien de jours ?</h3><div class="chips">' + [14, 30, 45, 60, 90].map(k => chip('gdays', k, k + ' j', +G.days === k)).join('') + '</div>' +
@@ -1834,13 +1894,13 @@ function gsetup() {
 function vGoal() {
   const g = S.goal; if (!g || U.gedit) return gsetup();
   const st = gstatus(g), { left, el } = gspan(g), fr = gfrac(g), cur = gcur(g), off = (276.46 * (1 - fr)).toFixed(1), warns = gwarn(g), sch = gschedule(g);
-  const curTxt = g.type === 'run' ? 'Étape ' + Math.min(S.run.stage + 1, runStages(g.T).length) + ' sur ' + runStages(g.T).length : g.type === 'weight' ? nf(cur) + ' kg → ' + nf(g.target) + ' kg' : cur + ' → ' + g.target + (g.ex === 'gainage' ? ' s' : '');
+  const curTxt = g.type === 'run' ? 'Étape ' + Math.min(S.run.stage + 1, runStages(g.T).length) + ' sur ' + runStages(g.T).length : g.type === 'weight' ? nf(cur) + ' kg → ' + nf(g.target) + ' kg' : (g.type === 'lift' ? nf(cur) + ' kg → ' + nf(g.target) + ' kg' : cur + ' → ' + g.target + (g.ex === 'gainage' ? ' s' : ''));
   let h = '<section class="card ' + (st.k === 'late' ? 'warm' : 'soft') + '"><div class="row" style="flex-wrap:nowrap;gap:16px"><div class="ring" style="width:120px;height:120px;margin:0;flex:none"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="bg" cx="50" cy="50" r="44"/><circle class="fg sc" cx="50" cy="50" r="44" stroke-dasharray="276.46" stroke-dashoffset="' + off + '"/></svg><div class="t num" style="font-size:34px"><span data-count="' + Math.round(fr * 100) + '">' + Math.round(fr * 100) + '</span>%</div></div>' +
     '<div style="min-width:0;display:flex;flex-direction:column;gap:6px"><h2>' + gtext(g) + '</h2><span class="badge gs-' + (st.k === 'ok' && goalProb(g).p < 35 ? 'late' : st.k) + '" style="align-self:flex-start">' + (st.k === 'ok' && goalProb(g).p < 35 ? 'Objectif ambitieux' : st.t) + '</span><p class="small">Jour ' + Math.min(g.days, el + 1) + ' sur ' + g.days + ' · il reste ' + left + ' jour' + (left > 1 ? 's' : '') + '</p></div></div>' +
     '<p><b>' + curTxt + '</b></p>' + warns.map(w => '<p class="small" style="color:var(--warm)">' + esc(w) + '</p>').join('') + probBlock(g) +
     '<div class="row"><button class="btn ghost sm" data-act="gedit">Changer d’objectif</button><button class="btn ghost sm" data-act="gdel">' + (U.gdel ? 'Vraiment abandonner ?' : 'Abandonner') + '</button></div></section>';
-  if (g.type === 'reps') {
-    const ts = recsOf(g.ex).filter(r => r.test), un = g.ex === 'gainage' ? ' s' : '';
+  if (g.type === 'reps' || g.type === 'lift') {
+    const ts = gtests(g), un = g.type === 'lift' ? ' kg' : g.ex === 'gainage' ? ' s' : '';
     h += '<section class="card"><h2>Mes tests de record</h2>' + (ts.length ? lineChart({ pts: ts.map(r => ({ x: parseD(r.d).getTime(), y: r.val })), target: g.target, warm: true, markBest: true, label: 'Tests de record ' + gname(g), fmtY: v => nf(v, 0), unit: un }) + '<p class="tiny muted">La chance d’y arriver se base sur cette courbe. Un test de temps en temps suffit : entre deux tests, je tiens compte de ta progression.</p>' : '<p class="muted">Aucun test pour l’instant. Fais un test de max et note-le : l’estimation sera bien plus fiable.</p>') + '<button class="btn ghost" data-act="gtest">Noter un test de record</button></section>';
   }
   h += probHistory();
@@ -1864,7 +1924,8 @@ function startToday() {
   let focus = pf.size === 'grosse' || pf.size === 'moyenne' || !pf.min ? 'all' : lazyZone(), opts = {};
   if (c && c.kind === 'cardio') focus = 'cardio';
   if (c && c.kind === 'strength' && g.type === 'reps') opts = { goalEx: g.ex, goalHint: 'Objectif : ' + c.sets + ' séries de ' + c.reps + (g.ex === 'gainage' ? ' s' : '') };
-  if (c && c.kind === 'test') { U.recEx = g.ex; U.tab = 'progress'; render(); toast('Échauffe-toi, puis note ton test de max ici'); return; }
+  if (c && c.kind === 'test' && !c.done) { openMonthly(); return; }
+  if (gymOn(today())) return startGym(gymPlan(today()));
   U.T.min = snap; U.T.focus = focus; U.T.plan = genSession(snap, focus, U.T.custom, U.T.level, Date.now() & 0xfffffff, opts); startPlayer(U.T.plan);
 }
 
@@ -2067,7 +2128,8 @@ function learnAction(a, b, v) {
     case 'gsave': {
       const G = U.G, days = Math.round(num(val('g-days'))), err = $('#g-err'); if (!(days >= 7 && days <= 365)) { err.textContent = 'Choisis entre 7 et 365 jours.'; return true; }
       let g = { id: uid(), type: G.type, start: today(), days, end: addDays(today(), days) };
-      if (G.type === 'reps') { const ex = val('g-ex') || G.ex, t = Math.round(num(val('g-target'))), cur = bestOf(ex); if (!(t > cur)) { err.textContent = 'Vise plus que ton record actuel (' + cur + ').'; return true; } Object.assign(g, { ex, from: cur, target: t }); }
+      if (G.type === 'lift') { const ex = val('g-ex') || 'g_bench', t = num(val('g-target')), cur = liftBest(ex); if (!(t > cur)) { err.textContent = 'Vise plus que ton record actuel (' + nf(cur) + ' kg).'; return true; } Object.assign(g, { ex, from: cur, target: +t.toFixed(1) }); }
+      else if (G.type === 'reps') { const ex = val('g-ex') || G.ex, t = Math.round(num(val('g-target'))), cur = bestOf(ex); if (!(t > cur)) { err.textContent = 'Vise plus que ton record actuel (' + cur + ').'; return true; } Object.assign(g, { ex, from: cur, target: t }); }
       else if (G.type === 'weight') { const t = num(val('g-target')), lw = latestW(); if (!lw) { err.textContent = 'Note d’abord ton poids.'; return true; } if (!(t >= 30 && t <= 250) || Math.abs(t - lw.kg) < .3) { err.textContent = 'Entre un poids visé différent de ton poids actuel.'; return true; } Object.assign(g, { from: lw.kg, target: +t.toFixed(1) }); }
       else { const km = +G.km || 5; Object.assign(g, { target: km, T: clamp(Math.round(km * 6.5), 10, 80), from: 0 }); if (P().trainDays.length < 3) toast('Pour courir, 3 jours par semaine c’est mieux : règle-le dans Réglages'); }
       S.goal = g; U.gedit = false; U.G = { type: 'reps', ex: 'pompes', target: '', days: 45, km: 5 }; save(); pushNotif('gnew-' + g.id, 'goal', 'Objectif créé', gtext(g), 'train'); confetti(); render(); toast('Programme prêt !'); return true;
@@ -2082,7 +2144,6 @@ function learnAction(a, b, v) {
     case 'psub': U.psub = v; render(); return true;
     case 'rmetric': U.rmetric = v; U.keepScroll = true; render(); return true;
     case 'prun': U.tab = 'progress'; U.psub = 'run'; render(); return true;
-    case 'gtest': U.recEx = S.goal ? S.goal.ex : U.recEx; U.tab = 'progress'; U.psub = 'general'; render(); return true;
     case 'topro': U.tab = 'progress'; U.psub = 'general'; render(); return true;
     case 'rundel': S.sessions = S.sessions.filter(x => x.id !== b.dataset.id); save(); U.keepScroll = true; render(); return true;
     case 'asave': saveActivity(); return true;
@@ -2095,8 +2156,8 @@ function learnAction(a, b, v) {
 }
 function vTrain() {
   const sub = U.sub || 'session', chip = x => '<button class="chip" data-act="sub" data-v="' + x[0] + '" aria-pressed="' + (sub === x[0]) + '">' + x[1] + '</button>';
-  return '<div class="chips subnav" role="group" aria-label="Entraînement">' + [['session', 'Ma séance'], ['goal', 'Mon objectif'], ['learn', 'Apprendre']].map(chip).join('') + '</div>' +
-    (sub === 'goal' ? vGoal() : sub === 'learn' ? (U.learnEx ? vLearnEx(U.learnEx) : '<h1>Apprendre</h1>' + vLearn()) : vSession());
+  return '<div class="chips subnav" role="group" aria-label="Entraînement">' + [['session', 'Séance'], ['equip', 'Matériel'], ['goal', 'Objectif'], ['learn', 'Apprendre']].map(chip).join('') + '</div>' +
+    (sub === 'goal' ? vGoal() : sub === 'equip' ? vEquip() : sub === 'perso' ? vPerso() : sub === 'learn' ? (U.learnEx ? vLearnEx(U.learnEx) : '<h1>Apprendre</h1>' + vLearn()) : vProgramme());
 }
 function saveSessionFromPlayer(zones) {
   const plan = PL.plan, z = {}; Object.entries(zones).forEach(([k, m]) => { const kk = k === 'run' || k === 'walk' ? 'cardio' : k; z[kk] = +((z[kk] || 0) + m).toFixed(1); });
@@ -2106,7 +2167,9 @@ function saveSessionFromPlayer(zones) {
     S.run.stage = Math.min(S.run.stage + (feel === 'dur' ? 0 : feel === 'facile' ? 2 : 1), 40); S.run.best = Math.max(S.run.best, Math.round(plan.items.filter(i => i.ex.id === 'course').reduce((a, i) => Math.max(a, i.dur), 0) / 60)); if (km > 0) S.run.km += km;
   }
   if (plan.practice) { const sk = val('pskill'); if (sk) S.skills[plan.practice] = sk; }
+  extra.full = PL.secs >= plan.secs * .8;
   S.sessions.push(Object.assign({ id: uid(), d: today(), min: PL.sum.mins, kcal: PL.sum.kcal, zones: z }, extra)); save();
+  if (!extra.full) setTimeout(() => toast('Séance incomplète (moins de 80 %) : elle ne compte pas pour ta série'), 900);
   if (plan.run && PL.runBefore) { const bf = PL.runBefore; setTimeout(() => announceRuns(bf), 400); }
 }
 const goalRunToday = () => { const g = S.goal; if (!g || g.type !== 'run') return false; const c = gschedule(g, 1)[0]; return !!(c && c.kind === 'run' && !c.done); };
@@ -2195,10 +2258,10 @@ function goalProb(g, ov = {}) {
   const left = gspan(g).left + (ov.extraDays || 0), wk = Math.max(.5, left / 7), A = adherence(), why = [], t = today();
   if (!ov.extraDays && !ov.boost && gfrac(g) >= 1) return { p: 100, why: ['Objectif atteint'], A };
   let p = 50;
-  if (g.type === 'reps') {
-    const ts = recsOf(g.ex).filter(r => r.test), n = ts.length, cur = Math.max(prOf(g.ex), gcur(g)), un = g.ex === 'gainage' ? ' s' : '';
+  if (g.type === 'reps' || g.type === 'lift') {
+    const lift = g.type === 'lift', ts = gtests(g), n = ts.length, cur = lift ? gcur(g) : Math.max(prOf(g.ex), gcur(g)), un = lift ? ' kg' : g.ex === 'gainage' ? ' s' : '';
     const pts = ts.map(r => ({ x: parseD(r.d).getTime(), y: r.val })), obs = slopeWk(pts);
-    const typ = g.ex === 'gainage' ? 4 : Math.max(.8, Math.max(cur, g.from) * .07);
+    const typ = lift ? Math.max(1, Math.max(cur, g.from) * .02) : g.ex === 'gainage' ? 4 : Math.max(.8, Math.max(cur, g.from) * .07);
     /* plus tu as de tests de record, plus je me fie à ta propre courbe */
     const wObs = obs !== null ? n / (n + 2) : 0;
     const rw = obs !== null ? wObs * Math.max(0, obs) + (1 - wObs) * typ : typ;
@@ -2255,7 +2318,8 @@ function probBlock(g, compact) {
 function tempGoal() {
   const G = U.G, days = Math.round(num(val('g-days'))) || G.days; if (!(days >= 7)) return null;
   const g = { id: 'tmp', type: G.type, start: today(), days, end: addDays(today(), days) };
-  if (G.type === 'reps') { const ex = val('g-ex') || G.ex, t = Math.round(num(val('g-target'))), cur = bestOf(ex); if (!(t > cur)) return null; Object.assign(g, { ex, from: cur, target: t }); }
+  if (G.type === 'lift') { const ex = val('g-ex') || 'g_bench', t = num(val('g-target')), cur = liftBest(ex); if (!(t > cur)) return null; Object.assign(g, { ex, from: cur, target: t }); }
+  else if (G.type === 'reps') { const ex = val('g-ex') || G.ex, t = Math.round(num(val('g-target'))), cur = bestOf(ex); if (!(t > cur)) return null; Object.assign(g, { ex, from: cur, target: t }); }
   else if (G.type === 'weight') { const t = num(val('g-target')), lw = latestW(); if (!lw || !(t >= 30 && t <= 250) || Math.abs(t - lw.kg) < .3) return null; Object.assign(g, { from: lw.kg, target: t }); }
   else { const km = +G.km || 5; Object.assign(g, { target: km, T: clamp(Math.round(km * 6.5), 10, 80), from: 0 }); }
   return g;
@@ -2276,7 +2340,8 @@ function probHistory() {
 const RESETS = [
   { k: 'meals', n: 'Repas et eau', d: 'repas notés, eau, bilans de repas', f: () => { S.meals = []; S.reviews = {}; } },
   { k: 'sessions', n: 'Séances et courses', d: 'séances, activités, courses, étapes de course', f: () => { S.sessions = []; S.run = { stage: 0, best: 0, km: 0 }; } },
-  { k: 'records', n: 'Records', d: 'tests de record et résultats notés', f: () => { S.records = []; } },
+  { k: 'records', n: 'Records', d: 'tests de record, records à la salle, séances du mois', f: () => { S.records = []; S.lifts = []; S.monthly = {}; } },
+  { k: 'custom', n: 'Mes modèles de séance', d: 'séances à moi gardées comme modèles', f: () => { S.custom = []; } },
   { k: 'weights', n: 'Poids', d: 'toutes les pesées sauf la dernière', f: () => { const l = latestW(); S.weights = l ? [{ d: today(), kg: l.kg }] : []; } },
   { k: 'goal', n: 'Objectif', d: 'objectif en cours et courbe des chances', f: () => { S.goal = null; S.gh = []; } },
   { k: 'badges', n: 'Badges et série', d: 'badges, paliers et meilleure série', f: () => { S.badges = {}; S.miles = {}; S.bestStreak = 0; } },
@@ -2330,7 +2395,8 @@ function vHome() {
     '<div class="row sb"><div><h1>Salut Timao</h1><p class="muted">' + fmtLong(t) + '</p></div><button class="btn ghost sm bell" data-act="notifs" aria-label="Alertes">Alertes<span class="dotc" id="bellc" style="display:none"></span></button></div>' +
     /* 1. quoi faire aujourd'hui */
     '<section class="card ' + (adv.kind === 'rest' ? 'soft' : 'warm') + '" aria-live="polite"><h2>' + adv.title + '</h2><p>' + adv.text + '</p>' +
-    (adv.kind === 'train' ? '<button class="btn big" data-act="quickstart">' + (goalRunToday() ? 'Lancer ma course' : 'Lancer ma séance · ' + pf.min + ' min') + '</button>' : '<button class="btn ghost" data-act="quickstart">Faire une séance quand même</button>') +
+    (adv.kind === 'train' ? '<button class="btn big" data-act="quickstart">' + (goalRunToday() ? 'Lancer ma course' : gymOn(t) ? 'Lancer ma séance salle' : 'Lancer ma séance · ' + pf.min + ' min') + '</button>' : '<button class="btn ghost" data-act="quickstart">Faire une séance quand même</button>') +
+    '<button class="btn ghost sm" data-act="goperso" style="align-self:flex-start">J’ai fait ma propre séance</button>' +
     (g ? '<button class="btn ghost sm" data-act="gopen" style="align-self:flex-start">Objectif : ' + gtext(g) + ' · ' + Math.round(goalProb(g).p) + ' % de chances</button>' : '') + '</section>' +
     /* 2. les 4 gestes du jour */
     '<div class="grid2">' +
@@ -2341,7 +2407,7 @@ function vHome() {
     /* 3. la semaine et la série */
     '<section class="card"><div class="row sb" style="flex-wrap:nowrap"><h2>Ma semaine</h2><span class="row" style="gap:6px;flex-wrap:nowrap"><span class="flamemini">' + flameSVG(si.n) + '</span><b>' + si.n + ' jour' + (si.n > 1 ? 's' : '') + ' de suite</b></span></div><div class="week">' + cells + '</div>' +
     '<p class="tiny muted">Touche un jour pour passer de sport à repos.</p>' + (P().availSet ? '<details><summary>Voir le planning de la semaine</summary>' + weekCard() + '</details>' : '') + '</section>' +
-    (isoDow(t) === +P().recordDay ? vRecordDay() : '') +
+    monthlyCard() +
     /* 4. pour bien démarrer (disparaît une fois fait) */
     (left ? '<section class="card"><h2>Pour bien démarrer</h2>' + todo.map(x => '<div class="row sb" style="flex-wrap:nowrap"><span class="' + (x[0] ? 'muted' : '') + '">' + (x[0] ? '✓ ' : '') + x[1] + '</span>' + (x[0] ? '' : '<button class="btn sm" data-act="' + x[2] + '">Faire</button>') + '</div>').join('') + '</section>' : '') +
     '<p class="sync" id="syncl">' + syncText() + '</p>';
@@ -2374,7 +2440,7 @@ function vProgress2() {
   if (sub === 'run') return nav + vRunStats();
   const parts = vProgressGeneral().split('\u0001');
   if (sub === 'body') return nav + parts[0].replace('<h1>Mes progrès</h1>', '<h1>Mon poids</h1>') + healthCard() + parts[1] + parts[2];
-  return nav + '<h1>Ma force</h1>' + standingCard() + (parts[3] || '') + (parts[4] || '') + badgesCard();
+  return nav + '<h1>Ma force</h1>' + standingCard() + gymRecCard() + (parts[3] || '') + (parts[4] || '') + badgesCard();
 }
 /* Réglages : chaque partie se déplie */
 function vProfileFold() {
@@ -2384,6 +2450,381 @@ function vProfileFold() {
     .replace(/<\/section>/g, '</details>');
 }
 document.addEventListener('toggle', e => { const d = e.target; if (d && d.dataset && d.dataset.fold) { (U.open = U.open || {})[d.dataset.fold] = d.open; } }, true);
+
+
+/* ===== Salle de sport, séances à moi, séance records du mois, bilan par copier-coller ===== */
+const _run = EXBY.course.fr, _fen = EXBY.fentes.fr;
+const GEX = [
+  { id: 'g_bench', n: 'Développé couché', grp: 'pecs', kgs: 1, bar: 1, plates: 1, chair: { x: 76, w: 66, h: 20 }, how: 'Allongé sur le banc, pieds au sol. Descends la barre vers la poitrine en la contrôlant, puis pousse jusqu’à tendre les bras. Demande une parade dès que c’est lourd.', fr: [{ t: 180, a: [-90, -90], l: [10, 92, 0] }, { t: 180, a: [20, -90], l: [10, 92, 0] }], pin: { j: 'hip', x: 132 }, ms: 1100, cues: ['Descends la barre', 'Pousse'], mu: 'Pectoraux · triceps · épaules' },
+  { id: 'g_squat', n: 'Squat à la barre', grp: 'jambes', kgs: 1, bar: 1, plates: 1, how: 'Barre posée sur le haut du dos, pieds largeur d’épaules. Descends fesses en arrière, dos droit, puis remonte en poussant sur les talons. Utilise le rack et ses sécurités.', fr: [{ t: -90, l: [90, 90, 0], a: [125, -70] }, { t: -66, l: [12, 100, 0], a: [150, -46] }], pin: { j: 'foot', x: 125 }, ms: 1150, cues: ['Descends, dos droit', 'Remonte en poussant'], mu: 'Cuisses · fessiers' },
+  { id: 'g_dead', n: 'Soulevé de terre', grp: 'dos', kgs: 1, bar: 1, plates: 1, how: 'Barre au sol contre les tibias. Dos plat, poitrine sortie, pousse dans le sol pour te redresser, puis redescends en contrôlant. Commence très léger pour apprendre le geste.', fr: [{ t: -35, l: [55, 100, 0], a: [90, 90] }, { t: -90, l: [90, 90, 0], a: [90, 90] }], pin: { j: 'foot', x: 120 }, ms: 1200, cues: ['Redresse-toi, dos plat', 'Redescends en contrôlant'], mu: 'Dos · fessiers · ischios' },
+  { id: 'g_press', n: 'Presse à cuisses', grp: 'jambes', kgs: 1, chair: { x: 66, w: 34, h: 15 }, how: 'Assis dans la machine, pieds à plat sur le plateau. Pousse sans verrouiller les genoux, puis reviens lentement jusqu’à 90 degrés.', fr: [{ t: -125, a: [60, 95], l: [-55, 30, -60], lift: 21 }, { t: -125, a: [60, 95], l: [-20, -15, -60], lift: 21 }], pin: { j: 'hip', x: 92 }, ms: 1100, cues: ['Pousse le plateau', 'Reviens lentement'], mu: 'Cuisses · fessiers' },
+  { id: 'g_legext', n: 'Leg extension', grp: 'jambes', kgs: 1, chair: { x: 96, w: 32, h: 17 }, how: 'Assis, dos calé, boudin sur les chevilles. Tends les jambes, marque une seconde en haut, redescends lentement.', fr: [{ t: -90, a: [80, 95], l: [0, 92, 0] }, { t: -90, a: [80, 95], l: [0, 8, -70], lift: 20 }], pin: { j: 'hip', x: 112 }, ms: 1000, cues: ['Tends les jambes', 'Redescends lentement'], mu: 'Avant des cuisses' },
+  { id: 'g_legcurl', n: 'Leg curl assis', grp: 'jambes', kgs: 1, chair: { x: 96, w: 32, h: 17 }, how: 'Assis, boudin derrière les chevilles. Ramène les talons sous toi, puis reviens lentement.', fr: [{ t: -90, a: [80, 95], l: [0, 8, -70], lift: 20 }, { t: -90, a: [80, 95], l: [0, 112, 0], lift: 2 }], pin: { j: 'hip', x: 112 }, ms: 1000, cues: ['Ramène les talons', 'Reviens lentement'], mu: 'Arrière des cuisses' },
+  { id: 'g_lat', n: 'Tirage vertical', grp: 'dos', kgs: 1, cable: { x: 124, y: -4 }, chair: { x: 102, w: 30, h: 17 }, how: 'Assis, cuisses calées, prise large. Tire la barre vers le haut de la poitrine en serrant les omoplates, puis remonte en contrôlant.', fr: [{ t: -93, a: [-80, -92], l: [0, 92, 0] }, { t: -98, a: [112, -78], l: [0, 92, 0] }], pin: { j: 'hip', x: 116 }, ms: 1100, cues: ['Tire vers la poitrine', 'Remonte en contrôlant'], mu: 'Dos · biceps' },
+  { id: 'g_row', n: 'Rowing assis à la poulie', grp: 'dos', kgs: 1, cable: { x: 222, y: 98 }, chair: { x: 86, w: 30, h: 3 }, how: 'Assis, dos droit, genoux légèrement pliés. Tire la poignée vers le ventre en serrant les omoplates, puis tends les bras sans arrondir le dos.', fr: [{ t: -86, a: [8, 2], l: [-12, 35, -70] }, { t: -96, a: [150, 8], l: [-12, 35, -70] }], pin: { j: 'hip', x: 100 }, ms: 1050, cues: ['Tire vers le ventre', 'Tends les bras'], mu: 'Dos · biceps' },
+  { id: 'g_shoulder', n: 'Développé épaules haltères', grp: 'epaules', kgs: 1, bottle: 1, chair: { x: 104, w: 30, h: 17 }, how: 'Assis, dos calé, haltères à hauteur d’épaules. Pousse au-dessus de la tête sans cambrer, redescends en contrôlant.', fr: [{ t: -90, a: [100, -85], l: [0, 92, 0] }, { t: -90, a: [-90, -90], l: [0, 92, 0] }], pin: { j: 'hip', x: 118 }, ms: 1000, cues: ['Pousse vers le plafond', 'Redescends'], mu: 'Épaules · triceps' },
+  { id: 'g_curl', n: 'Curl haltères', grp: 'bras', kgs: 1, bottle: 1, how: 'Debout, un haltère dans chaque main, coudes collés au corps. Monte vers les épaules, redescends lentement sans balancer.', fr: [{ t: -90, l: [90, 90, 0], a: [76, 84] }, { t: -90, l: [90, 90, 0], a: [76, -84] }], pin: { j: 'hip', x: 120 }, ms: 900, cues: ['Monte les haltères', 'Redescends lentement'], mu: 'Biceps' },
+  { id: 'g_tri', n: 'Triceps à la poulie', grp: 'bras', kgs: 1, cable: { x: 146, y: -2 }, how: 'Debout face à la poulie haute, coudes collés au corps. Pousse la barre vers le bas jusqu’à tendre les bras, remonte en contrôlant.', fr: [{ t: -86, l: [90, 90, 0], a: [95, -25] }, { t: -86, l: [90, 90, 0], a: [95, 82] }], pin: { j: 'hip', x: 120 }, ms: 900, cues: ['Pousse vers le bas', 'Remonte en contrôlant'], mu: 'Triceps' },
+  { id: 'g_pull', n: 'Tractions (assistées)', grp: 'dos', bar: 1, how: 'Suspendu à la barre, ou sur la machine à tractions assistées. Tire jusqu’à amener le menton au-dessus de la barre, puis redescends lentement.', fr: [{ t: -90, l: [92, 100, 30], a: [-90, -90], lift: 12 }, { t: -90, l: [92, 100, 30], a: [100, -90], lift: 43 }], pin: { j: 'hand', x: 120 }, ms: 1200, cues: ['Tire-toi vers la barre', 'Redescends lentement'], mu: 'Dos · biceps' },
+  { id: 'g_lunge', n: 'Fentes avec haltères', grp: 'jambes', kgs: 1, bottle: 1, how: 'Un haltère dans chaque main. Grand pas en avant, descends le genou arrière vers le sol, buste droit, puis repousse. Change de jambe à mi-série.', fr: [Object.assign({}, _fen[0], { a: [90, 92] }), Object.assign({}, _fen[1], { a: [90, 92] })], pin: { j: 'foot', x: 150 }, ms: 1050, cues: ['Descends le genou', 'Remonte'], mu: 'Cuisses · fessiers' },
+  { id: 'g_tread', n: 'Tapis de course', grp: 'cardio', gsec: 1, mat: 1, loop: 1, alt: 1, how: 'Cours ou marche vite à une allure où tu peux encore parler. Règle la vitesse avant de monter dessus.', fr: _run, pin: { j: 'hip', x: 120 }, ms: 170, cues: ['Foulées courtes', 'Respire calmement'], mu: 'Cardio · jambes' },
+  { id: 'g_bike', n: 'Vélo', grp: 'cardio', gsec: 1, alt: 1, chair: { x: 104, w: 22, h: 35 }, how: 'Selle à hauteur de hanche, pédale à un rythme régulier. Idéal pour s’échauffer ou récupérer.', fr: [{ t: -72, a: [35, 5], l: [35, 100, 0], m: [75, 125, 0] }, { t: -72, a: [35, 5], l: [75, 125, 0], m: [35, 100, 0] }], pin: { j: 'hip', x: 115 }, ms: 420, cues: ['Pédale régulier', 'Respire'], mu: 'Cardio · jambes' },
+  { id: 'g_rower', n: 'Rameur', grp: 'cardio', gsec: 1, bar: 1, chair: { x: 60, w: 124, h: 5 }, how: 'Pousse d’abord avec les jambes, puis bascule le buste, puis tire la poignée vers le ventre. Reviens dans l’ordre inverse.', fr: [{ t: -75, a: [10, 5], l: [-45, 60, -30], lift: 8 }, { t: -108, a: [150, 12], l: [-8, 8, -60], lift: 9 }], pin: { j: 'foot', x: 160 }, ms: 1000, cues: ['Pousse avec les jambes', 'Reviens doucement'], mu: 'Corps entier · cardio' }
+];
+GEX.forEach(e => { Object.assign(e, { z: 'salle', lvl: 1, imp: 0, eq: [], met: e.grp === 'cardio' ? 7 : 5 }); EX.push(e); EXBY[e.id] = e; MU[e.id] = e.mu; });
+ZL.salle = 'Salle'; ZMET.salle = 5;
+
+/* ---------- Charges : records et charge de travail ---------- */
+const LIFTS = ['g_bench', 'g_squat', 'g_dead', 'g_press', 'g_lat', 'g_row', 'g_shoulder', 'g_curl', 'g_tri', 'g_legext', 'g_legcurl'];
+const e1rm = (kg, reps) => kg * (1 + Math.min(Math.max(1, reps), 12) / 30);
+function liftBest(ex) {
+  const t = S.lifts.filter(x => x.ex === ex && x.test), l = t.length ? t : S.lifts.filter(x => x.ex === ex);
+  return l.length ? Math.round(Math.max(...l.map(x => e1rm(x.kg, x.reps))) * 2) / 2 : 0;
+}
+function workKg(ex, reps) { const m = liftBest(ex); return m ? Math.max(2.5, Math.round(m / (1 + reps / 30) * .92 / 2.5) * 2.5) : 0; }
+function gtests(g) {
+  if (g.type !== 'lift') return recsOf(g.ex).filter(r => r.test);
+  return S.lifts.filter(x => x.ex === g.ex && x.test).sort((a, b) => a.d < b.d ? -1 : 1).map(x => ({ d: x.d, val: Math.round(e1rm(x.kg, x.reps)) }));
+}
+const gymOn = d => { const p = P(); return p.place === 'salle' || (p.place !== 'maison' && !!p.gymFrom && d >= p.gymFrom); };
+
+/* ---------- Programmes salle ---------- */
+const GP = {
+  push: { n: 'Pectoraux, épaules, triceps', items: [['g_bench', 4, 8], ['g_shoulder', 3, 10], ['pompes', 3, 12], ['g_tri', 3, 12], ['dips', 3, 10], ['planche', 3, 40]] },
+  pull: { n: 'Dos et biceps', items: [['g_lat', 4, 10], ['g_row', 4, 10], ['g_pull', 3, 6], ['g_curl', 3, 12], ['superman', 3, 15], ['g_rower', 1, 300]] },
+  legs: { n: 'Jambes', items: [['g_squat', 4, 8], ['g_press', 3, 12], ['g_legext', 3, 12], ['g_legcurl', 3, 12], ['g_lunge', 3, 10], ['mollets', 3, 15], ['releve', 3, 12]] },
+  full: { n: 'Tout le corps', items: [['g_bench', 3, 10], ['g_lat', 3, 10], ['g_press', 3, 12], ['g_shoulder', 3, 10], ['g_curl', 2, 12], ['g_tri', 2, 12], ['crunch', 3, 15]] },
+  cool: { n: 'Cardio doux et abdos', items: [['g_tread', 1, 900], ['crunch', 3, 15], ['planche', 3, 30], ['g_bike', 1, 600]] }
+};
+const GALT = { g_bench: ['pompes', 'g_shoulder'], g_squat: ['g_press', 'squat'], g_press: ['g_squat', 'g_legext'], g_lat: ['g_pull', 'g_row'], g_row: ['g_lat'], g_pull: ['g_lat'], g_shoulder: ['press'], g_tri: ['dips', 'triceps'], g_curl: ['curl'], g_legext: ['g_lunge', 'squat'], g_legcurl: ['pont'], g_dead: ['g_row'], g_lunge: ['fentes'], g_bike: ['g_tread', 'g_rower'], g_tread: ['g_bike', 'g_rower'], g_rower: ['g_bike'] };
+function gymKind(d) {
+  const pl = planFor(d); if (pl.size === 'repos') return null; if (pl.size === 'petite') return 'cool'; if (pl.size === 'moyenne') return 'full';
+  let k = 0; for (let x = mondayOf(d); x < d; x = addDays(x, 1)) if (planFor(x).size === 'grosse') k++;
+  return ['push', 'pull', 'legs', 'full'][k % 4];
+}
+function gymItem(id, sets, reps, i) {
+  const ex = EXBY[id], sec = !!(ex.time || ex.gsec), lvl = effLevel();
+  return { ex, sets: Math.max(1, sets - (lvl === 1 && sets > 2 ? 1 : 0)), reps, sec, kg: sec || !ex.kgs ? 0 : workKg(id, reps), rest: sec && sets === 1 ? 0 : i < 2 ? 90 : 60 };
+}
+function gymPlan(d, kind) {
+  kind = kind || gymKind(d) || 'full'; const g = GP[kind], w = (latestW() || { kg: 70 }).kg;
+  const items = [Object.assign(gymItem('g_bike', 1, 300, 9), { warm: true })].concat(g.items.map((x, i) => gymItem(x[0], x[1], x[2], i)));
+  const secs = items.reduce((a, it) => a + it.sets * ((it.sec ? it.reps : 45) + it.rest), 0);
+  return { gym: true, kind, name: g.n, items, secs, kcal: Math.round(5 * w * secs / 3600) };
+}
+const setTxt = it => it.sec ? (it.sets > 1 ? it.sets + ' × ' : '') + fmtDur(it.reps) : it.sets + ' × ' + it.reps + (it.ex.kgs ? ' · ' + (it.kg ? nf(it.kg, it.kg % 1 ? 1 : 0) + ' kg' : 'charge à trouver') : '');
+function vProgramme() {
+  const view = U.place || (gymOn(today()) ? 'salle' : 'maison'), chip = (v, t) => '<button class="chip" data-act="gview" data-v="' + v + '" aria-pressed="' + (view === v) + '">' + t + '</button>';
+  const sw = '<div class="chips">' + chip('maison', 'À la maison') + chip('salle', 'À la salle') + '</div>' + (P().gymFrom && !gymOn(today()) && P().place !== 'maison' ? '<p class="tiny muted">Tes séances passent à la salle à partir du ' + fmtShort(P().gymFrom) + '. Tu peux déjà regarder le programme.</p>' : '');
+  const perso = '<button class="btn ghost" data-act="goperso">J’ai fait ma propre séance : je la note</button>';
+  if (view === 'maison') return sw + vSession() + perso;
+  const kind = U.gkind || gymKind(today()) || 'full', plan = gymPlan(today(), kind); U.gplan = plan;
+  return '<h1>Séance salle</h1>' + sw + '<section class="card"><h3>Quelle séance ?</h3><div class="chips">' + Object.keys(GP).map(k => '<button class="chip" data-act="gkind" data-v="' + k + '" aria-pressed="' + (kind === k) + '">' + GP[k].n + '</button>').join('') + '</div>' +
+    '<div class="row sb"><h2>' + plan.name + '</h2><span class="badge">≈ ' + Math.round(plan.secs / 60) + ' min · ' + plan.kcal + ' kcal</span></div>' +
+    '<div style="display:flex;flex-direction:column;gap:8px">' + plan.items.map(it => '<div class="item" role="button" tabindex="0" data-act="lopen" data-id="' + it.ex.id + '"><div class="figbox" data-lm="' + it.ex.id + '"></div><div><b>' + it.ex.n + '</b><div class="small muted">' + setTxt(it) + (it.rest ? ' · repos ' + it.rest + ' s' : '') + '</div><div class="mu">' + muOf(it.ex) + '</div></div>' + (it.warm ? '<span class="badge">Échauffement</span>' : '') + '</div>').join('') + '</div>' +
+    '<button class="btn big" data-act="gstartgym">Lancer la séance salle</button>' +
+    perso + '<p class="tiny muted">Les charges viennent de tes records (séance du mois). « Charge à trouver » : prends un poids où les 2 dernières répétitions sont dures, je m’en souviendrai. Ces machines sont celles qu’on trouve dans la plupart des salles ; si l’une manque ou est prise, tu peux la remplacer pendant la séance.</p></section>';
+}
+
+/* ---------- Lecteur salle : série par série, avec repos ---------- */
+let GS = null;
+function startGym(plan) {
+  GS = { plan, i: 0, s: 0, phase: 'set', log: plan.items.map(() => []), t0: Date.now(), restEnd: 0, lastBeep: 99 };
+  $('#player').hidden = false; document.body.style.overflow = 'hidden';
+  try { navigator.wakeLock && navigator.wakeLock.request('screen').then(l => wakeLock = l).catch(() => { }); } catch (e) { }
+  beep(660, .15); drawGym(); GS.timer = setInterval(tickGym, 250);
+}
+function drawGym() {
+  const pl = GS.plan, it = pl.items[GS.i], ex = it.ex, rest = GS.phase === 'rest', n = pl.items.length;
+  const prog = pl.items.map((x, i) => '<i class="' + (i < GS.i ? 'on' : '') + '"></i>').join('');
+  $('#player').innerHTML = '<div class="in"><div class="row sb"><span class="badge">Salle · exercice ' + (GS.i + 1) + '/' + n + '</span><button class="btn ghost sm" data-act="gquit">Quitter</button></div><div class="progress" aria-hidden="true">' + prog + '</div>' +
+    '<div class="ph"><h1>' + ex.n + '</h1><p class="muted">' + muOf(ex) + '</p></div><div id="pfig"></div>' +
+    (rest ? '<div class="ring rest"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="bg" cx="50" cy="50" r="44"/><circle class="fg" id="pring" cx="50" cy="50" r="44" stroke-dasharray="276.46" stroke-dashoffset="0"/></svg><div class="t num" id="ptime">' + it.rest + '</div></div><p style="text-align:center"><b>Repos.</b> Ensuite : série ' + (GS.s + 1) + ' sur ' + it.sets + '</p><button class="btn big" data-act="gskip">Passer le repos</button>' :
+      '<section class="card"><div class="row sb"><h2>Série ' + (GS.s + 1) + ' sur ' + it.sets + '</h2><span class="badge">objectif ' + (it.sec ? fmtDur(it.reps) : it.reps + ' rép.' + (it.kg ? ' · ' + nf(it.kg, it.kg % 1 ? 1 : 0) + ' kg' : '')) + '</span></div>' +
+      '<div class="grid2"><label class="f">' + (it.sec ? 'Secondes faites' : 'Répétitions faites') + '<input id="g-reps" inputmode="numeric" value="' + it.reps + '"></label>' + (ex.kgs ? '<label class="f">Charge (kg)<input id="g-kg" inputmode="decimal" value="' + (it.kg || '') + '" placeholder="' + (it.kg ? '' : 'à trouver') + '"></label>' : '<span></span>') + '</div>' +
+      '<button class="btn big" data-act="gdone">Série faite</button></section><p class="small muted" style="text-align:center">' + esc(ex.how) + '</p>' +
+      '<div class="grid2"><button class="btn ghost" data-act="gnext">Passer l’exercice</button><button class="btn ghost" data-act="gswap">Machine prise ? Remplacer</button></div>') + '</div>';
+  const sv = mountFig($('#pfig'), ex); if (rest) sv.__fig.speed = .5; startFigs();
+}
+function tickGym() {
+  if (!GS || GS.phase !== 'rest') return; const left = Math.max(0, (GS.restEnd - Date.now()) / 1000), sec = Math.ceil(left), it = GS.plan.items[GS.i];
+  const t = $('#ptime'), ring = $('#pring'); if (t) t.textContent = sec; if (ring) ring.style.strokeDashoffset = (276.46 * (1 - clamp(left / (it.rest || 1), 0, 1))).toFixed(1);
+  if (sec <= 3 && sec >= 1 && sec !== GS.lastBeep) { GS.lastBeep = sec; beep(sec === 1 ? 990 : 760, .1); vib(30); }
+  if (left <= 0) { GS.phase = 'set'; beep(990, .25); vib([60, 40, 60]); drawGym(); }
+}
+function gymAdvance(skipEx) {
+  const it = GS.plan.items[GS.i]; let restAfter = it.rest;
+  if (skipEx || GS.s + 1 >= it.sets) { GS.i++; GS.s = 0; } else GS.s++;
+  if (GS.i >= GS.plan.items.length) return finishGym();
+  if (restAfter > 0 && !skipEx) { GS.phase = 'rest'; GS.restEnd = Date.now() + restAfter * 1000; GS.lastBeep = 99; } else GS.phase = 'set';
+  drawGym();
+}
+function finishGym() {
+  clearInterval(GS.timer); beep(660, .15); setTimeout(() => beep(880, .15), 180); setTimeout(() => beep(1100, .3), 380);
+  const done = GS.log.reduce((a, l) => a + l.length, 0), planned = GS.plan.items.reduce((a, it) => a + it.sets, 0), mins = Math.max(1, Math.round((Date.now() - GS.t0) / 60000));
+  GS.sum = { done, planned, mins, full: done >= planned * .8 };
+  $('#player').innerHTML = '<div class="in"><h1>Séance terminée</h1><div class="grid2"><div class="stat"><span class="lbl">Durée</span><span class="num">' + mins + ' min</span></div><div class="stat"><span class="lbl">Séries faites</span><span class="num">' + done + ' / ' + planned + '</span></div></div>' +
+    '<p class="' + (GS.sum.full ? 'small muted' : 'small') + '">' + (GS.sum.full ? 'Séance complète : elle compte pour ta série de victoires.' : 'Séance incomplète (moins de 80 % des séries) : elle est enregistrée, mais ne compte pas pour la série.') + '</p>' +
+    '<label class="f">Durée réelle en minutes (tu peux corriger)<input id="g-min" inputmode="numeric" value="' + mins + '"></label><button class="btn big" data-act="gymsave">Enregistrer la séance</button></div>';
+}
+function closeGym() { if (GS) clearInterval(GS.timer); try { wakeLock && wakeLock.release(); } catch (e) { } wakeLock = null; $('#player').hidden = true; document.body.style.overflow = ''; GS = null; }
+function pushLift(ex, kg, reps, test) { if (kg > 0 && reps > 0) S.lifts.push({ id: uid(), d: today(), ex, kg: +kg, reps: Math.round(reps), test: !!test }); }
+
+/* ---------- Mes séances à moi : je rentre ce que j'ai fait ---------- */
+const newPE = () => ({ name: '', min: 45, items: [{ n: '', sets: 3, reps: 10, kg: '' }] });
+function vPerso() {
+  const E = U.PE || (U.PE = newPE());
+  let h = '<h1>Mes séances à moi</h1><p class="muted">Tu fais ta propre séance et tu rentres ce que tu as fait. Elle compte pour ta série et ton bilan.</p>';
+  if (S.custom.length) h += '<section class="card"><h2>Mes modèles</h2>' + S.custom.map(c => '<div class="row sb" style="flex-wrap:nowrap"><div style="min-width:0"><b>' + esc(c.name) + '</b><div class="tiny muted">' + c.items.length + ' exercice' + (c.items.length > 1 ? 's' : '') + '</div></div><div class="row" style="gap:6px;flex-wrap:nowrap"><button class="btn sm" data-act="pload" data-id="' + c.id + '">Faire</button><button class="btn ghost sm" data-act="pdel" data-id="' + c.id + '">Supprimer</button></div></div>').join('') + '</section>';
+  h += '<section class="card"><h2>Ma séance</h2><label class="f">Nom de la séance<input id="pe-name" value="' + esc(E.name) + '" placeholder="ex. Pecs et bras"></label>' +
+    '<div class="perow head"><span>Exercice</span><span>Séries</span><span>Rép.</span><span>kg</span><span></span></div>' +
+    E.items.map((it, i) => '<div class="perow"><input list="exlist" data-pe="' + i + '" data-f="n" value="' + esc(it.n) + '" placeholder="Exercice" aria-label="Exercice ' + (i + 1) + '"><input inputmode="numeric" data-pe="' + i + '" data-f="sets" value="' + esc(it.sets) + '" aria-label="Séries"><input inputmode="numeric" data-pe="' + i + '" data-f="reps" value="' + esc(it.reps) + '" aria-label="Répétitions"><input inputmode="decimal" data-pe="' + i + '" data-f="kg" value="' + esc(it.kg) + '" placeholder="–" aria-label="Charge en kilos"><button class="btn ghost sm" data-act="peline" data-v="' + i + '" aria-label="Retirer cette ligne">×</button></div>').join('') +
+    '<datalist id="exlist">' + EX.filter(e => !['chauffe', 'etire', 'walk'].includes(e.z)).map(e => '<option value="' + esc(e.n) + '">').join('') + '</datalist>' +
+    '<button class="btn ghost" data-act="peadd">+ Ajouter un exercice</button><label class="f">Durée de la séance (minutes)<input id="pe-min" inputmode="numeric" value="' + esc(E.min) + '"></label>' +
+    '<button class="btn big" data-act="pedone">Valider : séance faite</button><button class="btn ghost" data-act="petpl">Garder comme modèle</button>' +
+    '<p class="tiny muted">Pour les exercices au poids du corps, laisse « kg » vide. Les charges que tu notes ici servent à proposer tes charges de travail, pas à tes records : les records, c’est la séance du mois.</p></section>';
+  return h;
+}
+
+/* ---------- Séance du mois : battre mes records ---------- */
+const ym = d => d.slice(0, 7);
+const monthDue = () => !S.monthly[ym(today())] && (!P().start || today() >= P().start);
+function monthlyCard() {
+  if (!monthDue()) return '';
+  return '<section class="card warm"><h2>Séance du mois</h2><p>Une fois par mois, tu essaies de battre tes records. Ce sont ces résultats qui servent à calculer tes chances d’atteindre tes objectifs.</p><button class="btn" data-act="mopen">Faire ma séance records</button></section>';
+}
+function openMonthly() {
+  const gym = gymOn(today()) || S.lifts.length > 0;
+  openSheet('<div class="row sb"><h1>Séance du mois</h1><button class="btn ghost sm" data-act="exclose">Fermer</button></div><p class="muted">Échauffe-toi bien. Une seule tentative à fond par exercice. Laisse vide ce que tu ne testes pas.</p>' +
+    '<section class="card"><h2>Au poids du corps</h2><div class="grid2">' + TRACK.map(tr => { const pr = prOf(tr.k); return '<label class="f">' + tr.n + ' (' + (tr.u === 's' ? 'secondes' : 'max') + ')<input id="mr-' + tr.k + '" inputmode="numeric" placeholder="record : ' + (pr || '–') + '"></label>'; }).join('') + '</div></section>' +
+    (gym ? '<section class="card"><h2>À la salle</h2><p class="small muted">Note la charge et le nombre de répétitions réussies (1 à 5 pour un test).</p>' + LIFTS.map(id => { const b = liftBest(id); return '<div class="mrow"><span><b>' + EXBY[id].n + '</b><span class="tiny muted"> · record ' + (b ? nf(b, b % 1 ? 1 : 0) + ' kg' : '–') + '</span></span><input id="ml-' + id + '" inputmode="decimal" placeholder="kg" aria-label="Charge ' + EXBY[id].n + '"><input id="mlr-' + id + '" inputmode="numeric" placeholder="rép." aria-label="Répétitions ' + EXBY[id].n + '"></div>'; }).join('') + '</section>' : '') +
+    '<section class="card"><h2>Course</h2><div class="grid2"><label class="f">Distance (km)<input id="mrun-km" inputmode="decimal" placeholder="ex. 5"></label><label class="f">Dénivelé (m)<input id="mrun-el" inputmode="numeric" placeholder="0"></label><label class="f">Minutes<input id="mrun-min" inputmode="numeric" placeholder="ex. 27"></label><label class="f">Secondes<input id="mrun-sec" inputmode="numeric" placeholder="0"></label></div></section>' +
+    '<button class="btn big" data-act="msave">Valider ma séance du mois</button>');
+}
+function saveMonthly() {
+  const beaten = []; let n = 0; const t = today();
+  TRACK.forEach(tr => { const v = Math.round(num(val('mr-' + tr.k))); if (v > 0) { const pr = prOf(tr.k); S.records.push({ id: uid(), d: t, ex: tr.k, val: v, test: true }); n++; if (pr > 0 && v > pr) beaten.push(tr.n + ' ' + v); } });
+  LIFTS.forEach(id => { const kg = num(val('ml-' + id)), reps = Math.round(num(val('mlr-' + id))) || 1; if (kg > 0) { const b = liftBest(id); pushLift(id, kg, reps, true); n++; if (b > 0 && e1rm(kg, reps) > b + .4) beaten.push(EXBY[id].n + ' ' + nf(kg, kg % 1 ? 1 : 0) + ' kg'); } });
+  const km = num(val('mrun-km')), sec = Math.round((num(val('mrun-min')) || 0) * 60 + (num(val('mrun-sec')) || 0)), w = (latestW() || { kg: 70 }).kg; let before = null;
+  if (km > 0 && sec >= 60) { before = runBests(); const min = Math.max(1, Math.round(sec / 60)); S.sessions.push({ id: uid(), d: t, min, sec, kcal: Math.round(clamp(km / (sec / 3600), 6, 14) * w * sec / 3600), zones: { cardio: min }, exos: [], kind: 'free', act: 'course', km: +km.toFixed(2), elev: Math.round(num(val('mrun-el')) || 0), feel: 'dur', full: true, rec: true }); n++; }
+  if (!n) { toast('Entre au moins un résultat'); return; }
+  if (!before) S.sessions.push({ id: uid(), d: t, min: 25, kcal: Math.round(5 * w * 25 / 60), zones: {}, exos: [], kind: 'records', full: true });
+  S.monthly[ym(t)] = t; save(); closeEx(); U.keepScroll = true; render();
+  const runRec = before ? announceRuns(before) : false;
+  if (beaten.length) { confetti(); pushNotif('month-' + ym(t), 'goal', 'Records battus !', beaten.join(' · '), 'progress'); toast(beaten.length + ' record' + (beaten.length > 1 ? 's battus' : ' battu') + ' : ' + beaten[0]); }
+  else if (!runRec) toast('Séance du mois enregistrée (' + n + ' résultat' + (n > 1 ? 's' : '') + ')');
+}
+
+/* ---------- Bilan de la semaine : prompt à copier, réponse de Claude à coller ---------- */
+function weekPrompt(w) {
+  return 'Tu es mon coach sportif et nutrition, bienveillant, honnête et concret. Réponds en français, en me tutoyant, sans jargon.\n\nVoici ma semaine :\n' + weekSummary(w) + 'Note automatique de mon appli : ' + w.score + '/100.\n\n' +
+    'Fais le bilan de ma semaine. Réponds UNIQUEMENT avec ce bloc JSON (rien avant, rien après), pour que je puisse le coller dans mon appli :\n' +
+    '{"resume":"4 à 6 phrases sur ma semaine","points_forts":["2 à 4 points"],"a_ameliorer":["2 à 4 points précis, avec un chiffre si possible"],"semaine_prochaine":["3 à 5 actions concrètes : séances, repas, repos"],"mot":"une phrase d’encouragement honnête"}';
+}
+const rvList = (t, a) => a && a.length ? '<h3>' + t + '</h3><ul class="advice">' + a.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : '';
+function claudeWeekBlock(mon, rv) {
+  return '<section class="card"><h2>Mon bilan par Claude</h2>' +
+    (rv ? '<p>' + esc(rv.resume) + '</p>' + rvList('Points forts', rv.forts) + rvList('À améliorer', rv.mieux) + rvList('Plan pour la semaine prochaine', rv.suite) + (rv.mot ? '<p><b>' + esc(rv.mot) + '</b></p>' : '') : '<p class="muted">En trois gestes : tu copies le prompt, tu le colles dans une conversation avec Claude, puis tu colles sa réponse ici. Ton bilan s’affiche et reste gardé.</p>') +
+    '<h3>1. Copie le prompt</h3><button class="btn" data-act="wprompt">Copier le prompt pour Claude</button>' + (U.copy ? '<textarea id="copytxt" readonly rows="5">' + esc(U.copy) + '</textarea>' : '') +
+    '<h3>2. Colle la réponse de Claude</h3><textarea id="wpaste" rows="4" placeholder="Colle ici ce que Claude t’a répondu"></textarea><button class="btn" data-act="wpaste">' + (rv ? 'Remplacer mon bilan' : 'Enregistrer mon bilan') + '</button>' +
+    '<details><summary>Ou demander directement ici</summary><p class="small muted" style="margin:8px 0">Marche seulement dans la version claude.ai, sans copier-coller.</p><button class="btn ghost" data-act="askweek"' + (U.busy ? ' disabled' : '') + '>' + (U.busy === 'week' ? 'Claude prépare ton bilan…' : 'Demander le bilan à Claude') + '</button></details></section>';
+}
+function pasteWeek() {
+  const txt = (val('wpaste') || '').trim(); if (txt.length < 10) { toast('Colle d’abord la réponse de Claude'); return; }
+  const arr = x => Array.isArray(x) ? x.map(String) : x ? [String(x)] : []; let o = null;
+  try { const m = txt.match(/\{[\s\S]*\}/); if (m) o = JSON.parse(m[0]); } catch (e) { o = null; }
+  S.weekly[U.weekMon] = o && (o.resume || o.bilan || o.points_forts) ? { resume: String(o.resume || o.bilan || ''), forts: arr(o.points_forts), mieux: arr(o.a_ameliorer), suite: arr(o.semaine_prochaine), mot: String(o.mot || ''), ts: Date.now() } : { resume: txt, forts: [], mieux: [], suite: [], mot: '', ts: Date.now() };
+  U.copy = ''; save(); U.keepScroll = true; render(); toast(o ? 'Bilan enregistré' : 'Bilan enregistré tel quel (format libre)');
+}
+
+/* ---------- Réglages : mes jours, maison ou salle ---------- */
+function gymSettings() {
+  const p = P(), sz = p.sizes || {}, opt = (v, t, cur) => '<option value="' + v + '"' + (cur === v ? ' selected' : '') + '>' + t + '</option>', tg = (v, t) => '<button class="chip" data-act="gplace" data-v="' + v + '" aria-pressed="' + ((p.place || 'auto') === v) + '">' + t + '</button>';
+  return '<section class="card"><h2>Mes jours</h2><p class="small muted">Choisis l’intensité de chaque jour. Le programme, le planning et tes chances s’adaptent.</p><button class="btn" data-act="gpreset">Mon rythme : grosses séances lun, mar, mer et ven · cool le jeudi et le week-end · début lundi · salle dès le 5 décembre</button>' +
+    [1, 2, 3, 4, 5, 6, 7].map(d => { const c = sz[d] || (p.sizes ? 'repos' : (p.trainDays.includes(d) ? 'moyenne' : 'repos')); return '<div class="arow" style="grid-template-columns:44px 1fr"><b>' + DOW[d] + '</b><select data-sz="' + d + '" aria-label="Intensité ' + DOWL[d] + '">' + opt('repos', 'Repos', c) + opt('petite', 'Cool (petite séance)', c) + opt('moyenne', 'Séance normale', c) + opt('grosse', 'Grosse séance', c) + '</select></div>'; }).join('') +
+    '<label class="f">Mon programme commence le<input type="date" data-p2="start" value="' + (p.start || '') + '"></label></section>' +
+    '<section class="card"><h2>Maison ou salle</h2><div class="chips">' + tg('auto', 'Automatique') + tg('maison', 'Toujours maison') + tg('salle', 'Toujours salle') + '</div>' +
+    '<label class="f">Je m’entraîne à la salle à partir du<input type="date" data-p2="gymFrom" value="' + (p.gymFrom || '') + '"></label><p class="small muted">En automatique, tes séances passent toutes seules au programme salle à cette date. À la salle : vraies machines, charges calculées sur tes records, séries et temps de repos.</p></section>';
+}
+
+/* ---------- Actions ---------- */
+function gymAction(a, b, v) {
+  switch (a) {
+    case 'gpreset': { const p = P(), t = today(); p.sizes = { 1: 'grosse', 2: 'grosse', 3: 'grosse', 4: 'petite', 5: 'grosse', 6: 'petite', 7: 'petite' }; p.trainDays = [1, 2, 3, 4, 5, 6, 7]; p.start = addDays(t, (8 - isoDow(t)) % 7 || 7); p.gymFrom = p.gymFrom || '2026-12-05'; p.availSet = true; save(); U.keepScroll = true; render(); toast('Rythme appliqué : début le ' + fmtShort(p.start)); return true; }
+    case 'gview': U.place = v; U.keepScroll = true; render(); return true;
+    case 'gkind': U.gkind = v; U.keepScroll = true; render(); return true;
+    case 'gstartgym': startGym(U.gplan || gymPlan(today())); return true;
+    case 'gplace': P().place = v; U.place = ''; save(); U.keepScroll = true; render(); return true;
+    case 'gdone': {
+      const it = GS.plan.items[GS.i], reps = Math.round(num(val('g-reps'))) || 0, kg = num(val('g-kg')) || 0;
+      GS.log[GS.i].push({ reps, kg }); if (kg > 0) it.kg = kg; vib(40); gymAdvance(false); return true;
+    }
+    case 'gskip': GS.phase = 'set'; drawGym(); return true;
+    case 'gnext': gymAdvance(true); return true;
+    case 'gswap': {
+      const it = GS.plan.items[GS.i], alts = (GALT[it.ex.id] || []).filter(id => EXBY[id] && !GS.plan.items.some(x => x.ex.id === id)); if (!alts.length) { toast('Pas d’autre exercice équivalent'); return true; }
+      const ex = EXBY[alts[0]], sec = !!(ex.time || ex.gsec); Object.assign(it, { ex, sec, kg: sec || !ex.kgs ? 0 : workKg(ex.id, it.reps) }); drawGym(); toast('Remplacé par : ' + ex.n); return true;
+    }
+    case 'gquit': if (Date.now() - (GS.qa || 0) < 3500) { closeGym(); render(); } else { GS.qa = Date.now(); b.textContent = 'Vraiment quitter ?'; } return true;
+    case 'gymsave': {
+      const sum = GS.sum, mins = Math.max(1, Math.round(num(val('g-min'))) || sum.mins), w = (latestW() || { kg: 70 }).kg, det = [];
+      GS.plan.items.forEach((it, i) => { const l = GS.log[i]; if (!l.length) return; det.push({ n: it.ex.n, sets: l }); if (it.ex.kgs) { const best = l.filter(x => x.kg > 0).sort((x, y) => e1rm(y.kg, y.reps) - e1rm(x.kg, x.reps))[0]; if (best) pushLift(it.ex.id, best.kg, best.reps, false); } });
+      S.sessions.push({ id: uid(), d: today(), min: mins, kcal: Math.round(5 * w * mins / 60), zones: {}, exos: GS.plan.items.map(i => i.ex.id), kind: 'gym', name: GS.plan.name, details: det, full: sum.full });
+      save(); closeGym(); U.tab = 'today'; render(); if (sum.full) confetti(); toast(sum.full ? 'Séance salle enregistrée, bravo !' : 'Séance enregistrée (incomplète : pas comptée dans la série)'); return true;
+    }
+    case 'goperso': U.tab = 'train'; U.sub = 'perso'; render(); return true;
+    case 'peadd': U.PE.items.push({ n: '', sets: 3, reps: 10, kg: '' }); U.keepScroll = true; render(); return true;
+    case 'peline': U.PE.items.splice(+v, 1); if (!U.PE.items.length) U.PE.items.push({ n: '', sets: 3, reps: 10, kg: '' }); U.keepScroll = true; render(); return true;
+    case 'pload': { const c = S.custom.find(x => x.id === b.dataset.id); if (c) { U.PE = JSON.parse(JSON.stringify({ name: c.name, min: c.min || 45, items: c.items })); U.keepScroll = true; render(); toast('Modèle chargé : ajuste et valide'); } return true; }
+    case 'pdel': S.custom = S.custom.filter(x => x.id !== b.dataset.id); save(); U.keepScroll = true; render(); return true;
+    case 'petpl': case 'pedone': {
+      const E = U.PE, items = E.items.filter(x => String(x.n).trim()).map(x => ({ n: String(x.n).trim(), sets: Math.max(1, Math.round(num(x.sets)) || 1), reps: Math.max(1, Math.round(num(x.reps)) || 1), kg: num(x.kg) > 0 ? num(x.kg) : '' }));
+      if (!items.length) { toast('Ajoute au moins un exercice avec son nom'); return true; }
+      const name = String(E.name || '').trim() || 'Ma séance';
+      if (a === 'petpl') { S.custom.push({ id: uid(), name, min: E.min, items }); save(); U.keepScroll = true; render(); toast('Modèle gardé : ' + name); return true; }
+      const mins = Math.max(1, Math.round(num(E.min)) || 30), w = (latestW() || { kg: 70 }).kg;
+      items.forEach(x => { if (x.kg > 0) { const ex = EX.find(e => e.n.toLowerCase() === x.n.toLowerCase()); pushLift(ex ? ex.id : 'x:' + x.n.toLowerCase(), x.kg, x.reps, false); } });
+      S.sessions.push({ id: uid(), d: today(), min: mins, kcal: Math.round(5 * w * mins / 60), zones: {}, exos: [], kind: 'perso', name, details: items, full: true });
+      save(); U.PE = newPE(); U.tab = 'today'; render(); confetti(); toast('Séance « ' + name + ' » validée'); return true;
+    }
+    case 'mopen': case 'gtest': openMonthly(); return true;
+    case 'msave': saveMonthly(); return true;
+    case 'wprompt': {
+      U.copy = weekPrompt(weekStats(U.weekMon));
+      try { navigator.clipboard.writeText(U.copy).then(() => toast('Prompt copié : colle-le dans une conversation avec Claude'), () => toast('Sélectionne le texte pour le copier')); } catch (x) { toast('Sélectionne le texte pour le copier'); }
+      U.keepScroll = true; render(); return true;
+    }
+    case 'wpaste': pasteWeek(); return true;
+  }
+  return false;
+}
+document.addEventListener('input', e => {
+  const t = e.target; if (!t || !t.dataset) return;
+  if (t.dataset.pe !== undefined && U.PE && U.PE.items[+t.dataset.pe]) U.PE.items[+t.dataset.pe][t.dataset.f] = t.value;
+  if (t.id === 'pe-name' && U.PE) U.PE.name = t.value; if (t.id === 'pe-min' && U.PE) U.PE.min = t.value;
+});
+document.addEventListener('change', e => {
+  const t = e.target; if (!t || !t.dataset) return;
+  if (t.dataset.sz) { const p = P(), s = {}; for (let d = 1; d <= 7; d++) s[d] = (p.sizes && p.sizes[d]) || (p.sizes ? 'repos' : (p.trainDays.includes(d) ? 'moyenne' : 'repos')); s[t.dataset.sz] = t.value; p.sizes = s; p.trainDays = [1, 2, 3, 4, 5, 6, 7].filter(d => s[d] !== 'repos'); save(); U.keepScroll = true; render(); }
+  if (t.dataset.p2) { P()[t.dataset.p2] = t.value; save(); U.keepScroll = true; render(); }
+});
+
+/* Jours choisis à la main : grosse, normale, cool ou repos */
+function sizePlan() {
+  const sz = P().sizes, info = {};
+  for (let d = 1; d <= 7; d++) {
+    const s = sz[d] || 'repos', w = dayWin(d);
+    if (s === 'repos') { info[d] = { size: 'repos', min: 0, why: 'Jour de repos (ton choix).' }; continue; }
+    if (!w.ok) { info[d] = { size: 'repos', min: 0, why: 'Pas disponible ce jour-là' }; continue; }
+    const min = s === 'grosse' ? clamp(Math.floor((Math.max(w.win, 70) - 10) / 5) * 5, 45, 60) : s === 'moyenne' ? 30 : 20;
+    info[d] = { size: s, min, start: w.start, why: s === 'grosse' ? 'Grosse séance (ton choix).' : s === 'petite' ? 'Séance cool (ton choix).' : 'Séance normale (ton choix).' };
+  }
+  return info;
+}
+function gymRecCard() {
+  const l = LIFTS.filter(id => liftBest(id) > 0);
+  return '<section class="card"><h2>Mes records à la salle</h2>' + (l.length ? l.map(id => '<div class="row sb"><span>' + EXBY[id].n + '</span><b>' + nf(liftBest(id), liftBest(id) % 1 ? 1 : 0) + ' kg</b></div>').join('') + '<p class="tiny muted">Charge maximale estimée sur une répétition, d’après la séance du mois.</p>' : '<p class="muted">Pas encore de record à la salle. Ils se notent pendant la séance du mois.</p>') + '<button class="btn ghost" data-act="mopen">Faire ma séance du mois</button></section>';
+}
+
+
+/* ===== Mon matériel à la maison : exercices, séance qui utilise tout le matériel choisi ===== */
+const EQUIP = [['tapis', 'Tapis de sol'], ['halteres', 'Haltères'], ['elastique', 'Élastiques'], ['roue', 'Roue abdos'], ['plateau', 'Plateau d’équilibre'], ['fitball', 'Gros ballon'], ['ballon', 'Petit ballon'], ['poignees', 'Poignées de pompes'], ['rouleau', 'Rouleau de massage'], ['chaise', 'Chaise'], ['bouteilles', 'Bouteilles d’eau']];
+const eqName = k => k === 'bouteilles' && P().equip && P().equip.halteres ? 'Haltères' : (EQUIP.find(x => x[0] === k) || [k, k])[1];
+function hasEq(q) { const e = P().equip || {}; return q === 'bouteilles' ? !!(e.bouteilles || e.halteres) : !!e[q]; }
+const _sq = EXBY.squat.fr, _row = EXBY.row.fr, _curl = EXBY.curl.fr, _pp = EXBY.pompes.fr, _cr = EXBY.crunch.fr, _fe = EXBY.fentes.fr;
+const HEX = [
+  { id: 'roue', n: 'Roue abdominale (à genoux)', z: 'abdos', lvl: 2, eq: ['roue', 'tapis'], mat: 1, wheel: 1, met: 4.5, mu: 'Abdos · épaules · dos',
+    how: 'À genoux sur le coussin, mains sur la roue sous les épaules. Avance la roue en gardant le ventre serré et le dos plat, va aussi loin que tu contrôles, puis reviens en tirant avec les abdos.',
+    fr: [{ t: -44, hd: 10, a: [92, 90], l: [96, 180, 180] }, { t: -12, hd: 8, a: [8, 6], l: [150, 182, 180] }], pin: { j: 'knee', x: 78 }, ms: 1300, cues: ['Avance la roue, ventre serré', 'Reviens avec les abdos'] },
+  { id: 'plateau_squat', n: 'Squat sur plateau d’équilibre', z: 'jambes', lvl: 2, eq: ['plateau'], board: { x: 128 }, met: 5, mu: 'Cuisses · fessiers · équilibre',
+    how: 'Debout sur le plateau, pieds écartés. Descends lentement en squat en gardant le plateau à plat, puis remonte. Commence près d’un mur pour te rattraper.',
+    fr: [Object.assign({}, _sq[0], { lift: 4 }), Object.assign({}, _sq[1], { lift: 4 })], pin: { j: 'foot', x: 125 }, ms: 1300, cues: ['Descends lentement', 'Remonte, plateau à plat'] },
+  { id: 'plateau_eq', n: 'Équilibre sur plateau', z: 'abdos', lvl: 1, eq: ['plateau'], board: { x: 122 }, met: 3, time: 1, mu: 'Gainage · chevilles',
+    how: 'Debout sur le plateau, genoux légèrement fléchis, ventre serré. Garde le plateau à plat le plus longtemps possible, bras écartés pour t’aider.',
+    fr: [{ t: -87, a: [25, 8], b: [155, 172], l: [92, 88, 0], lift: 4 }, { t: -93, a: [30, 12], b: [150, 168], l: [88, 92, 0], lift: 4 }], pin: { j: 'foot', x: 120 }, ms: 1500, cues: ['Plateau bien à plat', 'Respire, ventre serré'] },
+  { id: 'el_row', n: 'Rowing à l’élastique', z: 'bras', lvl: 1, eq: ['elastique'], band: 1, met: 3.5, mu: 'Dos · biceps',
+    how: 'Pieds sur le milieu de l’élastique, buste penché en avant, dos plat. Tire les mains vers les hanches en serrant les omoplates, puis reviens lentement.',
+    fr: _row, pin: { j: 'hip', x: 105 }, ms: 950, cues: ['Tire vers les hanches', 'Reviens lentement'] },
+  { id: 'el_curl', n: 'Curl à l’élastique', z: 'bras', lvl: 1, eq: ['elastique'], band: 1, met: 3, mu: 'Biceps',
+    how: 'Pieds sur l’élastique, coudes collés au corps. Monte les mains vers les épaules contre la résistance, redescends lentement.',
+    fr: _curl, pin: { j: 'hip', x: 120 }, ms: 900, cues: ['Monte contre l’élastique', 'Redescends lentement'] },
+  { id: 'ball_bridge', n: 'Pont pieds sur gros ballon', z: 'jambes', lvl: 2, eq: ['fitball', 'tapis'], mat: 1, ball: { x: 170, r: 18 }, met: 4, mu: 'Fessiers · ischios · gainage',
+    how: 'Allongé sur le dos, talons sur le gros ballon, bras au sol. Monte le bassin jusqu’à aligner épaules, hanches et talons, sans laisser rouler le ballon, puis redescends.',
+    fr: [{ t: 180, hd: 6, a: [0, 0], l: [-38, -38, -80] }, { t: 158, hd: 6, a: [0, 0], l: [-17, -17, -80] }], pin: { j: 'foot', x: 164 }, ms: 1200, cues: ['Monte le bassin', 'Redescends doucement'] },
+  { id: 'poignees_pompes', n: 'Pompes sur poignées', z: 'bras', lvl: 2, eq: ['poignees', 'tapis'], mat: 1, handles: 1, met: 4, mu: 'Pectoraux · triceps',
+    how: 'Mains sur les poignées sous les épaules, poignets droits. Descends plus bas que sur des pompes normales, corps gainé, puis repousse. Sur les genoux si c’est trop dur.',
+    fr: _pp, pin: { j: 'hand', x: 178 }, ms: 1000, cues: ['Descends bas', 'Repousse'] },
+  { id: 'h_goblet', n: 'Squat goblet (haltère)', z: 'jambes', lvl: 1, eq: ['halteres'], dumb: 1, met: 5, mu: 'Cuisses · fessiers',
+    how: 'Tiens un haltère contre la poitrine à deux mains. Descends en squat, coudes entre les genoux, dos droit, puis remonte en poussant sur les talons.',
+    fr: [Object.assign({}, _sq[0], { a: [112, -70] }), Object.assign({}, _sq[1], { a: [92, -70] })], pin: { j: 'foot', x: 125 }, ms: 1000, cues: ['Descends, dos droit', 'Remonte'] },
+  { id: 'h_fentes', n: 'Fentes avec haltères', z: 'jambes', lvl: 2, eq: ['halteres'], bottle: 1, met: 5, mu: 'Cuisses · fessiers',
+    how: 'Un haltère dans chaque main, bras le long du corps. Grand pas en avant, descends le genou arrière, buste droit, puis repousse. Change de jambe à mi-temps.',
+    fr: [Object.assign({}, _fe[0], { a: [90, 92] }), Object.assign({}, _fe[1], { a: [90, 92] })], pin: { j: 'foot', x: 150 }, ms: 1050, cues: ['Descends le genou', 'Remonte'] },
+  { id: 'ballon_crunch', n: 'Crunch avec le petit ballon', z: 'abdos', lvl: 1, eq: ['ballon', 'tapis'], mat: 1, sball: 1, met: 3.8, mu: 'Abdominaux',
+    how: 'Sur le dos, genoux pliés, ballon tenu bras tendus. Monte les épaules en poussant le ballon vers tes genoux, puis redescends doucement.',
+    fr: [{ t: 180, hd: 8, a: [-62, -62], l: _cr[0].l }, { t: -140, hd: 8, a: [-12, -12], l: _cr[0].l }], pin: { j: 'foot', x: 160 }, ms: 1000, cues: ['Pousse le ballon vers les genoux', 'Redescends'] },
+  { id: 'rouleau_cuisses', n: 'Rouleau sous les cuisses', z: 'etire', lvl: 1, eq: ['rouleau', 'tapis'], mat: 1, roller: { x: 128 }, met: 2, time: 1, mu: 'Récupération des cuisses',
+    how: 'En appui sur les avant-bras, le rouleau sous l’avant des cuisses. Avance et recule doucement pour masser, arrête-toi sur les zones tendues en respirant.',
+    fr: [{ t: -10, hd: 8, a: [90, 0], l: [170, 170, 70], dx: -11 }, { t: -10, hd: 8, a: [90, 0], l: [170, 170, 70], dx: 11 }], pin: { j: 'hand', x: 175 }, ms: 1700, cues: ['Roule doucement', 'Respire sur les zones tendues'] }
+];
+HEX.forEach(e => { e.imp = 0; e.alt = 0; EX.push(e); EXBY[e.id] = e; MU[e.id] = e.mu; });
+/* tu as des haltères : les exercices « bouteilles » s'appellent comme tels */
+EX.forEach(e => { if (e.eq.includes('bouteilles')) e.n = e.n.replace('(bouteilles)', '(haltères)').replace('(bouteille)', '(haltère)'); });
+const EQX = { halteres: ['h_goblet', 'h_fentes', 'curl', 'press', 'row', 'triceps'], elastique: ['el_row', 'el_curl'], roue: ['roue'], plateau: ['plateau_squat', 'plateau_eq'], fitball: ['ball_bridge'], ballon: ['ballon_crunch'], poignees: ['poignees_pompes'], chaise: ['dips', 'stepup'], bouteilles: ['press', 'triceps'], tapis: ['planche', 'crunch', 'pont'], rouleau: [] };
+const exEqTxt = e => [...new Set(e.eq.filter(q => q !== 'tapis').map(eqName))].join(', ');
+
+/* Séance qui passe par chaque objet choisi, en alternant les muscles */
+function genEquipSession(min, picked, seed) {
+  const r = rng(seed), lvl = effLevel(), work = lvl === 1 ? 35 : 40, rest = lvl === 1 ? 25 : 20, has = q => q === 'tapis' || picked.includes(q) || (q === 'bouteilles' && picked.includes('halteres'));
+  const okE = e => e && S.skills[e.id] !== 'no' && !(lowImpact() && e.imp) && e.eq.every(has);
+  const wc = min < 12 ? 1 : 2, coolX = [];
+  if (picked.includes('rouleau')) coolX.push(EXBY.rouleau_cuisses);
+  shuffle(EX.filter(e => e.z === 'etire' && e.id !== 'rouleau_cuisses'), r).forEach(e => { if (coolX.length < wc + (picked.includes('rouleau') ? 1 : 0)) coolX.push(e); });
+  const fixed = wc * 30 + coolX.length * 35, slots = Math.max(picked.length ? 3 : 2, Math.floor((min * 60 - fixed) / (work + rest)));
+  const keys = picked.filter(k => k !== 'rouleau' && (EQX[k] || []).some(id => okE(EXBY[id]))), lists = {}, idx = {};
+  keys.forEach(k => { lists[k] = shuffle(EQX[k].map(id => EXBY[id]).filter(okE), r); idx[k] = 0; });
+  const pool = [], used = new Set();
+  for (let round = 0; pool.length < slots && round < 6 && keys.length; round++) {
+    keys.forEach(k => { if (pool.length >= slots) return; const l = lists[k]; for (let n = 0; n < l.length; n++) { const e = l[(idx[k] + n) % l.length]; if (round > 0 || !used.has(e.id)) { pool.push(e); used.add(e.id); idx[k] += n + 1; return; } } });
+  }
+  if (!pool.length) EX.filter(e => ['abdos', 'bras', 'jambes'].includes(e.z) && okE(e)).slice(0, slots).forEach(e => pool.push(e));
+  const seq = []; let last = '';
+  while (pool.length) { let i = pool.findIndex(e => e.z !== last); if (i < 0) i = 0; const e = pool.splice(i, 1)[0]; seq.push(e); last = e.z; }
+  const items = [], mk = (e, dur, rs, ph) => ({ ex: e, dur, rest: rs, phase: ph, hint: (e.time ? 'tiens la position' : hintFor(e, dur)) + (exEqTxt(e) ? ' · ' + exEqTxt(e) : '') });
+  shuffle(EX.filter(e => e.z === 'chauffe'), r).slice(0, wc).forEach(e => items.push(mk(e, 30, 0, 'warm')));
+  seq.forEach((e, i) => items.push(mk(e, work, i === seq.length - 1 ? 0 : rest, 'main')));
+  coolX.forEach(e => items.push(mk(e, 35, 0, 'cool')));
+  return { min, focus: 'equip', lvl, items, kcal: planKcal(items), secs: items.reduce((a, it) => a + it.dur + it.rest, 0), work, rest, equip: picked.slice(), seed };
+}
+function vEquip() {
+  const p = P(), mine = EQUIP.filter(x => p.equip[x[0]]), sel = U.eqSel || (U.eqSel = mine.map(x => x[0])), min = U.eqMin || 15, plan = U.T.plan && U.T.plan.focus === 'equip' ? U.T.plan : null;
+  const chip = (k, t) => '<button class="chip" data-act="eqsel" data-v="' + k + '" aria-pressed="' + sel.includes(k) + '">' + t + '</button>';
+  let h = '<h1>Mon matériel</h1><section class="card"><div class="row sb"><h2>Pour cette séance</h2><button class="btn ghost sm" data-act="eqall">' + (sel.length === mine.length ? 'Rien' : 'Tout') + '</button></div>' +
+    (mine.length ? '<div class="chips">' + mine.map(x => chip(x[0], x[1])).join('') + '</div>' : '<p class="muted">Aucun matériel enregistré. Ajoute le tien dans Réglages > Matériel.</p>') +
+    '<p class="tiny muted">Ton matériel enregistré se change dans Réglages > Matériel.</p><h3>Durée</h3><div class="chips">' + [10, 15, 20, 30].map(m => '<button class="chip" data-act="eqmin" data-v="' + m + '" aria-pressed="' + (min === m) + '">' + m + ' min</button>').join('') + '</div>' +
+    '<button class="btn big" data-act="eqgen">' + (plan ? 'Refaire une séance' : 'Créer ma séance matériel') + '</button></section>';
+  if (plan) {
+    const usedEq = [...new Set(plan.items.flatMap(it => it.ex.eq.filter(q => q !== 'tapis')))];
+    h += '<section class="card"><div class="row sb"><h2>Séance matériel</h2><span class="badge">' + Math.round(plan.secs / 60) + ' min · ≈ ' + plan.kcal + ' kcal</span></div><p class="small muted">Travail ' + plan.work + ' s, repos ' + plan.rest + ' s. Matériel utilisé : ' + ([...new Set(usedEq.map(eqName))].join(', ') || 'aucun') + '.</p>' +
+      '<div style="display:flex;flex-direction:column;gap:8px">' + plan.items.map((it, i) => (i === 0 || plan.items[i - 1].phase !== it.phase ? '<div class="phase">' + ({ warm: 'Échauffement', main: 'Circuit matériel', cool: 'Retour au calme' })[it.phase] + '</div>' : '') + '<div class="item" role="button" tabindex="0" data-act="exinfo" data-i="' + i + '" aria-label="Voir ' + esc(it.ex.n) + '"><div class="figbox" data-mini="' + i + '"></div><div><b>' + it.ex.n + '</b><div class="small muted">' + fmtDur(it.dur) + ' · ' + it.hint + '</div><div class="mu">' + muOf(it.ex) + '</div></div>' + zoneBadge(it.ex.z) + '</div>').join('') + '</div>' +
+      '<button class="btn big" data-act="tstart">Lancer la séance</button></section>';
+  }
+  return h;
+}
+function equipAction(a, v) {
+  switch (a) {
+    case 'eqsel': { const s = U.eqSel || []; U.eqSel = s.includes(v) ? s.filter(x => x !== v) : s.concat(v); U.keepScroll = true; render(); return true; }
+    case 'eqall': { const mine = EQUIP.filter(x => P().equip[x[0]]).map(x => x[0]); U.eqSel = (U.eqSel || []).length === mine.length ? [] : mine; U.keepScroll = true; render(); return true; }
+    case 'eqmin': U.eqMin = +v; U.keepScroll = true; render(); return true;
+    case 'eqgen': {
+      if (!(U.eqSel || []).length) { toast('Choisis au moins un objet'); return true; }
+      U.T.plan = genEquipSession(U.eqMin || 15, U.eqSel, Date.now() & 0xfffffff); U.keepScroll = true; render();
+      const it = $('.item'); if (it) it.closest('section').scrollIntoView({ behavior: 'smooth', block: 'start' }); return true;
+    }
+  }
+  return false;
+}
 
 /* ===== Actions ===== */
 const SLUG = { today: 'aujourdhui', train: 'seance', meals: 'repas', week: 'bilan', progress: 'progres', profile: 'profil' };
@@ -2398,6 +2839,8 @@ document.addEventListener('click', e => {
   if (learnAction(a, b, v)) return;
   if (resetAction(a, v)) return;
   if (simpleAction(a, v)) return;
+  if (gymAction(a, b, v)) return;
+  if (equipAction(a, v)) return;
   switch (a) {
     case 'tab': U.tab = v; try { history.replaceState(null, '', '#' + SLUG[v]); } catch (x) { } render(); break;
     case 'gotrain': { const pf = planFor(today()); if (pf.min) { U.T.min = [5, 10, 15, 20, 30, 45, 60].reduce((a, c) => Math.abs(c - pf.min) < Math.abs(a - pf.min) ? c : a); if (pf.size === 'grosse') U.T.focus = 'all'; U.T.plan = null; } U.tab = 'train'; render(); break; }
@@ -2511,7 +2954,7 @@ document.addEventListener('click', e => {
       if (test && !old && pr > 0 && n > pr) { confetti(); toast('Nouveau record : ' + n + ' !'); } else toast(old ? 'Ancien résultat noté au ' + fmtShort(rd) : 'Résultat noté'); break;
     }
     /* profil */
-    case 'pday': { const d = +v, a = P().trainDays; P().trainDays = a.includes(d) ? a.filter(x => x !== d) : a.concat(d).sort(); save(); keep(); render(); break; }
+    case 'pday': { const d = +v, a = P().trainDays; P().trainDays = a.includes(d) ? a.filter(x => x !== d) : a.concat(d).sort(); if (P().sizes) { const sz = P().sizes; sz[d] = P().trainDays.includes(d) ? (sz[d] && sz[d] !== 'repos' ? sz[d] : 'moyenne') : 'repos'; } save(); keep(); render(); break; }
     case 'prec': P().recordDay = +v; save(); keep(); render(); break;
     case 'peq': P().equip[v] = !P().equip[v]; save(); keep(); render(); break;
     case 'plow': P().lowImpact = !P().lowImpact; save(); keep(); render(); break;
